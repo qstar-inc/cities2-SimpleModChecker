@@ -1,0 +1,7 @@
+Simple Mod Checker - Cities: Skylines II
+github.com/qstar-inc/cities2-SimpleModChecker
+Copyright (c) 2024 StarQ (Qoushik Hassan).  All rights reserved.
+
+Portions of this code are derived from the source code for the game.
+Such portions are Copyright (c) Colossal Order and Paradox Interactive.
+Not for reuse or distribution except in accordance with the Paradox Interactive End User License Agreement.

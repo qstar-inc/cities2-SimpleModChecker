@@ -8,9 +8,9 @@
 	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
 	<!--LongDescription Value="" /-->
 	<LongDescription>
-I'm a simple man; I see "{X} Mod Loaded", I start playing.
+I'm a simple man; I see "{x} Mod Loaded", I start playing.
 
-This mod adss a ==persistent== notification to the Main Menu (and also Pause Menu), showing how many mods have loaded in this session.
+This mod adds a ==persistent== notification to the Main Menu (and also Pause Menu), showing how many mods have loaded the current session.
 
 If for some reason a broken mod prevents other mods from loading, just by looking at the number you can recognize something is wrong.
 
@@ -22,7 +22,7 @@ Safe to remove.
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
 	<!--Screenshot, can be set multiple times-->
-	<Screenshot Value="" />
+	<Screenshot Value="Properties/Notification.jpg" />
 	<!--Tag, can be set multiple times-->
 	<Tag Value="Code Mod" />
 	<!--Link to the forum post where the mod can be discussed-->
@@ -38,5 +38,5 @@ Safe to remove.
 	<!--ChangeLog>
 	</ChangeLog-->
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
-	<ExternalLink Type="" Url="" />
+	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
 </Publish>
