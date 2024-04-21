@@ -1,6 +1,6 @@
 ﻿<Publish>
 	<!--Id must be set in order to update existed mod. it is not required for publishing mod for the first time-->
-	<ModId Value="" />
+	<ModId Value="79186" />
 	<!--Name of the mod to display to players-->
 	<DisplayName Value="Simple Mod Checker" />
 	<!--Short description of the mod-->
@@ -8,9 +8,9 @@
 	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
 	<!--LongDescription Value="" /-->
 	<LongDescription>
-I'm a simple man; I see "{x} Mod Loaded", I start playing.
+I'm a simple man; I see "Loaded {x} mods", I start playing.
 
-This mod adds a ==persistent== notification to the Main Menu (and also Pause Menu), showing how many mods have loaded the current session.
+This mod adds a **persistent** notification to the Main Menu (and also Pause Menu), showing how many mods have loaded the current session.
 
 If for some reason a broken mod prevents other mods from loading, just by looking at the number you can recognize something is wrong.
 
@@ -34,9 +34,12 @@ Safe to remove.
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="" />
+	<ChangeLog Value="-" />
 	<!--ChangeLog>
 	</ChangeLog-->
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
+	<ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
+	<ExternalLink Type="youtube" Url="https://www.youtube.com/@StarQGaming" />
+	<ExternalLink Type="patreon" Url="https://www.patreon.com/StarQGaming" />
 </Publish>
