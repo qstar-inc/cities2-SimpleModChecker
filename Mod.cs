@@ -97,7 +97,7 @@ namespace SimpleModChecker
 
             NotificationSystem.Push("mod-check",
                         title: "Simple Mod Checker",
-                        text: $"Loaded {count} {modstext}");
+                        text: $"Loaded {count} {modstext}", onClicked:RemoveNotification);
         }
 
         private void RemoveNotification()
