@@ -1,4 +1,5 @@
-﻿using Colossal.Logging;
+﻿using System.Collections.Generic;
+using Colossal.Logging;
 using Colossal.Serialization.Entities;
 using Game;
 using Game.Modding;
@@ -11,7 +12,6 @@ namespace SimpleModChecker
     public class Mod : IMod
     {
         public const string ModName = "Simple Mod Checker";
-
         public SimpleModChecker _simpleModChecker;
 
         public static ILog log = LogManager.GetLogger($"{nameof(SimpleModChecker)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
@@ -36,6 +36,7 @@ namespace SimpleModChecker
     {
         public Mod _mod;
         private int count;
+        public List<string> loadedMods = new List<string>();
 
         public SimpleModChecker(Mod mod)
         {
@@ -71,8 +72,12 @@ namespace SimpleModChecker
 
             foreach (var modInfo in GameManager.instance.modManager)
             {
-                count += 1;
-                Mod.log.Info($"Loaded: {modInfo.asset.name}");
+                if (!loadedMods.Contains(modInfo.asset.name))
+                {
+                    loadedMods.Add(modInfo.asset.name);
+                    count += 1;
+                    Mod.log.Info($"Loaded: {modInfo.asset.name}");
+                }
             }
             Mod.log.Info($"Total mod(s): {count}");
             SendNotification(count);
@@ -92,7 +97,7 @@ namespace SimpleModChecker
 
             NotificationSystem.Push("mod-check",
                         title: "Simple Mod Checker",
-                        text: $"Loaded {count} {modstext}");
+                        text: $"Loaded {count} {modstext}", onClicked:RemoveNotification);
         }
 
         private void RemoveNotification()
