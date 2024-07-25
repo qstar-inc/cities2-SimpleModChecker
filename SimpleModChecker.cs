@@ -1,4 +1,4 @@
-﻿// Simple Mod Checker
+﻿// Simple Mod Checker Plus
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
@@ -9,7 +9,7 @@ using Game.SceneFlow;
 using Game;
 using System.Collections.Generic;
 
-namespace SimpleModChecker
+namespace SimpleModCheckerPlus
 {
     public partial class ModNotification : GameSystemBase
     {

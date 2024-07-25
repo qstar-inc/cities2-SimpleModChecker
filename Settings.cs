@@ -1,15 +1,17 @@
-﻿// Simple Mod Checker
+﻿// Simple Mod Checker Plus
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
 using Colossal;
 using Colossal.IO.AssetDatabase;
 using Game.Modding;
+using Game.Settings;
 using System.Collections.Generic;
+using static Colossal.IO.AssetDatabase.AssetDatabase;
 
-namespace SimpleModChecker
+namespace SimpleModCheckerPlus
 {
-    [FileLocation($"ModsSettings\\{Mod.ModName}\\{Mod.ModName}")]
+    [FileLocation($"ModsSettings\\StarQ\\{Mod.ModName}")]
     public class SimpleModCheckerSetting : ModSetting
     {
         public static SimpleModCheckerSetting Instance;
@@ -20,11 +22,12 @@ namespace SimpleModChecker
 
         //public bool ShowNotif { get; set; }
 
-        public bool ShowNotif { get; set; }
-        public bool DeleteMissing { get; set; }
-        public bool DeleteCorrupted { get; set; }
-        public bool EnableAutoSave { get; set; }
-        public bool DisableRadio { get; set; }
+        public bool ShowNotif { get; set; } = true;
+        public bool DeleteMissing { get; set; } = true;
+        public bool DeleteCorrupted { get; set; } = true;
+        public bool EnableAutoSave { get; set; } = true;
+        public bool DisableRadio { get; set; } = true;
+        public string ModVersion => Mod.Version;
 
         public override void SetDefaults()
         {
@@ -56,6 +59,8 @@ namespace SimpleModChecker
                 { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.EnableAutoSave)), "Enable or disable the automatic activation of autosave in the event of accidental game settings reset." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.DisableRadio)), "Auto disable Radio on Settings Crash?" },
                 { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.DisableRadio)), "Enable or disable the automatic deactivation of radio in the event of accidental game settings reset." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.ModVersion)), "Version" },
+                { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.ModVersion)), $"Current running version of {Mod.ModName}" },
             };
         }
 

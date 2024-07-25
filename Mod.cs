@@ -1,4 +1,4 @@
-﻿// Simple Mod Checker
+﻿// Simple Mod Checker Plus
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
@@ -9,11 +9,13 @@ using Game;
 using Unity.Entities;
 using Colossal.IO.AssetDatabase;
 
-namespace SimpleModChecker
+namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
         public const string ModName = "Simple Mod Checker Plus";
+        public const string Version = "2.1.2";
+        
         public static SimpleModCheckerSetting Setting;
         public ModNotification _modNotification;
         public CIDBackupRestore _backupRestore;
@@ -34,7 +36,7 @@ namespace SimpleModChecker
             Setting.RegisterInOptionsUI();
             SimpleModCheckerSetting.Instance = Setting;
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
-            AssetDatabase.global.LoadSettings(nameof(SimpleModChecker), Setting, new SimpleModCheckerSetting(this));
+            AssetDatabase.global.LoadSettings(nameof(SimpleModCheckerPlus), Setting, new SimpleModCheckerSetting(this));
 
             _modNotification = new ModNotification(this);
             _backupRestore = new CIDBackupRestore(this);
@@ -42,8 +44,8 @@ namespace SimpleModChecker
             _settingsChanger = new SettingsChanger(this);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(_modNotification);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(_backupRestore);
-            World.DefaultGameObjectInjectionWorld.AddSystemManaged(_cocCleaner);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(_settingsChanger);
+            World.DefaultGameObjectInjectionWorld.AddSystemManaged(_cocCleaner);
         }
 
         public void OnDispose()

@@ -1,4 +1,4 @@
-﻿// Simple Mod Checker
+﻿// Simple Mod Checker Plus
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
@@ -10,9 +10,8 @@ using System.IO;
 using System.Linq;
 using System;
 using UnityEngine;
-using Colossal.Logging;
 
-namespace SimpleModChecker
+namespace SimpleModCheckerPlus
 {
     public partial class CIDBackupRestore : GameSystemBase
     {

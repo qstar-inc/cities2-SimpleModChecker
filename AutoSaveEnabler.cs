@@ -1,20 +1,21 @@
-﻿using Colossal.PSI.Environment;
+﻿// Simple Mod Checker Plus
+// https://github.com/qstar-inc/cities2-SimpleModChecker
+// StarQ 2024
+
+using Colossal.PSI.Environment;
+using Game.PSI;
+using Game.Settings;
 using Game;
 using System.IO;
-using Game.Settings;
-using Game.PSI;
+using System.Text;
+using System;
 
-namespace SimpleModChecker
+namespace SimpleModCheckerPlus
 {
-    public partial class SettingsChanger : GameSystemBase
+    public partial class SettingsChanger(Mod mod) : GameSystemBase
     {
-        public Mod _mod;
+        public Mod _mod = mod;
         public string settingFile = $"{EnvPath.kUserDataPath}\\Settings.coc";
-
-        public SettingsChanger(Mod mod)
-        {
-            _mod = mod;
-        }
 
         protected override void OnCreate()
         {
@@ -26,18 +27,38 @@ namespace SimpleModChecker
         {
             if (File.Exists(settingFile))
             {
-                string content = File.ReadAllText(settingFile);
-
-            if (string.IsNullOrWhiteSpace(content))
+                if (!CocCleaner.IsFileLocked(settingFile))
                 {
-                    if (Mod.Setting.EnableAutoSave)
+                    try
                     {
-                        EnableAutoSave();
+                        using (FileStream fs = new FileStream(settingFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                            {
+                                string fileContent = reader.ReadToEnd();
+
+                                if (fileContent.Length == 0 || string.IsNullOrWhiteSpace(fileContent))
+                                {
+                                    if (Mod.Setting.EnableAutoSave)
+                                    {
+                                        EnableAutoSave();
+                                    }
+                                    if (Mod.Setting.DisableRadio)
+                                    {
+                                        DisableRadio();
+                                    }
+                                }
+                            }
+                        }
                     }
-                    if (Mod.Setting.DisableRadio)
+                    catch (Exception ex)
                     {
-                        DisableRadio();
+                        Mod.log.Info($"Error reading file: {ex.Message}");
                     }
+                }
+                else
+                {
+                    Mod.log.Info($"File inaccessible: {settingFile}");
                 }
             }
             else

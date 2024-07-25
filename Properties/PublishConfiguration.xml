@@ -40,15 +40,15 @@ Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding**
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.1.1" />
+	<ModVersion Value="2.1.2" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="2.1.1" />
+	<ChangeLog Value="2.1.2" />
 	<ChangeLog>
-* Minor bug fixes, thanks to @sam950624 for identifying.
+* Better try-catch to prevent errors.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

@@ -1,4 +1,4 @@
-﻿// Simple Mod Checker
+﻿// Simple Mod Checker Plus
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
@@ -11,17 +11,12 @@ using System.Text;
 using System;
 using UnityEngine;
 
-namespace SimpleModChecker
+namespace SimpleModCheckerPlus
 {
-    public partial class CocCleaner : GameSystemBase
+    public partial class CocCleaner(Mod mod) : GameSystemBase
     {
-        public Mod _mod;
+        public Mod _mod = mod;
         public List<string> deleteables = [];
-
-        public CocCleaner(Mod mod)
-        {
-            _mod = mod;
-        }
 
         protected override void OnCreate()
         {
@@ -74,29 +69,35 @@ namespace SimpleModChecker
             {
                 foreach (string file in Directory.GetFiles(currentPath, "*.coc"))
                 {
-                    try
+                    if (!IsFileLocked(file))
                     {
-                        using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        try
                         {
-                            using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                            using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
                             {
-                                string fileContent = reader.ReadToEnd();
+                                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                                {
+                                    string fileContent = reader.ReadToEnd();
 
-                                if (fileContent.Length == 0)
-                                {
-                                    return;
-                                }
-                                
-                                if(!IsLegibleText(fileContent))
-                                {
-                                    deleteables.Add(file);
+                                    if (fileContent.Length == 0)
+                                    {
+                                        return;
+                                    }
+
+                                    if (!IsLegibleText(fileContent))
+                                    {
+                                        deleteables.Add(file);
+                                    }
                                 }
                             }
                         }
-                    }
-                    catch (Exception ex)
+                        catch (Exception ex)
+                        {
+                            Mod.log.Info($"Error processing file {file}: {ex.Message}");
+                        }
+                    } else
                     {
-                        Mod.log.Error($"Error processing file {file}: {ex.Message}");
+                        Mod.log.Info($"File inaccessible: {file}");
                     }
                 }
 
@@ -114,7 +115,24 @@ namespace SimpleModChecker
                 Mod.log.Error($"Error processing {currentPath}: {e.Message}");
             }
         }
-        
+
+        public static bool IsFileLocked(string filePath)
+        {
+            try
+            {
+                using (FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    fs.Close();
+                }
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         protected override void OnUpdate()
         {
         }
