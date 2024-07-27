@@ -32,7 +32,7 @@ namespace SimpleModCheckerPlus
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
         {
             base.OnGameLoadingComplete(purpose, mode);
-
+            Mod.log.Info(mode.IsGameOrEditor());
             if (mode.IsGameOrEditor())
             {
                 RemoveNotification();
@@ -90,7 +90,7 @@ namespace SimpleModCheckerPlus
 
         public void RemoveNotification()
         {
-            NotificationSystem.Pop("mod-check");
+            NotificationSystem.Pop("starq-mod-check", delay: 1);
         }
     }
 }

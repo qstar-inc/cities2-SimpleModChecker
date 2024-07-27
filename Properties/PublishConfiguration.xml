@@ -12,6 +12,8 @@ I'm a simple man; I see "Loaded {x} mods", I start playing.
 
 This mod adds a **persistent** notification to the Main Menu, showing how many mods have loaded the current session.
 
+The notification will automatically hide once a Game or Editor is loaded.
+
 If for some reason a broken mod prevents other mods from loading, just by looking at the number you can recognize something is wrong.
 If you don't see the notification at all, it means no mods were loaded and you need to restart the game.
 
@@ -40,15 +42,15 @@ Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding**
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.1.2" />
+	<ModVersion Value="2.1.3" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="2.1.2" />
+	<ChangeLog Value="2.1.3" />
 	<ChangeLog>
-* Better try-catch to prevent errors.
+* Minor bug fix which prevents the notification to disappear on Game Load.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

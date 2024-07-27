@@ -14,7 +14,7 @@ namespace SimpleModCheckerPlus
     public class Mod : IMod
     {
         public const string ModName = "Simple Mod Checker Plus";
-        public const string Version = "2.1.2";
+        public const string Version = "2.1.3";
         
         public static SimpleModCheckerSetting Setting;
         public ModNotification _modNotification;
