@@ -45,6 +45,7 @@ namespace SimpleModCheckerPlus
             foreach (var file in deleteables)
             {
                 File.Delete(file);
+                deleteables.Remove(file);
                 Mod.log.Info($"Deleted {file}");
             }
             Application.Quit(0);
@@ -87,6 +88,7 @@ namespace SimpleModCheckerPlus
                                     if (!IsLegibleText(fileContent))
                                     {
                                         deleteables.Add(file);
+                                        Mod.log.Info($"Scheduled for deletion: {file}");
                                     }
                                 }
                             }
