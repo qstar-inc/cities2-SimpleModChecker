@@ -4,6 +4,8 @@
 
 using Colossal;
 using Colossal.IO.AssetDatabase;
+using Colossal.IO.AssetDatabase.Internal;
+
 using Game.Modding;
 using Game.Settings;
 using System.Collections.Generic;
@@ -61,6 +63,15 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.DisableRadio)), "Enable or disable the automatic deactivation of radio in the event of accidental game settings reset." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.ModVersion)), "Version" },
                 { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.ModVersion)), $"Current running version of {Mod.ModName}" },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]", Mod.ModName },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]", "Loaded {modCount} mod." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]", "Loaded {modCount} mods." },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]", $$"""{{ Mod.ModName }}: Found {fileCount} corrupted Settings file""" },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]", "Click here to delete and restart to prevent errors..." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoSave]", "Auto Save enabled" },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DisableRadio]", "Radio disabled" },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods]", $$"""{{Mod.ModName}}: Found {modCount} mod(s) with missing CIDs""" },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods]", "Click here to delete and restart to prevent errors..." },
             };
         }
 

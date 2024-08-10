@@ -9,14 +9,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using Game.UI.Localization;
 using UnityEngine;
 
 namespace SimpleModCheckerPlus
 {
-    public partial class CocCleaner(Mod mod) : GameSystemBase
+    public partial class CocCleaner(Mod instance) : GameSystemBase
     {
-        public Mod _mod = mod;
-        public List<string> deleteables = [];
+        private Mod _instance = instance;
+        public Queue<string> CanDelete { get; set; } = [];
 
         protected override void OnCreate()
         {
@@ -26,95 +29,86 @@ namespace SimpleModCheckerPlus
 
         private void StartCleaningCoc()
         {
-            string rootFolderPath = $"{EnvPath.kUserDataPath}";
-            
-            LoopThroughFolders(rootFolderPath, deleteables);
-           
-            if (deleteables.Count > 0)
+            var rootFolderPath = $"{EnvPath.kUserDataPath}";
+
+            LoopThroughFolders(rootFolderPath, CanDelete);
+
+            if (CanDelete.Count > 0)
             {
                 NotificationSystem.Push("starq-coc-check",
-                        title: $"{Mod.ModName}: Found {deleteables.Count} corrupted Settings file",
-                        text: $"Click here to delete and restart to prevent errors...",
-                        onClicked: () => DeleteFolders());
+                    title: new LocalizedString("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]", null,
+                        new Dictionary<string, ILocElement>
+                        {
+                            {"fileCount", LocalizedString.Value(CanDelete.Count.ToString())}
+                        }),
+                    text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]"),
+                    onClicked: DeleteFolders);
             }
-
         }
 
         public void DeleteFolders()
         {
-            foreach (var file in deleteables)
+            while (CanDelete.Count > 0)
             {
+                var file = CanDelete.Dequeue();
                 File.Delete(file);
-                deleteables.Remove(file);
-                Mod.log.Info($"Deleted {file}");
+                Mod.log.InfoFormat("Deleted {0}", file);
             }
+
             Application.Quit(0);
         }
 
-        public static bool IsLegibleText(string text)
-        {
-            foreach (char c in text)
-            {
-                if (!char.IsControl(c) || c == '\n' || c == '\r' || c == '\t')
-                {
-                    continue;
-                }
-                return false;
-            }
-            return true;
-        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsLegibleText(string text) =>
+            !text.Any(c => char.IsControl(c) && c != '\n' && c != '\r' && c != '\t');
 
-        private static void LoopThroughFolders(string currentPath, List<string> deleteables)
+
+        private static void LoopThroughFolders(string currentPath, Queue<string> canDelete)
         {
             try
             {
-                foreach (string file in Directory.GetFiles(currentPath, "*.coc"))
+                foreach (var file in Directory.GetFiles(currentPath, "*.coc"))
                 {
                     if (!IsFileLocked(file))
                     {
                         try
                         {
-                            using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            using var fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            using var reader = new StreamReader(fs, Encoding.UTF8);
+                            var fileContent = reader.ReadToEnd();
+
+                            if (fileContent.Length == 0)
                             {
-                                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
-                                {
-                                    string fileContent = reader.ReadToEnd();
-
-                                    if (fileContent.Length == 0)
-                                    {
-                                        return;
-                                    }
-
-                                    if (!IsLegibleText(fileContent))
-                                    {
-                                        deleteables.Add(file);
-                                        Mod.log.Info($"Scheduled for deletion: {file}");
-                                    }
-                                }
+                                return;
                             }
+
+                            if (IsLegibleText(fileContent)) continue;
+                            canDelete.Enqueue(file);
+                            Mod.log.InfoFormat("Scheduled for deletion: {0}", file);
                         }
                         catch (Exception ex)
                         {
-                            Mod.log.Info($"Error processing file {file}: {ex.Message}");
+                            Mod.log.WarnFormat("Error processing file {0}: {1}", file, ex.Message);
                         }
-                    } else
+                    }
+                    else
                     {
-                        Mod.log.Info($"File inaccessible: {file}");
+                        Mod.log.WarnFormat("File inaccessible: {0}", file);
                     }
                 }
 
-                foreach (string directory in Directory.GetDirectories(currentPath))
+                foreach (var directory in Directory.GetDirectories(currentPath))
                 {
-                    LoopThroughFolders(directory, deleteables);
+                    LoopThroughFolders(directory, canDelete);
                 }
             }
             catch (UnauthorizedAccessException e)
             {
-                Mod.log.Error($"Access denied to {currentPath}: {e.Message}");
+                Mod.log.ErrorFormat("Access denied to {0}: {1}", currentPath, e.Message);
             }
             catch (Exception e)
             {
-                Mod.log.Error($"Error processing {currentPath}: {e.Message}");
+                Mod.log.ErrorFormat("Error processing {0}: {1}", currentPath, e.Message);
             }
         }
 
@@ -122,10 +116,8 @@ namespace SimpleModCheckerPlus
         {
             try
             {
-                using (FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    fs.Close();
-                }
+                using var fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
+                fs.Close();
             }
             catch (IOException)
             {

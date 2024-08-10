@@ -9,18 +9,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System;
+using System.Diagnostics;
+using Game.UI.Localization;
 using UnityEngine;
 
 namespace SimpleModCheckerPlus
 {
     public partial class CIDBackupRestore : GameSystemBase
     {
-        public Mod _mod;
-        public List<string> deleteables = [];
+        public Mod _instance;
+        public Queue<string> CanDelete { get; set; } = [];
 
-        public CIDBackupRestore(Mod mod)
+        public CIDBackupRestore(Mod instance)
         {
-            _mod = mod;
+            _instance = instance;
         }
 
         protected override void OnCreate()
@@ -31,61 +33,71 @@ namespace SimpleModCheckerPlus
 
         private void BackupAndRestoreCID()
         {
-            DateTime CIDManagerStart = DateTime.Now;
+            var watch = new Stopwatch();
+            watch.Start();
 
-            string rootFolderPath = $"{EnvPath.kUserDataPath}/.cache/Mods/mods_subscribed/";
+            var rootFolderPath = $"{EnvPath.kUserDataPath}/.cache/Mods/mods_subscribed/";
             foreach (var immediateDirectory in Directory.GetDirectories(rootFolderPath))
             {
-                bool toBeDeleted = LoopThroughModsSubscribed(immediateDirectory);
+                var toBeDeleted = LoopThroughModsSubscribed(immediateDirectory);
                 if (toBeDeleted)
                 {
-                    deleteables.Add(immediateDirectory);
+                    CanDelete.Enqueue(immediateDirectory);
                 }
             }
-            if (deleteables.Count > 0)
+
+            if (CanDelete.Count > 0)
             {
-                string modList = "";
-                foreach (var modID in deleteables)
+                var modList = "";
+                foreach (var modId in CanDelete)
                 {
                     if (modList == "")
                     {
-                        modList += modID.Replace(rootFolderPath, "").Remove(5).ToString();
+                        modList += modId.Replace(rootFolderPath, "").Remove(5);
                     }
                     else
                     {
-                        modList += ", " + modID.Replace(rootFolderPath, "").Remove(5).ToString();
+                        modList += ", " + modId.Replace(rootFolderPath, "").Remove(5);
                     }
                 }
-                    Exception ex = new Exception("Missing_CID_Exception");
-                Mod.log.Error(ex, $"Found {deleteables.Count} mods with missing CID with no backup:\n{modList}\n{Mod.ModName} will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically.");
-                NotificationSystem.Push("starq-cid-check",
-                        title: $"{Mod.ModName}: Found {deleteables.Count} mod(s) with missing CIDs",
-                        text: $"Click here to delete and restart to prevent errors...",
-                        onClicked: () => DeleteFolders());
-            }
-            DateTime CIDManagerEnd = DateTime.Now;
-            TimeSpan timeTaken = CIDManagerEnd - CIDManagerStart;
-            Mod.log.Info($"CID Backup and Restore took {timeTaken.TotalSeconds}s");
 
+                var ex = new Exception("Missing_CID_Exception");
+                Mod.log.Error(ex,
+                    $"Found {CanDelete.Count} mods with missing CID with no backup:\n{modList}\n{Mod.ModName} will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically.");
+                NotificationSystem.Push("starq-cid-check",
+                    title: new LocalizedString("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods]", null,
+                        new Dictionary<string, ILocElement>()
+                        {
+                            {"modCount", LocalizedString.Value(CanDelete.Count.ToString())}
+                        }),
+                    text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods]"),
+                    onClicked: DeleteFolders);
+            }
+
+            watch.Stop();
+            var timeTaken = watch.Elapsed;
+            Mod.log.Info($"CID Backup and Restore took {timeTaken.TotalSeconds}s");
         }
 
         public void DeleteFolders()
         {
-            foreach (var directory in deleteables)
+            while (CanDelete.Count > 0)
             {
+                var directory = CanDelete.Dequeue();
                 Directory.Delete(directory, true);
-                Mod.log.Info($"Deleted {directory}");
+                Mod.log.InfoFormat("Deleted {0}", directory);
             }
+
             Application.Quit(0);
         }
 
         private static bool LoopThroughModsSubscribed(string directoryPath)
         {
-            string[] validExtensions = { ".Prefab", ".cok", ".Texture", ".Geometry", ".Surface" };
-            bool hasValidFile = false;
+            string[] validExtensions = [".Prefab", ".cok", ".Texture", ".Geometry", ".Surface"];
+            var hasValidFile = false;
 
             var files = Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories)
-                                 .Where(file => validExtensions.Contains(Path.GetExtension(file)));
+                .Where(file => validExtensions.Contains(Path.GetExtension(file)));
 
             if (!files.Any())
             {
@@ -94,9 +106,9 @@ namespace SimpleModCheckerPlus
 
             foreach (var file in files)
             {
-                string cidFilePath = file + ".cid";
-                string cidBakFilePath = file + ".cid.bak";
-                string cidBackupFilePath = file + ".cid.backup";
+                var cidFilePath = file + ".cid";
+                var cidBakFilePath = file + ".cid.bak";
+                var cidBackupFilePath = file + ".cid.backup";
 
                 if (File.Exists(cidFilePath))
                 {
@@ -121,12 +133,14 @@ namespace SimpleModCheckerPlus
                 }
                 else
                 {
-                    Mod.log.Info($"CID not found: {file}");
+                    Mod.log.InfoFormat("CID not found: {0}", file);
                     return true;
                 }
             }
+
             return !hasValidFile;
         }
+
         protected override void OnUpdate()
         {
         }

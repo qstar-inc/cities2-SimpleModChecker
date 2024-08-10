@@ -8,18 +8,19 @@ using Game.PSI;
 using Game.SceneFlow;
 using Game;
 using System.Collections.Generic;
+using Game.UI.Localization;
 
 namespace SimpleModCheckerPlus
 {
     public partial class ModNotification : GameSystemBase
     {
-        public Mod _mod;
-        private int count;
-        public List<string> loadedMods = [];
+        private Mod _instance;
+        private int _count = 0;
+        private readonly List<string> _loadedMods = [];
 
-        public ModNotification(Mod mod)
+        public ModNotification(Mod instance)
         {
-            _mod = mod;
+            _instance = instance;
         }
 
         protected override void OnCreate()
@@ -40,51 +41,63 @@ namespace SimpleModCheckerPlus
             {
                 if (Mod.Setting.ShowNotif)
                 {
-                    SendNotification(count);
+                    SendNotification(_count);
                 }
             }
         }
+
         protected override void OnUpdate()
         {
         }
 
         private void CheckMod()
         {
-            count = 0;
+            _count = 0;
 
             foreach (var modInfo in GameManager.instance.modManager)
             {
                 string modName = modInfo.asset.name;
-                if (!loadedMods.Contains(modName))
+                if (!_loadedMods.Contains(modName))
                 {
-                    loadedMods.Add(modName);
-                    count += 1;
-                    Mod.log.Info($"Loaded: {modName}");
+                    _loadedMods.Add(modName);
+                    _count += 1;
+                    Mod.log.InfoFormat("Loaded: {0}", modName);
                 }
             }
-            Mod.log.Info($"Total mod(s): {count}");
+
+            Mod.log.Info($"Total mod(s): {_count}");
             if (Mod.Setting.ShowNotif)
             {
-                SendNotification(count);
+                SendNotification(_count);
             }
         }
 
         public void SendNotification(int count)
         {
-            var modstext = "mod";
             if (count < 2)
             {
-                modstext += "";
+                NotificationSystem.Push("starq-mod-check",
+                    title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                    text: new LocalizedString("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]",
+                        null, new Dictionary<string, ILocElement>
+                        {
+                            {"modCount", LocalizedString.Value(_count.ToString())}
+                        }),
+                    onClicked: () =>
+                        System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log"));
             }
             else
             {
-                modstext += "s";
+                NotificationSystem.Push("starq-mod-check",
+                    title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                    text: new LocalizedString("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]",
+                        null, new Dictionary<string, ILocElement>
+                        {
+                            {"modCount", LocalizedString.Value(_count.ToString())}
+                        }),
+                    onClicked: () =>
+                        System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log"));
             }
-
-            NotificationSystem.Push("starq-mod-check",
-                        title: Mod.ModName,
-                        text: $"Loaded {count} {modstext}",
-                        onClicked: () => System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log"));
         }
 
         public void RemoveNotification()

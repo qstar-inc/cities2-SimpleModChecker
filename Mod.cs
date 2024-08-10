@@ -50,12 +50,12 @@ namespace SimpleModCheckerPlus
 
         public void OnDispose()
         {
-            if (Setting.DeleteMissing && _backupRestore.deleteables.Count > 0)
+            if (Setting.DeleteMissing && _backupRestore.CanDelete.Count > 0)
             {
                 _backupRestore.DeleteFolders();
             }
 
-            if (Setting.DeleteCorrupted && _cocCleaner.deleteables.Count > 0)
+            if (Setting.DeleteCorrupted && _cocCleaner.CanDelete.Count > 0)
             {
                 _cocCleaner.DeleteFolders();
             }            

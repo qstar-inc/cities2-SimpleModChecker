@@ -9,13 +9,14 @@ using Game;
 using System.IO;
 using System.Text;
 using System;
+using Game.UI.Localization;
 
 namespace SimpleModCheckerPlus
 {
-    public partial class SettingsChanger(Mod mod) : GameSystemBase
+    public partial class SettingsChanger(Mod instance) : GameSystemBase
     {
-        public Mod _mod = mod;
-        public string settingFile = $"{EnvPath.kUserDataPath}\\Settings.coc";
+        public Mod _instance = instance;
+        private readonly string _settingFile = $"{EnvPath.kUserDataPath}\\Settings.coc";
 
         protected override void OnCreate()
         {
@@ -25,30 +26,24 @@ namespace SimpleModCheckerPlus
 
         private void CheckSettingsFile()
         {
-            if (File.Exists(settingFile))
+            if (File.Exists(_settingFile))
             {
-                if (!CocCleaner.IsFileLocked(settingFile))
+                if (!CocCleaner.IsFileLocked(_settingFile))
                 {
                     try
                     {
-                        using (FileStream fs = new FileStream(settingFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        {
-                            using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
-                            {
-                                string fileContent = reader.ReadToEnd();
+                        using var fs = new FileStream(_settingFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        using var reader = new StreamReader(fs, Encoding.UTF8);
+                        var fileContent = reader.ReadToEnd();
 
-                                if (fileContent.Length == 0 || string.IsNullOrWhiteSpace(fileContent))
-                                {
-                                    if (Mod.Setting.EnableAutoSave)
-                                    {
-                                        EnableAutoSave();
-                                    }
-                                    if (Mod.Setting.DisableRadio)
-                                    {
-                                        DisableRadio();
-                                    }
-                                }
-                            }
+                        if (fileContent.Length != 0 && !string.IsNullOrWhiteSpace(fileContent)) return;
+                        if (Mod.Setting.EnableAutoSave)
+                        {
+                            EnableAutoSave();
+                        }
+                        if (Mod.Setting.DisableRadio)
+                        {
+                            DisableRadio();
                         }
                     }
                     catch (Exception ex)
@@ -58,7 +53,7 @@ namespace SimpleModCheckerPlus
                 }
                 else
                 {
-                    Mod.log.Info($"File inaccessible: {settingFile}");
+                    Mod.log.Info($"File inaccessible: {_settingFile}");
                 }
             }
             else
@@ -79,13 +74,14 @@ namespace SimpleModCheckerPlus
         {
             SharedSettings.instance.general.autoSave = true;
             Mod.log.Info("Autosave enabled");
-            NotificationSystem.Pop(identifier: "starq-auto-save-restored", delay: 10f, title: Mod.ModName, text: "Auto Save enabled");
+            NotificationSystem.Pop(identifier: "starq-auto-save-restored", delay: 10f, title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"), text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoSave]"));
         }
+
         private void DisableRadio()
         {
             SharedSettings.instance.audio.radioActive = false;
             Mod.log.Info("Radio disabled");
-            NotificationSystem.Pop(identifier: "starq-radio-disabled", delay: 10f, title: Mod.ModName, text: "Radio disabled");
+            NotificationSystem.Pop(identifier: "starq-radio-disabled", delay: 10f, title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"), text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DisableRadio]"));
         }
 
         protected override void OnUpdate()
