@@ -14,7 +14,6 @@
 		<!--The file should contain 2 lines:-->
 		<!--Your.PDX@Account.login-->
 		<!--Your-PDX-Account-Pa$$word-->
-		<PDXAccountDataPath>..\whatareyoulookingforhuh</PDXAccountDataPath>
 		
 		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
 		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
@@ -25,6 +24,7 @@
 	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
 
 	<ItemGroup>
+		<Reference Include="C:\Users\Qoushik\AppData\LocalLow\Colossal Order\Cities Skylines II\.cache\Mods\mods_subscribed\79634_3\AssetIconLibrary.dll" Private="False" />
 		<Reference Include="Game">
 			<Private>false</Private>
 		</Reference>
@@ -43,7 +43,13 @@
 		<Reference Include="Colossal.PSI.Common">
 			<Private>false</Private>
 		</Reference>
+		<Reference Include="Newtonsoft.Json">
+			<Private>false</Private>
+		</Reference>
 		<Reference Include="UnityEngine.CoreModule">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="UnityEngine.VirtualTexturingModule">
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="Unity.Burst">
@@ -56,6 +62,12 @@
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="Unity.Mathematics">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Unity.RenderPipelines.Core.Runtime">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Unity.RenderPipelines.HighDefinition.Runtime">
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>

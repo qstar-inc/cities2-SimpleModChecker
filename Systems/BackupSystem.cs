@@ -57,9 +57,9 @@ namespace SimpleModCheckerPlus
                     }
                 }
                     Exception ex = new Exception("Missing_CID_Exception");
-                Mod.log.Error(ex, $"Found {deleteables.Count} mods with missing CID with no backup:\n{modList}\n{Mod.ModName} will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically.");
-                NotificationSystem.Push("starq-cid-check",
-                        title: $"{Mod.ModName}: Found {deleteables.Count} mod(s) with missing CIDs",
+                Mod.log.Error(ex, $"Found {deleteables.Count} mods with missing CID with no backup:\n{modList}\n{Mod.Name} will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically.");
+                NotificationSystem.Push("starq-smc-cid-check",
+                        title: $"{Mod.Name}: Found {deleteables.Count} mod(s) with missing CIDs",
                         text: $"Click here to delete and restart to prevent errors...",
                         onClicked: () => DeleteFolders());
             }

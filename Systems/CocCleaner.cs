@@ -10,8 +10,9 @@ using System.IO;
 using System.Text;
 using System;
 using UnityEngine;
+using SimpleModCheckerPlus;
 
-namespace SimpleModCheckerPlus
+namespace SimpleModChecker.Systems
 {
     public partial class CocCleaner(Mod mod) : GameSystemBase
     {
@@ -27,13 +28,13 @@ namespace SimpleModCheckerPlus
         private void StartCleaningCoc()
         {
             string rootFolderPath = $"{EnvPath.kUserDataPath}";
-            
+
             LoopThroughFolders(rootFolderPath, deleteables);
-           
+
             if (deleteables.Count > 0)
             {
-                NotificationSystem.Push("starq-coc-check",
-                        title: $"{Mod.ModName}: Found {deleteables.Count} corrupted Settings file",
+                NotificationSystem.Push("starq-smc-coc-check",
+                        title: $"{Mod.Name}: Found {deleteables.Count} corrupted Settings file",
                         text: $"Click here to delete and restart to prevent errors...",
                         onClicked: () => DeleteFolders());
             }
@@ -97,7 +98,8 @@ namespace SimpleModCheckerPlus
                         {
                             Mod.log.Info($"Error processing file {file}: {ex.Message}");
                         }
-                    } else
+                    }
+                    else
                     {
                         Mod.log.Info($"File inaccessible: {file}");
                     }

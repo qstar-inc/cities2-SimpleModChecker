@@ -8,51 +8,55 @@ using Game.SceneFlow;
 using Game;
 using Unity.Entities;
 using Colossal.IO.AssetDatabase;
+using SimpleModChecker.Systems;
 
 namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
-        public const string ModName = "Simple Mod Checker Plus";
-        public const string Version = "2.1.4";
+        public const string Name = "Simple Mod Checker Plus";
+        public const string Version = "2.2.0";
         
-        public static SimpleModCheckerSetting Setting;
+        public static Setting Setting;
         public ModNotification _modNotification;
-        public CIDBackupRestore _backupRestore;
+        public CIDBackupRestore _cidBackupRestore;
         public CocCleaner _cocCleaner;
-        public SettingsChanger _settingsChanger;
+        //public SettingsChanger _settingsChanger;
 
-        public static readonly string logFileName = ModName;
-        public static ILog log = LogManager.GetLogger(ModName).SetShowsErrorsInUI(true);
+        public static readonly string logFileName = nameof(SimpleModCheckerPlus);
+        public static ILog log = LogManager.GetLogger(nameof(SimpleModCheckerPlus)).SetShowsErrorsInUI(true);
+        public static ModManager modManager = GameManager.instance.modManager;
 
         public void OnLoad(UpdateSystem updateSystem)
         {
-            log.Info($"Starting up {ModName}");
+            log.Info($"Starting up {Name}");
 
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
                 log.Info($"DLL: {asset.path}");
 
-            Setting = new SimpleModCheckerSetting(this);
+            Setting = new Setting(this);
             Setting.RegisterInOptionsUI();
-            SimpleModCheckerSetting.Instance = Setting;
+            Setting.Instance = Setting;
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
-            AssetDatabase.global.LoadSettings(nameof(SimpleModCheckerPlus), Setting, new SimpleModCheckerSetting(this));
+            AssetDatabase.global.LoadSettings(nameof(SimpleModCheckerPlus), Setting, new Setting(this));
+            
 
             _modNotification = new ModNotification(this);
-            _backupRestore = new CIDBackupRestore(this);
+            _cidBackupRestore = new CIDBackupRestore(this);
             _cocCleaner = new CocCleaner(this);
-            _settingsChanger = new SettingsChanger(this);
+            //_settingsChanger = new SettingsChanger(this);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(_modNotification);
-            World.DefaultGameObjectInjectionWorld.AddSystemManaged(_backupRestore);
-            World.DefaultGameObjectInjectionWorld.AddSystemManaged(_settingsChanger);
+            World.DefaultGameObjectInjectionWorld.AddSystemManaged(_cidBackupRestore);
+            //World.DefaultGameObjectInjectionWorld.AddSystemManaged(_settingsChanger);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(_cocCleaner);
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<GameSettingsBackup>();
         }
 
         public void OnDispose()
         {
-            if (Setting.DeleteMissing && _backupRestore.deleteables.Count > 0)
+            if (Setting.DeleteMissing && _cidBackupRestore.deleteables.Count > 0)
             {
-                _backupRestore.DeleteFolders();
+                _cidBackupRestore.DeleteFolders();
             }
 
             if (Setting.DeleteCorrupted && _cocCleaner.deleteables.Count > 0)
@@ -60,7 +64,7 @@ namespace SimpleModCheckerPlus
                 _cocCleaner.DeleteFolders();
             }            
             
-            log.Info($"Shutting down {ModName}");
+            log.Info($"Shutting down {Name}");
         }
     }
 }

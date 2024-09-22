@@ -8,8 +8,9 @@ using Game.PSI;
 using Game.SceneFlow;
 using Game;
 using System.Collections.Generic;
+using SimpleModCheckerPlus;
 
-namespace SimpleModCheckerPlus
+namespace SimpleModChecker.Systems
 {
     public partial class ModNotification : GameSystemBase
     {
@@ -81,15 +82,15 @@ namespace SimpleModCheckerPlus
                 modstext += "s";
             }
 
-            NotificationSystem.Push("starq-mod-check",
-                        title: Mod.ModName,
+            NotificationSystem.Push("starq-smc-mod-check",
+                        title: Mod.Name,
                         text: $"Loaded {count} {modstext}",
                         onClicked: () => System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log"));
         }
 
         public void RemoveNotification()
         {
-            NotificationSystem.Pop("starq-mod-check", delay: 1);
+            NotificationSystem.Pop("starq-smc-mod-check", delay: 1);
         }
     }
 }

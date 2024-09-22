@@ -23,7 +23,8 @@ You can also see a list of the (current/last) loaded mods on the Log file locate
 ## Additional features
 * Get notified when some maps, savegames or assets have missing CIDs. (Includes automatic backup, original idea by Konsi/Mimonsi)
 * Get notified when some of the Setting files are corrupted/empty.
-* Automatically enable auto save and disable radio in the event of settings crash.
+* [NEW] Backup and Restore Game Settings
+* [NEW] Automatically restore Game Settings with values saved to 'Profile 1' on startup.
 -# By default on exit, the mod folder with missing CIDs and corrupted setting files will be deleted automatically. All additional features are configurable.
 
 Safe to remove anytime.
@@ -42,17 +43,20 @@ Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding**
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.1.3" />
+	<ModVersion Value="2.2.0" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="2.1.3" />
+	<ChangeLog Value="2.2.0" />
 	<ChangeLog>
-* Minor bug fix which prevents the notification to disappear on Game Load.
+* Added settings backup/restore.
+* Removed 'Autosave On on crash'.
+* Removed 'Disable Radio on crash'.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
 	<ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
+	<ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />
 </Publish>

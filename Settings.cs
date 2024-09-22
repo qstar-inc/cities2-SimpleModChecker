@@ -2,70 +2,110 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal;
 using Colossal.IO.AssetDatabase;
 using Game.Modding;
 using Game.Settings;
-using System.Collections.Generic;
-using static Colossal.IO.AssetDatabase.AssetDatabase;
+using SimpleModChecker.Systems;
+using System;
+using UnityEngine.Device;
 
 namespace SimpleModCheckerPlus
 {
-    [FileLocation($"ModsSettings\\StarQ\\{Mod.ModName}")]
-    public class SimpleModCheckerSetting : ModSetting
+    [FileLocation($"ModsSettings\\StarQ\\{Mod.Name}")]
+    [SettingsUITabOrder(MainTab, AboutTab)]
+    [SettingsUIGroupOrder(OptionsGroup, BackupGroup, InfoGroup, ModInfo)]
+    [SettingsUIShowGroupName(OptionsGroup, BackupGroup, ModInfo)]
+    public class Setting : ModSetting
     {
-        public static SimpleModCheckerSetting Instance;
-        public SimpleModCheckerSetting(IMod mod) : base(mod)
+        public static Setting Instance;
+
+        private readonly GameSettingsBackup SettingsBackup = new();
+
+        public Setting(IMod mod) : base(mod)
         {
             SetDefaults();
         }
 
-        //public bool ShowNotif { get; set; }
+        public const string MainTab = "Main";
 
+        public const string OptionsGroup = "Options";
+        public const string BackupGroup = "Game Settings Backup";
+
+        public const string AboutTab = "About";
+        public const string InfoGroup = "Info";
+        public const string ModInfo = "About the Mod";
+
+        [SettingsUISection(MainTab, OptionsGroup)]
         public bool ShowNotif { get; set; } = true;
+
+        [SettingsUISection(MainTab, OptionsGroup)]
         public bool DeleteMissing { get; set; } = true;
+
+        [SettingsUISection(MainTab, OptionsGroup)]
         public bool DeleteCorrupted { get; set; } = true;
-        public bool EnableAutoSave { get; set; } = true;
-        public bool DisableRadio { get; set; } = true;
-        public string ModVersion => Mod.Version;
+
+        [SettingsUISection(MainTab, BackupGroup)]
+        public bool AutoRestoreSettingBackupOnStartup { get; set; } = true;
+
+        [SettingsUISection(MainTab, BackupGroup)]
+        public bool CreateBackup1 { set { SettingsBackup.CreateBackup(1); } }
+
+        [SettingsUISection(MainTab, BackupGroup)]
+        public bool RestoreBackup1 { set { SettingsBackup.RestoreBackup(1); } }
+
+        [SettingsUISection(MainTab, BackupGroup)]
+        public bool CreateBackup2 { set { SettingsBackup.CreateBackup(2); } }
+
+        [SettingsUISection(MainTab, BackupGroup)]
+        public bool RestoreBackup2 { set { SettingsBackup.RestoreBackup(2); } }
+
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public string NameText => Mod.Name;
+
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public string VersionText => Mod.Version;
+
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public string AuthorText => "StarQ";
+
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public bool BMaCLink
+        {
+            set
+            {
+                try
+                {
+                    Application.OpenURL($"https://buymeacoffee.com/starq");
+                }
+                catch (Exception e)
+                {
+                    Mod.log.Error(e);
+                }
+            }
+        }
+
+        [SettingsUISection(AboutTab, ModInfo)]
+        public string AboutTheMod => "";
+        [SettingsUISection(AboutTab, ModInfo)]
+        public string AboutTheMod1 => "";
+        [SettingsUISection(AboutTab, ModInfo)]
+        public string AboutTheMod2 => "";
+        [SettingsUISection(AboutTab, ModInfo)]
+        public string AboutTheMod3 => "";
+        [SettingsUISection(AboutTab, ModInfo)]
+        public string AboutTheMod4 => "";
+        [SettingsUISection(AboutTab, ModInfo)]
+        public string AboutTheMod5 => "";
+        [SettingsUISection(AboutTab, ModInfo)]
+        public string AboutTheModX => "";
 
         public override void SetDefaults()
         {
             ShowNotif = true;
             DeleteMissing = true;
             DeleteCorrupted = true;
-            EnableAutoSave = true;
-            DisableRadio = true;
+            AutoRestoreSettingBackupOnStartup = true;
         }
 
-    }
-
-    public class LocaleEN(SimpleModCheckerSetting setting) : IDictionarySource
-    {
-        private readonly SimpleModCheckerSetting m_Setting = setting;
-
-        public IEnumerable<KeyValuePair<string, string>> ReadEntries(IList<IDictionaryEntryError> errors, Dictionary<string, int> indexCounts)
-        {
-            return new Dictionary<string, string>
-            {
-                { m_Setting.GetSettingsLocaleID(), Mod.ModName },
-                { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.ShowNotif)), "Show Notification?" },
-                { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.ShowNotif)), "Enable or disable the Main Menu notification." },
-                { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.DeleteMissing)), "Auto delete Mods with Missing CIDs?" },
-                { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.DeleteMissing)), "Enable or disable the automatic deletion of mods with missing CIDs." },
-                { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.DeleteCorrupted)), "Auto delete Corrupted Settings?" },
-                { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.DeleteCorrupted)), "Enable or disable the automatic deletion of corrupted settings." },
-                { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.EnableAutoSave)), "Auto enable Auto save on Settings Crash?" },
-                { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.EnableAutoSave)), "Enable or disable the automatic activation of autosave in the event of accidental game settings reset." },
-                { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.DisableRadio)), "Auto disable Radio on Settings Crash?" },
-                { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.DisableRadio)), "Enable or disable the automatic deactivation of radio in the event of accidental game settings reset." },
-                { m_Setting.GetOptionLabelLocaleID(nameof(SimpleModCheckerSetting.ModVersion)), "Version" },
-                { m_Setting.GetOptionDescLocaleID(nameof(SimpleModCheckerSetting.ModVersion)), $"Current running version of {Mod.ModName}" },
-            };
-        }
-
-        public void Unload()
-        {
-        }
     }
 }
