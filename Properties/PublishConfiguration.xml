@@ -29,10 +29,12 @@ You can also see a list of the (current/last) loaded mods on the Log file locate
 
 Safe to remove anytime.
 
-## Skyve/PDX Mods says less. Why does this mod says more mods than I have?
+### Skyve/PDX Mods says less. Why does this mod says more mods than I have?
 The way mods are loaded are a little different. What Skyve/PDX Mods is telling you the number of packages you're loading. However, it's possible one mod have more than one "modification" DLL (Dynamic-link Library), such as Harmony or other stuff. This mod checker (and the in-game Mod Initializer) counts them as separate mods, thus the reported value is more than that on the playset. Although, if a DLL of same name is loaded by two separate mods, only one is counted.
 
 Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding** Discord.
+
+Feedback / Bug Report: https://discord.com/channels/1024242828114673724/1287440491239047208
 	</LongDescription>
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
@@ -43,17 +45,15 @@ Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding**
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.2.0" />
+	<ModVersion Value="2.2.1" />
 	<!--Recommended version of the base game to use the mod-->
-	<GameVersion Value="1.1.*" />
+	<GameVersion Value="1.1.8" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="2.2.0" />
+	<ChangeLog Value="2.2.1" />
 	<ChangeLog>
-* Added settings backup/restore.
-* Removed 'Autosave On on crash'.
-* Removed 'Disable Radio on crash'.
+* Added a check to auto restore settings only if something changed, and changed the auto restore notification message.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

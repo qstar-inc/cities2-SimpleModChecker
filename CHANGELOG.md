@@ -1,3 +1,6 @@
+# 2.2.1 (2024-09-23) - 3255 subs
+- Added a check to auto restore settings only if something changed, and changed the auto restore notification message.
+
 # 2.2.0 (2024-09-22) - 3209 subs
 - Added settings backup/restore.
 - Removed 'Autosave On on crash'.

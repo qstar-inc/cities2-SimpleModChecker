@@ -267,6 +267,7 @@ namespace SimpleModChecker.Systems
     {
         public Mod _mod;
         public static ModManager modManager = Mod.modManager;
+        private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_prev.json";
         private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_1.json";
         private readonly string backupFile2 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_2.json";
 
@@ -274,12 +275,19 @@ namespace SimpleModChecker.Systems
         {
             if (File.Exists(backupFile1) && Mod.Setting.AutoRestoreSettingBackupOnStartup)
             {
-                RestoreBackup(1, false);
-                NotificationSystem.Pop("starq-smc-settings-restore",
-                        title: Mod.Name,
-                        text: $"Auto Restored settings after a crash...",
-                        onClicked: () => { },
-                        delay: 10f);
+                CreateBackup(0);
+                if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
+                {
+                    RestoreBackup(1, false);
+                    NotificationSystem.Pop("starq-smc-settings-restore",
+                            title: Mod.Name,
+                            text: $"Auto Restored settings on game startup...",
+                            onClicked: () => { },
+                            delay: 10f);
+                } else
+                {
+                    Mod.log.Info("Nothing to restore");
+                }
             }
             else
             {
@@ -296,11 +304,12 @@ namespace SimpleModChecker.Systems
         {
             string backupFile = profile switch
             {
+                0 => backupFile0,
                 1 => backupFile1,
                 2 => backupFile2,
                 _ => backupFile1,
             };
-            Mod.log.Info("Creating Backup");
+            Mod.log.Info($"Creating Backup: {Path.GetFileName(backupFile)}");
             string directoryPath = Path.GetDirectoryName(backupFile);
             if (!Directory.Exists(directoryPath))
             {
@@ -472,7 +481,6 @@ namespace SimpleModChecker.Systems
                 GameAnimationQualitySetting = GameAnimationQualitySetting,
                 GameTextureQualitySettings = GameTextureQualitySettings
             };
-            Mod.log.Info("Ok");
             var GameGraphicsSettings = new GameGraphicsSettings()
             {
                 VSync = SharedSettings.instance.graphics.vSync,
@@ -486,9 +494,7 @@ namespace SimpleModChecker.Systems
                 DlssQuality = SharedSettings.instance.graphics.dlssQuality,
                 Fsr2Quality = SharedSettings.instance.graphics.fsr2Quality,
                 GameQualitySettings = GameQualitySettings
-            }; Mod.log.Info("Ok2");
-            Mod.log.Info(SharedSettings.instance.keybinding.ToString());
-            Mod.log.Info("OkX");
+            };
             var GameInputSettings = new GameInputSettings
             {
                 ElevationDraggingEnabled = SharedSettings.instance.input.elevationDraggingEnabled,
@@ -540,6 +546,7 @@ namespace SimpleModChecker.Systems
         {
             string backupFile = profile switch
             {
+                0 => backupFile0,
                 1 => backupFile1,
                 2 => backupFile2,
                 _ => backupFile1,
