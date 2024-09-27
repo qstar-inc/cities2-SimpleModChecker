@@ -15,7 +15,7 @@ namespace SimpleModCheckerPlus
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public const string Version = "2.2.0";
+        public const string Version = "2.2.2";
         
         public static Setting Setting;
         public ModNotification _modNotification;
@@ -32,7 +32,7 @@ namespace SimpleModCheckerPlus
             log.Info($"Starting up {Name}");
 
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
-                log.Info($"DLL: {asset.path}");
+                log.Info($"Loading from \"{asset.path}\"");
 
             Setting = new Setting(this);
             Setting.RegisterInOptionsUI();
@@ -50,16 +50,17 @@ namespace SimpleModCheckerPlus
             //World.DefaultGameObjectInjectionWorld.AddSystemManaged(_settingsChanger);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(_cocCleaner);
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<GameSettingsBackup>();
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModSettingsBackup>();
         }
 
         public void OnDispose()
         {
-            if (Setting.DeleteMissing && _cidBackupRestore.deleteables.Count > 0)
+            if (Setting.DeleteMissing && _cidBackupRestore.CanDelete.Count > 0)
             {
                 _cidBackupRestore.DeleteFolders();
             }
 
-            if (Setting.DeleteCorrupted && _cocCleaner.deleteables.Count > 0)
+            if (Setting.DeleteCorrupted && _cocCleaner.CanDelete.Count > 0)
             {
                 _cocCleaner.DeleteFolders();
             }            

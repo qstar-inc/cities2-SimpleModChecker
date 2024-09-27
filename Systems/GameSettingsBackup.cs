@@ -21,6 +21,7 @@ using System.IO;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Rendering;
 using Game.PSI;
+using Game.UI.Localization;
 
 namespace SimpleModChecker.Systems
 {
@@ -266,32 +267,47 @@ namespace SimpleModChecker.Systems
     public partial class GameSettingsBackup : GameSystemBase
     {
         public Mod _mod;
-        public static ModManager modManager = Mod.modManager;
         private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_prev.json";
         private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_1.json";
         private readonly string backupFile2 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_2.json";
+        private readonly string backupFile3 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_3.json";
+        private readonly string backupFile4 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_4.json";
+        private readonly string backupFile5 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_5.json";
+        private readonly string backupFile6 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_6.json";
+        private readonly string backupFile7 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_7.json";
+        private readonly string backupFile8 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_8.json";
+        private readonly string backupFile9 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\GameSettingsBackup_9.json";
+
 
         protected override void OnCreate()
         {
-            if (File.Exists(backupFile1) && Mod.Setting.AutoRestoreSettingBackupOnStartup)
+            if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
             {
-                CreateBackup(0);
-                if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
+                if (File.Exists(backupFile1))
                 {
-                    RestoreBackup(1, false);
-                    NotificationSystem.Pop("starq-smc-settings-restore",
-                            title: Mod.Name,
-                            text: $"Auto Restored settings on game startup...",
-                            onClicked: () => { },
-                            delay: 10f);
-                } else
+                    CreateBackup(0);
+                    if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
+                    {
+                        RestoreBackup(1, false);
+                        NotificationSystem.Pop("starq-smc-game-settings-restore",
+                                title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                                text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreGame]"),
+                                onClicked: () => { },
+                                delay: 10f);
+                    }
+                    else
+                    {
+                        Mod.log.Info("Nothing to restore");
+                    }
+                }
+                else
                 {
-                    Mod.log.Info("Nothing to restore");
+                    Mod.log.Info("Auto Restore failed, no Backup was found.");
                 }
             }
             else
             {
-                Mod.log.Info("Auto Restore failed, no Backup was found.");
+                Mod.log.Info("Auto Restore is disabled...");
             }
         }
 
@@ -307,6 +323,13 @@ namespace SimpleModChecker.Systems
                 0 => backupFile0,
                 1 => backupFile1,
                 2 => backupFile2,
+                3 => backupFile3,
+                4 => backupFile4,
+                5 => backupFile5,
+                6 => backupFile6,
+                7 => backupFile7,
+                8 => backupFile8,
+                9 => backupFile9,
                 _ => backupFile1,
             };
             Mod.log.Info($"Creating Backup: {Path.GetFileName(backupFile)}");
@@ -549,6 +572,13 @@ namespace SimpleModChecker.Systems
                 0 => backupFile0,
                 1 => backupFile1,
                 2 => backupFile2,
+                3 => backupFile3,
+                4 => backupFile4,
+                5 => backupFile5,
+                6 => backupFile6,
+                7 => backupFile7,
+                8 => backupFile8,
+                9 => backupFile9,
                 _ => backupFile1,
             };
             if (!File.Exists(backupFile))

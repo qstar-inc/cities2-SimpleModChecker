@@ -10,18 +10,14 @@ using System.IO;
 using System.Linq;
 using System;
 using UnityEngine;
+using Game.UI.Localization;
 
 namespace SimpleModCheckerPlus
 {
-    public partial class CIDBackupRestore : GameSystemBase
+    public partial class CIDBackupRestore(Mod mod) : GameSystemBase
     {
-        public Mod _mod;
-        public List<string> deleteables = [];
-
-        public CIDBackupRestore(Mod mod)
-        {
-            _mod = mod;
-        }
+        public Mod _mod = mod;
+        public List<string> CanDelete = [];
 
         protected override void OnCreate()
         {
@@ -39,13 +35,13 @@ namespace SimpleModCheckerPlus
                 bool toBeDeleted = LoopThroughModsSubscribed(immediateDirectory);
                 if (toBeDeleted)
                 {
-                    deleteables.Add(immediateDirectory);
+                    CanDelete.Add(immediateDirectory);
                 }
             }
-            if (deleteables.Count > 0)
+            if (CanDelete.Count > 0)
             {
                 string modList = "";
-                foreach (var modID in deleteables)
+                foreach (var modID in CanDelete)
                 {
                     if (modList == "")
                     {
@@ -56,11 +52,11 @@ namespace SimpleModCheckerPlus
                         modList += ", " + modID.Replace(rootFolderPath, "").Remove(5).ToString();
                     }
                 }
-                    Exception ex = new Exception("Missing_CID_Exception");
-                Mod.log.Error(ex, $"Found {deleteables.Count} mods with missing CID with no backup:\n{modList}\n{Mod.Name} will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically.");
+                Exception ex = new("Missing_CID_Exception");
+                Mod.log.Error(ex, $"Found {CanDelete.Count} mods with missing CID with no backup:\n{modList}\n{Mod.Name} will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically.");
                 NotificationSystem.Push("starq-smc-cid-check",
-                        title: $"{Mod.Name}: Found {deleteables.Count} mod(s) with missing CIDs",
-                        text: $"Click here to delete and restart to prevent errors...",
+                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods"),
+                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods"),
                         onClicked: () => DeleteFolders());
             }
             DateTime CIDManagerEnd = DateTime.Now;
@@ -71,7 +67,7 @@ namespace SimpleModCheckerPlus
 
         public void DeleteFolders()
         {
-            foreach (var directory in deleteables)
+            foreach (var directory in CanDelete)
             {
                 Directory.Delete(directory, true);
                 Mod.log.Info($"Deleted {directory}");

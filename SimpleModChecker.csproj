@@ -24,7 +24,7 @@
 	<Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
 
 	<ItemGroup>
-		<Reference Include="C:\Users\Qoushik\AppData\LocalLow\Colossal Order\Cities Skylines II\.cache\Mods\mods_subscribed\79634_3\AssetIconLibrary.dll" Private="False" />
+		<!-->Reference Include="C:\Users\Qoushik\AppData\LocalLow\Colossal Order\Cities Skylines II\.cache\Mods\mods_subscribed\79634_3\AssetIconLibrary.dll" Private="False" /-->
 		<Reference Include="Game">
 			<Private>false</Private>
 		</Reference>
@@ -34,6 +34,9 @@
 		<Reference Include="Colossal.Logging">
 			<Private>false</Private>
 		</Reference>
+		<Reference Include="Colossal.AssetPipeline">
+			<Private>false</Private>
+		</Reference>
 		<Reference Include="Colossal.IO.AssetDatabase">
 			<Private>false</Private>
 		</Reference>
@@ -41,6 +44,9 @@
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="Colossal.PSI.Common">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="Colossal.UI.Binding">
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="Newtonsoft.Json">
@@ -71,7 +77,7 @@
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<Reference Update="System">
 			<Private>false</Private>

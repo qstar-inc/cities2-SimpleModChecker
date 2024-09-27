@@ -1,3 +1,7 @@
+# 2.2.2 (2024-09-23) - 3342 subs
+- Support for mod settings backup/restore.
+- Currently supported mods: 529 Tiles, Anarchy, Asset Icon Library, Find It, I18n Everywhere, Plop The Growables, Simple Mod Checker Plus.
+
 # 2.2.1 (2024-09-23) - 3255 subs
 - Added a check to auto restore settings only if something changed, and changed the auto restore notification message.
 

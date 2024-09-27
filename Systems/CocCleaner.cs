@@ -11,13 +11,14 @@ using System.Text;
 using System;
 using UnityEngine;
 using SimpleModCheckerPlus;
+using Game.UI.Localization;
 
 namespace SimpleModChecker.Systems
 {
     public partial class CocCleaner(Mod mod) : GameSystemBase
     {
         public Mod _mod = mod;
-        public List<string> deleteables = [];
+        public List<string> CanDelete = [];
 
         protected override void OnCreate()
         {
@@ -29,13 +30,13 @@ namespace SimpleModChecker.Systems
         {
             string rootFolderPath = $"{EnvPath.kUserDataPath}";
 
-            LoopThroughFolders(rootFolderPath, deleteables);
+            LoopThroughFolders(rootFolderPath, CanDelete);
 
-            if (deleteables.Count > 0)
+            if (CanDelete.Count > 0)
             {
                 NotificationSystem.Push("starq-smc-coc-check",
-                        title: $"{Mod.Name}: Found {deleteables.Count} corrupted Settings file",
-                        text: $"Click here to delete and restart to prevent errors...",
+                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker"),
+                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker"),
                         onClicked: () => DeleteFolders());
             }
 
@@ -43,10 +44,10 @@ namespace SimpleModChecker.Systems
 
         public void DeleteFolders()
         {
-            foreach (var file in deleteables)
+            foreach (var file in CanDelete)
             {
                 File.Delete(file);
-                deleteables.Remove(file);
+                CanDelete.Remove(file);
                 Mod.log.Info($"Deleted {file}");
             }
             Application.Quit(0);
@@ -75,23 +76,19 @@ namespace SimpleModChecker.Systems
                     {
                         try
                         {
-                            using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
+                            using FileStream fs = new(file, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            using StreamReader reader = new(fs, Encoding.UTF8);
+                            string fileContent = reader.ReadToEnd();
+
+                            if (fileContent.Length == 0)
                             {
-                                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
-                                {
-                                    string fileContent = reader.ReadToEnd();
+                                return;
+                            }
 
-                                    if (fileContent.Length == 0)
-                                    {
-                                        return;
-                                    }
-
-                                    if (!IsLegibleText(fileContent))
-                                    {
-                                        deleteables.Add(file);
-                                        Mod.log.Info($"Scheduled for deletion: {file}");
-                                    }
-                                }
+                            if (!IsLegibleText(fileContent))
+                            {
+                                deleteables.Add(file);
+                                Mod.log.Info($"Scheduled for deletion: {file}");
                             }
                         }
                         catch (Exception ex)

@@ -9,19 +9,15 @@ using Game.SceneFlow;
 using Game;
 using System.Collections.Generic;
 using SimpleModCheckerPlus;
+using Game.UI.Localization;
 
 namespace SimpleModChecker.Systems
 {
-    public partial class ModNotification : GameSystemBase
+    public partial class ModNotification(Mod mod) : GameSystemBase
     {
-        public Mod _mod;
+        public Mod _mod = mod;
         private int count;
         public List<string> loadedMods = [];
-
-        public ModNotification(Mod mod)
-        {
-            _mod = mod;
-        }
 
         protected override void OnCreate()
         {
@@ -82,9 +78,17 @@ namespace SimpleModChecker.Systems
                 modstext += "s";
             }
 
+            string modMessageKey = count > 1
+                ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]"
+                : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]";
+
             NotificationSystem.Push("starq-smc-mod-check",
-                        title: Mod.Name,
-                        text: $"Loaded {count} {modstext}",
+                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                        text: new LocalizedString(modMessageKey, null,
+                            new Dictionary<string, ILocElement>
+                            {
+                                {"modCount", LocalizedString.Value(count.ToString())}
+                            }),
                         onClicked: () => System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log"));
         }
 
