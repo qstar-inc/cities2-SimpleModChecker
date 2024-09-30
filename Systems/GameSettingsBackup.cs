@@ -3,9 +3,10 @@
 // StarQ 2024
 
 using Colossal.PSI.Environment;
-using Game.Modding;
+using Game.PSI;
 using Game.Rendering.Utilities;
 using Game.Settings;
+using Game.UI.Localization;
 using Game;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -20,8 +21,6 @@ using static Game.Simulation.SimulationSystem;
 using System.IO;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Rendering;
-using Game.PSI;
-using Game.UI.Localization;
 
 namespace SimpleModChecker.Systems
 {
@@ -584,6 +583,7 @@ namespace SimpleModChecker.Systems
             if (!File.Exists(backupFile))
             {
                 Mod.log.Error("Trying to Restore Backup, when Backup file is not found.");
+                return;
             }
 
             Mod.log.Info("Restoring Backup");

@@ -4,14 +4,14 @@
 
 using Colossal.PSI.Environment;
 using Game.PSI;
+using Game.UI.Localization;
 using Game;
+using SimpleModCheckerPlus;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System;
 using UnityEngine;
-using SimpleModCheckerPlus;
-using Game.UI.Localization;
 
 namespace SimpleModChecker.Systems
 {
@@ -35,22 +35,30 @@ namespace SimpleModChecker.Systems
             if (CanDelete.Count > 0)
             {
                 NotificationSystem.Push("starq-smc-coc-check",
-                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker"),
-                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker"),
-                        onClicked: () => DeleteFolders());
+                        title: new LocalizedString("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]", null,
+                            new Dictionary<string, ILocElement>
+                            {
+                                {"fileCount", LocalizedString.Value(CanDelete.Count.ToString())}
+                            }),
+                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]"),
+                        onClicked: () => DeleteFolders("Click"));
             }
 
         }
 
-        public void DeleteFolders()
+        public void DeleteFolders(string Method = null)
         {
-            foreach (var file in CanDelete)
+            for (int i = CanDelete.Count - 1; i >= 0; i--)
             {
-                File.Delete(file);
-                CanDelete.Remove(file);
-                Mod.log.Info($"Deleted {file}");
+                File.Delete(CanDelete[i]);
+                Mod.log.Info($"Deleted {CanDelete[i]}");
+                CanDelete.RemoveAt(i);
             }
-            Application.Quit(0);
+
+            if (Method == "Click")
+            {
+                Application.Quit(0);
+            }
         }
 
         public static bool IsLegibleText(string text)
@@ -121,10 +129,8 @@ namespace SimpleModChecker.Systems
         {
             try
             {
-                using (FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
-                {
-                    fs.Close();
-                }
+                using FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
+                fs.Close();
             }
             catch (IOException)
             {

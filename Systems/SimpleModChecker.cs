@@ -6,18 +6,29 @@ using Colossal.PSI.Environment;
 using Colossal.Serialization.Entities;
 using Game.PSI;
 using Game.SceneFlow;
-using Game;
-using System.Collections.Generic;
-using SimpleModCheckerPlus;
 using Game.UI.Localization;
+using Game;
+using SimpleModCheckerPlus;
+using System.Collections.Generic;
 
 namespace SimpleModChecker.Systems
 {
-    public partial class ModNotification(Mod mod) : GameSystemBase
+    public partial class ModNotification : GameSystemBase
     {
-        public Mod _mod = mod;
+        public Mod _mod;
         private int count;
-        public List<string> loadedMods = [];
+        public static List<string> loadedMods = [];
+        public static string LoadedModsList { get; set; } = "";
+
+        public static LocalizedString LoadedModsListLocalized()
+        {
+            return LocalizedString.Id(LoadedModsList);
+        }
+
+        public List<string> GetLoadedMods()
+        {
+            return loadedMods;
+        }
 
         protected override void OnCreate()
         {
@@ -52,7 +63,7 @@ namespace SimpleModChecker.Systems
             foreach (var modInfo in GameManager.instance.modManager)
             {
                 string modName = modInfo.asset.name;
-                if (!loadedMods.Contains(modName))
+                if (!loadedMods.Contains(modName) && !modName.StartsWith("Colossal."))
                 {
                     loadedMods.Add(modName);
                     count += 1;
@@ -64,6 +75,13 @@ namespace SimpleModChecker.Systems
             {
                 SendNotification(count);
             }
+            loadedMods.Sort();
+            foreach (var item in loadedMods)
+            {
+                LoadedModsList += $"{item} ......................................................................................................................................................................\n";
+            }
+            string ModsLoaded = Mod.Setting.ModsLoaded + LoadedModsList;
+            ++Mod.Setting.ModsLoadedVersion;
         }
 
         public void SendNotification(int count)

@@ -2,26 +2,25 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
+using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
 using Game.Modding;
 using Game.SceneFlow;
 using Game;
-using Unity.Entities;
-using Colossal.IO.AssetDatabase;
 using SimpleModChecker.Systems;
+using Unity.Entities;
 
 namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public const string Version = "2.2.2";
+        public const string Version = "2.2.3";
         
         public static Setting Setting;
-        public ModNotification _modNotification;
-        public CIDBackupRestore _cidBackupRestore;
-        public CocCleaner _cocCleaner;
-        //public SettingsChanger _settingsChanger;
+        public ModNotification ModNotification;
+        public CIDBackupRestore CIDBackupRestore;
+        public CocCleaner CocCleaner;
 
         public static readonly string logFileName = nameof(SimpleModCheckerPlus);
         public static ILog log = LogManager.GetLogger(nameof(SimpleModCheckerPlus)).SetShowsErrorsInUI(true);
@@ -41,30 +40,29 @@ namespace SimpleModCheckerPlus
             AssetDatabase.global.LoadSettings(nameof(SimpleModCheckerPlus), Setting, new Setting(this));
             
 
-            _modNotification = new ModNotification(this);
-            _cidBackupRestore = new CIDBackupRestore(this);
-            _cocCleaner = new CocCleaner(this);
-            //_settingsChanger = new SettingsChanger(this);
-            World.DefaultGameObjectInjectionWorld.AddSystemManaged(_modNotification);
-            World.DefaultGameObjectInjectionWorld.AddSystemManaged(_cidBackupRestore);
-            //World.DefaultGameObjectInjectionWorld.AddSystemManaged(_settingsChanger);
-            World.DefaultGameObjectInjectionWorld.AddSystemManaged(_cocCleaner);
+            ModNotification = new ModNotification();
+            CIDBackupRestore = new CIDBackupRestore(this);
+            CocCleaner = new CocCleaner(this);
+            World.DefaultGameObjectInjectionWorld.AddSystemManaged(ModNotification);
+            World.DefaultGameObjectInjectionWorld.AddSystemManaged(CIDBackupRestore);
+            World.DefaultGameObjectInjectionWorld.AddSystemManaged(CocCleaner);
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<GameSettingsBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModSettingsBackup>();
         }
 
         public void OnDispose()
         {
-            if (Setting.DeleteMissing && _cidBackupRestore.CanDelete.Count > 0)
+            if (Setting.DeleteMissing && CIDBackupRestore.CanDelete.Count > 0)
             {
-                _cidBackupRestore.DeleteFolders();
+                CIDBackupRestore.DeleteFolders();
             }
 
-            if (Setting.DeleteCorrupted && _cocCleaner.CanDelete.Count > 0)
+            if (Setting.DeleteCorrupted && CocCleaner.CanDelete.Count > 0)
             {
-                _cocCleaner.DeleteFolders();
-            }            
-            
+                CocCleaner.DeleteFolders();
+            }
+
+            MakeBackupOfModsData.MakePrev();
             log.Info($"Shutting down {Name}");
         }
     }

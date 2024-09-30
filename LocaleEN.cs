@@ -3,15 +3,7 @@
 // StarQ 2024
 
 using Colossal;
-using Colossal.IO.AssetDatabase.Internal;
-using Game.Settings;
-using Game.UI.Widgets;
 using System.Collections.Generic;
-using static Colossal.AssetPipeline.Importers.ModelImporter;
-using static System.Net.Mime.MediaTypeNames;
-using static UnityEngine.Rendering.VirtualTexturing.Debugging;
-using System.Reflection;
-using System.Security.Cryptography;
 
 namespace SimpleModCheckerPlus
 {
@@ -25,11 +17,14 @@ namespace SimpleModCheckerPlus
             {
                 { m_Setting.GetSettingsLocaleID(), Mod.Name },
                 { m_Setting.GetOptionTabLocaleID(Setting.MainTab), Setting.MainTab },
+                { m_Setting.GetOptionTabLocaleID(Setting.ModListTab), Setting.ModListTab },
                 { m_Setting.GetOptionTabLocaleID(Setting.ProfileNameTab), Setting.ProfileNameTab },
                 { m_Setting.GetOptionTabLocaleID(Setting.AboutTab), Setting.AboutTab },
 
                 { m_Setting.GetOptionGroupLocaleID(Setting.OptionsGroup), Setting.OptionsGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.BackupGroup), Setting.BackupGroup },
+                { m_Setting.GetOptionGroupLocaleID(Setting.ModListGroup), Setting.ModListGroup },
+                { m_Setting.GetOptionGroupLocaleID(Setting.ProfileNameGroup), Setting.ProfileNameGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModInfo), Setting.ModInfo },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ShowNotif)), "Show Notification?" },
@@ -69,9 +64,13 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RestoreGameBackup)), "Restore Game Settings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.RestoreGameBackup)), "Restore Game Settings from the selected profile." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.CreateModBackup)), "Backup Mod Settings" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.CreateModBackup)), "Backup Mod Settings to the selected profile. \r\nCurrently supported mods: \r\n◉ 529 Tiles\r\n◉ Anarchy\r\n◉ Asset Icon Library\r\n◉ Find It\r\n◉ I18n Everywhere\r\n◉ Plop The Growables\r\n◉ Simple Mod Checker Plus\r\nOther mods are coming soon." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.CreateModBackup)), "Backup Mod Settings to the selected profile. \r\nCurrently supported mods: 529 Tiles, AdvancedSimulationSpeed, All Aboard! (Faster Boarding Mod), Anarchy, Asset Icon Library, Asset Packs Manager, Asset Variation Changer, AutoDistrictNameStations, Auto Vehicle Renamer, Better Bulldozer, BetterMoonLight, BetterSaveList, Boundary Lines Modifier, Brush Size Unlimiter, Cim Route Highlighter, City Stats, Demand Master Pro [Alpha], Depot Capacity Changer, Extended Tooltip, ExtraAssetsImporter, Find It, First Person Camera Continued, FPS Limiter, Hall of Fame, I18n EveryWhere, Image Overlay, Move It, No Pollution, No Teleporting, No Vehicle Despawn, Pathfinding Customizer, Plop the Growables, Realistic Parking Mod, Realistic Trips, Realistic Workplaces And Households, Real Life, Recolor, Road Builder [BETA], Road Name Remover, School Capacity Balancer, Simple Mod Checker Plus, SmartTransportation, Station Naming, Stiffer Vehicles, Sun Glasses, Toggle Overlays, Trading Cost Tweaker, Traffic, Traffic Lights Enhancement Alpha, Traffic Simulation Adjuster, Transit Capacity Multiplier, TransportPolicyAdjuster, Tree Controller, Trips Data, Vehicle Variation Packs, Water Features, Water Visual Tweaks, Zone Color Changer" },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RestoreModBackup)), "Restore Mod Settings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.RestoreModBackup)), "Restore Mod Settings from the selected profile." },
+
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModsLoaded)), "" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ModsLoaded)), "List of mods loaded in this session." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.NameText)), "Mod Name" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.NameText)), "" },
@@ -94,18 +93,22 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheMod4)), "" },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheMod5)), "◉ [NEW] Backup/Restore Settings: Manually backup and restore vanilla game settings and mod settings separately in 9 profiles." },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheMod5)), "" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheModX)), "(Keybinds and other mod settings are not yet supported but is on the roadmap.)" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheModX)), "(Keybinds are not yet supported but is on the roadmap. Visit the Discord Thread to suggest more mods settings to be backed up.)" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheModX)), "" },
 
                 { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]", Mod.Name },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]", "Loaded {modCount} mod." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]", "Loaded {modCount} mods." },
-                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]", $$"""{{ Mod.Name }}: Found {fileCount} corrupted Settings file""" },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]", "SMC+: Found {fileCount} corrupted Settings file" },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]", "Click here to delete and restart to prevent errors..." },
-                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods]", $$"""{{Mod.Name}}: Found {modCount} mod(s) with missing CIDs""" },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods]", "SMC+: Found {modCount} mod(s) with missing CIDs" },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods]", "Click here to delete and restart to prevent errors..." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreGame]", "Auto Restored game settings on game startup..." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreMods]", "Auto Restored mod settings on game startup..." },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeBackup]", $"{Mod.Name} is updated." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeBackup]", "Click here to recreate your Profile 1 (Mod) again..." },
+
+                //{ "Menu.ERROR[SimpleModCheckerPlus.Missing_CID_Exception]", "Found {modCount} mods with missing CID with no backup:\r\n{modList}\r\nSMC+ will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically." },
             };
         }
 

@@ -3,460 +3,30 @@
 // StarQ 2024
 
 using Colossal.IO.AssetDatabase;
+using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Colossal.Serialization.Entities;
 using Game.Modding;
+using Game.PSI;
+using Game.UI.Localization;
 using Game;
+using Mod = SimpleModCheckerPlus.Mod;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using SimpleModCheckerPlus;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System;
-using Game.PSI;
-using Game.UI.Localization;
 
 namespace SimpleModChecker.Systems
 {
-
-    public interface ISettingsBackup
-    {
-        void SetValue(string property, object value);
-        object GetValue(string property);
-    }
-
-    public class SettingsBackup : ISettingsBackup
-    {
-        private Dictionary<string, object> settings = [];
-
-        public void SetValue(string property, object value)
-        {
-            settings[property] = value;
-        }
-
-        public object GetValue(string property)
-        {
-            return settings.ContainsKey(property) ? settings[property] : null;
-        }
-    }
-    //public class KeybindsModifier
-    //{
-    //    public string Name { get; set; }
-    //    public string Path { get; set; }
-    //}
-    //public class Keybinds
-    //{
-    //    public string Path { get; set; }
-    //    public List<KeybindsModifier> Modifiers { get; set; }
-    //}
-
-    public class AnarchySettings : SettingsBackup
-    {
-        public bool AnarchicBulldozer
-        {
-            get => (bool)GetValue(nameof(AnarchicBulldozer));
-            set => SetValue(nameof(AnarchicBulldozer), value);
-        }
-        public bool ShowTooltip
-        {
-            get => (bool)GetValue(nameof(ShowTooltip));
-            set => SetValue(nameof(ShowTooltip), value);
-        }
-        public bool FlamingChirper
-        {
-            get => (bool)GetValue(nameof(FlamingChirper));
-            set => SetValue(nameof(FlamingChirper), value);
-        }
-        public bool ToolIcon
-        {
-            get => (bool)GetValue(nameof(ToolIcon));
-            set => SetValue(nameof(ToolIcon), value);
-        }
-        public bool ShowElevationToolOption
-        {
-            get => (bool)GetValue(nameof(ShowElevationToolOption));
-            set => SetValue(nameof(ShowElevationToolOption), value);
-        }
-        public bool ResetElevationWhenChangingPrefab
-        {
-            get => (bool)GetValue(nameof(ResetElevationWhenChangingPrefab));
-            set => SetValue(nameof(ResetElevationWhenChangingPrefab), value);
-        }
-        public bool DisableAnarchyWhileBrushing
-        {
-            get => (bool)GetValue(nameof(DisableAnarchyWhileBrushing));
-            set => SetValue(nameof(DisableAnarchyWhileBrushing), value);
-        }
-        public bool NetworkAnarchyToolOptions
-        {
-            get => (bool)GetValue(nameof(NetworkAnarchyToolOptions));
-            set => SetValue(nameof(NetworkAnarchyToolOptions), value);
-        }
-        public bool NetworkUpgradesToolOptions
-        {
-            get => (bool)GetValue(nameof(NetworkUpgradesToolOptions));
-            set => SetValue(nameof(NetworkUpgradesToolOptions), value);
-        }
-        public bool ElevationStepSlider
-        {
-            get => (bool)GetValue(nameof(ElevationStepSlider));
-            set => SetValue(nameof(ElevationStepSlider), value);
-        }
-        public bool NetworkUpgradesPrefabs
-        {
-            get => (bool)GetValue(nameof(NetworkUpgradesPrefabs));
-            set => SetValue(nameof(NetworkUpgradesPrefabs), value);
-        }
-        public bool ReplaceUpgradesBehavior
-        {
-            get => (bool)GetValue(nameof(ReplaceUpgradesBehavior));
-            set => SetValue(nameof(ReplaceUpgradesBehavior), value);
-        }
-        public float MinimumClearanceBelowElevatedNetworks
-        {
-            get => (float)GetValue(nameof(MinimumClearanceBelowElevatedNetworks));
-            set => SetValue(nameof(MinimumClearanceBelowElevatedNetworks), value);
-        }
-        public bool PreventAccidentalPropCulling
-        {
-            get => (bool)GetValue(nameof(PreventAccidentalPropCulling));
-            set => SetValue(nameof(PreventAccidentalPropCulling), value);
-        }
-        public int PropRefreshFrequency
-        {
-            get => (int)GetValue(nameof(PropRefreshFrequency));
-            set => SetValue(nameof(PropRefreshFrequency), value);
-        }
-        //public string ApplyMimic
-        //{
-        //    get
-        //    {
-        //        var applyMimicObj = GetValue(nameof(ApplyMimic));
-        //        if (applyMimicObj is ProxyBinding applyMimic)
-        //        {
-        //            return JsonConvert.SerializeObject(applyMimic, new JsonSerializerSettings
-        //            {
-        //                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        //            });
-        //        }
-        //        else
-        //        {
-        //            throw new InvalidCastException($"The value returned by GetValue is not of type ProxyBinding, it is of type {applyMimicObj?.GetType().Name ?? "null"}.");
-        //        }
-        //    }
-        //    set
-        //    {
-        //        ProxyBinding applyMimic = JsonConvert.DeserializeObject<ProxyBinding>(value);
-        //        SetValue(nameof(ApplyMimic), applyMimic);
-        //    }
-        //}
-        //public ProxyBinding SecondaryApplyMimic
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(SecondaryApplyMimic));
-        //    set => SetValue(nameof(SecondaryApplyMimic), value);
-        //}
-        public bool AllowPlacingMultipleUniqueBuildings
-        {
-            get => (bool)GetValue(nameof(AllowPlacingMultipleUniqueBuildings));
-            set => SetValue(nameof(AllowPlacingMultipleUniqueBuildings), value);
-        }
-        public bool PreventOverrideInEditor
-        {
-            get => (bool)GetValue(nameof(PreventOverrideInEditor));
-            set => SetValue(nameof(PreventOverrideInEditor), value);
-        }
-        //public ProxyBinding ToggleAnarchy
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(ToggleAnarchy));
-        //    set => SetValue(nameof(ToggleAnarchy), value);
-        //}
-        //public ProxyBinding ResetElevation
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(ResetElevation));
-        //    set => SetValue(nameof(ResetElevation), value);
-        //}
-        //public ProxyBinding ElevationStep
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(ElevationStep));
-        //    set => SetValue(nameof(ElevationStep), value);
-        //}
-        //public ProxyBinding IncreaseElevation
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(IncreaseElevation));
-        //    set => SetValue(nameof(IncreaseElevation), value);
-        //}
-        //public ProxyBinding DecreaseElevation
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(DecreaseElevation));
-        //    set => SetValue(nameof(DecreaseElevation), value);
-        //}
-        public bool ElevationLock
-        {
-            get => (bool)GetValue(nameof(ElevationLock));
-            set => SetValue(nameof(ElevationLock), value);
-        }
-    }
-
-    public class AssetIconLibrarySettings : SettingsBackup
-    {
-        public bool OverwriteIcons
-        {
-            get => (bool)GetValue(nameof(OverwriteIcons));
-            set => SetValue(nameof(OverwriteIcons), value);
-        }
-    }
-
-    public class FindItSettings : SettingsBackup
-    {
-        public string DefaultViewStyle
-        {
-            get => (string)GetValue(nameof(DefaultViewStyle));
-            set => SetValue(nameof(DefaultViewStyle), value);
-        }
-        public bool OpenPanelOnPicker
-        {
-            get => (bool)GetValue(nameof(OpenPanelOnPicker));
-            set => SetValue(nameof(OpenPanelOnPicker), value);
-        }
-        public bool SelectPrefabOnOpen
-        {
-            get => (bool)GetValue(nameof(SelectPrefabOnOpen));
-            set => SetValue(nameof(SelectPrefabOnOpen), value);
-        }
-        public bool StrictSearch
-        {
-            get => (bool)GetValue(nameof(StrictSearch));
-            set => SetValue(nameof(StrictSearch), value);
-        }
-        public bool HideRandomAssets
-        {
-            get => (bool)GetValue(nameof(HideRandomAssets));
-            set => SetValue(nameof(HideRandomAssets), value);
-        }
-        public bool HideBrandsFromAny
-        {
-            get => (bool)GetValue(nameof(HideBrandsFromAny));
-            set => SetValue(nameof(HideBrandsFromAny), value);
-        }
-        public bool SmoothScroll
-        {
-            get => (bool)GetValue(nameof(SmoothScroll));
-            set => SetValue(nameof(SmoothScroll), value);
-        }
-        public float ScrollSpeed
-        {
-            get => (float)GetValue(nameof(ScrollSpeed));
-            set => SetValue(nameof(ScrollSpeed), value);
-        }
-        public float RowSize
-        {
-            get => (float)GetValue(nameof(RowSize));
-            set => SetValue(nameof(RowSize), value);
-        }
-        public float ColumnSize
-        {
-            get => (float)GetValue(nameof(ColumnSize));
-            set => SetValue(nameof(ColumnSize), value);
-        }
-        public float ExpandedRowSize
-        {
-            get => (float)GetValue(nameof(ExpandedRowSize));
-            set => SetValue(nameof(ExpandedRowSize), value);
-        }
-        public float ExpandedColumnSize
-        {
-            get => (float)GetValue(nameof(ExpandedColumnSize));
-            set => SetValue(nameof(ExpandedColumnSize), value);
-        }
-    }
-
-    public class FiveTwentyNineTilesSettings : SettingsBackup
-    {
-        public bool UnlockAll
-        {
-            get => (bool)GetValue(nameof(UnlockAll));
-            set => SetValue(nameof(UnlockAll), value);
-        }
-        public bool ExtraTilesAtStart
-        {
-            get => (bool)GetValue(nameof(ExtraTilesAtStart));
-            set => SetValue(nameof(ExtraTilesAtStart), value);
-        }
-        public bool ExtraTilesAtEnd
-        {
-            get => (bool)GetValue(nameof(ExtraTilesAtEnd));
-            set => SetValue(nameof(ExtraTilesAtEnd), value);
-        }
-        public bool AssignToMilestones
-        {
-            get => (bool)GetValue(nameof(AssignToMilestones));
-            set => SetValue(nameof(AssignToMilestones), value);
-        }
-        public float UpkeepMultiplier
-        {
-            get => (float)GetValue(nameof(UpkeepMultiplier));
-            set => SetValue(nameof(UpkeepMultiplier), value);
-        }
-        public bool NoStartingTiles
-        {
-            get => (bool)GetValue(nameof(NoStartingTiles));
-            set => SetValue(nameof(NoStartingTiles), value);
-        }
-        public bool RelockAllTiles
-        {
-            get => (bool)GetValue(nameof(RelockAllTiles));
-            set => SetValue(nameof(RelockAllTiles), value);
-        }
-    }
-
-    public class I18NEverywhereSettings : SettingsBackup
-    {
-        public bool Overwrite
-        {
-            get => (bool)GetValue(nameof(Overwrite));
-            set => SetValue(nameof(Overwrite), value);
-        }
-        public bool Restrict
-        {
-            get => (bool)GetValue(nameof(Restrict));
-            set => SetValue(nameof(Restrict), value);
-        }
-        public bool LoadLanguagePacks
-        {
-            get => (bool)GetValue(nameof(LoadLanguagePacks));
-            set => SetValue(nameof(LoadLanguagePacks), value);
-        }
-        public bool LogKey
-        {
-            get => (bool)GetValue(nameof(LogKey));
-            set => SetValue(nameof(LogKey), value);
-        }
-        public bool UseNewModDetectMethod
-        {
-            get => (bool)GetValue(nameof(UseNewModDetectMethod));
-            set => SetValue(nameof(UseNewModDetectMethod), value);
-        }
-    }
-
-    public class PlopTheGrowablesSettings: SettingsBackup
-    {
-        public bool LockPloppedBuildings
-        {
-            get => (bool)GetValue(nameof(LockPloppedBuildings));
-            set => SetValue(nameof(LockPloppedBuildings), value);
-        }
-        public bool NoAbandonment
-        {
-            get => (bool)GetValue(nameof(NoAbandonment));
-            set => SetValue(nameof(NoAbandonment), value);
-        }
-        public bool DisableLevelling
-        {
-            get => (bool)GetValue(nameof(DisableLevelling));
-            set => SetValue(nameof(DisableLevelling), value);
-        }
-
-    }
-
-    public class SimpleModCheckerSettings : SettingsBackup
-    {
-        public bool ShowNotif
-        {
-            get => (bool)GetValue(nameof(ShowNotif));
-            set => SetValue(nameof(ShowNotif), value);
-        }
-        public bool DeleteMissing
-        {
-            get => (bool)GetValue(nameof(DeleteMissing));
-            set => SetValue(nameof(DeleteMissing), value);
-        }
-        public bool DeleteCorrupted
-        {
-            get => (bool)GetValue(nameof(DeleteCorrupted));
-            set => SetValue(nameof(DeleteCorrupted), value);
-        }
-        public bool AutoRestoreSettingBackupOnStartup
-        {
-            get => (bool)GetValue(nameof(AutoRestoreSettingBackupOnStartup));
-            set => SetValue(nameof(AutoRestoreSettingBackupOnStartup), value);
-        }
-
-        public string ProfileName0
-        {
-            get => (string)GetValue(nameof(ProfileName0));
-            set => SetValue(nameof(ProfileName0), value);
-        }
-        public string ProfileName1
-        {
-            get => (string)GetValue(nameof(ProfileName1));
-            set => SetValue(nameof(ProfileName1), value);
-        }
-        public string ProfileName2
-        {
-            get => (string)GetValue(nameof(ProfileName2));
-            set => SetValue(nameof(ProfileName2), value);
-        }
-        public string ProfileName3
-        {
-            get => (string)GetValue(nameof(ProfileName3));
-            set => SetValue(nameof(ProfileName3), value);
-        }
-        public string ProfileName4
-        {
-            get => (string)GetValue(nameof(ProfileName4));
-            set => SetValue(nameof(ProfileName4), value);
-        }
-        public string ProfileName5
-        {
-            get => (string)GetValue(nameof(ProfileName5));
-            set => SetValue(nameof(ProfileName5), value);
-        }
-        public string ProfileName6
-        {
-            get => (string)GetValue(nameof(ProfileName6));
-            set => SetValue(nameof(ProfileName6), value);
-        }
-        public string ProfileName7
-        {
-            get => (string)GetValue(nameof(ProfileName7));
-            set => SetValue(nameof(ProfileName7), value);
-        }
-        public string ProfileName8
-        {
-            get => (string)GetValue(nameof(ProfileName8));
-            set => SetValue(nameof(ProfileName8), value);
-        }
-        public string ProfileName9
-        {
-            get => (string)GetValue(nameof(ProfileName9));
-            set => SetValue(nameof(ProfileName9), value);
-        }
-    }
-
-    public class ModSettings
-    {
-        public AnarchySettings AnarchySettings { get; set; }
-        public AssetIconLibrarySettings AssetIconLibrarySettings { get; set; }
-        public FindItSettings FindItSettings { get; set; }
-        public FiveTwentyNineTilesSettings FiveTwentyNineTilesSettings { get; set; }
-        public I18NEverywhereSettings I18NEverywhereSettings { get; set; }
-        public PlopTheGrowablesSettings PlopTheGrowablesSettings { get; set; }
-        public SimpleModCheckerSettings SimpleModCheckerSettings { get; set; }
-    }
-
-    public class SettingInfo
-    {
-        public string SettingName { get; set; }
-        public string FragmentSource { get; set; }
-        public Type ClassType { get; set; }
-    }
-
     public partial class ModSettingsBackup : GameSystemBase
     {
-        public Mod _mod;
-        public static ModManager modManager = Mod.modManager;
+        public SimpleModCheckerPlus.Mod _mod;
+        public static ModNotification SMC = new();
+        private readonly List<string> loadedMods = SMC.GetLoadedMods();
+        public static ModManager modManager;
         private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ModSettingsBackup_prev.json";
         private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ModSettingsBackup_1.json";
         private readonly string backupFile2 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ModSettingsBackup_2.json";
@@ -470,21 +40,64 @@ namespace SimpleModChecker.Systems
 
         private static readonly Dictionary<string, SettingInfo> settingsDictionary = new()
         {
-            { "529Tile", new SettingInfo { SettingName = "529TileSettings", FragmentSource = "FiveTwentyNineTiles.ModSettings", ClassType = typeof(FiveTwentyNineTilesSettings) } },
-            { "Anarchy", new SettingInfo { SettingName = "AnarchySettings", FragmentSource = "Anarchy.Settings.AnarchyModSettings", ClassType = typeof(AnarchySettings) } },
-            { "AssetIconLibrary", new SettingInfo { SettingName = "AssetIconLibrarySettings", FragmentSource = "AssetIconLibrary.Setting", ClassType = typeof(AssetIconLibrarySettings) } },
-            // AssetPacksManager
-            // BetterBulldozerMod
-            // CitizenChanger
-            { "FindIt", new SettingInfo { SettingName = "FindItSettings", FragmentSource = "FindIt.FindItSettings", ClassType = typeof(FindItSettings) } },
-            { "I18NEverywhere", new SettingInfo { SettingName = "I18NEverywhereSettings", FragmentSource = "I18NEverywhere.Setting", ClassType = typeof(I18NEverywhereSettings) } },
-            // I18NEverywhere
-            // ImageOverlaySettings - ImageOverlay.ModSettings
-            // [NULL] Line Tool
-            // MoveIt
-            { "PlopTheGrowables", new SettingInfo {SettingName = "PlopTheGrowablesSettings", FragmentSource = "PlopTheGrowables.ModSettings", ClassType = typeof(PlopTheGrowablesSettings)} },
-            // RoadBuilder
-            { "SimpleModChecker", new SettingInfo { SettingName = "SimpleModCheckerSettings", FragmentSource = "SimpleModCheckerPlus.Setting", ClassType = typeof(SimpleModCheckerSettings) } }
+            { "529Tile", new SettingInfo { AssemblyName = "FiveTwentyNineTiles", FragmentSource = "FiveTwentyNineTiles.ModSettings", ClassType = typeof(FiveTwentyNineTilesSettings)} },
+            { "AdvancedSimulationSpeed", new SettingInfo { AssemblyName = "AdvancedSimulationSpeed", FragmentSource = "AdvancedSimulationSpeed.Setting", ClassType = typeof(AdvancedSimulationSpeedSettings)} },
+            { "AllAboard", new SettingInfo { AssemblyName = "AllAboard", FragmentSource = "AllAboard.Setting", ClassType = typeof(AllAboardSettings)} },
+            { "Anarchy", new SettingInfo { AssemblyName = "Anarchy", FragmentSource = "Anarchy.Settings.AnarchyModSettings", ClassType = typeof(AnarchySettings)} },
+            { "AssetIconLibrary", new SettingInfo { AssemblyName = "AssetIconLibrary", FragmentSource = "AssetIconLibrary.Setting", ClassType = typeof(AssetIconLibrarySettings)} },
+            { "AssetPacksManager", new SettingInfo { AssemblyName = "AssetPacksManager", FragmentSource = "AssetPacksManager.Setting", ClassType = typeof(AssetPacksManagerSettings)} },
+            { "AssetVariationChanger", new SettingInfo { AssemblyName = "AssetVariationChanger", FragmentSource = "AssetVariationChanger.Setting", ClassType = typeof(AssetVariationChangerSettings)} },
+            { "AutoDistrictNameStations", new SettingInfo { AssemblyName = "AutoDistrictNameStations", FragmentSource = "AutoDistrictNameStations.ModOptions", ClassType = typeof(AutoDistrictNameStationsSettings)} },
+            { "AutoVehicleRenamer", new SettingInfo { AssemblyName = "AutoVehicleRenamer", FragmentSource = "AutoVehicleRenamer.AutoVehicleRenamerSetting", ClassType = typeof(AutoVehicleRenamerSettings)} },
+            { "BetterBulldozer", new SettingInfo { AssemblyName = "BetterBulldozer", FragmentSource = "Better_Bulldozer.Settings.BetterBulldozerModSettings", ClassType = typeof(BetterBulldozerSettings)} },
+            { "BetterMoonLight", new SettingInfo { AssemblyName = "BetterMoonLight", FragmentSource = "BetterMoonLight.Setting", ClassType = typeof(BetterMoonLightSettings)} },
+            { "BetterSaveList", new SettingInfo { AssemblyName = "BetterSaveList", FragmentSource = "BetterSaveList.Setting", ClassType = typeof(BetterSaveListSettings)} },
+            { "BoundaryLinesModifier", new SettingInfo { AssemblyName = "BoundaryLinesModifier", FragmentSource = "BoundaryLinesModifier.Setting", ClassType = typeof(BoundaryLinesModifierSettings)} },
+            { "BrushSizeUnlimiter", new SettingInfo { AssemblyName = "BrushSizeUnlimiter", FragmentSource = "BrushSizeUnlimiter.MyOptions", ClassType = typeof(BrushSizeUnlimiterSettings)} },
+            { "CimRouteHighlighter", new SettingInfo { AssemblyName = "EmploymentTracker", FragmentSource = "EmploymentTracker.EmploymentTrackerSettings", ClassType = typeof(CimRouteHighlighterSettings)} },
+            { "CityStats", new SettingInfo { AssemblyName = "CityStats", FragmentSource = "CityStats.ModSettings", ClassType = typeof(CityStatsSettings)} },
+            { "DemandMaster", new SettingInfo { AssemblyName = "DemandMaster", FragmentSource = "DemandMaster.Setting", ClassType = typeof(DemandMasterSettings)} },
+            { "DepotCapacityChanger", new SettingInfo { AssemblyName = "DepotCapacityChanger", FragmentSource = "DepotCapacityChanger.Setting", ClassType = typeof(DepotCapacityChangerSettings)} },
+            { "ExtendedTooltip", new SettingInfo { AssemblyName = "ExtendedTooltip", FragmentSource = "ExtendedTooltip.ModSettings", ClassType = typeof(ExtendedTooltipSettings)} },
+            { "ExtraAssetsImporter", new SettingInfo { AssemblyName = "ExtraAssetsImporter", FragmentSource = "ExtraAssetsImporter.Setting", ClassType = typeof(ExtraAssetsImporterSettings)} },
+            { "FindIt", new SettingInfo { AssemblyName = "FindIt", FragmentSource = "FindIt.FindItSettings", ClassType = typeof(FindItSettings)} },
+            { "FirstPersonCameraContinued", new SettingInfo { AssemblyName = "FirstPersonCameraContinued", FragmentSource = "FirstPersonCameraContinued.Setting", ClassType = typeof(FirstPersonCameraContinuedSettings)} },
+            { "FPSLimiter", new SettingInfo { AssemblyName = "FPS_Limiter", FragmentSource = "FPS_Limiter.FPSLimiterSettings", ClassType = typeof(FPSLimiterSettings)} },
+            { "HallOfFame", new SettingInfo { AssemblyName = "HallOfFame", FragmentSource = "HallOfFame.Settings", ClassType = typeof(HallOfFameSettings)} },
+            { "I18NEverywhere", new SettingInfo { AssemblyName = "I18NEverywhere", FragmentSource = "I18NEverywhere.Setting", ClassType = typeof(I18NEverywhereSettings)} },
+            { "ImageOverlay", new SettingInfo { AssemblyName = "Image   Overlay", FragmentSource = "ImageOverlay.ModSettings", ClassType = typeof(ImageOverlaySettings)} },
+            { "MoveIt", new SettingInfo { AssemblyName = "MoveIt", FragmentSource = "MoveIt.Settings.Settings", ClassType = typeof(MoveItSettings)} },
+            { "NoPollution", new SettingInfo { AssemblyName = "NoPollution", FragmentSource = "NoPollution.Setting", ClassType = typeof(NoPollutionSettings)} },
+            { "NoTeleporting", new SettingInfo { AssemblyName = "NoTeleporting", FragmentSource = "NoTeleporting.Setting", ClassType = typeof(NoTeleportingSettings)} },
+            { "NoVehicleDespawn", new SettingInfo { AssemblyName = "NoTrafficDespawn", FragmentSource = "NoTrafficDespawn.TrafficDespawnSettings", ClassType = typeof(NoVehicleDespawnSettings)} },
+            { "PathfindingCustomizer", new SettingInfo { AssemblyName = "PathfindingCustomizer", FragmentSource = "PathfindingCustomizer.Setting", ClassType = typeof(PathfindingCustomizerSettings)} },
+            { "PlopTheGrowables", new SettingInfo { AssemblyName = "PlopTheGrowables", FragmentSource = "PlopTheGrowables.ModSettings", ClassType = typeof(PlopTheGrowablesSettings)} },
+            { "RealisticParking", new SettingInfo { AssemblyName = "RealisticParking", FragmentSource = "RealisticParking.Setting", ClassType = typeof(RealisticParkingSettings)} },
+            { "RealisticTrips", new SettingInfo { AssemblyName = "Time2Work", FragmentSource = "Time2Work.Setting", ClassType = typeof(RealisticTripsSettings)} },
+            { "RealisticWorkplacesAndHouseholds", new SettingInfo { AssemblyName = "RWH", FragmentSource = "RealisticWorkplacesAndHouseholds.Setting", ClassType = typeof(RealisticWorkplacesAndHouseholdsSettings)} },
+            { "RealLife", new SettingInfo { AssemblyName = "RealLife", FragmentSource = "RealLife.Setting", ClassType = typeof(RealLifeSettings)} },
+            { "Recolor", new SettingInfo { AssemblyName = "Recolor", FragmentSource = "Recolor.Settings.Setting", ClassType = typeof(RecolorSettings)} },
+            { "RoadBuilder", new SettingInfo { AssemblyName = "RoadBuilder", FragmentSource = "RoadBuilder.Setting", ClassType = typeof(RoadBuilderSettings)} },
+            { "RoadNameRemover", new SettingInfo { AssemblyName = "RoadNameRemover", FragmentSource = "RoadNameRemover.Setting", ClassType = typeof(RoadNameRemoverSettings)} },
+            { "SchoolCapacityBalancer", new SettingInfo { AssemblyName = "SchoolCapacityBalancer", FragmentSource = "SchoolCapacityBalancer.Setting", ClassType = typeof(SchoolCapacityBalancerSettings)} },
+            { "SimpleModChecker", new SettingInfo { AssemblyName = "SimpleModChecker", FragmentSource = "SimpleModCheckerPlus.Setting", ClassType = typeof(SimpleModCheckerSettings)} },
+            { "SmartTransportation", new SettingInfo { AssemblyName = "SmartTransportation", FragmentSource = "SmartTransportation.Setting", ClassType = typeof(SmartTransportationSettings)} },
+            { "StationNaming", new SettingInfo { AssemblyName = "StationNaming", FragmentSource = "StationNaming.Setting.StationNamingSettings", ClassType = typeof(StationNamingSettings)} },
+            { "StifferVehicles", new SettingInfo { AssemblyName = "StifferVehicles", FragmentSource = "StifferVehicles.Setting", ClassType = typeof(StifferVehiclesSettings)} },
+            { "SunGlasses", new SettingInfo { AssemblyName = "SunGlasses", FragmentSource = "SunGlasses.Setting", ClassType = typeof(SunGlassesSettings)} },
+            { "ToggleOverlays", new SettingInfo { AssemblyName = "ToggleableOverlays", FragmentSource = "ToggleableOverlays.Setting", ClassType = typeof(ToggleOverlaysSettings)} },
+            { "TradingCostTweaker", new SettingInfo { AssemblyName = "TradingCostTweaker", FragmentSource = "TradingCostTweaker.Setting", ClassType = typeof(TradingCostTweakerSettings)} },
+            { "Traffic", new SettingInfo { AssemblyName = "Traffic", FragmentSource = "Traffic.ModSettings", ClassType = typeof(TrafficSettings)} },
+            { "TrafficLightsEnhancement", new SettingInfo { AssemblyName = "C2VM.TrafficLightsEnhancement", FragmentSource = "C2VM.TrafficLightsEnhancement.Settings", ClassType = typeof(TrafficLightsEnhancementSettings)} },
+            { "TrafficSimulationAdjuster", new SettingInfo { AssemblyName = "TrafficSimulationAdjuster", FragmentSource = "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions", ClassType = typeof(TrafficSimulationAdjusterSettings)} },
+            { "TransitCapacityMultiplier", new SettingInfo { AssemblyName = "TransitCapacityMultiplier", FragmentSource = "TransitCapacityMultiplier.Setting", ClassType = typeof(TransitCapacityMultiplierSettings)} },
+            { "TransportPolicyAdjuster", new SettingInfo { AssemblyName = "TransportPolicyAdjuster", FragmentSource = "TransportPolicyAdjuster.Setting", ClassType = typeof(TransportPolicyAdjusterSettings)} },
+            { "TreeController", new SettingInfo { AssemblyName = "Tree_Controller", FragmentSource = "Tree_Controller.Settings.TreeControllerSettings", ClassType = typeof(TreeControllerSettings)} },
+            { "TripsData", new SettingInfo { AssemblyName = "TripsData", FragmentSource = "TripsData.Setting", ClassType = typeof(TripsDataSettings)} },
+            { "VehicleVariationPacks", new SettingInfo { AssemblyName = "VehicleVariationPacks", FragmentSource = "VehicleVariationPacks.Setting", ClassType = typeof(VehicleVariationPacksSettings)} },
+            { "WaterFeatures", new SettingInfo { AssemblyName = "Water_Features", FragmentSource = "Water_Features.Settings.WaterFeaturesSettings", ClassType = typeof(WaterFeaturesSettings)} },
+            { "WaterVisualTweaks", new SettingInfo { AssemblyName = "WaterVisualTweaks", FragmentSource = "WaterVisualTweaksMod.WaterVisualTweaksSettings", ClassType = typeof(WaterVisualTweaksSettings)} },
+            { "ZoneColorChanger", new SettingInfo { AssemblyName = "ZoneColorChanger", FragmentSource = "ZoneColorChanger.Setting", ClassType = typeof(ZoneColorChangerSettings)} },
         };
 
         protected override void OnCreate()
@@ -496,14 +109,38 @@ namespace SimpleModChecker.Systems
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
         {
             base.OnGameLoadingComplete(purpose, mode);
-            Mod.log.Info("OnGameLoadingComplete");
+            //Mod.log.Info("OnGameLoadingComplete");
             if (!AutoRestoreDone && mode == GameMode.MainMenu)
             {
-
                 if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
                 {
                     if (File.Exists(backupFile1))
                     {
+                        string currentModVersion = Mod.Version;
+                        string jsonStringRead = File.ReadAllText(backupFile1);
+                        if (jsonStringRead != null && jsonStringRead != "")
+                        {
+                            try
+                            {
+                                JObject jsonObject = JObject.Parse(jsonStringRead);
+                                if (jsonObject != null)
+                                {
+                                    if (!jsonObject.TryGetValue("ModVersion", out JToken BackupModVersion) || BackupModVersion == null)
+                                    {
+                                        SendModUpdateNotification(currentModVersion, "null");
+                                    }
+                                    else
+                                    {
+                                        if (BackupModVersion.ToString() != currentModVersion)
+                                        {
+                                            SendModUpdateNotification(currentModVersion, BackupModVersion.ToString());
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex) { Mod.log.Info(ex); }
+                        }
+                            
                         CreateBackup(0);
                         if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
                         {
@@ -537,6 +174,16 @@ namespace SimpleModChecker.Systems
 
         }
 
+        private void SendModUpdateNotification(string current, string prev)
+        {
+            Mod.log.Info($"Mod version mismatch. Current: {current}, Backup: {prev}");
+            NotificationSystem.Push("starq-smc-mod-settings-update",
+                title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeBackup]"),
+                text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeBackup]"),
+                progressState: ProgressState.Warning,
+                onClicked: () => { NotificationSystem.Pop("starq-smc-mod-settings-update", delay: 1f); CreateBackup(1); });
+        }
+
         public void CreateBackup(int profile)
         {
             string backupFile = profile switch
@@ -562,139 +209,197 @@ namespace SimpleModChecker.Systems
 
             ModSettings ModSettings = new();
 
-            //ModSettings.AnarchySettings = BackupSection<AnarchySettings>("Anarchy", backupFile, "AnarchySettings");
-            //ModSettings.AssetIconLibrarySettings = BackupSection<AssetIconLibrarySettings>("AssetIconLibrary", backupFile, "AssetIconLibrarySettings");
-            //ModSettings.FindItSettings = BackupSection<FindItSettings>("FindIt", backupFile, "FindItSettings");
-            //ModSettings.FiveTwentyNineTilesSettings = BackupSection<FiveTwentyNineTilesSettings>("529TileSettings", backupFile, "FiveTwentyNineTilesSettings");
-            //ModSettings.PlopTheGrowablesSettings = BackupSection<PlopTheGrowablesSettings>("PlopTheGrowables", backupFile, "PlopTheGrowablesSettings");
-            //ModSettings.SimpleModCheckerSettings = BackupSection<SimpleModCheckerSettings>("SimpleModChecker", backupFile, "SimpleModCheckerSettings");
+            ModSettings.ModVersion = Mod.Version;
+            ModSettings.LastUpdated = DateTime.Now.ToLongDateString();
 
             foreach (var entry in settingsDictionary)
             {
-                string sectionName = entry.Key;
-                Type classType = entry.Value.ClassType;
-
-
-                MethodInfo backupSectionMethod = typeof(ModSettingsBackup).GetMethod("BackupSection", BindingFlags.NonPublic | BindingFlags.Instance);
-                MethodInfo genericBackupSectionMethod = backupSectionMethod.MakeGenericMethod(classType);
-                object sectionSettings;
-                if (profile == 0)
-                {
-                    sectionSettings = genericBackupSectionMethod.Invoke(this, [sectionName, backupFile1, entry.Value.ClassType.Name]);
-                }
-                else
-                {
-                    sectionSettings = genericBackupSectionMethod.Invoke(this, [sectionName, backupFile, entry.Value.ClassType.Name]);
-                }
-                
-                //Mod.log.Info($"{classType.Name}");
                 try
                 {
+                    string sectionName = entry.Key;
+                    string fragmentSource = entry.Value.FragmentSource;
+                    Type classType = entry.Value.ClassType;
+                    string assembly = entry.Value.AssemblyName;
+
+                    //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
+                    if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
+                    if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
+
                     PropertyInfo property = typeof(ModSettings).GetProperty($"{entry.Value.ClassType.Name}");
-                    property?.SetValue(ModSettings, sectionSettings);
-                }
-                catch (Exception ex)
-                {
-                    Mod.log.Info($"Error setting property; {ex}");
-                }
-            }
-            //foreach (var setting in settingsDictionary)
-            //{
-            //    var sectionSettings = BackupSection(setting.Value.ClassType, setting.Key, backupFile, setting.Value.SettingName);
-            //    ModSettings.GetType().GetProperty(setting.Value.SettingName)?.SetValue(ModSettings, sectionSettings);
-            //}
-
-            string jsonString = JsonConvert.SerializeObject(ModSettings, Formatting.Indented);
-            File.WriteAllText(backupFile, jsonString);
-
-        }
-
-        private protected T BackupSection<T>(string sectionName, string backupFile, string jsonPropertyName) where T : ISettingsBackup, new()
-        {
-            T sectionSettings = new();
-            bool sectionFound = GetSettings(sectionName, sectionSettings);
-
-            if (!sectionFound)
-            {
-                Mod.log.Info($"{sectionName}Settings not found, looking for existing settings.");
-                try
-                {
-                    string jsonStringRead = File.ReadAllText(backupFile);
-
-                    JObject jsonObject = JObject.Parse(jsonStringRead);
-                    if (jsonObject[jsonPropertyName] != null)
+                    object sectionSettings;// = Activator.CreateInstance(classType);
+                    sectionSettings = default;
+                    if (!loadedMods.Contains(assembly))
                     {
-                        Mod.log.Debug($"Existing {sectionName}Settings found.");
-                        sectionSettings = jsonObject[jsonPropertyName].ToObject<T>();
+                        if (File.Exists(backupFile))
+                        {
+                            string jsonStringRead = File.ReadAllText(backupFile);
+                            if (jsonStringRead != null && jsonStringRead != "")
+                            {
+                                try
+                                {
+                                    JObject jsonObject = JObject.Parse(jsonStringRead);
+
+                                    if (jsonObject[classType.Name] != null)
+                                    {
+                                        //Mod.log.Info($"Existing {sectionName}Settings found.");
+                                        sectionSettings = jsonObject[entry.Value.ClassType.Name].ToObject(classType);
+                                    }
+                                }
+                                catch (Exception ex) { Mod.log.Info(ex); }
+                            }
+                        }
                     }
                     else
                     {
-                        Mod.log.Debug($"Existing {sectionName}Settings not found, setting it to null.");
-                        sectionSettings = default;
+                        sectionSettings = GetSettingsData(sectionName, fragmentSource, sectionSettings, classType);
                     }
+
+                    //string TempForLogging = JsonConvert.SerializeObject(sectionSettings);
+                    //Mod.log.Info(TempForLogging);
+                    property?.SetValue(ModSettings, sectionSettings);
                 }
-                catch (Exception ex)
-                {
-                    Mod.log.Info($"[ERROR]: {ex}");
-                    sectionSettings = default;
-                }
-            }
-            else
-            {
-                Mod.log.Debug($"Found {sectionName}");
+                catch (Exception ex) { Mod.log.Info(ex); }
             }
 
-            return sectionSettings;
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(ModSettings, Formatting.Indented);
+                File.WriteAllText(backupFile, jsonString);
+            }
+            catch (Exception ex) { Mod.log.Info(ex); }
         }
 
-        public bool GetSettings(string name, ISettingsBackup settingsBackup)
+        public object GetSettingsData(string name, string fragmentSource, object settingsBackup, Type classType)
         {
             JsonSerializerSettings JsonSerializerSettings = new()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
-            try
+            var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains(fragmentSource.Substring(0, fragmentSource.IndexOf("."))) || asset.name.Contains(name));
+            var settingAssets = AssetDatabase.global.GetAssets(filter);
+            bool ProcessedFragmentSource = false;
+            foreach (SettingAsset settingAsset in settingAssets)
             {
-                var settingAssets = AssetDatabase.global.GetAssets<SettingAsset>(name);
-                Mod.log.Info($"Getting settings: {name} ({settingAssets.Count()})");
-                foreach (SettingAsset settingAsset in settingAssets)
+                //try { Mod.log.Info(settingAsset.name); } catch (Exception ex) { Mod.log.Info(ex); }
+
+                foreach (var fragment in settingAsset)
                 {
-                    foreach (var fragment in settingAsset)
+                    //try { Mod.log.Info(fragment.name); } catch (Exception ex) { Mod.log.Info(ex); }
+                    
+                    //try { Mod.log.Info($"{fragment.name} is {fragment.source.GetType().Name}"); } catch (Exception ex) { Mod.log.Info(ex); }
+                    if (fragment.source.GetType().Name == "UnityLogger" )
                     {
-                        string fragmentSource = fragment.source.ToString();
-                        //Mod.log.Info($"fragment.source = \"{fragmentSource}\""); // <--------------------------- REMOVE THIS BEFORE PUBLISHING
-                        switch (fragmentSource)
+                        //Mod.log.Info("Skipping Logger");
+                        break;
+                    }
+                    else if (fragment.source.ToString().Contains("=====APM Settings=====") && name == "AssetPacksManager")
+                    {
+                        (ProcessedFragmentSource, settingsBackup) = ProcessFragmentSource(fragment.source, settingsBackup, classType, JsonSerializerSettings);
+                    }
+                    else
+                    {
+                        switch (fragment.source.ToString())
                         {
+                            case "FiveTwentyNineTiles.ModSettings":
+                            case "AdvancedSimulationSpeed.Setting":
+                            case "AllAboard.Setting":
                             case "Anarchy.Settings.AnarchyModSettings":
                             case "AssetIconLibrary.Setting":
+                            //case "AssetPacksManager.Setting":
+                            case "AssetVariationChanger.Setting":
+                            case "AutoDistrictNameStations.ModOptions":
+                            case "AutoVehicleRenamer.AutoVehicleRenamerSetting":
+                            case "Better_Bulldozer.Settings.BetterBulldozerModSettings":
+                            case "BetterMoonLight.Setting":
+                            case "BetterSaveList.Setting":
+                            case "BoundaryLinesModifier.Setting":
+                            case "BrushSizeUnlimiter.MyOptions":
+                            case "EmploymentTracker.EmploymentTrackerSettings":
+                            case "CityStats.ModSettings":
+                            case "DemandMaster.Setting":
+                            case "DepotCapacityChanger.Setting":
+                            case "ExtendedTooltip.ModSettings":
+                            case "ExtraAssetsImporter.Setting":
                             case "FindIt.FindItSettings":
-                            case "FiveTwentyNineTiles.ModSettings":
+                            case "FirstPersonCameraContinued.Setting":
+                            case "FPS_Limiter.FPSLimiterSettings":
+                            case "HallOfFame.Settings":
                             case "I18NEverywhere.Setting":
+                            case "ImageOverlay.ModSettings":
+                            case "MoveIt.Settings.Settings":
+                            case "NoPollution.Setting":
+                            case "NoTeleporting.Setting":
+                            case "NoTrafficDespawn.TrafficDespawnSettings":
+                            case "PathfindingCustomizer.Setting":
                             case "PlopTheGrowables.ModSettings":
+                            case "RealisticParking.Setting":
+                            case "Time2Work.Setting":
+                            case "RealisticWorkplacesAndHouseholds.Setting":
+                            case "RealLife.Setting":
+                            case "Recolor.Settings.Setting":
+                            case "RoadBuilder.Setting":
+                            case "RoadNameRemover.Setting":
+                            case "SchoolCapacityBalancer.Setting":
                             case "SimpleModCheckerPlus.Setting":
-                                ProcessFragmentSource(fragment.source, settingsBackup, JsonSerializerSettings);
+                            case "SmartTransportation.Setting":
+                            case "StationNaming.Setting.StationNamingSettings":
+                            case "StifferVehicles.Setting":
+                            case "SunGlasses.Setting":
+                            case "ToggleableOverlays.Setting":
+                            case "TradingCostTweaker.Setting":
+                            case "Traffic.ModSettings":
+                            case "C2VM.TrafficLightsEnhancement.Settings":
+                            case "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions":
+                            case "TransitCapacityMultiplier.Setting":
+                            case "TransportPolicyAdjuster.Setting":
+                            case "Tree_Controller.Settings.TreeControllerSettings":
+                            case "TripsData.Setting":
+                            case "VehicleVariationPacks.Setting":
+                            case "Water_Features.Settings.WaterFeaturesSettings":
+                            case "WaterVisualTweaksMod.WaterVisualTweaksSettings":
+                            case "ZoneColorChanger.Setting":
+                                (ProcessedFragmentSource, settingsBackup) = ProcessFragmentSource(fragment.source, settingsBackup, classType, JsonSerializerSettings);
+                                break;
+                            default:
+                                Mod.log.Info($"Failed finding { fragment.source.ToString()}");
                                 break;
                         }
+                    }
+                    if (ProcessedFragmentSource)
+                    {
+                        break;
+                    }
                 }
-                }
-                return true;
             }
-            catch (Exception ex)
+            if (ProcessedFragmentSource)
             {
-                Mod.log.Info($"{name} not found. Skipping backup...");
-                return false;
+                return settingsBackup;
+            } else
+            {
+                return null;
             }
         }
 
-        private void ProcessFragmentSource(object source, ISettingsBackup settingsBackup, JsonSerializerSettings jsonSerializerSettings)
+        private (bool, object) ProcessFragmentSource(object source, object settingsBackup, Type classType, JsonSerializerSettings jsonSerializerSettings)
         {
-            //Mod.log.Info($"ProcessingFragmentSource");
+            settingsBackup = (ISettingsBackup)Activator.CreateInstance(classType);
             JObject sourceObj = JObject.FromObject(source, JsonSerializer.Create(jsonSerializerSettings));
-            foreach (var property in sourceObj.Properties())
+
+            //string TempForLogging = JsonConvert.SerializeObject(sourceObj);
+            //Mod.log.Info(TempForLogging);
+            var properties = classType.GetProperties();
+            foreach (var property in properties)
             {
-                //Mod.log.Info(property.Name);
-                settingsBackup.SetValue(property.Name, property.Value.ToObject<object>());
+                if (property.CanWrite)
+                {
+                    if (sourceObj.TryGetValue(property.Name, out JToken valueToken))
+                    {
+                        var value = valueToken.ToObject(property.PropertyType);
+                        property.SetValue(settingsBackup, value);
+                    }
+                }
             }
+            return (true, settingsBackup);
         }
 
         public void RestoreBackup(int profile, bool log = true)
@@ -721,43 +426,37 @@ namespace SimpleModChecker.Systems
 
             Mod.log.Info("Restoring Backup");
             string jsonString = File.ReadAllText(backupFile);
-
             JObject jsonObject = JObject.Parse(jsonString);
-
-            // RestoreSection<AnarchySettings>("Anarchy", "AnarchySettings", jsonObject);
-            // RestoreSection<AssetIconLibrarySettings>("AssetIconLibrary", "AssetIconLibrarySettings", jsonObject);
-            // RestoreSection<FindItSettings>("FindIt", "FindItSettings", jsonObject);
-            // RestoreSection<FiveTwentyNineTilesSettings>("529TileSettings", "FiveTwentyNineTilesSettings", jsonObject);
-            // RestoreSection<PlopTheGrowablesSettings>("PlopTheGrowables", "PlopTheGrowablesSettings", jsonObject);
-            // RestoreSection<SimpleModCheckerSettings>("SimpleModChecker", "SimpleModCheckerSettings", jsonObject);
 
             foreach (var entry in settingsDictionary)
             {
                 string sectionName = entry.Key;
-                Type classType = entry.Value.ClassType;
+                string fragmentSource = entry.Value.FragmentSource;
+                //Type classType = entry.Value.ClassType;
+                string assembly = entry.Value.AssemblyName;
 
-                // Use reflection to invoke RestoreSection with the correct type argument
-                MethodInfo restoreSectionMethod = typeof(ModSettingsBackup).GetMethod("RestoreSection", BindingFlags.NonPublic | BindingFlags.Instance);
-                MethodInfo genericRestoreSectionMethod = restoreSectionMethod.MakeGenericMethod(classType);
+                if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
+                if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
 
-                genericRestoreSectionMethod.Invoke(this, [sectionName, entry.Value.ClassType.Name, jsonObject]);
+                if (!loadedMods.Contains(assembly))
+                {
+                    //Mod.log.Info($"skipping {sectionName}...");
+                }
+                else
+                {
+                    SetSettings(sectionName, fragmentSource, jsonObject);
+                }
             }
-
-            //foreach (var setting in settingsDictionary)
-            //{
-            //    RestoreSection(setting.Value.ClassType, setting.Value.SettingName, jsonObject);
-            //}
+            return;
         }
 
-        private protected void RestoreSection<T>(string sectionName, string jsonPropertyName, JObject jsonObject) where T : class
+        private protected void RestoreSection<T>(string sectionName, string jsonPropertyName, string fragmentSource, JObject jsonObject) where T : class
         {
             T sectionSettings = jsonObject[jsonPropertyName]?.ToObject<T>();
 
             if (sectionSettings != null)
             {
-                Mod.log.Debug($"Restoring {sectionName}");
-                //Mod.log.Info(jsonObject);
-                this.SetSettings(sectionName, jsonObject);
+                this.SetSettings(sectionName, fragmentSource, jsonObject);
     }
             else
             {
@@ -765,7 +464,7 @@ namespace SimpleModChecker.Systems
             }
         }
 
-        public void SetSettings(string name, JObject sourceObj)
+        public void SetSettings(string name, string fragmentSource, JObject sourceObj)
         {
             JsonSerializerSettings JsonSerializerSettings = new()
             {
@@ -773,8 +472,8 @@ namespace SimpleModChecker.Systems
             };
             try
             {
-                var settingAssets = AssetDatabase.global.GetAssets<SettingAsset>(name);
-                Mod.log.Debug($"Setting settings: {name} ({settingAssets.Count()})");
+                var settingAssets = AssetDatabase.global.GetAssets<SettingAsset>(fragmentSource.Substring(0, fragmentSource.IndexOf(".")));
+                //Mod.log.Debug($"Setting settings: {name} ({settingAssets.Count()})");
                 foreach (SettingAsset settingAsset in settingAssets)
                 {
                     foreach (var fragment in settingAsset)
@@ -798,7 +497,14 @@ namespace SimpleModChecker.Systems
                                 }
 
                                 Mod.log.Info($"Restoring {sectionKey} settings.");
-                                settingAsset.Save();
+                                try
+                                {
+                                    settingAsset.Save();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Mod.log.Info($"Error saving {sectionKey} settings: {ex}");
+                                }
                             }
                             else
                             {
@@ -810,23 +516,76 @@ namespace SimpleModChecker.Systems
             }
             catch (Exception ex)
             {
-                Mod.log.Info($"{name} not found. Skipping restore...");
+                Mod.log.Info($"{name} not found. Skipping restore... {ex}");
             }
         }
 
         private string GetSectionKey(string fragmentSourceType)
         {
-            Mod.log.Debug($"Choosing {fragmentSourceType}");
+            //Mod.log.Debug($"Choosing {fragmentSourceType}");
             return fragmentSourceType switch
             {
                 // fragment.source => class
+                "FiveTwentyNineTiles.ModSettings" => "FiveTwentyNineTilesSettings",
+                "AdvancedSimulationSpeed.Setting" => "AdvancedSimulationSpeedSettings",
+                "AllAboard.Setting" => "AllAboardSettings",
                 "Anarchy.Settings.AnarchyModSettings" => "AnarchySettings",
                 "AssetIconLibrary.Setting" => "AssetIconLibrarySettings",
+                "AssetPacksManager.Setting" => "AssetPacksManagerSettings",
+                "AssetVariationChanger.Setting" => "AssetVariationChangerSettings",
+                "AutoDistrictNameStations.ModOptions" => "AutoDistrictNameStationsSettings",
+                "AutoVehicleRenamer.AutoVehicleRenamerSetting" => "AutoVehicleRenamerSettings",
+                "Better_Bulldozer.Settings.BetterBulldozerModSettings" => "BetterBulldozerSettings",
+                "BetterMoonLight.Setting" => "BetterMoonLightSettings",
+                "BetterSaveList.Setting" => "BetterSaveListSettings",
+                "BoundaryLinesModifier.Setting" => "BoundaryLinesModifierSettings",
+                "BrushSizeUnlimiter.MyOptions" => "BrushSizeUnlimiterSettings",
+                //"ByeByeHomelessMod.Setting" => "ByeByeHomelessSettings",
+                "EmploymentTracker.EmploymentTrackerSettings" => "CimRouteHighlighterSettings",
+                "CityStats.ModSettings" => "CityStatsSettings",
+                "DemandMaster.Setting" => "DemandMasterSettings",
+                "DepotCapacityChanger.Setting" => "DepotCapacityChangerSettings",
+                "ExtendedTooltip.ModSettings" => "ExtendedTooltipSettings",
+                "ExtraAssetsImporter.Setting" => "ExtraAssetsImporterSettings",
                 "FindIt.FindItSettings" => "FindItSettings",
-                "FiveTwentyNineTiles.ModSettings" => "FiveTwentyNineTilesSettings",
+                "FirstPersonCameraContinued.Setting" => "FirstPersonCameraContinuedSettings",
+                "FPS_Limiter.FPSLimiterSettings" => "FPSLimiterSettings",
+                "HallOfFame.Settings" => "HallOfFameSettings",
                 "I18NEverywhere.Setting" => "I18NEverywhereSettings",
+                "ImageOverlay.ModSettings" => "ImageOverlaySettings",
+                //"Lumina.Setting" => "LuminaSettings",
+                "MoveIt.Settings.Settings" => "MoveItSettings",
+                "NoPollution.Setting" => "NoPollutionSettings",
+                "NoTeleporting.Setting" => "NoTeleportingSettings",
+                "NoTrafficDespawn.TrafficDespawnSettings" => "NoVehicleDespawnSettings",
+                "PathfindingCustomizer.Setting" => "PathfindingCustomizerSettings",
                 "PlopTheGrowables.ModSettings" => "PlopTheGrowablesSettings",
+                "RealisticParking.Setting" => "RealisticParkingSettings",
+                "Time2Work.Setting" => "RealisticTripsSettings",
+                "RealisticWorkplacesAndHouseholds.Setting" => "RealisticWorkplacesAndHouseholdsSettings",
+                "RealLife.Setting" => "RealLifeSettings",
+                "Recolor.Settings.Setting" => "RecolorSettings",
+                "RoadBuilder.Setting" => "RoadBuilderSettings",
+                "RoadNameRemover.Setting" => "RoadNameRemoverSettings",
+                "SchoolCapacityBalancer.Setting" => "SchoolCapacityBalancerSettings",
                 "SimpleModCheckerPlus.Setting" => "SimpleModCheckerSettings",
+                "SmartTransportation.Setting" => "SmartTransportationSettings",
+                "StationNaming.Setting.StationNamingSettings" => "StationNamingSettings",
+                "StifferVehicles.Setting" => "StifferVehiclesSettings",
+                "SunGlasses.Setting" => "SunGlassesSettings",
+                "ToggleableOverlays.Setting" => "ToggleOverlaysSettings",
+                "TradingCostTweaker.Setting" => "TradingCostTweakerSettings",
+                "Traffic.ModSettings" => "TrafficSettings",
+                "C2VM.TrafficLightsEnhancement.Settings" => "TrafficLightsEnhancementSettings",
+                "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions" => "TrafficSimulationAdjusterSettings",
+                "TransitCapacityMultiplier.Setting" => "TransitCapacityMultiplierSettings",
+                "TransportPolicyAdjuster.Setting" => "TransportPolicyAdjusterSettings",
+                "Tree_Controller.Settings.TreeControllerSettings" => "TreeControllerSettings",
+                "TripsData.Setting" => "TripsDataSettings",
+                "VehicleVariationPacks.Setting" => "VehicleVariationPacksSettings",
+                "Water_Features.Settings.WaterFeaturesSettings" => "WaterFeaturesSettings",
+                "WaterVisualTweaksMod.WaterVisualTweaksSettings" => "WaterVisualTweaksSettings",
+                "ZoneColorChanger.Setting" => "ZoneColorChangerSettings",
                 _ => null
             };
         }
@@ -846,6 +605,16 @@ namespace SimpleModChecker.Systems
                         {
                             string fragmentSourceType = fragment.source.ToString();
                             Mod.log.Info($"fragment.source = \"{fragmentSourceType}\"");
+                            //try
+                            //{
+                            //    if (fragmentSourceType == "XX")
+                            //    {
+                            //        try { Mod.log.Info(fragment.source.ToJSONString()); } catch (Exception ex) { Mod.log.Info(ex); }
+                            //        try { Mod.log.Info(fragment.source.ToString()); } catch (Exception ex) { Mod.log.Info(ex); }
+                            //    }
+                            //}
+                            //catch (Exception ex)
+                            //{ Mod.log.Info(ex); }
                         }
                         catch (Exception ex)
                         {
@@ -857,31 +626,3 @@ namespace SimpleModChecker.Systems
         }
     }
 }
-
-// {"asset":"00000000000000000000000000000000","guid":"b5bdf528ccf509b0bd002e41c14820c1","variant":{"DefaultBlock":false},"source":{"id":"AssetIconLibrary.AssetIconLibrary.Mod","name":"Setting","keyBindingRegistered":false,"DefaultBlock":false,"OverwriteIcons":true},"default":{"id":"AssetIconLibrary.AssetIconLibrary.Mod","name":"Setting","keyBindingRegistered":false,"DefaultBlock":true,"OverwriteIcons":true},"name":"AssetIconLibrary","meta":{"mimeType":".coc","displayName":"AssetIconLibrary","fileName":"AssetIconLibrary","path":"C:/Users/Qoushik/AppData/LocalLow/Colossal Order/Cities Skylines II/AssetIconLibrary.coc","subPath":null,"size":49,"uri":"user://AssetIconLibrary.coc","creationTime":"09/16/2024 10:57:01","lastAccessTime":"09/25/2024 20:55:41","lastWriteTime":"09/25/2024 20:54:44","persistent":true,"belongsToCurrentUser":false,"packageName":null,"package":"00000000000000000000000000000000","remoteStorageSourceName":"Local","isPackaged":false}}
-
-// TODO:
-// WATER VISUAL TWEAKS
-// TREE CONTROLLER
-// TRANSIT CAPACITY MULTIPLIER
-// DEPOT CAPACITY CHANGER
-// SCHOOL CAPACITY BALANCER
-// TRAFFIC SIMULATION ADJUSTER
-// ROAD NAME REMOVER
-// BOUNDARY LINES MODIFIER
-// DEMAND MASTER PRO
-// REALISTIC TRIPS
-// REAL TIME
-// REALISTIC PARKING
-// REALISTIC WORKPLACES & HOUSEHOLDS
-// EXTENDED TOOLTIP
-// VEHICLE VARIATION PACKS
-
-// DONE:
-//529 Tiles
-//Anarchy
-//Asset Icon Library
-//Find It
-//I18n Everywhere
-//Plop The Growables
-//Simple Mod Checker Plus

@@ -7,22 +7,23 @@ using Game.Modding;
 using Game.Settings;
 using Game.UI.Widgets;
 using SimpleModChecker.Systems;
-using System;
 using System.Collections.Generic;
+using System;
 using UnityEngine.Device;
 
 namespace SimpleModCheckerPlus
 {
     [FileLocation($"ModsSettings\\StarQ\\{Mod.Name}")]
-    [SettingsUITabOrder(MainTab, ProfileNameTab, AboutTab)]
-    [SettingsUIGroupOrder(OptionsGroup, BackupGroup, ProfileNameGroup, InfoGroup, ModInfo)]
-    [SettingsUIShowGroupName(OptionsGroup, BackupGroup, ModInfo)]
+    [SettingsUITabOrder(MainTab, ModListTab, ProfileNameTab, AboutTab)]
+    [SettingsUIGroupOrder(OptionsGroup, BackupGroup, ModListGroup, ProfileNameGroup, InfoGroup, ModInfo)]
+    [SettingsUIShowGroupName(OptionsGroup, BackupGroup, ModListGroup, ModInfo)]
     public class Setting : ModSetting
     {
         public static Setting Instance;
 
         private readonly GameSettingsBackup GameSettingsBackup = new();
         private readonly ModSettingsBackup ModSettingsBackup = new();
+        private readonly ProfileNameBackup ProfileNameBackup = new();
 
         public Setting(IMod mod) : base(mod)
         {
@@ -33,6 +34,9 @@ namespace SimpleModCheckerPlus
         
         public const string OptionsGroup = "Options";
         public const string BackupGroup = "Settings Backup";
+
+        public const string ModListTab = "Mod List";
+        public const string ModListGroup = "Loaded Mods";
 
         public const string ProfileNameTab = "Profile Names";
         public const string ProfileNameGroup = ProfileNameTab;
@@ -58,6 +62,7 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(MainTab, BackupGroup)]
         public int ProfileDropdown { get; set; } = 1;
 
+        [SettingsUIHidden]
         public int ProfileListVersion { get; set; }
 
         [SettingsUISection(MainTab, BackupGroup)]
@@ -74,6 +79,145 @@ namespace SimpleModCheckerPlus
 
         //[SettingsUISection(MainTab, BackupGroup)]
         //public bool GetSettingsFiles { set { ModSettingsBackup.GetSettingsFiles(); } }
+
+        [SettingsUIHidden]
+        public int ModsLoadedVersion { get; set; }
+
+        [SettingsUISection(ModListTab, ModListGroup)]
+        [SettingsUIDisplayName(typeof(ModNotification), nameof(ModNotification.LoadedModsListLocalized))]
+        public string ModsLoaded => "";
+
+        [SettingsUIAdvanced]
+        [SettingsUIHidden]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        public string ProfileName0 { get; set; } = "Profile Auto";
+
+        private string profileName1 = "Profile 1";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName1
+        {
+            get => profileName1;
+            set
+            {
+                profileName1 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
+        private string profileName2 = "Profile 2";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName2
+        {
+            get => profileName2;
+            set
+            {
+                profileName2 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
+        private string profileName3 = "Profile 3";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName3
+        {
+            get => profileName3;
+            set
+            {
+                profileName3 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
+        private string profileName4 = "Profile 4";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName4
+        {
+            get => profileName4;
+            set
+            {
+                profileName4 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
+        private string profileName5 = "Profile 5";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName5
+        {
+            get => profileName5;
+            set
+            {
+                profileName5 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
+        private string profileName6 = "Profile 6";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName6
+        {
+            get => profileName6;
+            set
+            {
+                profileName6 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
+        private string profileName7 = "Profile 7";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName7
+        {
+            get => profileName7;
+            set
+            {
+                profileName7 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
+        private string profileName8 = "Profile 8";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName8
+        {
+            get => profileName8;
+            set
+            {
+                profileName8 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
+        private string profileName9 = "Profile 9";
+        [SettingsUIAdvanced]
+        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUITextInput]
+        public string ProfileName9
+        {
+            get => profileName9;
+            set
+            {
+                profileName9 = value;
+                ProfileNameBackup.CreateBackup();
+                ++ProfileListVersion;
+            }
+        }
 
         [SettingsUISection(AboutTab, InfoGroup)]
         public string NameText => Mod.Name;
@@ -97,129 +241,6 @@ namespace SimpleModCheckerPlus
                 {
                     Mod.log.Error(e);
                 }
-            }
-        }
-
-        [SettingsUIAdvanced]
-        [SettingsUIHidden]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        public string ProfileName0 { get; set; } = "Profile Auto";
-
-        private string profileName1 = "Profile 1";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName1
-        {
-            get => profileName1;
-            set
-            {
-                profileName1 = value;
-                ++ProfileListVersion;
-            }
-        }
-        private string profileName2 = "Profile 2";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName2
-        {
-            get => profileName2;
-            set
-            {
-                profileName2 = value;
-                ++ProfileListVersion;
-            }
-        }
-        private string profileName3 = "Profile 3";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName3
-        {
-            get => profileName3;
-            set
-            {
-                profileName3 = value;
-                ++ProfileListVersion;
-            }
-        }
-        private string profileName4 = "Profile 4";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName4
-        {
-            get => profileName4;
-            set
-            {
-                profileName4 = value;
-                ++ProfileListVersion;
-            }
-        }
-        private string profileName5 = "Profile 5";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName5
-        {
-            get => profileName5;
-            set
-            {
-                profileName5 = value;
-                ++ProfileListVersion;
-            }
-        }
-        private string profileName6 = "Profile 6";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName6
-        {
-            get => profileName6;
-            set
-            {
-                profileName6 = value;
-                ++ProfileListVersion;
-            }
-        }
-        private string profileName7 = "Profile 7";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName7
-        {
-            get => profileName7;
-            set
-            {
-                profileName7 = value;
-                ++ProfileListVersion;
-            }
-        }
-        private string profileName8 = "Profile 8";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName8
-        {
-            get => profileName8;
-            set
-            {
-                profileName8 = value;
-                ++ProfileListVersion;
-            }
-        }
-        private string profileName9 = "Profile 9";
-        [SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
-        [SettingsUITextInput]
-        public string ProfileName9
-        {
-            get => profileName9;
-            set
-            {
-                profileName9 = value;
-                ++ProfileListVersion;
             }
         }
 
