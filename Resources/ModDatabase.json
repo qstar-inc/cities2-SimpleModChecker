@@ -1,0 +1,560 @@
+{
+  "Metadata": {
+    "Version": "2.2.4",
+    "Time": 1727968235
+  },
+  "ModDatabaseInfo": {
+    "529Tile": {
+      "AssemblyName": "FiveTwentyNineTiles",
+      "FragmentSource": "FiveTwentyNineTiles.ModSettings",
+      "ClassType": "FiveTwentyNineTilesSettings",
+      "ModName": "529 Tiles",
+      "PDX_ID": "74328",
+      "Author": "algernon",
+      "Backupable": true
+    },
+    "AdvancedSimulationSpeed": {
+      "AssemblyName": "AdvancedSimulationSpeed",
+      "FragmentSource": "AdvancedSimulationSpeed.Setting",
+      "ClassType": "AdvancedSimulationSpeedSettings",
+      "ModName": "AdvancedSimulationSpeed",
+      "PDX_ID": "79794",
+      "Author": "zakuro9715",
+      "Backupable": true
+    },
+    "AllAboard": {
+      "AssemblyName": "AllAboard",
+      "FragmentSource": "AllAboard.Setting",
+      "ClassType": "AllAboardSettings",
+      "ModName": "All Aboard! (Faster Boarding Mod)",
+      "PDX_ID": "86605",
+      "Author": "ethnicboyfriend",
+      "Backupable": true
+    },
+    "Anarchy": {
+      "AssemblyName": "Anarchy",
+      "FragmentSource": "Anarchy.Settings.AnarchyModSettings",
+      "ClassType": "AnarchySettings",
+      "ModName": "Anarchy",
+      "PDX_ID": "74604",
+      "Author": "yenyang",
+      "Backupable": true
+    },
+    "AreaBucket": {
+      "AssemblyName": "AreaBucket",
+      "FragmentSource": "AreaBucket.Setting",
+      "ClassType": "AreaBucketSettings",
+      "ModName": "AreaBucket",
+      "PDX_ID": "81157",
+      "Author": "Cmyna",
+      "Backupable": true
+    },
+    "AssetIconLibrary": {
+      "AssemblyName": "AssetIconLibrary",
+      "FragmentSource": "AssetIconLibrary.Setting",
+      "ClassType": "AssetIconLibrarySettings",
+      "ModName": "Asset Icon Library",
+      "PDX_ID": "79634",
+      "Author": "TDW",
+      "Backupable": true
+    },
+    "AssetPacksManager": {
+      "AssemblyName": "AssetPacksManager",
+      "FragmentSource": "AssetPacksManager.Setting",
+      "ClassType": "AssetPacksManagerSettings",
+      "ModName": "Asset Packs Manager",
+      "PDX_ID": "78903",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "AssetVariationChanger": {
+      "AssemblyName": "AssetVariationChanger",
+      "FragmentSource": "AssetVariationChanger.Setting",
+      "ClassType": "AssetVariationChangerSettings",
+      "ModName": "Asset Variation Changer",
+      "PDX_ID": "78847",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "AutoDistrictNameStations": {
+      "AssemblyName": "AutoDistrictNameStations",
+      "FragmentSource": "AutoDistrictNameStations.ModOptions",
+      "ClassType": "AutoDistrictNameStationsSettings",
+      "ModName": "AutoDistrictNameStations",
+      "PDX_ID": "76908",
+      "Author": "Guo",
+      "Backupable": true
+    },
+    "AutoVehicleRenamer": {
+      "AssemblyName": "AutoVehicleRenamer",
+      "FragmentSource": "AutoVehicleRenamer.AutoVehicleRenamerSetting",
+      "ClassType": "AutoVehicleRenamerSettings",
+      "ModName": "Auto Vehicle Renamer",
+      "PDX_ID": "79872",
+      "Author": "Qoushik",
+      "Backupable": true
+    },
+    "BetterBulldozer": {
+      "AssemblyName": "BetterBulldozer",
+      "FragmentSource": "Better_Bulldozer.Settings.BetterBulldozerModSettings",
+      "ClassType": "BetterBulldozerSettings",
+      "ModName": "Better Bulldozer",
+      "PDX_ID": "75250",
+      "Author": "yenyang",
+      "Backupable": true
+    },
+    "BetterMoonLight": {
+      "AssemblyName": "BetterMoonLight",
+      "FragmentSource": "BetterMoonLight.Setting",
+      "ClassType": "BetterMoonLightSettings",
+      "ModName": "BetterMoonLight",
+      "PDX_ID": "77923",
+      "Author": "Cmyna",
+      "Backupable": true
+    },
+    "BetterSaveList": {
+      "AssemblyName": "BetterSaveList",
+      "FragmentSource": "BetterSaveList.Setting",
+      "ClassType": "BetterSaveListSettings",
+      "ModName": "BetterSaveList",
+      "PDX_ID": "82374",
+      "Author": "zakuro9715",
+      "Backupable": true
+    },
+    "BoundaryLinesModifier": {
+      "AssemblyName": "BoundaryLinesModifier",
+      "FragmentSource": "BoundaryLinesModifier.Setting",
+      "ClassType": "BoundaryLinesModifierSettings",
+      "ModName": "Boundary Lines Modifier",
+      "PDX_ID": "86728",
+      "Author": "Qoushik",
+      "Backupable": true
+    },
+    "BrushSizeUnlimiter": {
+      "AssemblyName": "BrushSizeUnlimiter",
+      "FragmentSource": "BrushSizeUnlimiter.MyOptions",
+      "ClassType": "BrushSizeUnlimiterSettings",
+      "ModName": "Brush Size Unlimiter",
+      "PDX_ID": "75249",
+      "Author": "Cgameworld",
+      "Backupable": true
+    },
+    "ByeByeHomeless": {
+      "AssemblyName": "ByeByeHomelessMod",
+      "ModName": "Bye Bye Homeless (updated for 1.1.8f)",
+      "PDX_ID": "84571",
+      "Author": "wxdao"
+    },
+    "CimRouteHighlighter": {
+      "AssemblyName": "EmploymentTracker",
+      "FragmentSource": "EmploymentTracker.EmploymentTrackerSettings",
+      "ClassType": "CimRouteHighlighterSettings",
+      "ModName": "Cim Route Highlighter",
+      "PDX_ID": "76662",
+      "Author": "mattswarthout",
+      "Backupable": true
+    },
+    "CityStats": {
+      "AssemblyName": "CityStats",
+      "FragmentSource": "CityStats.ModSettings",
+      "ClassType": "CityStatsSettings",
+      "ModName": "City Stats",
+      "PDX_ID": "85284",
+      "Author": "kendallroth",
+      "Backupable": true
+    },
+    "DemandMaster": {
+      "AssemblyName": "DemandMaster",
+      "FragmentSource": "DemandMaster.Setting",
+      "ClassType": "DemandMasterSettings",
+      "ModName": "Demand Master Pro [Alpha]",
+      "PDX_ID": "86944",
+      "Author": "Qoushik",
+      "Backupable": true
+    },
+    "DepotCapacityChanger": {
+      "AssemblyName": "DepotCapacityChanger",
+      "FragmentSource": "DepotCapacityChanger.Setting",
+      "ClassType": "DepotCapacityChangerSettings",
+      "ModName": "Depot Capacity Changer",
+      "PDX_ID": "75684",
+      "Author": "Wayz",
+      "Backupable": true
+    },
+    "ExtendedTooltip": {
+      "AssemblyName": "ExtendedTooltip",
+      "FragmentSource": "ExtendedTooltip.ModSettings",
+      "ClassType": "ExtendedTooltipSettings",
+      "ModName": "Extended Tooltip",
+      "PDX_ID": "78188",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "ExtraAssetsImporter": {
+      "AssemblyName": "ExtraAssetsImporter",
+      "FragmentSource": "ExtraAssetsImporter.Setting",
+      "ClassType": "ExtraAssetsImporterSettings",
+      "ModName": "ExtraAssetsImporter",
+      "PDX_ID": "80529",
+      "Author": "Triton Supreme",
+      "Backupable": true
+    },
+    "FindIt": {
+      "AssemblyName": "FindIt",
+      "FragmentSource": "FindIt.FindItSettings",
+      "ClassType": "FindItSettings",
+      "ModName": "Find It",
+      "PDX_ID": "77240",
+      "Author": "TDW",
+      "Backupable": true
+    },
+    "FirstPersonCameraContinued": {
+      "AssemblyName": "FirstPersonCameraContinued",
+      "FragmentSource": "FirstPersonCameraContinued.Setting",
+      "ClassType": "FirstPersonCameraContinuedSettings",
+      "ModName": "First Person Camera Continued",
+      "PDX_ID": "79237",
+      "Author": "Cgameworld",
+      "Backupable": true
+    },
+    "FPSLimiter": {
+      "AssemblyName": "FPS_Limiter",
+      "FragmentSource": "FPS_Limiter.FPSLimiterSettings",
+      "ClassType": "FPSLimiterSettings",
+      "ModName": "FPS Limiter",
+      "PDX_ID": "74286",
+      "Author": "krzychu124",
+      "Backupable": true
+    },
+    "HallOfFame": {
+      "AssemblyName": "HallOfFame",
+      "FragmentSource": "HallOfFame.Settings",
+      "ClassType": "HallOfFameSettings",
+      "ModName": "Hall of Fame",
+      "PDX_ID": "90641",
+      "Author": "toverux",
+      "Backupable": true
+    },
+    "I18NEverywhere": {
+      "AssemblyName": "I18NEverywhere",
+      "FragmentSource": "I18NEverywhere.Setting",
+      "ClassType": "I18NEverywhereSettings",
+      "ModName": "I18n EveryWhere",
+      "PDX_ID": "75426",
+      "Author": "Baka-gourd",
+      "Backupable": true
+    },
+    "ImageOverlay": {
+      "AssemblyName": "ImageOverlay",
+      "FragmentSource": "ImageOverlay.ModSettings",
+      "ClassType": "ImageOverlaySettings",
+      "ModName": "Image Overlay",
+      "PDX_ID": "74539",
+      "Author": "algernon",
+      "Backupable": true
+    },
+    "Lumina": {
+      "AssemblyName": "Lumina",
+      "ModName": "Lumina",
+      "PDX_ID": "75251",
+      "Author": "Nyyoko"
+    },
+    "MoveIt": {
+      "AssemblyName": "MoveIt",
+      "FragmentSource": "MoveIt.Settings.Settings",
+      "ClassType": "MoveItSettings",
+      "ModName": "Move It",
+      "PDX_ID": "74324",
+      "Author": "Quboid",
+      "Backupable": true
+    },
+    "NoPollution": {
+      "AssemblyName": "NoPollution",
+      "FragmentSource": "NoPollution.Setting",
+      "ClassType": "NoPollutionSettings",
+      "ModName": "No Pollution",
+      "PDX_ID": "78601",
+      "Author": "Bruceyboy24804",
+      "Backupable": true
+    },
+    "NoTeleporting": {
+      "AssemblyName": "NoTeleporting",
+      "FragmentSource": "NoTeleporting.Setting",
+      "ClassType": "NoTeleportingSettings",
+      "ModName": "No Teleporting",
+      "PDX_ID": "86510",
+      "Author": "fergusq",
+      "Backupable": true
+    },
+    "NoVehicleDespawn": {
+      "AssemblyName": "NoTrafficDespawn",
+      "FragmentSource": "NoTrafficDespawn.TrafficDespawnSettings",
+      "ClassType": "NoVehicleDespawnSettings",
+      "ModName": "No Vehicle Despawn",
+      "PDX_ID": "85211",
+      "Author": "mattswarthout",
+      "Backupable": true
+    },
+    "PathfindingCustomizer": {
+      "AssemblyName": "PathfindingCustomizer",
+      "FragmentSource": "PathfindingCustomizer.Setting",
+      "ClassType": "PathfindingCustomizerSettings",
+      "ModName": "Pathfinding Customizer",
+      "PDX_ID": "86462",
+      "Author": "Caby71",
+      "Backupable": true
+    },
+    "PlopTheGrowables": {
+      "AssemblyName": "PlopTheGrowables",
+      "FragmentSource": "PlopTheGrowables.ModSettings",
+      "ClassType": "PlopTheGrowablesSettings",
+      "ModName": "Plop the Growables",
+      "PDX_ID": "75826",
+      "Author": "algernon",
+      "Backupable": true
+    },
+    "RealisticParking": {
+      "AssemblyName": "RealisticParking",
+      "FragmentSource": "RealisticParking.Setting",
+      "ClassType": "RealisticParkingSettings",
+      "ModName": "Realistic Parking Mod",
+      "PDX_ID": "87313",
+      "Author": "DaancingBanana",
+      "Backupable": true
+    },
+    "RealisticTrips": {
+      "AssemblyName": "Time2Work",
+      "FragmentSource": "Time2Work.Setting",
+      "ClassType": "RealisticTripsSettings",
+      "ModName": "Realistic Trips",
+      "PDX_ID": "77171",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "RealisticWorkplacesAndHouseholds": {
+      "AssemblyName": "RWH",
+      "FragmentSource": "RealisticWorkplacesAndHouseholds.Setting",
+      "ClassType": "RealisticWorkplacesAndHouseholdsSettings",
+      "ModName": "Realistic Workplaces And Households",
+      "PDX_ID": "87755",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "RealLife": {
+      "AssemblyName": "RealLife",
+      "FragmentSource": "RealLife.Setting",
+      "ClassType": "RealLifeSettings",
+      "ModName": "Real Life",
+      "PDX_ID": "86868",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "Recolor": {
+      "AssemblyName": "Recolor",
+      "FragmentSource": "Recolor.Settings.Setting",
+      "ClassType": "RecolorSettings",
+      "ModName": "Recolor",
+      "PDX_ID": "84638",
+      "Author": "yenyang",
+      "Backupable": true
+    },
+    "RoadBuilder": {
+      "AssemblyName": "RoadBuilder",
+      "FragmentSource": "RoadBuilder.Setting",
+      "ClassType": "RoadBuilderSettings",
+      "ModName": "Road Builder [BETA]",
+      "PDX_ID": "87190",
+      "Author": "TDW",
+      "Backupable": true
+    },
+    "RoadNameRemover": {
+      "AssemblyName": "RoadNameRemover",
+      "FragmentSource": "RoadNameRemover.Setting",
+      "ClassType": "RoadNameRemoverSettings",
+      "ModName": "Road Name Remover",
+      "PDX_ID": "77463",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "SchoolCapacityBalancer": {
+      "AssemblyName": "SchoolCapacityBalancer",
+      "FragmentSource": "SchoolCapacityBalancer.Setting",
+      "ClassType": "SchoolCapacityBalancerSettings",
+      "ModName": "School Capacity Balancer",
+      "PDX_ID": "75190",
+      "Author": "Wayz",
+      "Backupable": true
+    },
+    "SimpleModChecker": {
+      "AssemblyName": "SimpleModChecker",
+      "FragmentSource": "SimpleModCheckerPlus.Setting",
+      "ClassType": "SimpleModCheckerSettings",
+      "ModName": "Simple Mod Checker Plus",
+      "PDX_ID": "79186",
+      "Author": "Qoushik",
+      "Backupable": true
+    },
+    "SmartTransportation": {
+      "AssemblyName": "SmartTransportation",
+      "FragmentSource": "SmartTransportation.Setting",
+      "ClassType": "SmartTransportationSettings",
+      "ModName": "SmartTransportation",
+      "PDX_ID": "90264",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "StationNaming": {
+      "AssemblyName": "StationNaming",
+      "FragmentSource": "StationNaming.Setting.StationNamingSettings",
+      "ClassType": "StationNamingSettings",
+      "ModName": "Station Naming",
+      "PDX_ID": "78131",
+      "Author": "RollWind",
+      "Backupable": true
+    },
+    "StifferVehicles": {
+      "AssemblyName": "StifferVehicles",
+      "FragmentSource": "StifferVehicles.Setting",
+      "ClassType": "StifferVehiclesSettings",
+      "ModName": "Stiffer Vehicles",
+      "PDX_ID": "81407",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "SunGlasses": {
+      "AssemblyName": "SunGlasses",
+      "FragmentSource": "SunGlasses.Setting",
+      "ClassType": "SunGlassesSettings",
+      "ModName": "Sun Glasses",
+      "PDX_ID": "76849",
+      "Author": "Cmyna",
+      "Backupable": true
+    },
+    "ToggleOverlays": {
+      "AssemblyName": "ToggleableOverlays",
+      "FragmentSource": "ToggleableOverlays.Setting",
+      "ClassType": "ToggleOverlaysSettings",
+      "ModName": "Toggle Overlays",
+      "PDX_ID": "80931",
+      "Author": "TDW",
+      "Backupable": true
+    },
+    "TradingCostTweaker": {
+      "AssemblyName": "TradingCostTweaker",
+      "FragmentSource": "TradingCostTweaker.Setting",
+      "ClassType": "TradingCostTweakerSettings",
+      "ModName": "Trading Cost Tweaker",
+      "PDX_ID": "86124",
+      "Author": "Qoushik",
+      "Backupable": true
+    },
+    "Traffic": {
+      "AssemblyName": "Traffic",
+      "FragmentSource": "Traffic.ModSettings",
+      "ClassType": "TrafficSettings",
+      "ModName": "Traffic",
+      "PDX_ID": "80095",
+      "Author": "krzychu124",
+      "Backupable": true
+    },
+    "TrafficLightsEnhancement": {
+      "AssemblyName": "C2VM.TrafficLightsEnhancement",
+      "FragmentSource": "C2VM.TrafficLightsEnhancement.Settings",
+      "ClassType": "TrafficLightsEnhancementSettings",
+      "ModName": "Traffic Lights Enhancement Alpha",
+      "PDX_ID": "78960",
+      "Author": "C2VMTLE",
+      "Backupable": true
+    },
+    "TrafficSimulationAdjuster": {
+      "AssemblyName": "TrafficSimulationAdjuster",
+      "FragmentSource": "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions",
+      "ClassType": "TrafficSimulationAdjusterSettings",
+      "ModName": "Traffic Simulation Adjuster",
+      "PDX_ID": "76836",
+      "Author": "tduck973564",
+      "Backupable": true
+    },
+    "TransitCapacityMultiplier": {
+      "AssemblyName": "TransitCapacityMultiplier",
+      "FragmentSource": "TransitCapacityMultiplier.Setting",
+      "ClassType": "TransitCapacityMultiplierSettings",
+      "ModName": "Transit Capacity Multiplier",
+      "PDX_ID": "80403",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "TransportPolicyAdjuster": {
+      "AssemblyName": "TransportPolicyAdjuster",
+      "FragmentSource": "TransportPolicyAdjuster.Setting",
+      "ClassType": "TransportPolicyAdjusterSettings",
+      "ModName": "TransportPolicyAdjuster",
+      "PDX_ID": "78622",
+      "Author": "TheSonnyX",
+      "Backupable": true
+    },
+    "TreeController": {
+      "AssemblyName": "Tree_Controller",
+      "FragmentSource": "Tree_Controller.Settings.TreeControllerSettings",
+      "ClassType": "TreeControllerSettings",
+      "ModName": "Tree Controller",
+      "PDX_ID": "75993",
+      "Author": "yenyang",
+      "Backupable": true
+    },
+    "TripsData": {
+      "AssemblyName": "TripsData",
+      "FragmentSource": "TripsData.Setting",
+      "ClassType": "TripsDataSettings",
+      "ModName": "Trips Data",
+      "PDX_ID": "79875",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "VehicleVariationPacks": {
+      "AssemblyName": "VehicleVariationPacks",
+      "FragmentSource": "VehicleVariationPacks.Setting",
+      "ClassType": "VehicleVariationPacksSettings",
+      "ModName": "Vehicle Variation Packs",
+      "PDX_ID": "81012",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "WaterFeatures": {
+      "AssemblyName": "Water_Features",
+      "FragmentSource": "Water_Features.Settings.WaterFeaturesSettings",
+      "ClassType": "WaterFeaturesSettings",
+      "ModName": "Water Features",
+      "PDX_ID": "75613",
+      "Author": "yenyang",
+      "Backupable": true
+    },
+    "WaterVisualTweaks": {
+      "AssemblyName": "WaterVisualTweaks",
+      "FragmentSource": "WaterVisualTweaksMod.WaterVisualTweaksSettings",
+      "ClassType": "WaterVisualTweaksSettings",
+      "ModName": "Water Visual Tweaks",
+      "PDX_ID": "77260",
+      "Author": "HX2003",
+      "Backupable": true
+    },
+    "WhitenessToggle": {
+      "AssemblyName": "Whiteness-Toggle",
+      "FragmentSource": "Whiteness_Toggle.Setting",
+      "ClassType": "WhitenessToggleSettings",
+      "ModName": "Whiteness Toggle (Updated)",
+      "PDX_ID": "80826",
+      "Author": "Daniel-00001",
+      "Backupable": true
+    },
+    "ZoneColorChanger": {
+      "AssemblyName": "ZoneColorChanger",
+      "FragmentSource": "ZoneColorChanger.Setting",
+      "ClassType": "ZoneColorChangerSettings",
+      "ModName": "Zone Color Changer",
+      "PDX_ID": "81568",
+      "Author": "TDW",
+      "Backupable": true
+    }
+  }
+}
