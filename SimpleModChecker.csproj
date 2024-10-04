@@ -6,6 +6,11 @@
 		<Configurations>Debug;Release</Configurations>
 		<LangVersion>12</LangVersion>
 		
+		<AssemblyName>SimpleModChecker</AssemblyName>
+		<AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
+		<Authors>StarQ</Authors>
+		<Version>2.2.4</Version>
+		
 		<!--The folder where Game.dll is located. Set it only if the game is not installed in the default location, otherwise keep it empty-->
 		<CustomManagedPath></CustomManagedPath>
 		
@@ -76,6 +81,9 @@
 		<Reference Include="Unity.RenderPipelines.HighDefinition.Runtime">
 			<Private>false</Private>
 		</Reference>
+		<Reference Include="System.Net.Http">
+			<Private>false</Private>
+		</Reference>
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -95,10 +103,10 @@
 		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
 	</ItemGroup>
 
-	<Target Name="Cleanup" AfterTargets="AfterBuild">
+	<Target Name="GetCustomAssetsFiles" AfterTargets="DeployWIP">
 		<ItemGroup>
-			<CleanTargets Include="$(DeployDir)/*.pdb" />
+			<AdditionalFilesToDeploy Include="Resources\**\*.*" />
 		</ItemGroup>
-		<Delete Files="@(CleanTargets)" />
+		<Copy SourceFiles="@(AdditionalFilesToDeploy)" DestinationFiles="@(AdditionalFilesToDeploy->'$(DeployDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
 	</Target>
 </Project>

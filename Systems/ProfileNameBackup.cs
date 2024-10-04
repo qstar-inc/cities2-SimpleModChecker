@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using SimpleModCheckerPlus;
 using System.IO;
+using System;
 
 namespace SimpleModChecker.Systems
 {
@@ -27,7 +28,7 @@ namespace SimpleModChecker.Systems
     public partial class ProfileNameBackup : GameSystemBase
     {
         public Mod _mod;
-        private readonly string backupFile = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ProfileNameBackup.json";
+        private readonly string backupFile = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ProfileNameBackup.json";
 
 
         protected override void OnCreate()
@@ -36,62 +37,69 @@ namespace SimpleModChecker.Systems
             {
                 RestoreBackup();
             }
-            
         }
 
-        protected override void OnUpdate()
-        {
-
-        }
+        protected override void OnUpdate() {}
 
         public void CreateBackup()
         {
-            string directoryPath = Path.GetDirectoryName(backupFile);
-            if (!Directory.Exists(directoryPath))
+            try
             {
-                Directory.CreateDirectory(directoryPath);
-            }
-            var ProfileNames = new ProfileNames
-            {
-                Profile1 = Mod.Setting.ProfileName1,
-                Profile2 = Mod.Setting.ProfileName2,
-                Profile3 = Mod.Setting.ProfileName3,
-                Profile4 = Mod.Setting.ProfileName4,
-                Profile5 = Mod.Setting.ProfileName5,
-                Profile6 = Mod.Setting.ProfileName6,
-                Profile7 = Mod.Setting.ProfileName7,
-                Profile8 = Mod.Setting.ProfileName8,
-                Profile9 = Mod.Setting.ProfileName9
-            };
+                string directoryPath = Path.GetDirectoryName(backupFile);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+                var ProfileNames = new ProfileNames
+                {
+                    Profile1 = Mod.Setting.ProfileName1,
+                    Profile2 = Mod.Setting.ProfileName2,
+                    Profile3 = Mod.Setting.ProfileName3,
+                    Profile4 = Mod.Setting.ProfileName4,
+                    Profile5 = Mod.Setting.ProfileName5,
+                    Profile6 = Mod.Setting.ProfileName6,
+                    Profile7 = Mod.Setting.ProfileName7,
+                    Profile8 = Mod.Setting.ProfileName8,
+                    Profile9 = Mod.Setting.ProfileName9
+                };
 
-            string jsonString = JsonConvert.SerializeObject(ProfileNames, Formatting.Indented);
-            File.WriteAllText(backupFile, jsonString);
+                string jsonString = JsonConvert.SerializeObject(ProfileNames, Formatting.Indented);
+                File.WriteAllText(backupFile, jsonString);
+            }
+            catch (Exception ex) { Mod.log.Info(ex); }
         }
 
         public void RestoreBackup()
         {
-            
-            if (!File.Exists(backupFile))
+            Mod.log.Info($"Restore backup {backupFile}");
+            try
             {
-                return;
-            }
-            string jsonString = File.ReadAllText(backupFile);
+                if (!File.Exists(backupFile))
+                {
+                    Mod.log.Info($"{backupFile} doesn't exist");
+                    return;
+                }
+                string jsonString = File.ReadAllText(backupFile);
 
-            JObject jsonObject = JObject.Parse(jsonString);
-
-            if (jsonObject["ProfileNames"] != null)
-            {
-                ProfileNames ProfileNames = jsonObject["ProfileNames"].ToObject<ProfileNames>();
-                Mod.Setting.ProfileName1 = ProfileNames.Profile1;
-                Mod.Setting.ProfileName2 = ProfileNames.Profile2;
-                Mod.Setting.ProfileName3 = ProfileNames.Profile3;
-                Mod.Setting.ProfileName4 = ProfileNames.Profile4;
-                Mod.Setting.ProfileName5 = ProfileNames.Profile5;
-                Mod.Setting.ProfileName6 = ProfileNames.Profile6;
-                Mod.Setting.ProfileName7 = ProfileNames.Profile7;
-                Mod.Setting.ProfileName8 = ProfileNames.Profile8;
-                Mod.Setting.ProfileName9 = ProfileNames.Profile9;
+                JObject jsonObject = JObject.Parse(jsonString);
+                if (jsonObject != null)
+                {
+                    ProfileNames ProfileNames = jsonObject.ToObject<ProfileNames>();
+                    //Mod.log.Info(ProfileNames.Profile1);
+                    if (Mod.Setting.ProfileName1 != ProfileNames.Profile1) Mod.Setting.ProfileName1 = ProfileNames.Profile1;
+                    if (Mod.Setting.ProfileName2 != ProfileNames.Profile2) Mod.Setting.ProfileName2 = ProfileNames.Profile2;
+                    if (Mod.Setting.ProfileName3 != ProfileNames.Profile3) Mod.Setting.ProfileName3 = ProfileNames.Profile3;
+                    if (Mod.Setting.ProfileName4 != ProfileNames.Profile4) Mod.Setting.ProfileName4 = ProfileNames.Profile4;
+                    if (Mod.Setting.ProfileName5 != ProfileNames.Profile5) Mod.Setting.ProfileName5 = ProfileNames.Profile5;
+                    if (Mod.Setting.ProfileName6 != ProfileNames.Profile6) Mod.Setting.ProfileName6 = ProfileNames.Profile6;
+                    if (Mod.Setting.ProfileName7 != ProfileNames.Profile7) Mod.Setting.ProfileName7 = ProfileNames.Profile7;
+                    if (Mod.Setting.ProfileName8 != ProfileNames.Profile8) Mod.Setting.ProfileName8 = ProfileNames.Profile8;
+                    if (Mod.Setting.ProfileName9 != ProfileNames.Profile9) Mod.Setting.ProfileName9 = ProfileNames.Profile9;
+                }
+                
             }
+            catch (Exception ex) { Mod.log.Info(ex); }
+            ++Mod.Setting.ProfileListVersion;
         }
     }
 }

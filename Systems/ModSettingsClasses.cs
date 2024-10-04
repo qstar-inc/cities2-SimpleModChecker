@@ -224,6 +224,45 @@ namespace SimpleModChecker.Systems
         }
     }
 
+    public class AreaBucketSettings : SettingsBackup
+    {
+        public float MinGeneratedLineLength
+        {
+            get => (float)GetValue(nameof(MinGeneratedLineLength));
+            set => SetValue(nameof(MinGeneratedLineLength), value);
+        }
+        public bool UseExperientalOption
+        {
+            get => (bool)GetValue(nameof(UseExperientalOption));
+            set => SetValue(nameof(UseExperientalOption), value);
+        }
+        public bool DrawAreaOverlay
+        {
+            get => (bool)GetValue(nameof(DrawAreaOverlay));
+            set => SetValue(nameof(DrawAreaOverlay), value);
+        }
+        public bool PreviewSurface
+        {
+            get => (bool)GetValue(nameof(PreviewSurface));
+            set => SetValue(nameof(PreviewSurface), value);
+        }
+        public bool AlterVanillaGeometrySystem
+        {
+            get => (bool)GetValue(nameof(AlterVanillaGeometrySystem));
+            set => SetValue(nameof(AlterVanillaGeometrySystem), value);
+        }
+        public bool ShowDebugOption
+        {
+            get => (bool)GetValue(nameof(ShowDebugOption));
+            set => SetValue(nameof(ShowDebugOption), value);
+        }
+        public float MaxFillingRange
+        {
+            get => (float)GetValue(nameof(MaxFillingRange));
+            set => SetValue(nameof(MaxFillingRange), value);
+        }
+    }
+
     public class AssetIconLibrarySettings : SettingsBackup
     {
         public bool OverwriteIcons
@@ -255,11 +294,11 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(AdaptiveAssetLoading));
             set => SetValue(nameof(AdaptiveAssetLoading), value);
         }
-        public int LogCooldownTicks
-        {
-            get => (int)GetValue(nameof(LogCooldownTicks));
-            set => SetValue(nameof(LogCooldownTicks), value);
-        }
+        //public int LogCooldownTicks
+        //{
+        //    get => (int)GetValue(nameof(LogCooldownTicks));
+        //    set => SetValue(nameof(LogCooldownTicks), value);
+        //}
         public bool AutoHideNotifications
         {
             get => (bool)GetValue(nameof(AutoHideNotifications));
@@ -4074,6 +4113,40 @@ namespace SimpleModChecker.Systems
         }
     }
 
+    public class WhitenessToggleSettings : SettingsBackup
+    {
+        public bool ToggleWhiteness
+        {
+            get => (bool)GetValue(nameof(ToggleWhiteness));
+            set => SetValue(nameof(ToggleWhiteness), value);
+        }
+        public bool ToggleOverlay
+        {
+            get => (bool)GetValue(nameof(ToggleOverlay));
+            set => SetValue(nameof(ToggleOverlay), value);
+        }
+        public int Red
+        {
+            get => (int)GetValue(nameof(Red));
+            set => SetValue(nameof(Red), value);
+        }
+        public int Green
+        {
+            get => (int)GetValue(nameof(Green));
+            set => SetValue(nameof(Green), value);
+        }
+        public int Blue
+        {
+            get => (int)GetValue(nameof(Blue));
+            set => SetValue(nameof(Blue), value);
+        }
+        public int Alpha
+        {
+            get => (int)GetValue(nameof(Alpha));
+            set => SetValue(nameof(Alpha), value);
+        }
+    }
+
     public class ZoneColorChangerSettings : SettingsBackup
     {
         public bool RecolorIcons
@@ -4092,10 +4165,10 @@ namespace SimpleModChecker.Systems
     {
         public string ModVersion { get; set; }
         public string LastUpdated { get; set; }
-        public FiveTwentyNineTilesSettings FiveTwentyNineTilesSettings { get; set; }
         public AdvancedSimulationSpeedSettings AdvancedSimulationSpeedSettings { get; set; }
         public AllAboardSettings AllAboardSettings { get; set; }
         public AnarchySettings AnarchySettings { get; set; }
+        public AreaBucketSettings AreaBucketSettings { get; set; }
         public AssetIconLibrarySettings AssetIconLibrarySettings { get; set; }
         public AssetPacksManagerSettings AssetPacksManagerSettings { get; set; }
         public AssetVariationChangerSettings AssetVariationChangerSettings { get; set; }
@@ -4106,7 +4179,6 @@ namespace SimpleModChecker.Systems
         public BetterSaveListSettings BetterSaveListSettings { get; set; }
         public BoundaryLinesModifierSettings BoundaryLinesModifierSettings { get; set; }
         public BrushSizeUnlimiterSettings BrushSizeUnlimiterSettings { get; set; }
-        //public ByeByeHomelessSettings ByeByeHomelessSettings { get; set; }
         public CimRouteHighlighterSettings CimRouteHighlighterSettings { get; set; }
         public CityStatsSettings CityStatsSettings { get; set; }
         public DemandMasterSettings DemandMasterSettings { get; set; }
@@ -4115,11 +4187,11 @@ namespace SimpleModChecker.Systems
         public ExtraAssetsImporterSettings ExtraAssetsImporterSettings { get; set; }
         public FindItSettings FindItSettings { get; set; }
         public FirstPersonCameraContinuedSettings FirstPersonCameraContinuedSettings { get; set; }
+        public FiveTwentyNineTilesSettings FiveTwentyNineTilesSettings { get; set; }
         public FPSLimiterSettings FPSLimiterSettings { get; set; }
         public HallOfFameSettings HallOfFameSettings { get; set; }
         public I18NEverywhereSettings I18NEverywhereSettings { get; set; }
         public ImageOverlaySettings ImageOverlaySettings { get; set; }
-        //public LuminaSettings LuminaSettings { get; set; }
         public MoveItSettings MoveItSettings { get; set; }
         public NoPollutionSettings NoPollutionSettings { get; set; }
         public NoTeleportingSettings NoTeleportingSettings { get; set; }
@@ -4141,8 +4213,8 @@ namespace SimpleModChecker.Systems
         public SunGlassesSettings SunGlassesSettings { get; set; }
         public ToggleOverlaysSettings ToggleOverlaysSettings { get; set; }
         public TradingCostTweakerSettings TradingCostTweakerSettings { get; set; }
-        public TrafficSettings TrafficSettings { get; set; }
         public TrafficLightsEnhancementSettings TrafficLightsEnhancementSettings { get; set; }
+        public TrafficSettings TrafficSettings { get; set; }
         public TrafficSimulationAdjusterSettings TrafficSimulationAdjusterSettings { get; set; }
         public TransitCapacityMultiplierSettings TransitCapacityMultiplierSettings { get; set; }
         public TransportPolicyAdjusterSettings TransportPolicyAdjusterSettings { get; set; }
@@ -4151,13 +4223,7 @@ namespace SimpleModChecker.Systems
         public VehicleVariationPacksSettings VehicleVariationPacksSettings { get; set; }
         public WaterFeaturesSettings WaterFeaturesSettings { get; set; }
         public WaterVisualTweaksSettings WaterVisualTweaksSettings { get; set; }
+        public WhitenessToggleSettings WhitenessToggleSettings { get; set; }
         public ZoneColorChangerSettings ZoneColorChangerSettings { get; set; }
-    }
-
-    public class SettingInfo
-    {
-        public string AssemblyName { get; set; }
-        public string FragmentSource { get; set; }
-        public Type ClassType { get; set; }
     }
 }

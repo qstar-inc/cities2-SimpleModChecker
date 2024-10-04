@@ -7,9 +7,14 @@ using Colossal.Serialization.Entities;
 using Game.PSI;
 using Game.SceneFlow;
 using Game.UI.Localization;
+using Game.UI.Menu;
 using Game;
 using SimpleModCheckerPlus;
 using System.Collections.Generic;
+using System.Linq;
+using System;
+using static UnityEngine.Rendering.DebugUI;
+using Colossal.Json;
 
 namespace SimpleModChecker.Systems
 {
@@ -18,6 +23,11 @@ namespace SimpleModChecker.Systems
         public Mod _mod;
         private int count;
         public static List<string> loadedMods = [];
+
+        public static Dictionary<string, ModInfo> LoadedModsInDatabase = [];
+        public static Dictionary<string, ModInfo> LoadedModsNotInDatabase = [];
+
+        public static OptionsUISystem uISystem = new();
         public static string LoadedModsList { get; set; } = "";
 
         public static LocalizedString LoadedModsListLocalized()
@@ -58,34 +68,62 @@ namespace SimpleModChecker.Systems
 
         private void CheckMod()
         {
-            count = 0;
+            try
+            {
+                count = 0;
 
-            foreach (var modInfo in GameManager.instance.modManager)
-            {
-                string modName = modInfo.asset.name;
-                if (!loadedMods.Contains(modName) && !modName.StartsWith("Colossal."))
+                foreach (var modInfo in GameManager.instance.modManager)
                 {
-                    loadedMods.Add(modName);
-                    count += 1;
-                    Mod.log.Info($"Loaded: {modName}");
+                    string modName = modInfo.asset.name;
+                    if (!loadedMods.Contains(modName) && !modName.StartsWith("Colossal."))
+                    {
+                        loadedMods.Add(modName);
+                        ModInfo mod = ModDatabase.ModDatabaseInfo.Values.FirstOrDefault(m => m.AssemblyName == modName);
+                        if (mod != null)
+                        {
+                            LoadedModsInDatabase.Add(modName, new ModInfo { AssemblyName = modName, FragmentSource = mod.FragmentSource, ClassType = mod.ClassType, Author = mod.Author, ModName = mod.ModName, PDX_ID = mod.PDX_ID });
+                        }
+                        else
+                        {
+                            LoadedModsNotInDatabase.Add(modName, new ModInfo { AssemblyName = modName, FragmentSource = null, ClassType = null, Author = null, ModName = null, PDX_ID = null });
+                        }
+                        count += 1;
+                        Mod.log.Info($"Loaded: {modName}");
+                    }
+                    else if (!loadedMods.Contains(modName))
+                    {
+                        Mod.log.Info($"Ignoring {modName}");
+                    }
                 }
+                Mod.log.Info($"Total mod(s): {count}");
+                if (Mod.Setting.ShowNotif)
+                {
+                    SendNotification(count);
+                }
+                List<ModInfo> sortedMods1 = ModInfoProcessor.SortByModName(LoadedModsInDatabase);
+                List<ModInfo> sortedMods2 = ModInfoProcessor.SortByAssembly(LoadedModsNotInDatabase);
+                sortedMods2.AddRange(sortedMods1);
+
+                foreach (var item in sortedMods2)
+                {
+                    if (item.PDX_ID != null)
+                    {
+                        LoadedModsList += $"- <{item.ModName}> [{item.PDX_ID}] — {item.Author}\r\n";
+                    }
+                    else
+                    {
+                        LoadedModsList += $"- {item.AssemblyName}\r\n";
+                    }
+                }
+                string ModsLoaded = Mod.Setting.ModsLoaded + LoadedModsList;
+                ++Mod.Setting.ModsLoadedVersion;
             }
-            Mod.log.Info($"Total mod(s): {count}");
-            if (Mod.Setting.ShowNotif)
-            {
-                SendNotification(count);
-            }
-            loadedMods.Sort();
-            foreach (var item in loadedMods)
-            {
-                LoadedModsList += $"{item} ......................................................................................................................................................................\n";
-            }
-            string ModsLoaded = Mod.Setting.ModsLoaded + LoadedModsList;
-            ++Mod.Setting.ModsLoadedVersion;
+            catch (Exception ex) { Mod.log.Info(ex); }
         }
 
         public void SendNotification(int count)
         {
+            uISystem = World.GetOrCreateSystemManaged<OptionsUISystem>();
             var modstext = "mod";
             if (count < 2)
             {
@@ -99,6 +137,18 @@ namespace SimpleModChecker.Systems
             string modMessageKey = count > 1
                 ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]"
                 : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]";
+            //string pageID = "SimpleModChecker.SimpleModCheckerPlus.Mod";
+            //Dictionary<string, OptionsUISystem.Page> pages = [];
+            //if (pages.TryGetValue(pageID, out OptionsUISystem.Page value))
+            //{
+            //    var sections = value.visibleSections;
+            //    foreach (OptionsUISystem.Section item in sections)
+            //    {
+            //        Mod.log.Info(item.id);
+            //        try { Mod.log.Info(item.ToJSONString()); } catch (Exception) { }
+            //    }
+            //}
+            //else { Mod.log.Info(":("); }
 
             NotificationSystem.Push("starq-smc-mod-check",
                         title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
@@ -107,7 +157,10 @@ namespace SimpleModChecker.Systems
                             {
                                 {"modCount", LocalizedString.Value(count.ToString())}
                             }),
-                        onClicked: () => System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log"));
+                        onClicked: () => {
+                            //System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log");
+                            uISystem.OpenPage("SimpleModChecker.SimpleModCheckerPlus.Mod", "Setting.ModListTab", false);
+                        });
         }
 
         public void RemoveNotification()
@@ -116,120 +169,3 @@ namespace SimpleModChecker.Systems
         }
     }
 }
-
-
-//                                        SCRAPED IDEA
-//private static void CleanFolders()
-//{
-//    string rootFolderPath = $"{EnvPath.kUserDataPath}/.cache/Mods/mods_subscribed";
-//    string[] subdirectories = Directory.GetDirectories(rootFolderPath);
-
-//    // Dictionary to store release numbers and their corresponding versions
-//    Dictionary<int, List<int>> releaseVersions = new Dictionary<int, List<int>>();
-
-//    // Iterate through each subdirectory
-//    foreach (string directoryPath in subdirectories)
-//    {
-//        DirectoryInfo directory = new DirectoryInfo(directoryPath);
-//        string directoryName = directory.Name;
-
-//        // Split folder name into release number and version
-//        string[] parts = directoryName.Split('_');
-//        if (parts.Length != 2)
-//        {
-//            Mod.log.Info($"Invalid folder name format: {directoryName}. Underscore Errors! Skipping!");
-//            continue;
-//        }
-
-//        if (!int.TryParse(parts[0], out int releaseNumber) || !int.TryParse(parts[1], out int version))
-//        {
-//            Mod.log.Info($"Invalid folder name format: {directoryName}. Number Errors! Skipping!");
-//            continue;
-//        }
-
-//        // Add release number and version to dictionary
-//        if (!releaseVersions.ContainsKey(releaseNumber))
-//        {
-//            releaseVersions[releaseNumber] = new List<int>();
-//        }
-//        releaseVersions[releaseNumber].Add(version);
-//    }
-
-//    int deleteCount = 0;
-//    long sizeCount = 0;
-
-//    // Iterate through release numbers and versions to find and delete older versions
-//    foreach (var kvp in releaseVersions)
-//    {
-//        int releaseNumber = kvp.Key;
-//        List<int> versions = kvp.Value;
-
-//        // Sort versions in descending order
-//        versions.Sort((x, y) => y.CompareTo(x));
-
-//        // Get the latest version
-//        int latestVersion = versions.First();
-
-//        // Delete folders with older versions
-//        foreach (var version in versions.Skip(1))
-//        {
-//            string folderToDelete = Path.Combine(rootFolderPath, $"{releaseNumber}_{version}");
-//            long size = GetDirectorySize(folderToDelete);
-//            Directory.Delete(folderToDelete, true); // Delete folder and its contents
-//            Mod.log.Info($"Deleted folder: {folderToDelete} ({size} bytes)");
-//            deleteCount++;
-//            //Mod.log.Info(deleteCount);
-//            sizeCount += size;
-//            //Mod.log.Info(sizeCount);
-//        }
-//    }
-
-//    if (deleteCount > 0)
-//    {
-//        Mod.log.Info($"Delete count: {deleteCount}");
-//        var deletedModsText = "mod";
-//        if (deleteCount < 2)
-//        {
-//            deletedModsText += "";
-//        }
-//        else
-//        {
-//            deletedModsText += "s";
-//        }
-
-//        NotificationSystem.Pop("deleted-check",
-//            delay: 10f,
-//            title: Mod.ModName,
-//            text: $"Removed {deleteCount} old version.",
-//            onClicked: () => System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log")
-//        );
-//        Mod.log.Info($"Total saved {sizeCount/1024/1024} Mb off of {deleteCount} mods");
-//    }
-//}
-
-//static long GetDirectorySize(string path)
-//{
-//    long size = 0;
-
-//    try
-//    {
-//        // Get the size of all files in the directory
-//        foreach (var file in Directory.EnumerateFiles(path))
-//        {
-//            size += new FileInfo(file).Length;
-//        }
-
-//        // Recursively get the size of all subdirectories
-//        foreach (var dir in Directory.EnumerateDirectories(path))
-//        {
-//            size += GetDirectorySize(dir);
-//        }
-//    }
-//    catch (UnauthorizedAccessException)
-//    {
-//        // Ignore any unauthorized access exceptions
-//    }
-
-//    return size;
-//}
-//                                        END OF SCRAPED IDEA

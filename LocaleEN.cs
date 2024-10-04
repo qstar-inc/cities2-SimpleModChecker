@@ -3,13 +3,36 @@
 // StarQ 2024
 
 using Colossal;
+using Game.Modding;
+using SimpleModChecker.Systems;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SimpleModCheckerPlus
 {
+
     public class LocaleEN(Setting setting) : IDictionarySource
     {
         private readonly Setting m_Setting = setting;
+
+        public static ModManager modManager;
+
+        public string GetListOfSupportedMods()
+        {
+            string finalLine = "";
+            List<ModInfo> sortedMods = ModInfoProcessor.SortByAuthor_Mod_ID();
+            foreach (var entry in sortedMods)
+            {
+                if (entry.Backupable != true) continue;
+                string name = entry.ModName;
+                string id = entry.PDX_ID;
+                string author = entry.Author;
+
+                string line = $"- {author} — {id}: <{name}>";
+                finalLine = string.Join("\r\n", finalLine, line);
+            }
+            return finalLine;
+        }
 
         public IEnumerable<KeyValuePair<string, string>> ReadEntries(IList<IDictionaryEntryError> errors, Dictionary<string, int> indexCounts)
         {
@@ -23,9 +46,11 @@ namespace SimpleModCheckerPlus
 
                 { m_Setting.GetOptionGroupLocaleID(Setting.OptionsGroup), Setting.OptionsGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.BackupGroup), Setting.BackupGroup },
+                { m_Setting.GetOptionGroupLocaleID(Setting.ModUtilityGroup), Setting.ModUtilityGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModListGroup), Setting.ModListGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ProfileNameGroup), Setting.ProfileNameGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModInfo), Setting.ModInfo },
+                { m_Setting.GetOptionGroupLocaleID(Setting.SupportedMod ), Setting.SupportedMod },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ShowNotif)), "Show Notification?" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ShowNotif)), "Enable or disable the Main Menu notification." },
@@ -35,6 +60,8 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.DeleteCorrupted)), "Enable or disable the automatic deletion of corrupted settings (game or mod)." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AutoRestoreSettingBackupOnStartup)), "Auto Restore Settings on Startup (Profile 1)?" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.AutoRestoreSettingBackupOnStartup)), "Enable or disable the automatic restoring of all game settings and supported mods settings from Profile 1 when the game starts." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.EnableVerboseLogging)), "Enable Verbose Logging?" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.EnableVerboseLogging)), "Enable or disable detailed logging to catch issues (only to be used for debugging purpose)." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ProfileName1)), "Profile 1" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ProfileName1)), "Rename Profile 1." },
@@ -54,23 +81,27 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ProfileName8)), "Rename Profile 8." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ProfileName9)), "Profile 9" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ProfileName9)), "Rename Profile 9." },
-
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.CreateProfileNameBackup)), "Save Profile Names" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.CreateProfileNameBackup)), "Save Profile Names after typing the entries." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ProfileDropdown)), "Select Profile" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ProfileDropdown)), $"Select the profile to be used for the buttons below. Profile 1 will be auto restored on launch if the \"Auto Restore Settings on Startup (Profile 1)?\" is active. The profile names can be changed from the \"Profile Names\" tab after toggling \"Show Advanced\"." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ProfileDropdown)), $"Select the profile to be used for the buttons below. Profile 1 will be auto restored on launch if the \"Auto Restore Settings on Startup (Profile 1)?\" is active.\r\nThe profile names can be changed from the \"Profile Names\" tab after toggling \"<[Show Advanced]>\"." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.CreateGameBackup)), "Backup Game Settings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.CreateGameBackup)), "Backup Game Settings to the selected profile." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RestoreGameBackup)), "Restore Game Settings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.RestoreGameBackup)), "Restore Game Settings from the selected profile." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.CreateModBackup)), "Backup Mod Settings" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.CreateModBackup)), "Backup Mod Settings to the selected profile. \r\nCurrently supported mods: 529 Tiles, AdvancedSimulationSpeed, All Aboard! (Faster Boarding Mod), Anarchy, Asset Icon Library, Asset Packs Manager, Asset Variation Changer, AutoDistrictNameStations, Auto Vehicle Renamer, Better Bulldozer, BetterMoonLight, BetterSaveList, Boundary Lines Modifier, Brush Size Unlimiter, Cim Route Highlighter, City Stats, Demand Master Pro [Alpha], Depot Capacity Changer, Extended Tooltip, ExtraAssetsImporter, Find It, First Person Camera Continued, FPS Limiter, Hall of Fame, I18n EveryWhere, Image Overlay, Move It, No Pollution, No Teleporting, No Vehicle Despawn, Pathfinding Customizer, Plop the Growables, Realistic Parking Mod, Realistic Trips, Realistic Workplaces And Households, Real Life, Recolor, Road Builder [BETA], Road Name Remover, School Capacity Balancer, Simple Mod Checker Plus, SmartTransportation, Station Naming, Stiffer Vehicles, Sun Glasses, Toggle Overlays, Trading Cost Tweaker, Traffic, Traffic Lights Enhancement Alpha, Traffic Simulation Adjuster, Transit Capacity Multiplier, TransportPolicyAdjuster, Tree Controller, Trips Data, Vehicle Variation Packs, Water Features, Water Visual Tweaks, Zone Color Changer" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.CreateModBackup)), "Backup Mod Settings to the selected profile." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RestoreModBackup)), "Restore Mod Settings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.RestoreModBackup)), "Restore Mod Settings from the selected profile." },
 
-
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModsLoaded)), "" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ModsLoaded)), "List of mods loaded in this session." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RefreshModDatabase)), "Refresh Mod Database" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.RefreshModDatabase)), "Refresh Mod Database from the Internet." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModDatabaseTime)), "Mod Database Time" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ModDatabaseTime)), "The time when the current mod database was published." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.NameText)), "Mod Name" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.NameText)), "" },
@@ -80,31 +111,30 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.AuthorText)), "" },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.BMaCLink)), "Buy Me a Coffee" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.BMaCLink)), "Support the author." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.Discord)), "Discord" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.Discord)), "Feedback/Suggestions for the mod in the Cities: Skylines Modding Server." },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheMod)), "This mod provides options for managing mods and game settings in Cities: Skylines II:" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheMod)), "This mod offers utility features for managing mods and various settings in Cities: Skylines II:\r\nFeautures\r\n- Mod Loaded Notification: Get a main menu notifications on startup which shows how many mod is loaded in this session. A list of assemblies can be found on the Mod List tab.\r\n- Auto Delete Mods with Missing CIDs: Automatically remove asset/map packages with missing Content IDs.\r\n- Auto Delete Corrupted Settings: In an event when the game crashes without improper disposing, the settings files for various mods or the game itself can get corrupted. Automatically delete those corrupted settings files.\r\n- [NEW] Backup/Restore Settings: Manually backup and restore vanilla game settings and mod settings separately in 9 profiles.\r\n- Auto Restore Settings on Startup (Profile 1): Automatically restore vanilla game settings and supported mod settings from Profile 1 on startup after accidental resets.\r\nKeybind backup/restore is not supported (yet)!" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheMod)), "" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheMod1)), "◉ Show Notification?: Toggle main menu notifications on or off." },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheMod1)), "" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheMod2)), "◉ Auto Delete Mods with Missing CIDs?: Automatically remove packages with missing Content IDs." },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheMod2)), "" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheMod3)), "◉ Auto Delete Corrupted Settings?: Automatically delete corrupted settings files (game or mod)." },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheMod3)), "" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheMod4)), "◉ Auto Restore Settings on Startup (Profile 1)?: Automatically restore vanilla settings from Profile 1 on startup after accidental resets." },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheMod4)), "" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheMod5)), "◉ [NEW] Backup/Restore Settings: Manually backup and restore vanilla game settings and mod settings separately in 9 profiles." },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheMod5)), "" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.AboutTheModX)), "(Keybinds are not yet supported but is on the roadmap. Visit the Discord Thread to suggest more mods settings to be backed up.)" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.AboutTheModX)), "" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.SupportedModText)), GetListOfSupportedMods() },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.SupportedModText)), "A list of currently supported mod for settings backup/restore." },
 
                 { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]", Mod.Name },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]", "Loaded {modCount} mod." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]", "Loaded {modCount} mods." },
+
                 { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]", "SMC+: Found {fileCount} corrupted Settings file" },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]", "Click here to delete and restart to prevent errors..." },
+                
                 { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods]", "SMC+: Found {modCount} mod(s) with missing CIDs" },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods]", "Click here to delete and restart to prevent errors..." },
+                
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreGame]", "Auto Restored game settings on game startup..." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreMods]", "Auto Restored mod settings on game startup..." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloadStarting]", "Mod Database is now being downloaded..." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloaded]", "Mod Database has been updated, it is recommended to restart the game..." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseLocalCopy]", "Mod Database couldn't be downloaded. Using local backup version..." },
+
                 { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeBackup]", $"{Mod.Name} is updated." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeBackup]", "Click here to recreate your Profile 1 (Mod) again..." },
 
