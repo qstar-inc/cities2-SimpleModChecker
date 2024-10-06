@@ -348,6 +348,5 @@ namespace SimpleModCheckerPlus
             RefreshedRecently = false;
             LastDownloaded = (long)0;
         }
-
     }
 }

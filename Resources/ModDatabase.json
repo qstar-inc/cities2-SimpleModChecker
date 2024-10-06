@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "Version": "2.2.41",
-    "Time": 1727968235
+    "Version": "2.2.42",
+    "Time": 1728231272
   },
   "ModDatabaseInfo": {
     "529Tile": {
@@ -12,6 +12,11 @@
       "PDX_ID": "74328",
       "Author": "algernon",
       "Backupable": true
+    },
+    "AddressesAndNames": {
+      "ModName": "Addresses & Names Mod",
+      "PDX_ID": "74182",
+      "Author": "klyte45"
     },
     "AdvancedSimulationSpeed": {
       "AssemblyName": "AdvancedSimulationSpeed",
@@ -145,6 +150,11 @@
       "PDX_ID": "84571",
       "Author": "wxdao"
     },
+    "CimCensus": {
+      "ModName": "Cim Census",
+      "PDX_ID": "85825",
+      "Author": "mattswarthout"
+    },
     "CimRouteHighlighter": {
       "AssemblyName": "EmploymentTracker",
       "FragmentSource": "EmploymentTracker.EmploymentTrackerSettings",
@@ -162,6 +172,16 @@
       "PDX_ID": "85284",
       "Author": "kendallroth",
       "Backupable": true
+    },
+    "CityVitalsWatch": {
+      "ModName": "City Vitals Watch (Monitor Stats)",
+      "PDX_ID": "85643",
+      "Author": "franzvz"
+    },
+    "Compass": {
+      "ModName": "Compass",
+      "PDX_ID": "86260",
+      "Author": "Cgameworld"
     },
     "DemandMaster": {
       "AssemblyName": "DemandMaster",
@@ -190,6 +210,11 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
+    "ExtendedTransportManager": {
+      "ModName": "Extended Transport Manager",
+      "PDX_ID": "74238",
+      "Author": "klyte45"
+    },
     "ExtraAssetsImporter": {
       "AssemblyName": "ExtraAssetsImporter",
       "FragmentSource": "ExtraAssetsImporter.Setting",
@@ -198,6 +223,31 @@
       "PDX_ID": "80529",
       "Author": "Triton Supreme",
       "Backupable": true
+    },
+    "ExtraDetailingTools": {
+      "ModName": "ExtraDetailingTools",
+      "PDX_ID": "80528",
+      "Author": "Triton Supreme"
+    },
+    "ExtraLandscapingTools": {
+      "ModName": "ExtraLandscapingTools",
+      "PDX_ID": "75728",
+      "Author": "Triton Supreme"
+    },
+    "ExtraLib": {
+      "ModName": "ExtraLib",
+      "PDX_ID": "75724",
+      "Author": "Triton Supreme"
+    },
+    "ExtraNetworksAndAreas": {
+      "ModName": "Extra Networks and Areas",
+      "PDX_ID": "77175",
+      "Author": "Mimonsi"
+    },
+    "ExtraUIScreens": {
+      "ModName": "Extra UI Screens",
+      "PDX_ID": "74151",
+      "Author": "klyte45"
     },
     "FindIt": {
       "AssemblyName": "FindIt",
@@ -226,6 +276,11 @@
       "Author": "krzychu124",
       "Backupable": true
     },
+    "FreeRangeCamera": {
+      "ModName": "Free Range Camera",
+      "PDX_ID": "75749",
+      "Author": "algernon"
+    },
     "HallOfFame": {
       "AssemblyName": "HallOfFame",
       "FragmentSource": "HallOfFame.Settings",
@@ -234,6 +289,11 @@
       "PDX_ID": "90641",
       "Author": "toverux",
       "Backupable": true
+    },
+    "HistoricalStart": {
+      "ModName": "Historical Start",
+      "PDX_ID": "74535",
+      "Author": "algernon"
     },
     "I18NEverywhere": {
       "AssemblyName": "I18NEverywhere",
@@ -253,11 +313,31 @@
       "Author": "algernon",
       "Backupable": true
     },
+    "ImprovedPieCharts": {
+      "ModName": "Improved Pie Charts",
+      "PDX_ID": "87398",
+      "Author": "rcav8tr"
+    },
+    "LineColorRandomizer": {
+      "ModName": "LineColorRandomizer",
+      "PDX_ID": "84492",
+      "Author": "TheSprtCZ"
+    },
+    "LineTool": {
+      "ModName": "Line Tool",
+      "PDX_ID": "75816",
+      "Author": "algernon"
+    },
     "Lumina": {
       "AssemblyName": "Lumina",
       "ModName": "Lumina",
       "PDX_ID": "75251",
       "Author": "Nyyoko"
+    },
+    "MapTextureReplacer": {
+      "ModName": "Map Texture Replacer",
+      "PDX_ID": "76050",
+      "Author": "Cgameworld"
     },
     "MoveIt": {
       "AssemblyName": "MoveIt",
@@ -268,6 +348,17 @@
       "Author": "Quboid",
       "Backupable": true
     },
+    "MoveItBeta": {
+      "ModName": "Move It (Beta)",
+      "PDX_ID": "83596",
+      "Author": "Quboid"
+    },
+    "NoCarTrailers": {
+      "ModName": "No Car Trailers",
+      "PDX_ID": "86553",
+      "Author": "mattswarthout"
+    },
+    "NoDogs": { "ModName": "NoDogs", "PDX_ID": "76546", "Author": "Noel2" },
     "NoPollution": {
       "AssemblyName": "NoPollution",
       "FragmentSource": "NoPollution.Setting",
@@ -295,6 +386,11 @@
       "Author": "mattswarthout",
       "Backupable": true
     },
+    "PathfindCosts": {
+      "ModName": "Pathfind Costs",
+      "PDX_ID": "84619",
+      "Author": "Aberro"
+    },
     "PathfindingCustomizer": {
       "AssemblyName": "PathfindingCustomizer",
       "FragmentSource": "PathfindingCustomizer.Setting",
@@ -304,6 +400,11 @@
       "Author": "Caby71",
       "Backupable": true
     },
+    "PerformanceMonitor": {
+      "ModName": "Performance Monitor",
+      "PDX_ID": "84661",
+      "Author": "rcav8tr"
+    },
     "PlopTheGrowables": {
       "AssemblyName": "PlopTheGrowables",
       "FragmentSource": "PlopTheGrowables.ModSettings",
@@ -312,6 +413,16 @@
       "PDX_ID": "75826",
       "Author": "algernon",
       "Backupable": true
+    },
+    "ProfitBasedIndustryAndOffice": {
+      "ModName": "Profit Based Industry And Office (PBIAO)",
+      "PDX_ID": "83825",
+      "Author": "Adwozo"
+    },
+    "PropLights": {
+      "ModName": "Prop Lights Mod",
+      "PDX_ID": "75104",
+      "Author": "Trejak"
     },
     "RealisticParking": {
       "AssemblyName": "RealisticParking",
@@ -358,6 +469,11 @@
       "Author": "yenyang",
       "Backupable": true
     },
+    "ReserveHousingForLocalPopulation": {
+      "ModName": "Reserve_housing_for_local_population",
+      "PDX_ID": "89993",
+      "Author": "Krazze"
+    },
     "RoadBuilder": {
       "AssemblyName": "RoadBuilder",
       "FragmentSource": "RoadBuilder.Setting",
@@ -376,6 +492,22 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
+    "RoadWearRemover": {
+      "ModName": "Road Wear Remover",
+      "PDX_ID": "75185",
+      "Author": "Cgameworld"
+    },
+    "SaveAllPrefabs": {
+      "ModName": "Save All Prefabs",
+      "PDX_ID": "85340",
+      "Author": "fergusq"
+    },
+    "SceneExplorer": {
+      "AssemblyName": "SceneExplorer",
+      "ModName": "Scene Explorer",
+      "PDX_ID": "74285",
+      "Author": "krzychu124"
+    },
     "SchoolCapacityBalancer": {
       "AssemblyName": "SchoolCapacityBalancer",
       "FragmentSource": "SchoolCapacityBalancer.Setting",
@@ -384,6 +516,11 @@
       "PDX_ID": "75190",
       "Author": "Wayz",
       "Backupable": true
+    },
+    "ShowTextTrends": {
+      "ModName": "Show Text Trends (Updated)",
+      "PDX_ID": "83733",
+      "Author": "Daniel-00001"
     },
     "SimpleModChecker": {
       "AssemblyName": "SimpleModChecker",
@@ -394,6 +531,12 @@
       "Author": "Qoushik",
       "Backupable": true
     },
+    "Skyve": {
+      "AssemblyName": "Skyve Mod",
+      "ModName": "Skyve [BETA]",
+      "PDX_ID": "75804",
+      "Author": "TDW"
+    },
     "SmartTransportation": {
       "AssemblyName": "SmartTransportation",
       "FragmentSource": "SmartTransportation.Setting",
@@ -402,6 +545,11 @@
       "PDX_ID": "90264",
       "Author": "ruzbeh0",
       "Backupable": true
+    },
+    "SpeedLimitEditor": {
+      "ModName": "Speed Limit Editor",
+      "PDX_ID": "85650",
+      "Author": "Aberro"
     },
     "StationNaming": {
       "AssemblyName": "StationNaming",
@@ -429,6 +577,12 @@
       "PDX_ID": "76849",
       "Author": "Cmyna",
       "Backupable": true
+    },
+    "TigonRailInfrastructure": {
+      "AssemblyName": "TigonsRailInfrastructureAssetPack",
+      "ModName": "Tigon's Rail Infrastructure Pack",
+      "PDX_ID": "90794",
+      "Author": "Tigon Ologdring"
     },
     "ToggleOverlays": {
       "AssemblyName": "ToggleableOverlays",
@@ -511,6 +665,11 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
+    "UnifiedIconLibrary": {
+      "ModName": "Unified Icon Library",
+      "PDX_ID": "74417",
+      "Author": "algernon"
+    },
     "VehicleVariationPacks": {
       "AssemblyName": "VehicleVariationPacks",
       "FragmentSource": "VehicleVariationPacks.Setting",
@@ -555,6 +714,11 @@
       "PDX_ID": "81568",
       "Author": "TDW",
       "Backupable": true
+    },
+    "ZoningToolkit": {
+      "ModName": "Zoning Toolkit",
+      "PDX_ID": "75750",
+      "Author": "zeeshanabid94"
     }
   }
 }

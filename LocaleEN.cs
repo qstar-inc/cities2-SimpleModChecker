@@ -133,7 +133,7 @@ namespace SimpleModCheckerPlus
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreMods]", "Auto Restored mod settings on game startup..." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloadStarting]", "Mod Database is now being downloaded..." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloaded]", "Mod Database has been updated, it is recommended to restart the game..." },
-                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseLocalCopy]", "Mod Database couldn't be downloaded. Using local backup version..." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseLocalCopy]", "Using offline Mod Database. Click to dismiss..." },
 
                 { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeBackup]", $"{Mod.Name} is updated." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeBackup]", "Click here to recreate your Profile 1 (Mod) again..." },

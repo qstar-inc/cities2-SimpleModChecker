@@ -138,17 +138,20 @@ namespace SimpleModCheckerPlus
             {
                 log.Info($"Last download was {readableTime}...");
             }
-            NotificationSystem.Push("starq-smc-mod-database-downloaded",
-                title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloadStarting]"),
-                progressState: ProgressState.Indeterminate
-                );
             string downloadUrl = "https://github.com/qstar-inc/cities2-SimpleModChecker/raw/refs/heads/master/Resources/ModDatabase.json";
             if (mode == 2) { Setting.RefreshedRecently = true; }
             if (mode == 1 && !((DateTimeOffset.UtcNow.ToUnixTimeSeconds() - Setting.LastDownloaded) > (long)TimeSpan.FromDays(3).TotalMilliseconds))
             {
                 log.Info($"Skipping...");
                 return;
+            }
+            else
+            {
+                NotificationSystem.Push("starq-smc-mod-database-downloaded",
+                    title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                    text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloadStarting]"),
+                    progressState: ProgressState.Indeterminate
+                    );
             }
             try
             {
