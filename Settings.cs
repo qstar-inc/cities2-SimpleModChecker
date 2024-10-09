@@ -15,7 +15,7 @@ using UnityEngine.Device;
 namespace SimpleModCheckerPlus
 {
     [FileLocation($"ModsSettings\\StarQ\\{Mod.Name}")]
-    [SettingsUITabOrder(MainTab, ModListTab, ProfileNameTab, AboutTab)]
+    [SettingsUITabOrder(AboutTab, MainTab, ModListTab, ProfileNameTab)]
     [SettingsUIGroupOrder(OptionsGroup, BackupGroup, ModUtilityGroup, ModListGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
     [SettingsUIShowGroupName(OptionsGroup, BackupGroup, ModListGroup, ModInfo, SupportedMod)]
     public class Setting : ModSetting

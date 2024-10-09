@@ -51,23 +51,16 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.2.4" />
+	<ModVersion Value="2.2.5" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.1.8*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="2.2.4" />
+	<ChangeLog Value="2.2.5" />
 	<ChangeLog>
-* Mod Database is no longer hardcoded in the mod/code.
-* Mod Database can be downloaded in runtime from GitHub, reducing the need to push constant code updates
-* In case of no internet, there's also a backup copy of Mod Database shipped with the mod.
-* Newly added supported mods: AreaBucket, Whiteness Toogle (Updated).
-* Reorganizing and cleaning up the options UI.
-* DLL name starting with "Colossal" namespaces are now ignored. If your mod has them, you should remove them from being shipped.
-* Interface style is no longer restored if subscribed to ExtraUI Screens mod.
-* Clicking on the main notification of "Loaded X mods" now takes users to the options page instead of opening the log file.
-* Minor Bug Fixes.
+* Minor bug fix for indefinite notifications.
+* OptionsUI now have Mod List as first tab instead of Options.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

@@ -183,6 +183,11 @@
       "PDX_ID": "86260",
       "Author": "Cgameworld"
     },
+    "CrossedThemeTrainVariation": {
+      "ModName": "Crossed Theme Train Variation Asset Pack",
+      "PDX_ID": "84784",
+      "Author": "Mimonsi"
+    },
     "DemandMaster": {
       "AssemblyName": "DemandMaster",
       "FragmentSource": "DemandMaster.Setting",
@@ -200,6 +205,11 @@
       "PDX_ID": "75684",
       "Author": "Wayz",
       "Backupable": true
+    },
+    "ElevatedTrainStation": {
+      "ModName": "Elevated Train Station",
+      "PDX_ID": "84515",
+      "Author": "Qoushik"
     },
     "ExtendedTooltip": {
       "AssemblyName": "ExtendedTooltip",
@@ -318,6 +328,11 @@
       "PDX_ID": "87398",
       "Author": "rcav8tr"
     },
+    "IntersectableSubwaySystem": {
+      "ModName": "Intersectable Subway System",
+      "PDX_ID": "87219",
+      "Author": "Qoushik"
+    },
     "LineColorRandomizer": {
       "ModName": "LineColorRandomizer",
       "PDX_ID": "84492",
@@ -339,6 +354,21 @@
       "PDX_ID": "76050",
       "Author": "Cgameworld"
     },
+    "MediumOfficeZoning": {
+      "ModName": "Medium Office Zoning",
+      "PDX_ID": "83207",
+      "Author": "Qoushik"
+    },
+    "MiniTrackServices": {
+      "ModName": "Mini Track Services",
+      "PDX_ID": "87564",
+      "Author": "Qoushik"
+    },
+    "MixedResidentialOfficeZoning": {
+      "ModName": "Mixed Residential Office Zoning",
+      "PDX_ID": "79067",
+      "Author": "Qoushik"
+    },
     "MoveIt": {
       "AssemblyName": "MoveIt",
       "FragmentSource": "MoveIt.Settings.Settings",
@@ -358,7 +388,11 @@
       "PDX_ID": "86553",
       "Author": "mattswarthout"
     },
-    "NoDogs": { "ModName": "NoDogs", "PDX_ID": "76546", "Author": "Noel2" },
+    "NoDogs": {
+      "ModName": "NoDogs",
+      "PDX_ID": "76546",
+      "Author": "Noel2"
+    },
     "NoPollution": {
       "AssemblyName": "NoPollution",
       "FragmentSource": "NoPollution.Setting",
@@ -424,6 +458,11 @@
       "PDX_ID": "75104",
       "Author": "Trejak"
     },
+    "PropVanillaVegetations": {
+      "ModName": "Prop Vanilla Vegetations",
+      "PDX_ID": "87099",
+      "Author": "Qoushik"
+    },
     "RealisticParking": {
       "AssemblyName": "RealisticParking",
       "FragmentSource": "RealisticParking.Setting",
@@ -460,6 +499,31 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
+    "RealWorldBrandAdobe": {
+      "ModName": "Real World Brands: Adobe",
+      "PDX_ID": "83168",
+      "Author": "Qoushik"
+    },
+    "RealWorldBrandApple": {
+      "ModName": "Real World Brand: Apple",
+      "PDX_ID": "86423",
+      "Author": "Qoushik"
+    },
+    "RealWorldBrandDiscord": {
+      "ModName": "Real World Brand: Discord",
+      "PDX_ID": "84186",
+      "Author": "Qoushik"
+    },
+    "RealWorldBrandParadox": {
+      "ModName": "Real World Brand: Paradox Interactive",
+      "PDX_ID": "80939",
+      "Author": "Qoushik"
+    },
+    "RealWorldBrandsPetrochemicals": {
+      "ModName": "Real World Petrochemical Companies",
+      "PDX_ID": "81625",
+      "Author": "Qoushik"
+    },
     "Recolor": {
       "AssemblyName": "Recolor",
       "FragmentSource": "Recolor.Settings.Setting",
@@ -473,6 +537,11 @@
       "ModName": "Reserve_housing_for_local_population",
       "PDX_ID": "89993",
       "Author": "Krazze"
+    },
+    "ResidentialServiceBuildings": {
+      "ModName": "Residential Service Building Asset Pack",
+      "PDX_ID": "79390",
+      "Author": "Mimonsi"
     },
     "RoadBuilder": {
       "AssemblyName": "RoadBuilder",
@@ -531,6 +600,11 @@
       "Author": "Qoushik",
       "Backupable": true
     },
+    "SingleFamilyResidentials": {
+      "ModName": "Single Family Residentials",
+      "PDX_ID": "87691",
+      "Author": "Qoushik"
+    },
     "Skyve": {
       "AssemblyName": "Skyve Mod",
       "ModName": "Skyve [BETA]",
@@ -568,6 +642,11 @@
       "PDX_ID": "81407",
       "Author": "Mimonsi",
       "Backupable": true
+    },
+    "SubwayVariation": {
+      "ModName": "Subway Variation Asset Pack",
+      "PDX_ID": "80797",
+      "Author": "Mimonsi"
     },
     "SunGlasses": {
       "AssemblyName": "SunGlasses",
@@ -629,6 +708,16 @@
       "Author": "tduck973564",
       "Backupable": true
     },
+    "TrainVariation": {
+      "ModName": "Train Variation Asset Pack",
+      "PDX_ID": "80789",
+      "Author": "Mimonsi"
+    },
+    "TramVariation": {
+      "ModName": "Tram Variation Asset Pack",
+      "PDX_ID": "80754",
+      "Author": "Mimonsi"
+    },
     "TransitCapacityMultiplier": {
       "AssemblyName": "TransitCapacityMultiplier",
       "FragmentSource": "TransitCapacityMultiplier.Setting",
@@ -669,6 +758,26 @@
       "ModName": "Unified Icon Library",
       "PDX_ID": "74417",
       "Author": "algernon"
+    },
+    "VanillaPloppablesServiceBuildings": {
+      "ModName": "Vanilla Ploppables: Service Buildings",
+      "PDX_ID": "79021",
+      "Author": "Qoushik"
+    },
+    "VanillaPloppablesZonedBuildings": {
+      "ModName": "Vanilla Ploppables: Zoned Buildings",
+      "PDX_ID": "79020",
+      "Author": "Qoushik"
+    },
+    "VanillaRoadsReversed": {
+      "ModName": "Vanilla Roads Reversed",
+      "PDX_ID": "86461",
+      "Author": "Qoushik"
+    },
+    "VanillaVehiclesRemixed": {
+      "ModName": "Vanilla Vehicles Remixed",
+      "PDX_ID": "84787",
+      "Author": "Qoushik"
     },
     "VehicleVariationPacks": {
       "AssemblyName": "VehicleVariationPacks",

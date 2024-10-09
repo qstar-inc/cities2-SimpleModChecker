@@ -125,22 +125,22 @@ namespace SimpleModCheckerPlus
         public static async Task DownloadNow(int mode)
         {
             log.Info("Downloading ModDatabase");
-            TimeSpan timeSinceLastDownload = TimeSpan.FromSeconds((DateTimeOffset.UtcNow.ToUnixTimeSeconds() - Setting.LastDownloaded));
-            string readableTime = $"{timeSinceLastDownload.Days} day{(timeSinceLastDownload.Days != 1 ? "s" : "")}, " +
-                  $"{timeSinceLastDownload.Hours} hour{(timeSinceLastDownload.Hours != 1 ? "s" : "")}, " +
-                  $"{timeSinceLastDownload.Minutes} minute{(timeSinceLastDownload.Minutes != 1 ? "s" : "")}, " +
-                  $"{timeSinceLastDownload.Seconds} second{(timeSinceLastDownload.Seconds != 1 ? "s" : "")} ago";
             if (Setting.LastDownloaded == 0)
             {
                 log.Info($"First download in progress...");
             }
             else
             {
+                TimeSpan timeSinceLastDownload = TimeSpan.FromSeconds((DateTimeOffset.UtcNow.ToUnixTimeSeconds() - Setting.LastDownloaded));
+                string readableTime = $"{timeSinceLastDownload.Days} day{(timeSinceLastDownload.Days != 1 ? "s" : "")}, " +
+                      $"{timeSinceLastDownload.Hours} hour{(timeSinceLastDownload.Hours != 1 ? "s" : "")}, " +
+                      $"{timeSinceLastDownload.Minutes} minute{(timeSinceLastDownload.Minutes != 1 ? "s" : "")}, " +
+                      $"{timeSinceLastDownload.Seconds} second{(timeSinceLastDownload.Seconds != 1 ? "s" : "")} ago";
                 log.Info($"Last download was {readableTime}...");
             }
             string downloadUrl = "https://github.com/qstar-inc/cities2-SimpleModChecker/raw/refs/heads/master/Resources/ModDatabase.json";
             if (mode == 2) { Setting.RefreshedRecently = true; }
-            if (mode == 1 && !((DateTimeOffset.UtcNow.ToUnixTimeSeconds() - Setting.LastDownloaded) > (long)TimeSpan.FromDays(3).TotalMilliseconds))
+            if (mode == 1 && !((DateTimeOffset.UtcNow.ToUnixTimeSeconds() - Setting.LastDownloaded) > (long)TimeSpan.FromDays(3).TotalSeconds))
             {
                 log.Info($"Skipping...");
                 return;

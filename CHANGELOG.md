@@ -1,3 +1,7 @@
+# 2.2.5 (2024-10-10) - 3553 subs
+- Minor bug fix for indefinite notifications.
+- OptionsUI now have Mod List as first tab instead of Options.
+
 # 2.2.4 (2024-10-04) - 3483 subs
 - Mod Database is no longer hardcoded in the mod/code.
 - Mod Database can be downloaded in runtime from GitHub, reducing the need to push constant code updates
