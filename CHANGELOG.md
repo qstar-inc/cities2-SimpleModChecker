@@ -1,3 +1,6 @@
+# 2.2.6 (2024-10-11) - 3586 sub
+- Code logic update for bug fixes in certain conditions.
+
 # 2.2.5 (2024-10-10) - 3553 subs
 - Minor bug fix for indefinite notifications.
 - OptionsUI now have Mod List as first tab instead of Options.

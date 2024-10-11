@@ -59,8 +59,7 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog Value="2.2.6" />
 	<ChangeLog>
-* Minor bug fix for indefinite notifications.
-* OptionsUI now have Mod List as first tab instead of Options.
+* Code logic update for bug fixes in certain conditions.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
