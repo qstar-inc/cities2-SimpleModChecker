@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "Version": "2.2.42",
-    "Time": 1728231272
+    "Version": "2.2.60",
+    "Time": 1728655478
   },
   "ModDatabaseInfo": {
     "529Tile": {
@@ -178,15 +178,35 @@
       "PDX_ID": "85643",
       "Author": "franzvz"
     },
+    "CoalTruckResourcePiles": {
+      "ModName": "Coal Truck Resource Piles",
+      "PDX_ID": "79997",
+      "Author": "MayorWanze"
+    },
+    "ColorfulBillboards": {
+      "ModName": "Colorful Billboards",
+      "PDX_ID": "81543",
+      "Author": "MayorWanze"
+    },
     "Compass": {
       "ModName": "Compass",
       "PDX_ID": "86260",
       "Author": "Cgameworld"
     },
+    "CRACoreAssets": {
+      "ModName": "CRA Core Assets",
+      "PDX_ID": "89195",
+      "Author": "sermainer"
+    },
     "CrossedThemeTrainVariation": {
       "ModName": "Crossed Theme Train Variation Asset Pack",
       "PDX_ID": "84784",
       "Author": "Mimonsi"
+    },
+    "CustomRoadAssets": {
+      "ModName": "Custom Road Assets",
+      "PDX_ID": "86885",
+      "Author": "sermainer"
     },
     "DemandMaster": {
       "AssemblyName": "DemandMaster",
@@ -205,6 +225,11 @@
       "PDX_ID": "75684",
       "Author": "Wayz",
       "Backupable": true
+    },
+    "DumpsterfirePack": {
+      "ModName": "Dumpsterfire Asset Pack",
+      "PDX_ID": "80036",
+      "Author": "MayorWanze"
     },
     "ElevatedTrainStation": {
       "ModName": "Elevated Train Station",
@@ -277,6 +302,11 @@
       "Author": "Cgameworld",
       "Backupable": true
     },
+    "FloatableBoathouses": {
+      "ModName": "Floatable Boathouses",
+      "PDX_ID": "79888",
+      "Author": "MayorWanze"
+    },
     "FPSLimiter": {
       "AssemblyName": "FPS_Limiter",
       "FragmentSource": "FPS_Limiter.FPSLimiterSettings",
@@ -328,10 +358,20 @@
       "PDX_ID": "87398",
       "Author": "rcav8tr"
     },
+    "IndustrialTaxControllerFix": {
+      "ModName": "Industrial Tax Controller Fix [TEST]",
+      "PDX_ID": "76632",
+      "Author": "Qoushik"
+    },
     "IntersectableSubwaySystem": {
       "ModName": "Intersectable Subway System",
       "PDX_ID": "87219",
       "Author": "Qoushik"
+    },
+    "LiferaftMarineVessel": {
+      "ModName": "Liferaft Marine Vessel",
+      "PDX_ID": "80048",
+      "Author": "MayorWanze"
     },
     "LineColorRandomizer": {
       "ModName": "LineColorRandomizer",
@@ -420,6 +460,11 @@
       "Author": "mattswarthout",
       "Backupable": true
     },
+    "OutdoorFireplace": {
+      "ModName": "Outdoor Fireplace Asset Pack",
+      "PDX_ID": "79836",
+      "Author": "MayorWanze"
+    },
     "PathfindCosts": {
       "ModName": "Pathfind Costs",
       "PDX_ID": "84619",
@@ -462,6 +507,11 @@
       "ModName": "Prop Vanilla Vegetations",
       "PDX_ID": "87099",
       "Author": "Qoushik"
+    },
+    "RainbowRoads": {
+      "ModName": "Rainbow Roads Asset Pack",
+      "PDX_ID": "79898",
+      "Author": "MayorWanze"
     },
     "RealisticParking": {
       "AssemblyName": "RealisticParking",
@@ -634,6 +684,11 @@
       "Author": "RollWind",
       "Backupable": true
     },
+    "StatueOfLiberty": {
+      "ModName": "Statue of Liberty",
+      "PDX_ID": "90114",
+      "Author": "Nyyoko"
+    },
     "StifferVehicles": {
       "AssemblyName": "StifferVehicles",
       "FragmentSource": "StifferVehicles.Setting",
@@ -656,6 +711,11 @@
       "PDX_ID": "76849",
       "Author": "Cmyna",
       "Backupable": true
+    },
+    "TargetableBillboardsandSigns": {
+      "ModName": "Targetable Billboards and Signs",
+      "PDX_ID": "80728",
+      "Author": "MayorWanze"
     },
     "TigonRailInfrastructure": {
       "AssemblyName": "TigonsRailInfrastructureAssetPack",
@@ -736,6 +796,11 @@
       "Author": "TheSonnyX",
       "Backupable": true
     },
+    "TrashPack": {
+      "ModName": "Trash Asset Pack",
+      "PDX_ID": "79999",
+      "Author": "MayorWanze"
+    },
     "TreeController": {
       "AssemblyName": "Tree_Controller",
       "FragmentSource": "Tree_Controller.Settings.TreeControllerSettings",
@@ -758,6 +823,11 @@
       "ModName": "Unified Icon Library",
       "PDX_ID": "74417",
       "Author": "algernon"
+    },
+    "VanillaCarProps": {
+      "ModName": "Vanilla Car Props Asset pack ",
+      "PDX_ID": "82254",
+      "Author": "ZedeTTV"
     },
     "VanillaPloppablesServiceBuildings": {
       "ModName": "Vanilla Ploppables: Service Buildings",
@@ -805,6 +875,11 @@
       "PDX_ID": "77260",
       "Author": "HX2003",
       "Backupable": true
+    },
+    "WeatherPlus": {
+      "ModName": "Weather Plus (deprecated)",
+      "PDX_ID": "82370",
+      "Author": "Mimonsi"
     },
     "WhitenessToggle": {
       "AssemblyName": "Whiteness-Toggle",
