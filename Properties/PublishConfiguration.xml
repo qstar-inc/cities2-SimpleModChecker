@@ -51,13 +51,13 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.2.5" />
+	<ModVersion Value="2.2.6" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.1.8*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="2.2.5" />
+	<ChangeLog Value="2.2.6" />
 	<ChangeLog>
 * Minor bug fix for indefinite notifications.
 * OptionsUI now have Mod List as first tab instead of Options.

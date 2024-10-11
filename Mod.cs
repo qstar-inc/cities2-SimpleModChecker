@@ -27,7 +27,7 @@ namespace SimpleModCheckerPlus
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "2.2.4";
+        public static string Version = "2.2.6";
         
         public static Setting Setting;
         public ModNotification ModNotification;
@@ -182,6 +182,10 @@ namespace SimpleModCheckerPlus
                         );
                     CopyLocalBackup();
                 }
+                else
+                {
+                    NotificationSystem.Pop("starq-smc-mod-database-downloaded");
+                }
             }
             catch (TimeoutException timeoutEx)
             {
@@ -190,6 +194,7 @@ namespace SimpleModCheckerPlus
                 {
                     CopyLocalBackup();
                 }
+                NotificationSystem.Pop("starq-smc-mod-database-downloaded");
             }
             catch (Exception ex)
             {
@@ -198,7 +203,9 @@ namespace SimpleModCheckerPlus
                 {
                     CopyLocalBackup();
                 }
+                NotificationSystem.Pop("starq-smc-mod-database-downloaded");
             }
+
             
         }
 

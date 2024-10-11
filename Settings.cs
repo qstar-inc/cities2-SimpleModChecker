@@ -103,7 +103,9 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(MainTab, BackupGroup)]
         [SettingsUIDisableByCondition(typeof(Setting), nameof(RefreshedRecently))]
         public bool RefreshModDatabase { set { Task.Run(() => Mod.DownloadNow(2)); } }
-        [SettingsUIAdvanced]
+
+        [SettingsUIHidden]
+        public int ModDatabaseTimeVersion { get; set; }
         [SettingsUISection(MainTab, BackupGroup)]
         public string ModDatabaseTime => ModDatabase.ModDatabaseTime;
 

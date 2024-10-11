@@ -72,6 +72,7 @@ namespace SimpleModChecker.Systems
                     $"{timeSinceLastUpdate.Minutes} minute{(timeSinceLastUpdate.Minutes != 1 ? "s" : "")}, " +
                     $"{timeSinceLastUpdate.Seconds} second{(timeSinceLastUpdate.Seconds != 1 ? "s" : "")} old";
             ModDatabaseTime = DateTimeOffset.FromUnixTimeSeconds(metaData.Time).ToLocalTime().ToString("dd MMMM yyyy hh:mm:ss tt zzz");
+            Mod.Setting.ModsLoadedVersion++;
             Mod.log.Info($"ModDatabase is {readableAge} ({ModDatabaseTime})...");
             
             ModDatabaseInfo = [];

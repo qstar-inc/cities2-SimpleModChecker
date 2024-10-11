@@ -116,10 +116,10 @@ namespace SimpleModChecker.Systems
 
         private void SendModUpdateNotification(string current, string prev)
         {
-            //if (current == "2.2.4" && prev == "2.2.3")
-            //{
-            //    return;
-            //}
+            if ((current == "2.2.4" || current == "2.2.6") && (prev == "2.2.3" || prev == "2.2.4"))
+            {
+                return;
+            }
             Mod.log.Info($"Mod version mismatch. Current: {current}, Backup: {prev}");
             NotificationSystem.Push("starq-smc-mod-settings-update",
                 title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeBackup]"),
