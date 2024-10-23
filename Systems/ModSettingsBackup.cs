@@ -18,6 +18,7 @@ using Colossal.Serialization.Entities;
 using Colossal.PSI.Environment;
 using Colossal.PSI.Common;
 using Colossal.IO.AssetDatabase;
+using static Colossal.AssetPipeline.Importers.DidimoImporter.DidimoData;
 
 namespace SimpleModChecker.Systems
 {
@@ -173,7 +174,7 @@ namespace SimpleModChecker.Systems
                     string assembly = entry.Value.AssemblyName;
                     //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
 
-                    if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
+                    if (fragmentSource == "FiveTwentyNineTiles.ModS ettings") { fragmentSource = "529."; }
                     if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
 
                     PropertyInfo property = typeof(ModSettings).GetProperty($"{entry.Value.ClassType.Name}");
@@ -185,26 +186,53 @@ namespace SimpleModChecker.Systems
                         if (File.Exists(backupFile))
                         {
                             string jsonStringRead = File.ReadAllText(backupFile);
-                            if (jsonStringRead != null && jsonStringRead != "")
+                            if (!string.IsNullOrEmpty(jsonStringRead))
                             {
                                 try
                                 {
                                     JObject jsonObject = JObject.Parse(jsonStringRead);
-
-                                    if (jsonObject[classType.Name] != null)
+                                    var settingsJson = jsonObject[classType.Name];
+                                    if (settingsJson != null && settingsJson.Type != JTokenType.Null)
                                     {
-                                        //Mod.log.Info($"Existing {sectionName}Settings found.");
-                                        sectionSettings = jsonObject[entry.Value.ClassType.Name].ToObject(classType);
-                                        if (log) Mod.log.Info($"Keeping existing backup for {sectionName}.");
+                                        try
+                                        {
+                                            ConstructorInfo constructor = classType.GetConstructor(Type.EmptyTypes);
+                                            if (constructor != null)
+                                            {
+                                                sectionSettings = constructor.Invoke(null);
+                                            }
+                                            else
+                                            {
+                                                Mod.log.Info($"No parameterless constructor found for {classType.Name}");
+                                                sectionSettings = null;
+                                            }
+                                            foreach (PropertyInfo prop in classType.GetProperties())
+                                            {
+                                                if (settingsJson[prop.Name] != null && settingsJson[prop.Name].Type != JTokenType.Null)
+                                                {
+                                                    var value = settingsJson[prop.Name].ToObject(prop.PropertyType);
+                                                    prop.SetValue(sectionSettings, value);
+                                                }
+                                                else
+                                                {
+                                                    prop.SetValue(sectionSettings, null);
+                                                }
+                                            }
+                                            //Mod.log.Info($"Existing {sectionName}Settings found.");
+                                            //sectionSettings = jsonObject[entry.Value.ClassType.Name].ToObject(classType);
+                                            if (log) Mod.log.Info($"Keeping existing backup for {sectionName}.");
+                                        } catch (Exception ex) { Mod.log.Info("Error: " + ex); }
                                     }
-                                }
-                                catch (Exception ex) { Mod.log.Info(ex); }
+                                } catch (Exception ex) { Mod.log.Info("Error: " + ex); }
                             }
                         }
                     }
                     else
                     {
-                        sectionSettings = GetSettingsData(sectionName, fragmentSource, sectionSettings, classType, log);
+                        try
+                        {
+                            sectionSettings = GetSettingsData(sectionName, fragmentSource, sectionSettings, classType, log);
+                        } catch (Exception ex ) { Mod.log.Info("ERR: "+ex); }
                     }
 
                     //string TempForLogging = JsonConvert.SerializeObject(sectionSettings);
@@ -230,12 +258,12 @@ namespace SimpleModChecker.Systems
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
             IEnumerable<SettingAsset> settingAssets;
-            if (name == "Traffic")
+            if (name == "80095")
             {
                 var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Traffic General Settings"));
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
-            else if(name == "WaterFeatures")
+            else if(name == "75613")
             {
                 var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Mods_Yenyang_Water_Features") || asset.name.Contains("WaterFeatures") || asset.name.Contains("Water_Feature"));
                 settingAssets = AssetDatabase.global.GetAssets(filter);
@@ -258,14 +286,14 @@ namespace SimpleModChecker.Systems
                     
                     //try { Mod.log.Info($"{fragment.name} is {fragment.source.GetType().Name}"); } catch (Exception ex) { Mod.log.Info(ex); }
                     if (fragment.source.GetType().Name == "UnityLogger" ) { }
-                    else if (fragment.source.ToString().Contains("=====APM Settings=====") && name == "AssetPacksManager")
+                    else if (fragment.source.ToString().Contains("=====APM Settings=====") && name == "78903")
                     {
                         (ProcessedFragmentSource, settingsBackup) = ProcessFragmentSource(fragment.source, classType, JsonSerializerSettings);
                     }
                     else
                     {
                         //Mod.log.Info($"{fragment.source}+{name}");
-                        bool validity = GetSectionValidity($"{fragment.source}+{name}");
+                        bool validity = GetSectionValidity($"{name}+{fragment.source}");
                         //Mod.log.Info($"{fragment.source}+{name} is {validity}");
                         if (validity)
                         {
@@ -294,66 +322,66 @@ namespace SimpleModChecker.Systems
             switch (fragmentSourceType)
             {
                 // fragment.source => class
-                case "FiveTwentyNineTiles.ModSettings+529Tile":
-                case "AdvancedSimulationSpeed.Setting+AdvancedSimulationSpeed":
-                case "AllAboard.Setting+AllAboard":
-                case "Anarchy.Settings.AnarchyModSettings+Anarchy":
-                case "AreaBucket.Setting+AreaBucket":
-                case "AssetIconLibrary.Setting+AssetIconLibrary":
-                case "AssetPacksManager.Setting+AssetPacksManager":
-                case "AssetVariationChanger.Setting+AssetVariationChanger":
-                case "AutoDistrictNameStations.ModOptions+AutoDistrictNameStations":
-                case "AutoVehicleRenamer.AutoVehicleRenamerSetting+AutoVehicleRenamer":
-                case "Better_Bulldozer.Settings.BetterBulldozerModSettings+BetterBulldozer":
-                case "BetterMoonLight.Setting+BetterMoonLight":
-                case "BetterSaveList.Setting+BetterSaveList":
-                case "BoundaryLinesModifier.Setting+BoundaryLinesModifier":
-                case "BrushSizeUnlimiter.MyOptions+BrushSizeUnlimiter":
-                case "EmploymentTracker.EmploymentTrackerSettings+CimRouteHighlighter":
-                case "CityStats.ModSettings+CityStats":
-                case "DemandMaster.Setting+DemandMaster":
-                case "DepotCapacityChanger.Setting+DepotCapacityChanger":
-                case "ExtendedTooltip.ModSettings+ExtendedTooltip":
-                case "ExtraAssetsImporter.Setting+ExtraAssetsImporter":
-                case "FindIt.FindItSettings+FindIt":
-                case "FirstPersonCameraContinued.Setting+FirstPersonCameraContinued":
-                case "FPS_Limiter.FPSLimiterSettings+FPSLimiter":
-                case "HallOfFame.Settings+HallOfFame":
-                case "I18NEverywhere.Setting+I18NEverywhere":
-                case "ImageOverlay.ModSettings+ImageOverlay":
-                case "MoveIt.Settings.Settings+MoveIt":
-                case "NoPollution.Setting+NoPollution":
-                case "NoTeleporting.Setting+NoTeleporting":
-                case "NoTrafficDespawn.TrafficDespawnSettings+NoVehicleDespawn":
-                case "PathfindingCustomizer.Setting+PathfindingCustomizer":
-                case "PlopTheGrowables.ModSettings+PlopTheGrowables":
-                case "RealisticParking.Setting+RealisticParking":
-                case "Time2Work.Setting+RealisticTrips":
-                case "RealisticWorkplacesAndHouseholds.Setting+RealisticWorkplacesAndHouseholds":
-                case "RealLife.Setting+RealLife":
-                case "Recolor.Settings.Setting+Recolor":
-                case "RoadBuilder.Setting+RoadBuilder":
-                case "RoadNameRemover.Setting+RoadNameRemover":
-                case "SchoolCapacityBalancer.Setting+SchoolCapacityBalancer":
-                case "SimpleModCheckerPlus.Setting+SimpleModChecker":
-                case "SmartTransportation.Setting+SmartTransportation":
-                case "StationNaming.Setting.StationNamingSettings+StationNaming":
-                case "StifferVehicles.Setting+StifferVehicles":
-                case "SunGlasses.Setting+SunGlasses":
-                case "ToggleableOverlays.Setting+ToggleOverlays":
-                case "TradingCostTweaker.Setting+TradingCostTweaker":
-                case "Traffic.ModSettings+Traffic":
-                case "C2VM.TrafficLightsEnhancement.Settings+TrafficLightsEnhancement":
-                case "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions+TrafficSimulationAdjuster":
-                case "TransitCapacityMultiplier.Setting+TransitCapacityMultiplier":
-                case "TransportPolicyAdjuster.Setting+TransportPolicyAdjuster":
-                case "Tree_Controller.Settings.TreeControllerSettings+TreeController":
-                case "TripsData.Setting+TripsData":
-                case "VehicleVariationPacks.Setting+VehicleVariationPacks":
-                case "Water_Features.Settings.WaterFeaturesSettings+WaterFeatures":
-                case "WaterVisualTweaksMod.WaterVisualTweaksSettings+WaterVisualTweaks":
-                case "Whiteness_Toggle.Setting+WhitenessToggle":
-                case "ZoneColorChanger.Setting+ZoneColorChanger":
+                case "74286+FPS_Limiter.FPSLimiterSettings":
+                case "74324+MoveIt.Settings.Settings":
+                case "74328+FiveTwentyNineTiles.ModSettings":
+                case "74539+ImageOverlay.ModSettings":
+                case "74604+Anarchy.Settings.AnarchyModSettings":
+                case "75190+SchoolCapacityBalancer.Setting":
+                case "75249+BrushSizeUnlimiter.MyOptions":
+                case "75250+Better_Bulldozer.Settings.BetterBulldozerModSettings":
+                case "75426+I18NEverywhere.Setting":
+                case "75613+Water_Features.Settings.WaterFeaturesSettings":
+                case "75684+DepotCapacityChanger.Setting":
+                case "75826+PlopTheGrowables.ModSettings":
+                case "75993+Tree_Controller.Settings.TreeControllerSettings":
+                case "76662+EmploymentTracker.EmploymentTrackerSettings":
+                case "76836+TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions":
+                case "76849+SunGlasses.Setting":
+                case "76908+AutoDistrictNameStations.ModOptions":
+                case "77171+Time2Work.Setting":
+                case "77240+FindIt.FindItSettings":
+                case "77260+WaterVisualTweaksMod.WaterVisualTweaksSettings":
+                case "77463+RoadNameRemover.Setting":
+                case "77923+BetterMoonLight.Setting":
+                case "78131+StationNaming.Setting.StationNamingSettings":
+                case "78188+ExtendedTooltip.ModSettings":
+                case "78601+NoPollution.Setting":
+                case "78622+TransportPolicyAdjuster.Setting":
+                case "78847+AssetVariationChanger.Setting":
+                case "78903+AssetPacksManager.Setting":
+                case "78960+C2VM.TrafficLightsEnhancement.Settings":
+                case "79186+SimpleModCheckerPlus.Setting":
+                case "79237+FirstPersonCameraContinued.Setting":
+                case "79634+AssetIconLibrary.Setting":
+                case "79794+AdvancedSimulationSpeed.Setting":
+                case "79872+AutoVehicleRenamer.AutoVehicleRenamerSetting":
+                case "79875+TripsData.Setting":
+                case "80095+Traffic.ModSettings":
+                case "80403+TransitCapacityMultiplier.Setting":
+                case "80529+ExtraAssetsImporter.Setting":
+                case "80826+Whiteness_Toggle.Setting":
+                case "80931+ToggleableOverlays.Setting":
+                case "81012+VehicleVariationPacks.Setting":
+                case "81157+AreaBucket.Setting":
+                case "81407+StifferVehicles.Setting":
+                case "81568+ZoneColorChanger.Setting":
+                case "82374+BetterSaveList.Setting":
+                case "84638+Recolor.Settings.Setting":
+                case "85211+NoTrafficDespawn.TrafficDespawnSettings":
+                case "85284+CityStats.ModSettings":
+                case "86124+TradingCostTweaker.Setting":
+                case "86462+PathfindingCustomizer.Setting":
+                case "86510+NoTeleporting.Setting":
+                case "86605+AllAboard.Setting":
+                case "86728+BoundaryLinesModifier.Setting":
+                case "86868+RealLife.Setting":
+                case "86944+DemandMaster.Setting":
+                case "87190+RoadBuilder.Setting":
+                case "87313+RealisticParking.Setting":
+                case "87755+RealisticWorkplacesAndHouseholds.Setting":
+                case "90264+SmartTransportation.Setting":
+                case "90641+HallOfFame.Settings":
                     return true;
                 default:
                     return false;

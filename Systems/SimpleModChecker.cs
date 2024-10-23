@@ -75,10 +75,11 @@ namespace SimpleModChecker.Systems
                     if (!loadedMods.Contains(modName) && !modName.StartsWith("Colossal."))
                     {
                         loadedMods.Add(modName);
-                        ModInfo mod = ModDatabase.ModDatabaseInfo.Values.FirstOrDefault(m => m.AssemblyName == modName);
+                        var entry =  ModDatabase.ModDatabaseInfo.FirstOrDefault(m => m.Value.AssemblyName == modName);
+                        (string id, ModInfo mod) = (entry.Key, entry.Value);
                         if (mod != null)
                         {
-                            LoadedModsInDatabase.Add(modName, new ModInfo { AssemblyName = modName, FragmentSource = mod.FragmentSource, ClassType = mod.ClassType, Author = mod.Author, ModName = mod.ModName, PDX_ID = mod.PDX_ID });
+                            LoadedModsInDatabase.Add(modName, new ModInfo { AssemblyName = modName, FragmentSource = mod.FragmentSource, ClassType = mod.ClassType, Author = mod.Author, ModName = mod.ModName, PDX_ID = id });
                         }
                         else
                         {

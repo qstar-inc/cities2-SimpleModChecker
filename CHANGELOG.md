@@ -1,3 +1,7 @@
+# 2.2.9 (2024-10-23) - 3676 subs
+- Fix for mod backup not keeping backups for not loaded mods.
+- Database layout changed.
+
 # 2.2.8 (2024-10-23) - 4094 subs
 - Compatibility with game version 1.1.10f1.
 - Compatibility with 'Hall of Fame' update.
