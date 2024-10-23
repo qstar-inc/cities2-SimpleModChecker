@@ -1,51 +1,56 @@
 {
   "Metadata": {
-    "Version": "2.2.80",
-    "Time": 1729002833
+    "Version": "2.2.81",
+    "Time": 1729672418
   },
   "ModDatabaseInfo": {
-    "a935027590__ZMZ铁路/地铁轨道资产包 ZMZ Train/Subway Track Assets Pack[Beta]": {
+    "89pleasure__ExtendedTooltip": {
+      "ModName": "ExtendedTooltip",
+      "PDX_ID": "77312",
+      "Author": "89pleasure"
+    },
+    "a935027590__ZMZ铁路_地铁轨道资产包_ZMZ_Train_Subway_Track_Assets_PackBeta": {
       "AssemblyName": "ZMZ Train&Subway Track Assets Pack",
       "ModName": "ZMZ铁路/地铁轨道资产包 ZMZ Train/Subway Track Assets Pack[Beta]",
       "PDX_ID": "80044",
       "Author": "a935027590"
     },
-    "a935027590__公交终点站(右侧交通) Bus Station(Right-Hand Traffic)": {
+    "a935027590__公交终点站(右侧交通)_Bus_Station(Right-Hand_Traffic)": {
       "ModName": "公交终点站(右侧交通) Bus Station(Right-Hand Traffic)",
       "PDX_ID": "79419",
       "Author": "a935027590"
     },
-    "a935027590__小型高架地铁/火车站Tiny elevated subway/railway station": {
+    "a935027590__小型高架地铁_火车站Tiny_elevated_subway_railway_station": {
       "ModName": "小型高架地铁/火车站Tiny elevated subway/railway station",
       "PDX_ID": "79429",
       "Author": "a935027590"
     },
-    "a935027590__新乡东站 Xinxiang East Railway Station": {
+    "a935027590__新乡东站_Xinxiang_East_Railway_Station": {
       "ModName": "新乡东站 Xinxiang East Railway Station",
       "PDX_ID": "79436",
       "Author": "a935027590"
     },
-    "a935027590__货运火车站(右侧交通) Cargo Train Terminal(LORHT)": {
+    "a935027590__货运火车站(右侧交通)_Cargo_Train_Terminal(LORHT)": {
       "ModName": "货运火车站(右侧交通) Cargo Train Terminal(LORHT)",
       "PDX_ID": "79423",
       "Author": "a935027590"
     },
-    "Aberro__Pathfind Costs": {
+    "Aberro__Pathfind_Costs": {
       "ModName": "Pathfind Costs",
       "PDX_ID": "84619",
       "Author": "Aberro"
     },
-    "Aberro__Speed Limit Editor": {
+    "Aberro__Speed_Limit_Editor": {
       "ModName": "Speed Limit Editor",
       "PDX_ID": "85650",
       "Author": "Aberro"
     },
-    "Adwozo__Profit Based Industry And Office (PBIAO)": {
+    "Adwozo__Profit_Based_Industry_And_Office_(PBIAO)": {
       "ModName": "Profit Based Industry And Office (PBIAO)",
       "PDX_ID": "83825",
       "Author": "Adwozo"
     },
-    "algernon__529 Tiles": {
+    "algernon__529_Tiles": {
       "AssemblyName": "FiveTwentyNineTiles",
       "FragmentSource": "FiveTwentyNineTiles.ModSettings",
       "ClassType": "FiveTwentyNineTilesSettings",
@@ -54,17 +59,17 @@
       "Author": "algernon",
       "Backupable": true
     },
-    "algernon__Free Range Camera": {
+    "algernon__Free_Range_Camera": {
       "ModName": "Free Range Camera",
       "PDX_ID": "75749",
       "Author": "algernon"
     },
-    "algernon__Historical Start": {
+    "algernon__Historical_Start": {
       "ModName": "Historical Start",
       "PDX_ID": "74535",
       "Author": "algernon"
     },
-    "algernon__Image Overlay": {
+    "algernon__Image_Overlay": {
       "AssemblyName": "ImageOverlay",
       "FragmentSource": "ImageOverlay.ModSettings",
       "ClassType": "ImageOverlaySettings",
@@ -73,12 +78,12 @@
       "Author": "algernon",
       "Backupable": true
     },
-    "algernon__Line Tool": {
+    "algernon__Line_Tool": {
       "ModName": "Line Tool",
       "PDX_ID": "75816",
       "Author": "algernon"
     },
-    "algernon__Plop the Growables": {
+    "algernon__Plop_the_Growables": {
       "AssemblyName": "PlopTheGrowables",
       "FragmentSource": "PlopTheGrowables.ModSettings",
       "ClassType": "PlopTheGrowablesSettings",
@@ -87,28 +92,293 @@
       "Author": "algernon",
       "Backupable": true
     },
-    "algernon__Unified Icon Library": {
+    "algernon__Unified_Icon_Library": {
       "AssemblyName": "UnifiedIconLibrary",
       "ModName": "Unified Icon Library",
       "PDX_ID": "74417",
       "Author": "algernon"
     },
-    "Ameenmahboub__Cars Decals Pack": {
+    "Ameenmahboub__Cars_Decals_Pack": {
       "ModName": "Cars Decals Pack",
       "PDX_ID": "90508",
       "Author": "Ameenmahboub"
     },
-    "Ameenmahboub__Food And Beverages Decals Pack": {
+    "Ameenmahboub__Food_And_Beverages_Decals_Pack": {
       "ModName": "Food And Beverages Decals Pack",
       "PDX_ID": "90355",
       "Author": "Ameenmahboub"
     },
-    "Ameenmahboub__Shipping And Cargo Decals Pack": {
+    "Ameenmahboub__Shipping_And_Cargo_Decals_Pack": {
       "ModName": "Shipping And Cargo Decals Pack",
       "PDX_ID": "90663",
       "Author": "Ameenmahboub"
     },
-    "Baka-gourd__I18n EveryWhere": {
+    "AmiPolizeiFunk__Los_Angeles_Westside": {
+      "ModName": "Los Angeles Westside",
+      "PDX_ID": "87264",
+      "Author": "AmiPolizeiFunk"
+    },
+    "AmiPolizeiFunk__Seattle,_WA": {
+      "ModName": "Seattle, WA",
+      "PDX_ID": "76033",
+      "Author": "AmiPolizeiFunk"
+    },
+    "AncientSwan__Aggersborg,_Denmark": {
+      "ModName": "Aggersborg, Denmark",
+      "PDX_ID": "82240",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Amsterdam,_AD_1544": {
+      "ModName": "Amsterdam, AD 1544",
+      "PDX_ID": "86096",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Angel_Mounds,_America": {
+      "ModName": "Angel Mounds, America",
+      "PDX_ID": "75331",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Atlantis": {
+      "ModName": "Atlantis",
+      "PDX_ID": "75374",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Avaris,_Pi_Rameses,_Egypt": {
+      "ModName": "Avaris, Pi Rameses, Egypt",
+      "PDX_ID": "86718",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Babylon,_Iraq": {
+      "ModName": "Babylon, Iraq",
+      "PDX_ID": "75327",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Bhirrana,_India": {
+      "ModName": "Bhirrana, India",
+      "PDX_ID": "82017",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Birka,_Viking_Sweden": {
+      "ModName": "Birka, Viking Sweden",
+      "PDX_ID": "75502",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Boston,_America,_AD_1630": {
+      "ModName": "Boston, America, AD 1630",
+      "PDX_ID": "75258",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Cahokia": {
+      "ModName": "Cahokia",
+      "PDX_ID": "75262",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Carthage,_Tunisia,_AD_699": {
+      "ModName": "Carthage, Tunisia, AD 699",
+      "PDX_ID": "75261",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Chertomlyk,_Ukraine": {
+      "ModName": "Chertomlyk, Ukraine",
+      "PDX_ID": "81918",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Coevorden,_NL,_AD_1650": {
+      "ModName": "Coevorden, NL, AD 1650",
+      "PDX_ID": "75263",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Dolni_Vestonice,_Czechia": {
+      "ModName": "Dolni Vestonice, Czechia",
+      "PDX_ID": "83202",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Eastern_Settlement,_Greenland": {
+      "ModName": "Eastern Settlement, Greenland",
+      "PDX_ID": "83288",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Glastonbury,_7000BC": {
+      "ModName": "Glastonbury, 7000BC",
+      "PDX_ID": "75264",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Gobekli_Tepe,_Turkey": {
+      "ModName": "Gobekli Tepe, Turkey",
+      "PDX_ID": "86095",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Heraclion,_Egypt": {
+      "ModName": "Heraclion, Egypt",
+      "PDX_ID": "75265",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Isle_of_Thanet,_England": {
+      "ModName": "Isle of Thanet, England",
+      "PDX_ID": "82576",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Jiahu_賈湖,__China": {
+      "ModName": "Jiahu 賈湖,  China",
+      "PDX_ID": "83069",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Karakorum,_Mongolia": {
+      "ModName": "Karakorum, Mongolia",
+      "PDX_ID": "81792",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Kaupang,_Viking_Norway": {
+      "ModName": "Kaupang, Viking Norway",
+      "PDX_ID": "83270",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__L'Anse_aux_Meadows,_Viking_Canada": {
+      "ModName": "L'Anse aux Meadows, Viking Canada",
+      "PDX_ID": "78879",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Londinium,_England": {
+      "ModName": "Londinium, England",
+      "PDX_ID": "83817",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Los_Santos,_GTA_V": {
+      "ModName": "Los Santos, GTA V",
+      "PDX_ID": "75267",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Maiden_Castle,_England": {
+      "ModName": "Maiden Castle, England",
+      "PDX_ID": "86719",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Mangazeya,_Russia": {
+      "ModName": "Mangazeya, Russia",
+      "PDX_ID": "83271",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Ness_of_Brodgar": {
+      "ModName": "Ness of Brodgar",
+      "PDX_ID": "75310",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Pavlopetri,_Greece,_3000BC": {
+      "ModName": "Pavlopetri, Greece, 3000BC",
+      "PDX_ID": "75335",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Philadelphia,_AD_1750": {
+      "ModName": "Philadelphia, AD 1750",
+      "PDX_ID": "84152",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Port_Royal,_Jamaica,_1692": {
+      "ModName": "Port Royal, Jamaica, 1692",
+      "PDX_ID": "75311",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Poverty_Point,_America": {
+      "ModName": "Poverty Point, America",
+      "PDX_ID": "85241",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Pulli,_Estonia": {
+      "ModName": "Pulli, Estonia",
+      "PDX_ID": "83070",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Rathcroghan,_Ireland": {
+      "ModName": "Rathcroghan, Ireland",
+      "PDX_ID": "85243",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Roanoke": {
+      "ModName": "Roanoke",
+      "PDX_ID": "75147",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Rungholt,_Germany,_AD_1362": {
+      "ModName": "Rungholt, Germany, AD 1362",
+      "PDX_ID": "75648",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__SanXingDui_三星堆,_China": {
+      "ModName": "SanXingDui 三星堆, China",
+      "PDX_ID": "75312",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Star_Carr,_England,_8400_BC": {
+      "ModName": "Star Carr, England, 8400 BC",
+      "PDX_ID": "75314",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Sybaris,_Italy": {
+      "ModName": "Sybaris, Italy",
+      "PDX_ID": "83204",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Tartessos,_Spain": {
+      "ModName": "Tartessos, Spain",
+      "PDX_ID": "82905",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Tenochtitlan_and_Tlatelolco,_Mexico,_AD_1524": {
+      "ModName": "Tenochtitlan & Tlatelolco, Mexico, AD 1524",
+      "PDX_ID": "75117",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__The_Darien_Scheme,_Panama": {
+      "ModName": "The Darien Scheme, Panama",
+      "PDX_ID": "81337",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Titelberg,_Luxembourg": {
+      "ModName": "Titelberg, Luxembourg",
+      "PDX_ID": "83458",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Traprain_Law,_Scotland": {
+      "ModName": "Traprain Law, Scotland",
+      "PDX_ID": "85242",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Trellech,_Wales": {
+      "ModName": "Trellech, Wales",
+      "PDX_ID": "83816",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Troy,_Turkiye,_1200BC": {
+      "ModName": "Troy, Turkiye, 1200BC",
+      "PDX_ID": "75323",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Tyre,_Lebanon,_335_BC": {
+      "ModName": "Tyre, Lebanon, 335 BC",
+      "PDX_ID": "75321",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Ur,_Iraq,_500_BC": {
+      "ModName": "Ur, Iraq, 500 BC",
+      "PDX_ID": "75653",
+      "Author": "AncientSwan"
+    },
+    "AncientSwan__Ys,_France,_AD_500": {
+      "ModName": "Ys, France, AD 500",
+      "PDX_ID": "75325",
+      "Author": "AncientSwan"
+    },
+    "astrognash__Crystal_Coast": {
+      "ModName": "Crystal Coast",
+      "PDX_ID": "89980",
+      "Author": "astrognash"
+    },
+    "Baka-gourd__EAI_-_China_Warnings_Pack": {
+      "ModName": "EAI - China Warnings Pack",
+      "PDX_ID": "80591",
+      "Author": "Baka-gourd"
+    },
+    "Baka-gourd__I18n_EveryWhere": {
       "AssemblyName": "I18NEverywhere",
       "FragmentSource": "I18NEverywhere.Setting",
       "ClassType": "I18NEverywhereSettings",
@@ -117,24 +387,24 @@
       "Author": "Baka-gourd",
       "Backupable": true
     },
-    "Bless_Santana__Payment Point": {
+    "Bless_Santana__Payment_Point": {
       "AssemblyName": "PaymentPointAssetPack",
       "ModName": "Payment Point",
       "PDX_ID": "82360",
       "Author": "Bless_Santana"
     },
-    "Bruceyboy24804__British Brands Pack 01": {
+    "Bruceyboy24804__British_Brands_Pack_01": {
       "ModName": "British Brands Pack 01",
       "PDX_ID": "80541",
       "Author": "Bruceyboy24804"
     },
-    "Bruceyboy24804__Empty Roundabouts Asset Pack": {
+    "Bruceyboy24804__Empty_Roundabouts_Asset_Pack": {
       "AssemblyName": "EmptyRoundabout_AssetPack",
       "ModName": "Empty Roundabouts Asset Pack",
       "PDX_ID": "84490",
       "Author": "Bruceyboy24804"
     },
-    "Bruceyboy24804__No Pollution": {
+    "Bruceyboy24804__No_Pollution": {
       "AssemblyName": "NoPollution",
       "FragmentSource": "NoPollution.Setting",
       "ClassType": "NoPollutionSettings",
@@ -143,7 +413,7 @@
       "Author": "Bruceyboy24804",
       "Backupable": true
     },
-    "C2VMTLE__Traffic Lights Enhancement Alpha": {
+    "C2VMTLE__Traffic_Lights_Enhancement_Alpha": {
       "AssemblyName": "C2VM.TrafficLightsEnhancement",
       "FragmentSource": "C2VM.TrafficLightsEnhancement.Settings",
       "ClassType": "TrafficLightsEnhancementSettings",
@@ -152,7 +422,12 @@
       "Author": "C2VMTLE",
       "Backupable": true
     },
-    "Caby71__Pathfinding Customizer": {
+    "C2VMTLE__UNSTABLE_TLE_Canary": {
+      "ModName": "[UNSTABLE] TLE Canary",
+      "PDX_ID": "79732",
+      "Author": "C2VMTLE"
+    },
+    "Caby71__Pathfinding_Customizer": {
       "AssemblyName": "PathfindingCustomizer",
       "FragmentSource": "PathfindingCustomizer.Setting",
       "ClassType": "PathfindingCustomizerSettings",
@@ -161,24 +436,24 @@
       "Author": "Caby71",
       "Backupable": true
     },
-    "Caz Brecker__Another Bus Stop": {
+    "Caz_Brecker__Another_Bus_Stop": {
       "AssemblyName": "AnotherBusStopAssetPack",
       "ModName": "Another Bus Stop",
       "PDX_ID": "90128",
       "Author": "Caz Brecker"
     },
-    "Caz Brecker__High Capacity Transit": {
+    "Caz_Brecker__High_Capacity_Transit": {
       "ModName": "High Capacity Transit",
       "PDX_ID": "88338",
       "Author": "Caz Brecker"
     },
-    "Caz Brecker__Hybrid Shuttle Bus": {
+    "Caz_Brecker__Hybrid_Shuttle_Bus": {
       "AssemblyName": "HybridShuttleBusAssetPack",
       "ModName": "Hybrid Shuttle Bus",
       "PDX_ID": "89111",
       "Author": "Caz Brecker"
     },
-    "Cgameworld__Brush Size Unlimiter": {
+    "Cgameworld__Brush_Size_Unlimiter": {
       "AssemblyName": "BrushSizeUnlimiter",
       "FragmentSource": "BrushSizeUnlimiter.MyOptions",
       "ClassType": "BrushSizeUnlimiterSettings",
@@ -192,7 +467,12 @@
       "PDX_ID": "86260",
       "Author": "Cgameworld"
     },
-    "Cgameworld__First Person Camera Continued": {
+    "Cgameworld__Desert_Map_Theme": {
+      "ModName": "Desert Map Theme",
+      "PDX_ID": "76052",
+      "Author": "Cgameworld"
+    },
+    "Cgameworld__First_Person_Camera_Continued": {
       "AssemblyName": "FirstPersonCameraContinued",
       "FragmentSource": "FirstPersonCameraContinued.Setting",
       "ClassType": "FirstPersonCameraContinuedSettings",
@@ -201,15 +481,25 @@
       "Author": "Cgameworld",
       "Backupable": true
     },
-    "Cgameworld__Map Texture Replacer": {
+    "Cgameworld__Map_Texture_Replacer": {
       "ModName": "Map Texture Replacer",
       "PDX_ID": "76050",
       "Author": "Cgameworld"
     },
-    "Cgameworld__Road Wear Remover": {
+    "Cgameworld__Road_Wear_Remover": {
       "ModName": "Road Wear Remover",
       "PDX_ID": "75185",
       "Author": "Cgameworld"
+    },
+    "Chamëleon_TBN__Home_of_Chamëleon_TBN": {
+      "ModName": "Home of Chamëleon TBN",
+      "PDX_ID": "76061",
+      "Author": "Chamëleon TBN"
+    },
+    "Ciantic__Terraform_Hardening": {
+      "ModName": "Terraform Hardening",
+      "PDX_ID": "76922",
+      "Author": "Ciantic"
     },
     "Cmyna__AreaBucket": {
       "AssemblyName": "AreaBucket",
@@ -229,7 +519,7 @@
       "Author": "Cmyna",
       "Backupable": true
     },
-    "Cmyna__Sun Glasses": {
+    "Cmyna__Sun_Glasses": {
       "AssemblyName": "SunGlasses",
       "FragmentSource": "SunGlasses.Setting",
       "ClassType": "SunGlassesSettings",
@@ -238,17 +528,37 @@
       "Author": "Cmyna",
       "Backupable": true
     },
-    "CryptoGamerSkylines__Doors Decal Pack 01 - Industrial": {
+    "Col_Fetters__Penn's_Woods": {
+      "ModName": "Penn's Woods",
+      "PDX_ID": "87910",
+      "Author": "Col Fetters"
+    },
+    "CryptoGamerSkylines__Doors_and_Windows_Decal_Pack": {
+      "ModName": "Doors and Windows Decal Pack",
+      "PDX_ID": "86628",
+      "Author": "CryptoGamerSkylines"
+    },
+    "CryptoGamerSkylines__Doors_Decal_Pack_01_-_Industrial": {
       "ModName": "Doors Decal Pack 01 - Industrial",
       "PDX_ID": "83247",
       "Author": "CryptoGamerSkylines"
     },
-    "CryptoGamerSkylines__Grates and Covers Decal Pack": {
+    "CryptoGamerSkylines__Doors_Decal_Pack_02_-_European_Antique_Doors": {
+      "ModName": "Doors Decal Pack 02 - European Antique Doors",
+      "PDX_ID": "84014",
+      "Author": "CryptoGamerSkylines"
+    },
+    "CryptoGamerSkylines__Grates_and_Covers_Decal_Pack": {
       "ModName": "Grates and Covers Decal Pack",
       "PDX_ID": "81421",
       "Author": "CryptoGamerSkylines"
     },
-    "DaancingBanana__Realistic Parking Mod": {
+    "CryptoGamerSkylines__Sand_Surfaces_and_Beach_Decal_Pack": {
+      "ModName": "Sand Surfaces and Beach Decal Pack",
+      "PDX_ID": "89004",
+      "Author": "CryptoGamerSkylines"
+    },
+    "DaancingBanana__Realistic_Parking_Mod": {
       "AssemblyName": "RealisticParking",
       "FragmentSource": "RealisticParking.Setting",
       "ClassType": "RealisticParkingSettings",
@@ -257,17 +567,17 @@
       "Author": "DaancingBanana",
       "Backupable": true
     },
-    "Daniel-00001__Dans Pack (Rural Services Asset Pack)": {
+    "Daniel-00001__Dans_Pack_(Rural_Services_Asset_Pack)": {
       "ModName": "Dans Pack (Rural Services Asset Pack)",
       "PDX_ID": "79063",
       "Author": "Daniel-00001"
     },
-    "Daniel-00001__Show Text Trends (Updated)": {
+    "Daniel-00001__Show_Text_Trends_(Updated)": {
       "ModName": "Show Text Trends (Updated)",
       "PDX_ID": "83733",
       "Author": "Daniel-00001"
     },
-    "Daniel-00001__Whiteness Toggle (Updated)": {
+    "Daniel-00001__Whiteness_Toggle_(Updated)": {
       "AssemblyName": "Whiteness-Toggle",
       "FragmentSource": "Whiteness_Toggle.Setting",
       "ClassType": "WhitenessToggleSettings",
@@ -276,79 +586,109 @@
       "Author": "Daniel-00001",
       "Backupable": true
     },
-    "De Magistris__Billboard_Ads_By_Dome": {
+    "De_Magistris__Billboard_Ads_By_Dome": {
       "ModName": "Billboard_Ads_By_Dome",
       "PDX_ID": "80570",
       "Author": "De Magistris"
     },
-    "De Magistris__Italian Posters By Dome": {
+    "De_Magistris__Italian_Posters_By_Dome": {
       "ModName": "Italian Posters By Dome",
       "PDX_ID": "80580",
       "Author": "De Magistris"
     },
-    "De Magistris__Overground Parking By Dome": {
+    "De_Magistris__Overground_Parking_By_Dome": {
       "AssemblyName": "ParkingHall01ByDomeAssetPack",
       "ModName": "Overground Parking By Dome",
       "PDX_ID": "81913",
       "Author": "De Magistris"
     },
-    "De Magistris__Parking Lots By Dome": {
+    "De_Magistris__Parking_Lots_By_Dome": {
       "AssemblyName": "ParkingLotsByDomeAssetPack",
       "ModName": "Parking Lots By Dome",
       "PDX_ID": "81336",
       "Author": "De Magistris"
     },
-    "Drfrozenfire__Confluence Mesa Map Theme": {
+    "Desarth__Crystal_Isles": {
+      "ModName": "Crystal Isles",
+      "PDX_ID": "76801",
+      "Author": "Desarth"
+    },
+    "dex3r__Outside_Traffic:_Fake_Traffic_Adjuster": {
+      "ModName": "Outside Traffic: Fake Traffic Adjuster",
+      "PDX_ID": "89607",
+      "Author": "dex3r"
+    },
+    "Drfrozenfire__Confluence_Mesa_Map_Theme": {
       "ModName": "Confluence Mesa Map Theme",
       "PDX_ID": "87032",
       "Author": "Drfrozenfire"
     },
-    "elGendo87__[G87] Color Surfaces": {
+    "Durwerd__Daybreak": {
+      "ModName": "Daybreak",
+      "PDX_ID": "80618",
+      "Author": "Durwerd"
+    },
+    "elGendo87__G87_Color_Surfaces": {
       "ModName": "[G87] Color Surfaces",
       "PDX_ID": "85217",
       "Author": "elGendo87"
     },
-    "elGendo87__[G87] Stains and Puddles Decals: Wet Pack": {
+    "elGendo87__G87_Stains_and_Puddles_Decals:_Wet_Pack": {
       "ModName": "[G87] Stains and Puddles Decals: Wet Pack",
       "PDX_ID": "87948",
       "Author": "elGendo87"
     },
-    "elGendo87__[G87] Stains and Puddles Surfaces: Wet Pack": {
+    "elGendo87__G87_Stains_and_Puddles_Surfaces:_Wet_Pack": {
       "ModName": "[G87] Stains and Puddles Surfaces: Wet Pack",
       "PDX_ID": "87949",
       "Author": "elGendo87"
     },
-    "elGendo87__[G87] Tarumi Junction: Piccana's Pack": {
+    "elGendo87__G87_Tarumi_Junction:_Piccana's_Pack": {
       "ModName": "[G87] Tarumi Junction: Piccana's Pack",
       "PDX_ID": "90896",
       "Author": "elGendo87"
     },
-    "elGendo87__[G87] Trash Decals: Dirty Pack": {
+    "elGendo87__G87_Trash_Decals:_Dirty_Pack": {
       "ModName": "[G87] Trash Decals: Dirty Pack",
       "PDX_ID": "87720",
       "Author": "elGendo87"
     },
-    "elGendo87__[G87] Urban Surfaces: Paving Pack": {
+    "elGendo87__G87_Urban_Surfaces:_Paving_Pack": {
       "ModName": "[G87] Urban Surfaces: Paving Pack",
       "PDX_ID": "89930",
       "Author": "elGendo87"
     },
-    "elGendo87__Water Mirror Surfaces": {
+    "elGendo87__Miramar": {
+      "ModName": "Miramar",
+      "PDX_ID": "77222",
+      "Author": "elGendo87"
+    },
+    "elGendo87__Miramar_(Without_roads)": {
+      "ModName": "Miramar (Without roads)",
+      "PDX_ID": "77308",
+      "Author": "elGendo87"
+    },
+    "elGendo87__Water_Mirror_Surfaces": {
       "ModName": "Water Mirror Surfaces",
       "PDX_ID": "84081",
       "Author": "elGendo87"
     },
-    "elGendo87__Water Mirror Surfaces CS2 Water Pack": {
+    "elGendo87__Water_Mirror_Surfaces_CS2_Water_Pack": {
       "ModName": "Water Mirror Surfaces CS2 Water Pack",
       "PDX_ID": "84274",
       "Author": "elGendo87"
     },
-    "elGendo87__Water Mirror Surfaces Ice Pack ": {
+    "elGendo87__Water_Mirror_Surfaces_Ice_Pack_": {
       "ModName": "Water Mirror Surfaces Ice Pack ",
       "PDX_ID": "84109",
       "Author": "elGendo87"
     },
-    "ethnicboyfriend__All Aboard! (Faster Boarding Mod)": {
+    "env724__River_Mania_by_Nicky_Scriptz": {
+      "ModName": "River Mania by Nicky Scriptz",
+      "PDX_ID": "86839",
+      "Author": "env724"
+    },
+    "ethnicboyfriend__All_Aboard!_(Faster_Boarding_Mod)": {
       "AssemblyName": "AllAboard",
       "FragmentSource": "AllAboard.Setting",
       "ClassType": "AllAboardSettings",
@@ -357,61 +697,91 @@
       "Author": "ethnicboyfriend",
       "Backupable": true
     },
-    "F_thx__[Unstable] Mio Road Assets Pack": {
-      "ModName": "[Unstable] Mio Road Assets Pack",
-      "PDX_ID": "80214",
+    "F_thx__Asset_Error_Handler": {
+      "ModName": "Asset Error Handler",
+      "PDX_ID": "80275",
       "Author": "F_thx"
     },
-    "F_thx__Cityscape Upgrade Asset Pack": {
+    "F_thx__Cityscape_Upgrade_Asset_Pack": {
       "ModName": "Cityscape Upgrade Asset Pack",
       "PDX_ID": "80019",
       "Author": "F_thx"
     },
-    "F_thx__Mio Circular Assets Pack": {
+    "F_thx__Compact_Editor": {
+      "ModName": "Compact Editor",
+      "PDX_ID": "79345",
+      "Author": "F_thx"
+    },
+    "F_thx__Mio_Circular_Assets_Pack": {
       "ModName": "Mio Circular Assets Pack",
       "PDX_ID": "78963",
       "Author": "F_thx"
     },
-    "F_thx__Mio Overpass Asset Pack": {
+    "F_thx__mio_Hotkeys_Mod": {
+      "ModName": "mio Hotkeys Mod",
+      "PDX_ID": "79356",
+      "Author": "F_thx"
+    },
+    "F_thx__Mio_Overpass_Asset_Pack": {
       "AssemblyName": "MioOverpassAssetPack",
       "ModName": "Mio Overpass Asset Pack",
       "PDX_ID": "79201",
       "Author": "F_thx"
     },
-    "F_thx__Mio Parking Asset Pack": {
+    "F_thx__Mio_Parking_Asset_Pack": {
       "AssemblyName": "mioParkingAssetPack",
       "ModName": "Mio Parking Asset Pack",
       "PDX_ID": "79565",
       "Author": "F_thx"
     },
-    "F_thx__Mio Policy Asset Pack": {
+    "F_thx__Mio_Policy_Asset_Pack": {
       "AssemblyName": "mioPolicyAssetPack",
       "ModName": "Mio Policy Asset Pack",
       "PDX_ID": "80006",
       "Author": "F_thx"
     },
-    "F_thx__Mio Road Assets Pack": {
+    "F_thx__Mio_Road_Assets_Pack": {
       "ModName": "Mio Road Assets Pack",
       "PDX_ID": "78908",
       "Author": "F_thx"
     },
-    "F_thx__Modular Subway Station Assets Pack": {
+    "F_thx__Modular_Subway_Station_Assets_Pack": {
       "ModName": "Modular Subway Station Assets Pack",
       "PDX_ID": "78967",
       "Author": "F_thx"
     },
-    "F_thx__Super Elementary School Upgrade Asset": {
+    "F_thx__Stair_and_Path_Assets_Pack": {
+      "ModName": "Stair and Path Assets Pack",
+      "PDX_ID": "79539",
+      "Author": "F_thx"
+    },
+    "F_thx__Super_Elementary_School_Upgrade_Asset": {
       "ModName": "Super Elementary School Upgrade Asset",
       "PDX_ID": "78974",
       "Author": "F_thx"
     },
-    "FBC22A__CC22A Road Pack 1": {
+    "F_thx__Unstable_Mio_Road_Assets_Pack": {
+      "ModName": "[Unstable] Mio Road Assets Pack",
+      "PDX_ID": "80214",
+      "Author": "F_thx"
+    },
+    "F_thx__全局汉化_Chinese_Loc_I18nCN": {
+      "ModName": "全局汉化 Chinese Loc I18nCN",
+      "PDX_ID": "79589",
+      "Author": "F_thx"
+    },
+    "FBC22A__CC22A_Road_Pack_1": {
       "AssemblyName": "CC22A_RoadPack_1",
       "ModName": "CC22A Road Pack 1",
       "PDX_ID": "88206",
       "Author": "FBC22A"
     },
-    "fergusq__No Teleporting": {
+    "FBC22A__CC22A's_Tram_Transit_Pack_02": {
+      "ModName": "CC22A's Tram Transit Pack 02",
+      "PDX_ID": "91072",
+      "Author": "FBC22A"
+    },
+    "fergusq__No_Teleporting": {
       "AssemblyName": "NoTeleporting",
       "FragmentSource": "NoTeleporting.Setting",
       "ClassType": "NoTeleportingSettings",
@@ -420,16 +790,56 @@
       "Author": "fergusq",
       "Backupable": true
     },
-    "fergusq__Save All Prefabs": {
+    "fergusq__OSM_Export": {
+      "ModName": "OSM Export",
+      "PDX_ID": "87422",
+      "Author": "fergusq"
+    },
+    "fergusq__Save_All_Prefabs": {
       "AssemblyName": "SaveAllPrefabs",
       "ModName": "Save All Prefabs",
       "PDX_ID": "85340",
       "Author": "fergusq"
     },
-    "franzvz__City Vitals Watch (Monitor Stats)": {
+    "franzvz__City_Vitals_Watch_(Monitor_Stats)": {
       "ModName": "City Vitals Watch (Monitor Stats)",
       "PDX_ID": "85643",
       "Author": "franzvz"
+    },
+    "GamingBren__Orinda_Region": {
+      "ModName": "Orinda Region",
+      "PDX_ID": "87668",
+      "Author": "GamingBren"
+    },
+    "GamingBren__Tropicana_Beach": {
+      "ModName": "Tropicana Beach",
+      "PDX_ID": "80103",
+      "Author": "GamingBren"
+    },
+    "Gerronimo__Beograd": {
+      "ModName": "Beograd",
+      "PDX_ID": "88846",
+      "Author": "Gerronimo"
+    },
+    "Gerronimo__Oxford": {
+      "ModName": "Oxford",
+      "PDX_ID": "88497",
+      "Author": "Gerronimo"
+    },
+    "Gerronimo__Subotica": {
+      "ModName": "Subotica",
+      "PDX_ID": "88162",
+      "Author": "Gerronimo"
+    },
+    "Gitcheckoutmitch__Bustling_Strait": {
+      "ModName": "Bustling Strait",
+      "PDX_ID": "85981",
+      "Author": "Gitcheckoutmitch"
+    },
+    "Gitcheckoutmitch__Bustling_Strait": {
+      "ModName": "Bustling Strait",
+      "PDX_ID": "85987",
+      "Author": "Gitcheckoutmitch"
     },
     "Guo__AutoDistrictNameStations": {
       "AssemblyName": "AutoDistrictNameStations",
@@ -440,9 +850,24 @@
       "Author": "Guo",
       "Backupable": true
     },
+    "Gyffes__Coffin_Bay": {
+      "ModName": "Coffin Bay",
+      "PDX_ID": "78443",
+      "Author": "Gyffes"
+    },
     "Gyffes__Crumbling_Walls": {
       "ModName": "Crumbling_Walls",
       "PDX_ID": "83469",
+      "Author": "Gyffes"
+    },
+    "Gyffes__New_Caledonia": {
+      "ModName": "New Caledonia",
+      "PDX_ID": "78670",
+      "Author": "Gyffes"
+    },
+    "Gyffes__Owen's_Bay": {
+      "ModName": "Owen's Bay",
+      "PDX_ID": "77975",
       "Author": "Gyffes"
     },
     "Gyffes__Rust": {
@@ -450,13 +875,33 @@
       "PDX_ID": "83492",
       "Author": "Gyffes"
     },
-    "hordechickey__Small Industrial Firehouse 01": {
+    "H3llb0und__DependencyPack": {
+      "ModName": "DependencyPack",
+      "PDX_ID": "77209",
+      "Author": "H3llb0und"
+    },
+    "H3llb0und__Gooee": {
+      "ModName": "Gooee",
+      "PDX_ID": "77225",
+      "Author": "H3llb0und"
+    },
+    "H3llb0und__LegacyFlavour": {
+      "ModName": "LegacyFlavour",
+      "PDX_ID": "77319",
+      "Author": "H3llb0und"
+    },
+    "H3llb0und__Pleasant_Isles": {
+      "ModName": "Pleasant Isles",
+      "PDX_ID": "77670",
+      "Author": "H3llb0und"
+    },
+    "hordechickey__Small_Industrial_Firehouse_01": {
       "AssemblyName": "SmallIndustrialFirehouse01AssetPack",
       "ModName": "Small Industrial Firehouse 01",
       "PDX_ID": "84524",
       "Author": "hordechickey"
     },
-    "HX2003__Water Visual Tweaks": {
+    "HX2003__Water_Visual_Tweaks": {
       "AssemblyName": "WaterVisualTweaks",
       "FragmentSource": "WaterVisualTweaksMod.WaterVisualTweaksSettings",
       "ClassType": "WaterVisualTweaksSettings",
@@ -465,48 +910,118 @@
       "Author": "HX2003",
       "Backupable": true
     },
-    "jiangguixin__下沉式地铁站 sunken subway station": {
-      "ModName": "下沉式地铁站 sunken subway station",
-      "PDX_ID": "79399",
-      "Author": "jiangguixin"
+    "Infixo__City_Services_Rebalance": {
+      "ModName": "City Services Rebalance",
+      "PDX_ID": "76583",
+      "Author": "Infixo"
     },
-    "jiangguixin__下沉式地铁站（重制版） Sinking subway station": {
+    "Infixo__Economy_Rebalance": {
+      "ModName": "Economy Rebalance",
+      "PDX_ID": "77509",
+      "Author": "Infixo"
+    },
+    "Infixo__InfoLoom": {
+      "ModName": "InfoLoom",
+      "PDX_ID": "77637",
+      "Author": "Infixo"
+    },
+    "Infixo__Overpopulated_Gizmo_and_Fix": {
+      "ModName": "Overpopulated Gizmo and Fix",
+      "PDX_ID": "78554",
+      "Author": "Infixo"
+    },
+    "Infixo__Population_Rebalance": {
+      "ModName": "Population Rebalance",
+      "PDX_ID": "76037",
+      "Author": "Infixo"
+    },
+    "Infixo__Postal_Helper": {
+      "ModName": "Postal Helper",
+      "PDX_ID": "78802",
+      "Author": "Infixo"
+    },
+    "Infixo__SignatureFix": {
+      "ModName": "SignatureFix",
+      "PDX_ID": "76065",
+      "Author": "Infixo"
+    },
+    "JacksonvilleMan__Kraken's_Pit": {
+      "ModName": "Kraken's Pit",
+      "PDX_ID": "87122",
+      "Author": "JacksonvilleMan"
+    },
+    "Jaxrud__Kexford": {
+      "ModName": "Kexford",
+      "PDX_ID": "76237",
+      "Author": "Jaxrud"
+    },
+    "Jaxrud__Kexford_Temperate": {
+      "ModName": "Kexford Temperate",
+      "PDX_ID": "76246",
+      "Author": "Jaxrud"
+    },
+    "jiangguixin__下沉式地铁站（重制版）_Sinking_subway_station": {
       "ModName": "下沉式地铁站（重制版） Sinking subway station",
       "PDX_ID": "89102",
       "Author": "jiangguixin"
     },
-    "jiangguixin__中央火车站 CentralStation": {
+    "jiangguixin__下沉式地铁站_sunken_subway_station": {
+      "ModName": "下沉式地铁站 sunken subway station",
+      "PDX_ID": "79399",
+      "Author": "jiangguixin"
+    },
+    "jiangguixin__中央火车站_CentralStation": {
       "ModName": "中央火车站 CentralStation",
       "PDX_ID": "79752",
       "Author": "jiangguixin"
     },
-    "jiangguixin__中式高铁站 high-speed railway station": {
+    "jiangguixin__中式高铁站_high-speed_railway_station": {
       "ModName": "中式高铁站 high-speed railway station",
       "PDX_ID": "80251",
       "Author": "jiangguixin"
     },
-    "jiangguixin__客货一体火车站 Passenger and freight integrated railway station": {
+    "jiangguixin__客货一体火车站_Passenger_and_freight_integrated_railway_station": {
       "ModName": "客货一体火车站 Passenger and freight integrated railway station",
       "PDX_ID": "86368",
       "Author": "jiangguixin"
     },
-    "jiangguixin__过街隧道 Crossing the street tunnel": {
+    "jiangguixin__过街隧道_Crossing_the_street_tunnel": {
       "AssemblyName": "guojiesuidao",
       "ModName": "过街隧道 Crossing the street tunnel",
       "PDX_ID": "86367",
       "Author": "jiangguixin"
     },
-    "jiangguixin__高架地铁站 Elevated subway station": {
+    "jiangguixin__高架地铁站_Elevated_subway_station": {
       "ModName": "高架地铁站 Elevated subway station",
       "PDX_ID": "79358",
       "Author": "jiangguixin"
     },
-    "Kaidius__McDonalds Decal Pack": {
+    "jimmyok__ConfigurableElevatedRoad": {
+      "ModName": "ConfigurableElevatedRoad",
+      "PDX_ID": "77597",
+      "Author": "jimmyok"
+    },
+    "jimmyok__Land_Value_Overhaul": {
+      "ModName": "Land Value Overhaul",
+      "PDX_ID": "77397",
+      "Author": "jimmyok"
+    },
+    "jk142__ctrlC": {
+      "ModName": "ctrlC",
+      "PDX_ID": "81925",
+      "Author": "jk142"
+    },
+    "jplumbley__Venice,_Italy": {
+      "ModName": "Venice, Italy",
+      "PDX_ID": "86620",
+      "Author": "jplumbley"
+    },
+    "Kaidius__McDonalds_Decal_Pack": {
       "ModName": "McDonalds Decal Pack",
       "PDX_ID": "87968",
       "Author": "Kaidius"
     },
-    "kendallroth__City Stats": {
+    "kendallroth__City_Stats": {
       "AssemblyName": "CityStats",
       "FragmentSource": "CityStats.ModSettings",
       "ClassType": "CityStatsSettings",
@@ -515,17 +1030,17 @@
       "Author": "kendallroth",
       "Backupable": true
     },
-    "klyte45__Addresses & Names Mod": {
+    "klyte45__Addresses_and_Names_Mod": {
       "ModName": "Addresses & Names Mod",
       "PDX_ID": "74182",
       "Author": "klyte45"
     },
-    "klyte45__Extended Transport Manager": {
+    "klyte45__Extended_Transport_Manager": {
       "ModName": "Extended Transport Manager",
       "PDX_ID": "74238",
       "Author": "klyte45"
     },
-    "klyte45__Extra UI Screens": {
+    "klyte45__Extra_UI_Screens": {
       "ModName": "Extra UI Screens",
       "PDX_ID": "74151",
       "Author": "klyte45"
@@ -535,7 +1050,7 @@
       "PDX_ID": "89993",
       "Author": "Krazze"
     },
-    "krzychu124__FPS Limiter": {
+    "krzychu124__FPS_Limiter": {
       "AssemblyName": "FPS_Limiter",
       "FragmentSource": "FPS_Limiter.FPSLimiterSettings",
       "ClassType": "FPSLimiterSettings",
@@ -544,7 +1059,7 @@
       "Author": "krzychu124",
       "Backupable": true
     },
-    "krzychu124__Scene Explorer": {
+    "krzychu124__Scene_Explorer": {
       "AssemblyName": "SceneExplorer",
       "ModName": "Scene Explorer",
       "PDX_ID": "74285",
@@ -559,17 +1074,37 @@
       "Author": "krzychu124",
       "Backupable": true
     },
-    "Lelmaster__Lelmaster's Graveyard Pack": {
+    "Lelmaster__Lelmaster's_Graveyard_Pack": {
       "ModName": "Lelmaster's Graveyard Pack",
       "PDX_ID": "86779",
       "Author": "Lelmaster"
     },
-    "mattswarthout__Cim Census": {
+    "MallowTheCloud__Portland": {
+      "ModName": "Portland",
+      "PDX_ID": "77266",
+      "Author": "MallowTheCloud"
+    },
+    "MasterDorney__Better_Bulldozer_test_subelement": {
+      "ModName": "Better Bulldozer test subelement",
+      "PDX_ID": "84525",
+      "Author": "MasterDorney"
+    },
+    "MasterDorney__Crashing_after_sim": {
+      "ModName": "Crashing after sim",
+      "PDX_ID": "84293",
+      "Author": "MasterDorney"
+    },
+    "Matashiel__Montreal": {
+      "ModName": "Montreal",
+      "PDX_ID": "78218",
+      "Author": "Matashiel"
+    },
+    "mattswarthout__Cim_Census": {
       "ModName": "Cim Census",
       "PDX_ID": "85825",
       "Author": "mattswarthout"
     },
-    "mattswarthout__Cim Route Highlighter": {
+    "mattswarthout__Cim_Route_Highlighter": {
       "AssemblyName": "EmploymentTracker",
       "FragmentSource": "EmploymentTracker.EmploymentTrackerSettings",
       "ClassType": "CimRouteHighlighterSettings",
@@ -578,12 +1113,22 @@
       "Author": "mattswarthout",
       "Backupable": true
     },
-    "mattswarthout__No Car Trailers": {
+    "mattswarthout__Disable_Milestone_Rewards_-_Difficulty_Config": {
+      "ModName": "Disable Milestone Rewards - Difficulty Config",
+      "PDX_ID": "82675",
+      "Author": "mattswarthout"
+    },
+    "mattswarthout__FireStarter": {
+      "ModName": "FireStarter",
+      "PDX_ID": "77345",
+      "Author": "mattswarthout"
+    },
+    "mattswarthout__No_Car_Trailers": {
       "ModName": "No Car Trailers",
       "PDX_ID": "86553",
       "Author": "mattswarthout"
     },
-    "mattswarthout__No Vehicle Despawn": {
+    "mattswarthout__No_Vehicle_Despawn": {
       "AssemblyName": "NoTrafficDespawn",
       "FragmentSource": "NoTrafficDespawn.TrafficDespawnSettings",
       "ClassType": "NoVehicleDespawnSettings",
@@ -592,62 +1137,106 @@
       "Author": "mattswarthout",
       "Backupable": true
     },
-    "MayorWanze__Coal Truck Resource Piles": {
+    "MayorWanze__Coal_Truck_Resource_Piles": {
       "AssemblyName": "CoalTruckPilesAssetPack",
       "ModName": "Coal Truck Resource Piles",
       "PDX_ID": "79997",
       "Author": "MayorWanze"
     },
-    "MayorWanze__Colorful Billboards": {
+    "MayorWanze__Colorful_Billboards": {
       "ModName": "Colorful Billboards",
       "PDX_ID": "81543",
       "Author": "MayorWanze"
     },
-    "MayorWanze__Dumpsterfire Asset Pack": {
+    "MayorWanze__Dumpsterfire_Asset_Pack": {
       "AssemblyName": "DumpsterfireAssetPack",
       "ModName": "Dumpsterfire Asset Pack",
       "PDX_ID": "80036",
       "Author": "MayorWanze"
     },
-    "MayorWanze__Floatable Boathouses": {
+    "MayorWanze__Floatable_Boathouses": {
       "AssemblyName": "FloatableBoathousesAssetPack",
       "ModName": "Floatable Boathouses",
       "PDX_ID": "79888",
       "Author": "MayorWanze"
     },
-    "MayorWanze__Liferaft Marine Vessel": {
+    "MayorWanze__Liferaft_Marine_Vessel": {
       "ModName": "Liferaft Marine Vessel",
       "PDX_ID": "80048",
       "Author": "MayorWanze"
     },
-    "MayorWanze__Outdoor Fireplace Asset Pack": {
+    "MayorWanze__Outdoor_Fireplace_Asset_Pack": {
       "AssemblyName": "JaysOutdoorFireplacesAssetPack",
       "ModName": "Outdoor Fireplace Asset Pack",
       "PDX_ID": "79836",
       "Author": "MayorWanze"
     },
-    "MayorWanze__Rainbow Roads Asset Pack": {
+    "MayorWanze__Rainbow_Roads_Asset_Pack": {
       "ModName": "Rainbow Roads Asset Pack",
       "PDX_ID": "79898",
       "Author": "MayorWanze"
     },
-    "MayorWanze__Targetable Billboards and Signs": {
+    "MayorWanze__Targetable_Billboards_and_Signs": {
       "ModName": "Targetable Billboards and Signs",
       "PDX_ID": "80728",
       "Author": "MayorWanze"
     },
-    "MayorWanze__Trash Asset Pack": {
+    "MayorWanze__Trash_Asset_Pack": {
       "ModName": "Trash Asset Pack",
       "PDX_ID": "79999",
       "Author": "MayorWanze"
     },
-    "Mimonsi__Crossed Theme Train Variation Asset Pack": {
-      "AssemblyName": "CrossedThemeTrainVariationAssetPack",
-      "ModName": "Crossed Theme Train Variation Asset Pack",
-      "PDX_ID": "84784",
-      "Author": "Mimonsi"
+    "Mbyron26__City_Controller": {
+      "ModName": "City Controller",
+      "PDX_ID": "89495",
+      "Author": "Mbyron26"
     },
-    "Mimonsi__Asset Packs Manager": {
+    "Merlinium58__East_Honolulu,_Hawaii": {
+      "ModName": "East Honolulu, Hawaii",
+      "PDX_ID": "88077",
+      "Author": "Merlinium58"
+    },
+    "Merlinium58__Mountain_Village_Redux": {
+      "ModName": "Mountain Village Redux",
+      "PDX_ID": "76685",
+      "Author": "Merlinium58"
+    },
+    "Merlinium58__Mouvil_-_Rospen_250K_Pop_Vanilla": {
+      "ModName": "Mouvil - Rospen 250K Pop Vanilla",
+      "PDX_ID": "84449",
+      "Author": "Merlinium58"
+    },
+    "Merlinium58__New_Rospen_v7_35K": {
+      "ModName": "New Rospen v7 35K",
+      "PDX_ID": "85220",
+      "Author": "Merlinium58"
+    },
+    "Merlinium58__Roslyn_Peninsula_2": {
+      "ModName": "Roslyn Peninsula 2",
+      "PDX_ID": "86059",
+      "Author": "Merlinium58"
+    },
+    "Merlinium58__Symoi_Island": {
+      "ModName": "Symoi Island",
+      "PDX_ID": "81705",
+      "Author": "Merlinium58"
+    },
+    "Merlinium58__Temperate_NA_Base_Map": {
+      "ModName": "Temperate NA Base Map",
+      "PDX_ID": "87105",
+      "Author": "Merlinium58"
+    },
+    "Merlinium58__The_Big_Valley_V4": {
+      "ModName": "The Big Valley V4",
+      "PDX_ID": "81329",
+      "Author": "Merlinium58"
+    },
+    "Merlinium58__Wilderness": {
+      "ModName": "Wilderness",
+      "PDX_ID": "76688",
+      "Author": "Merlinium58"
+    },
+    "Mimonsi__Asset_Packs_Manager": {
       "AssemblyName": "AssetPacksManager",
       "FragmentSource": "AssetPacksManager.Setting",
       "ClassType": "AssetPacksManagerSettings",
@@ -656,7 +1245,7 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
-    "Mimonsi__Asset Variation Changer": {
+    "Mimonsi__Asset_Variation_Changer": {
       "AssemblyName": "AssetVariationChanger",
       "FragmentSource": "AssetVariationChanger.Setting",
       "ClassType": "AssetVariationChangerSettings",
@@ -665,12 +1254,18 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
-    "Mimonsi__Extra Networks and Areas": {
-      "ModName": "Extra Networks and Areas",
-      "PDX_ID": "77175",
+    "Mimonsi__Car_Props_Asset_Pack": {
+      "ModName": "Car Props Asset Pack",
+      "PDX_ID": "78904",
       "Author": "Mimonsi"
     },
-    "Mimonsi__Extended Tooltip": {
+    "Mimonsi__Crossed_Theme_Train_Variation_Asset_Pack": {
+      "AssemblyName": "CrossedThemeTrainVariationAssetPack",
+      "ModName": "Crossed Theme Train Variation Asset Pack",
+      "PDX_ID": "84784",
+      "Author": "Mimonsi"
+    },
+    "Mimonsi__Extended_Tooltip": {
       "AssemblyName": "ExtendedTooltip",
       "FragmentSource": "ExtendedTooltip.ModSettings",
       "ClassType": "ExtendedTooltipSettings",
@@ -679,19 +1274,33 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
-    "Mimonsi__Residential Service Building Asset Pack": {
+    "Mimonsi__Extra_Networks_and_Areas": {
+      "ModName": "Extra Networks and Areas",
+      "PDX_ID": "77175",
+      "Author": "Mimonsi"
+    },
+    "Mimonsi__Integrated_Tram_Stop": {
+      "ModName": "Integrated Tram Stop",
+      "PDX_ID": "84831",
+      "Author": "Mimonsi"
+    },
+    "Mimonsi__Radio_Media_Control_Beta": {
+      "ModName": "Radio Media Control [Beta]",
+      "PDX_ID": "77913",
+      "Author": "Mimonsi"
+    },
+    "Mimonsi__RealisticDensity_(outdated)": {
+      "ModName": "RealisticDensity (outdated)",
+      "PDX_ID": "78187",
+      "Author": "Mimonsi"
+    },
+    "Mimonsi__Residential_Service_Building_Asset_Pack": {
       "AssemblyName": "ResidentialServiceBuildingPack",
       "ModName": "Residential Service Building Asset Pack",
       "PDX_ID": "79390",
       "Author": "Mimonsi"
     },
-    "Mimonsi__Subway Variation Asset Pack": {
-      "AssemblyName": "SubwayVariationAssetPack",
-      "ModName": "Subway Variation Asset Pack",
-      "PDX_ID": "80797",
-      "Author": "Mimonsi"
-    },
-    "Mimonsi__Road Name Remover": {
+    "Mimonsi__Road_Name_Remover": {
       "AssemblyName": "RoadNameRemover",
       "FragmentSource": "RoadNameRemover.Setting",
       "ClassType": "RoadNameRemoverSettings",
@@ -700,7 +1309,7 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
-    "Mimonsi__Stiffer Vehicles": {
+    "Mimonsi__Stiffer_Vehicles": {
       "AssemblyName": "StifferVehicles",
       "FragmentSource": "StifferVehicles.Setting",
       "ClassType": "StifferVehiclesSettings",
@@ -709,24 +1318,25 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
-    "Mimonsi__Train Variation Asset Pack": {
+    "Mimonsi__Subway_Variation_Asset_Pack": {
+      "AssemblyName": "SubwayVariationAssetPack",
+      "ModName": "Subway Variation Asset Pack",
+      "PDX_ID": "80797",
+      "Author": "Mimonsi"
+    },
+    "Mimonsi__Train_Variation_Asset_Pack": {
       "AssemblyName": "TrainVariationAssetPack",
       "ModName": "Train Variation Asset Pack",
       "PDX_ID": "80789",
       "Author": "Mimonsi"
     },
-    "Mimonsi__Tram Variation Asset Pack": {
+    "Mimonsi__Tram_Variation_Asset_Pack": {
       "AssemblyName": "TramVariationAssetPack",
       "ModName": "Tram Variation Asset Pack",
       "PDX_ID": "80754",
       "Author": "Mimonsi"
     },
-    "Mimonsi__Weather Plus (deprecated)": {
-      "ModName": "Weather Plus (deprecated)",
-      "PDX_ID": "82370",
-      "Author": "Mimonsi"
-    },
-    "Mimonsi__Vehicle Variation Packs": {
+    "Mimonsi__Vehicle_Variation_Packs": {
       "AssemblyName": "VehicleVariationPacks",
       "FragmentSource": "VehicleVariationPacks.Setting",
       "ClassType": "VehicleVariationPacksSettings",
@@ -735,36 +1345,86 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
-    "MrSandcraft__5x10 Park": {
+    "Mimonsi__Weather_Plus_(deprecated)": {
+      "ModName": "Weather Plus (deprecated)",
+      "PDX_ID": "82370",
+      "Author": "Mimonsi"
+    },
+    "monikirjo__Kuopio": {
+      "ModName": "Kuopio",
+      "PDX_ID": "86580",
+      "Author": "monikirjo"
+    },
+    "Monleybread___Columbia_Valley": {
+      "ModName": " Columbia Valley",
+      "PDX_ID": "84888",
+      "Author": "Monleybread"
+    },
+    "Monleybread__Columbia_Valley_Map_Theme": {
+      "ModName": "Columbia Valley Map Theme",
+      "PDX_ID": "84978",
+      "Author": "Monleybread"
+    },
+    "MrSandcraft__5x10_Park": {
       "AssemblyName": "5x10ParkMrSandcraft_AssetPack",
       "ModName": "5x10 Park",
       "PDX_ID": "87943",
       "Author": "MrSandcraft"
     },
-    "MrSandcraft__Local Hospital(Upgradable)": {
+    "MrSandcraft__Local_Hospital(Upgradable)": {
       "ModName": "Local Hospital(Upgradable)",
       "PDX_ID": "79887",
       "Author": "MrSandcraft"
     },
-    "MrSandcraft__Mini Elementary School Asset (Upgradable)": {
+    "MrSandcraft__Mini_Elementary_School_Asset_(Upgradable)": {
       "ModName": "Mini Elementary School Asset (Upgradable)",
       "PDX_ID": "79313",
       "Author": "MrSandcraft"
     },
-    "MrSandcraft__Parking 2x2 Extendable": {
+    "MrSandcraft__Parking_2x2_Extendable": {
       "AssemblyName": "Parkinglot2x2byMrSandcraft",
       "ModName": "Parking 2x2 Extendable",
       "PDX_ID": "79483",
       "Author": "MrSandcraft"
+    },
+    "Noel2__CS2LiteBooster(系统精简加速)": {
+      "ModName": "CS2LiteBooster(系统精简加速)",
+      "PDX_ID": "79943",
+      "Author": "Noel2"
+    },
+    "Noel2__LandValueRemake": {
+      "ModName": "LandValueRemake",
+      "PDX_ID": "77092",
+      "Author": "Noel2"
     },
     "Noel2__NoDogs": {
       "ModName": "NoDogs",
       "PDX_ID": "76546",
       "Author": "Noel2"
     },
-    "Nyyoko__Statue of Liberty": {
-      "ModName": "Statue of Liberty",
-      "PDX_ID": "90114",
+    "Noel2__武汉四环57km": {
+      "ModName": "武汉四环57km",
+      "PDX_ID": "82102",
+      "Author": "Noel2"
+    },
+    "Nukprach_TH__Pattaya_City": {
+      "ModName": "Pattaya City",
+      "PDX_ID": "85182",
+      "Author": "Nukprach_TH"
+    },
+    "Nyyoko__AutoSaveAlwaysOn": {
+      "ModName": "AutoSaveAlwaysOn",
+      "PDX_ID": "89270",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__FirstPersonCamera": {
+      "ModName": "FirstPersonCamera",
+      "PDX_ID": "78900",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__Google_Earth_Inspired_LUT_Pack": {
+      "ModName": "Google Earth Inspired LUT Pack",
+      "PDX_ID": "89165",
       "Author": "Nyyoko"
     },
     "Nyyoko__Lumina": {
@@ -773,10 +1433,75 @@
       "PDX_ID": "75251",
       "Author": "Nyyoko"
     },
-    "PablowAugust__Rosies Medium Residentials": {
+    "Nyyoko__Minecraft_HDRI_Sky": {
+      "ModName": "Minecraft HDRI Sky",
+      "PDX_ID": "89556",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__ON1_Portrait_LUT_Pack": {
+      "ModName": "ON1 Portrait LUT Pack",
+      "PDX_ID": "88524",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__PolyHaven_Cubemap_Pack_1": {
+      "ModName": "PolyHaven Cubemap Pack 1",
+      "PDX_ID": "88803",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__PolyHaven_Cubemap_Pack_Pure_Sky": {
+      "ModName": "PolyHaven Cubemap Pack Pure Sky",
+      "PDX_ID": "88863",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__PreservePhotoMode": {
+      "ModName": "PreservePhotoMode",
+      "PDX_ID": "75101",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__RenderMastery": {
+      "ModName": "RenderMastery",
+      "PDX_ID": "77104",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__ResolutionExtension": {
+      "ModName": "ResolutionExtension",
+      "PDX_ID": "75179",
+      "Author": "Nyyoko"
+    },
+    "Nyyoko__Statue_of_Liberty": {
+      "ModName": "Statue of Liberty",
+      "PDX_ID": "90114",
+      "Author": "Nyyoko"
+    },
+    "PablowAugust__Commercial_Jobs_Cheat_Pack": {
+      "ModName": "Commercial Jobs Cheat Pack",
+      "PDX_ID": "80490",
+      "Author": "PablowAugust"
+    },
+    "PablowAugust__Pleasant_Flatland_Climate": {
+      "ModName": "Pleasant Flatland Climate",
+      "PDX_ID": "84622",
+      "Author": "PablowAugust"
+    },
+    "PablowAugust__Rapid_Response_Helipad_AssetPack": {
+      "ModName": "Rapid Response Helipad AssetPack",
+      "PDX_ID": "80323",
+      "Author": "PablowAugust"
+    },
+    "PablowAugust__Rosies_Medium_Residentials": {
       "AssemblyName": "RosiesMediumAssetPack",
       "ModName": "Rosies Medium Residentials",
       "PDX_ID": "80572",
+      "Author": "PablowAugust"
+    },
+    "PablowAugust__Service_Cheat_Assets": {
+      "ModName": "Service Cheat Assets",
+      "PDX_ID": "79764",
+      "Author": "PablowAugust"
+    },
+    "PablowAugust__Small_Local_TrainStation": {
+      "ModName": "Small Local TrainStation",
+      "PDX_ID": "80806",
       "Author": "PablowAugust"
     },
     "PablowAugust__SmallDepotAssetPack": {
@@ -784,13 +1509,47 @@
       "PDX_ID": "82653",
       "Author": "PablowAugust"
     },
-    "Qoushik__Elevated Train Station": {
-      "AssemblyName": "ElevatedTrainStation_VanillaSubway",
-      "ModName": "Elevated Train Station",
-      "PDX_ID": "84515",
-      "Author": "Qoushik"
+    "PablowAugust__WorkForceCheatAssetPack": {
+      "ModName": "WorkForceCheatAssetPack",
+      "PDX_ID": "80428",
+      "Author": "PablowAugust"
     },
-    "Qoushik__Auto Vehicle Renamer": {
+    "panloppalms__Samui_Island_(Thailand)": {
+      "ModName": "Samui Island (Thailand)",
+      "PDX_ID": "79915",
+      "Author": "panloppalms"
+    },
+    "Phanionx__MagicTaxi": {
+      "ModName": "MagicTaxi",
+      "PDX_ID": "78966",
+      "Author": "Phanionx"
+    },
+    "Phanionx__Maryland": {
+      "ModName": "Maryland",
+      "PDX_ID": "77943",
+      "Author": "Phanionx"
+    },
+    "poplarponderosa__Cariboo_Valley": {
+      "ModName": "Cariboo Valley",
+      "PDX_ID": "91022",
+      "Author": "poplarponderosa"
+    },
+    "poplarponderosa__Culebra": {
+      "ModName": "Culebra",
+      "PDX_ID": "84044",
+      "Author": "poplarponderosa"
+    },
+    "poplarponderosa__Culebra_BROKEN_Harbor_Start": {
+      "ModName": "Culebra [BROKEN Harbor Start]",
+      "PDX_ID": "89384",
+      "Author": "poplarponderosa"
+    },
+    "poplarponderosa__Victoria,_BC": {
+      "ModName": "Victoria, BC",
+      "PDX_ID": "80039",
+      "Author": "poplarponderosa"
+    },
+    "Qoushik__Auto_Vehicle_Renamer": {
       "AssemblyName": "AutoVehicleRenamer",
       "FragmentSource": "AutoVehicleRenamer.AutoVehicleRenamerSetting",
       "ClassType": "AutoVehicleRenamerSettings",
@@ -799,7 +1558,7 @@
       "Author": "Qoushik",
       "Backupable": true
     },
-    "Qoushik__Boundary Lines Modifier": {
+    "Qoushik__Boundary_Lines_Modifier": {
       "AssemblyName": "BoundaryLinesModifier",
       "FragmentSource": "BoundaryLinesModifier.Setting",
       "ClassType": "BoundaryLinesModifierSettings",
@@ -808,7 +1567,7 @@
       "Author": "Qoushik",
       "Backupable": true
     },
-    "Qoushik__Demand Master Pro [Alpha]": {
+    "Qoushik__Demand_Master_Pro_Alpha": {
       "AssemblyName": "DemandMaster",
       "FragmentSource": "DemandMaster.Setting",
       "ClassType": "DemandMasterSettings",
@@ -817,72 +1576,78 @@
       "Author": "Qoushik",
       "Backupable": true
     },
-    "Qoushik__Industrial Tax Controller Fix [TEST]": {
+    "Qoushik__Elevated_Train_Station": {
+      "AssemblyName": "ElevatedTrainStation_VanillaSubway",
+      "ModName": "Elevated Train Station",
+      "PDX_ID": "84515",
+      "Author": "Qoushik"
+    },
+    "Qoushik__Industrial_Tax_Controller_Fix_TEST": {
       "ModName": "Industrial Tax Controller Fix [TEST]",
       "PDX_ID": "76632",
       "Author": "Qoushik"
     },
-    "Qoushik__Intersectable Subway System": {
+    "Qoushik__Intersectable_Subway_System": {
       "AssemblyName": "IntersectableSubwaySystem",
       "ModName": "Intersectable Subway System",
       "PDX_ID": "87219",
       "Author": "Qoushik"
     },
-    "Qoushik__Medium Office Zoning": {
+    "Qoushik__Medium_Office_Zoning": {
       "AssemblyName": "OfficeMediumZoning",
       "ModName": "Medium Office Zoning",
       "PDX_ID": "83207",
       "Author": "Qoushik"
     },
-    "Qoushik__Mini Track Services": {
+    "Qoushik__Mini_Track_Services": {
       "AssemblyName": "MiniTrackServices",
       "ModName": "Mini Track Services",
       "PDX_ID": "87564",
       "Author": "Qoushik"
     },
-    "Qoushik__Mixed Residential Office Zoning": {
+    "Qoushik__Mixed_Residential_Office_Zoning": {
       "AssemblyName": "MixedResidentialOfficeZoning",
       "ModName": "Mixed Residential Office Zoning",
       "PDX_ID": "79067",
       "Author": "Qoushik"
     },
-    "Qoushik__Prop Vanilla Vegetations": {
+    "Qoushik__Prop_Vanilla_Vegetations": {
       "AssemblyName": "PropVanillaVegetations",
       "ModName": "Prop Vanilla Vegetations",
       "PDX_ID": "87099",
       "Author": "Qoushik"
     },
-    "Qoushik__Real World Brand: Apple": {
+    "Qoushik__Real_World_Brand:_Apple": {
       "AssemblyName": "RealWorldBrand_Apple",
       "ModName": "Real World Brand: Apple",
       "PDX_ID": "86423",
       "Author": "Qoushik"
     },
-    "Qoushik__Real World Brand: Discord": {
+    "Qoushik__Real_World_Brand:_Discord": {
       "AssemblyName": "RealWorldBrand_Discord",
       "ModName": "Real World Brand: Discord",
       "PDX_ID": "84186",
       "Author": "Qoushik"
     },
-    "Qoushik__Real World Brand: Paradox Interactive": {
+    "Qoushik__Real_World_Brand:_Paradox_Interactive": {
       "AssemblyName": "RealWorldBrand_ParadoxInteractive",
       "ModName": "Real World Brand: Paradox Interactive",
       "PDX_ID": "80939",
       "Author": "Qoushik"
     },
-    "Qoushik__Real World Brands: Adobe": {
+    "Qoushik__Real_World_Brands:_Adobe": {
       "AssemblyName": "RealWorldBrand_Adobe",
       "ModName": "Real World Brands: Adobe",
       "PDX_ID": "83168",
       "Author": "Qoushik"
     },
-    "Qoushik__Real World Petrochemical Companies": {
+    "Qoushik__Real_World_Petrochemical_Companies": {
       "AssemblyName": "RealWorldPetrochemicals",
       "ModName": "Real World Petrochemical Companies",
       "PDX_ID": "81625",
       "Author": "Qoushik"
     },
-    "Qoushik__Simple Mod Checker Plus": {
+    "Qoushik__Simple_Mod_Checker_Plus": {
       "AssemblyName": "SimpleModChecker",
       "FragmentSource": "SimpleModCheckerPlus.Setting",
       "ClassType": "SimpleModCheckerSettings",
@@ -891,13 +1656,13 @@
       "Author": "Qoushik",
       "Backupable": true
     },
-    "Qoushik__Single Family Residentials": {
+    "Qoushik__Single_Family_Residentials": {
       "AssemblyName": "SingleFamilyResidentials",
       "ModName": "Single Family Residentials",
       "PDX_ID": "87691",
       "Author": "Qoushik"
     },
-    "Qoushik__Trading Cost Tweaker": {
+    "Qoushik__Trading_Cost_Tweaker": {
       "AssemblyName": "TradingCostTweaker",
       "FragmentSource": "TradingCostTweaker.Setting",
       "ClassType": "TradingCostTweakerSettings",
@@ -906,31 +1671,31 @@
       "Author": "Qoushik",
       "Backupable": true
     },
-    "Qoushik__Vanilla Ploppables: Service Buildings": {
+    "Qoushik__Vanilla_Ploppables:_Service_Buildings": {
       "AssemblyName": "VanillaPloppablesServiceBuildings",
       "ModName": "Vanilla Ploppables: Service Buildings",
       "PDX_ID": "79021",
       "Author": "Qoushik"
     },
-    "Qoushik__Vanilla Ploppables: Zoned Buildings": {
+    "Qoushik__Vanilla_Ploppables:_Zoned_Buildings": {
       "AssemblyName": "VanillaPloppablesZonedBuildings",
       "ModName": "Vanilla Ploppables: Zoned Buildings",
       "PDX_ID": "79020",
       "Author": "Qoushik"
     },
-    "Qoushik__Vanilla Roads Reversed": {
+    "Qoushik__Vanilla_Roads_Reversed": {
       "AssemblyName": "VanillaRoadsReversed",
       "ModName": "Vanilla Roads Reversed",
       "PDX_ID": "86461",
       "Author": "Qoushik"
     },
-    "Qoushik__Vanilla Vehicles Remixed": {
+    "Qoushik__Vanilla_Vehicles_Remixed": {
       "AssemblyName": "VanillaVehiclesRemixed",
       "ModName": "Vanilla Vehicles Remixed",
       "PDX_ID": "84787",
       "Author": "Qoushik"
     },
-    "Quboid__Move It": {
+    "Quboid__Move_It": {
       "AssemblyName": "MoveIt",
       "FragmentSource": "MoveIt.Settings.Settings",
       "ClassType": "MoveItSettings",
@@ -939,53 +1704,113 @@
       "Author": "Quboid",
       "Backupable": true
     },
-    "Quboid__Move It (Beta)": {
+    "Quboid__Move_It_(Beta)": {
       "ModName": "Move It (Beta)",
       "PDX_ID": "83596",
       "Author": "Quboid"
     },
-    "RaftermanNZ__Bay Port, Michigan": {
+    "RaftermanNZ__Bay_Port,_Michigan": {
       "ModName": "Bay Port, Michigan",
       "PDX_ID": "86755",
       "Author": "RaftermanNZ"
+    },
+    "RaftermanNZ__Black_Dragon_Canyon,_Utah": {
+      "ModName": "Black Dragon Canyon, Utah",
+      "PDX_ID": "76000",
+      "Author": "RaftermanNZ"
+    },
+    "RaftermanNZ__Dunedin,_New_Zealand": {
+      "ModName": "Dunedin, New Zealand",
+      "PDX_ID": "82414",
+      "Author": "RaftermanNZ"
+    },
+    "RaftermanNZ__Lake_Onoke,_New_Zealand": {
+      "ModName": "Lake Onoke, New Zealand",
+      "PDX_ID": "75089",
+      "Author": "RaftermanNZ"
+    },
+    "RaftermanNZ__Wanaka,_New_Zealand": {
+      "ModName": "Wanaka, New Zealand",
+      "PDX_ID": "75681",
+      "Author": "RaftermanNZ"
+    },
+    "RandomGamer46__Better_Barrier_Island": {
+      "ModName": "Better Barrier Island",
+      "PDX_ID": "87488",
+      "Author": "RandomGamer46"
     },
     "RandomGamer46__RandomGamer_TerminusStation_Pack1": {
       "ModName": "RandomGamer_TerminusStation_Pack1",
       "PDX_ID": "89225",
       "Author": "RandomGamer46"
     },
-    "rcav8tr__Improved Pie Charts": {
+    "rcav8tr__Improved_Pie_Charts": {
       "ModName": "Improved Pie Charts",
       "PDX_ID": "87398",
       "Author": "rcav8tr"
     },
-    "rcav8tr__Performance Monitor": {
+    "rcav8tr__Performance_Monitor": {
       "ModName": "Performance Monitor",
       "PDX_ID": "84661",
       "Author": "rcav8tr"
     },
-    "Rhy5Kyl3__GTA5 Map (With Roads, Rail and Subway lines)": {
+    "Rhy5Kyl3__GTA_6_Concept_Map_(With_Roads,_Rail_and_Tram_Lines)": {
+      "ModName": "GTA 6 Concept Map (With Roads, Rail and Tram Lines)",
+      "PDX_ID": "78062",
+      "Author": "Rhy5Kyl3"
+    },
+    "Rhy5Kyl3__GTA5_Map_(With_Roads,_Rail_and_Subway_lines)": {
       "ModName": "GTA5 Map (With Roads, Rail and Subway lines)",
       "PDX_ID": "77337",
       "Author": "Rhy5Kyl3"
     },
-    "rodrigmatrix__Small Subway Garage and Train Garage Asset": {
+    "Rhy5Kyl3__Mafia_3_Map_(With_Roads,_Rail_and_Tram_Lines)": {
+      "ModName": "Mafia 3 Map (With Roads, Rail and Tram Lines)",
+      "PDX_ID": "77657",
+      "Author": "Rhy5Kyl3"
+    },
+    "rodrigmatrix__No_Dead_Trees": {
+      "ModName": "No Dead Trees",
+      "PDX_ID": "88500",
+      "Author": "rodrigmatrix"
+    },
+    "rodrigmatrix__Scroll_Through_Assets": {
+      "ModName": "Scroll Through Assets",
+      "PDX_ID": "89104",
+      "Author": "rodrigmatrix"
+    },
+    "rodrigmatrix__Small_Subway_Garage_and_Train_Garage_Asset": {
       "ModName": "Small Subway Garage and Train Garage Asset",
       "PDX_ID": "86976",
       "Author": "rodrigmatrix"
     },
-    "rodrigmatrix__Subway Freedom": {
+    "rodrigmatrix__Subway_Decal_Asset_Pack": {
+      "ModName": "Subway Decal Asset Pack",
+      "PDX_ID": "80745",
+      "Author": "rodrigmatrix"
+    },
+    "rodrigmatrix__Subway_Freedom": {
       "ModName": "Subway Freedom",
       "PDX_ID": "84644",
       "Author": "rodrigmatrix"
     },
-    "rodrigmatrix__Transport Vehicle Props": {
+    "rodrigmatrix__Time_and_Weather_Anarchy": {
+      "ModName": "Time and Weather Anarchy",
+      "PDX_ID": "88893",
+      "Author": "rodrigmatrix"
+    },
+    "rodrigmatrix__Transport_Vehicle_Props": {
       "AssemblyName": "TrashAssetPack",
       "ModName": "Transport Vehicle Props",
       "PDX_ID": "87056",
       "Author": "rodrigmatrix"
     },
-    "RollWind__Station Naming": {
+    "rodrigmatrix__Unlimited_Unique_Buildings": {
+      "ModName": "Unlimited Unique Buildings",
+      "PDX_ID": "88488",
+      "Author": "rodrigmatrix"
+    },
+    "RollWind__Station_Naming": {
       "AssemblyName": "StationNaming",
       "FragmentSource": "StationNaming.Setting.StationNamingSettings",
       "ClassType": "StationNamingSettings",
@@ -994,7 +1819,16 @@
       "Author": "RollWind",
       "Backupable": true
     },
-    "ruzbeh0__Realistic Trips": {
+    "ruzbeh0__Real_Life": {
+      "AssemblyName": "RealLife",
+      "FragmentSource": "RealLife.Setting",
+      "ClassType": "RealLifeSettings",
+      "ModName": "Real Life",
+      "PDX_ID": "86868",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "ruzbeh0__Realistic_Trips": {
       "AssemblyName": "Time2Work",
       "FragmentSource": "Time2Work.Setting",
       "ClassType": "RealisticTripsSettings",
@@ -1003,21 +1837,12 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
-    "ruzbeh0__Realistic Workplaces And Households": {
+    "ruzbeh0__Realistic_Workplaces_And_Households": {
       "AssemblyName": "RWH",
       "FragmentSource": "RealisticWorkplacesAndHouseholds.Setting",
       "ClassType": "RealisticWorkplacesAndHouseholdsSettings",
       "ModName": "Realistic Workplaces And Households",
       "PDX_ID": "87755",
-      "Author": "ruzbeh0",
-      "Backupable": true
-    },
-    "ruzbeh0__Real Life": {
-      "AssemblyName": "RealLife",
-      "FragmentSource": "RealLife.Setting",
-      "ClassType": "RealLifeSettings",
-      "ModName": "Real Life",
-      "PDX_ID": "86868",
       "Author": "ruzbeh0",
       "Backupable": true
     },
@@ -1030,7 +1855,7 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
-    "ruzbeh0__Transit Capacity Multiplier": {
+    "ruzbeh0__Transit_Capacity_Multiplier": {
       "AssemblyName": "TransitCapacityMultiplier",
       "FragmentSource": "TransitCapacityMultiplier.Setting",
       "ClassType": "TransitCapacityMultiplierSettings",
@@ -1039,7 +1864,7 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
-    "ruzbeh0__Trips Data": {
+    "ruzbeh0__Trips_Data": {
       "AssemblyName": "TripsData",
       "FragmentSource": "TripsData.Setting",
       "ClassType": "TripsDataSettings",
@@ -1048,128 +1873,183 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
-    "sermainer__CRA Core Assets": {
+    "Scheballs__Spring_Creek_North_Dakota": {
+      "ModName": "Spring_Creek_North_Dakota",
+      "PDX_ID": "80558",
+      "Author": "Scheballs"
+    },
+    "sermainer__CRA_Core_Assets": {
       "ModName": "CRA Core Assets",
       "PDX_ID": "89195",
       "Author": "sermainer"
     },
-    "sermainer__Custom Road Assets": {
+    "sermainer__Custom_Road_Assets": {
       "AssemblyName": "CustomRoadAssetPack",
       "ModName": "Custom Road Assets",
       "PDX_ID": "86885",
       "Author": "sermainer"
     },
-    "Shaine2010__Extended Bus Station": {
+    "Shaine2010__Bald_Hills": {
+      "ModName": "Bald Hills",
+      "PDX_ID": "85798",
+      "Author": "Shaine2010"
+    },
+    "Shaine2010__Cape_of_merchants": {
+      "ModName": "Cape of merchants",
+      "PDX_ID": "76230",
+      "Author": "Shaine2010"
+    },
+    "Shaine2010__Charleston_(SC)_Reimagined": {
+      "ModName": "Charleston (SC) Reimagined",
+      "PDX_ID": "85271",
+      "Author": "Shaine2010"
+    },
+    "Shaine2010__Extended_Bus_Station": {
       "ModName": "Extended Bus Station",
       "PDX_ID": "86538",
       "Author": "Shaine2010"
     },
-    "Shaine2010__Extended Cargo Harbor": {
+    "Shaine2010__Extended_Cargo_Harbor": {
       "ModName": "Extended Cargo Harbor",
       "PDX_ID": "80116",
       "Author": "Shaine2010"
     },
-    "Shaine2010__Extended Cargo Harbor for left-hand traffic": {
+    "Shaine2010__Extended_Cargo_Harbor_for_left-hand_traffic": {
       "ModName": "Extended Cargo Harbor for left-hand traffic",
       "PDX_ID": "80267",
       "Author": "Shaine2010"
     },
-    "Shaine2010__Extended Cargo Train Terminal": {
+    "Shaine2010__Extended_Cargo_Train_Terminal": {
       "ModName": "Extended Cargo Train Terminal",
       "PDX_ID": "80436",
       "Author": "Shaine2010"
     },
-    "ST-Apps__[DEPRECATED] Extended Road Upgrades": {
+    "Shaine2010__Great_Lake_Plateau": {
+      "ModName": "Great Lake Plateau",
+      "PDX_ID": "76423",
+      "Author": "Shaine2010"
+    },
+    "Shaine2010__Lost_valley": {
+      "ModName": "Lost valley",
+      "PDX_ID": "76227",
+      "Author": "Shaine2010"
+    },
+    "Shaine2010__The_three_sisters": {
+      "ModName": "The three sisters",
+      "PDX_ID": "76226",
+      "Author": "Shaine2010"
+    },
+    "Shaine2010__Windy_Meadows": {
+      "ModName": "Windy Meadows",
+      "PDX_ID": "77033",
+      "Author": "Shaine2010"
+    },
+    "shigiRyou__San_Francisco_Road_Network_(Ongoing)_旧金山路网（部分）": {
+      "ModName": "San Francisco Road Network (Ongoing) 旧金山路网（部分）",
+      "PDX_ID": "80666",
+      "Author": "shigiRyou"
+    },
+    "spoobered__Coastal_Appalachia": {
+      "ModName": "Coastal Appalachia",
+      "PDX_ID": "77547",
+      "Author": "spoobered"
+    },
+    "ST-Apps__DEPRECATED_Extended_Road_Upgrades": {
       "ModName": "[DEPRECATED] Extended Road Upgrades",
       "PDX_ID": "76971",
       "Author": "ST-Apps"
     },
-    "Sully_Skylines__Asphalt Patches Decal Pack": {
+    "Sully_Skylines__Asphalt_Patches_Decal_Pack": {
       "ModName": "Asphalt Patches Decal Pack",
       "PDX_ID": "89402",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Basketball Courts Decal Pack": {
+    "Sully_Skylines__Basketball_Courts_Decal_Pack": {
       "ModName": "Basketball Courts Decal Pack",
       "PDX_ID": "87995",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Big Brands Decal Pack": {
+    "Sully_Skylines__Big_Brands_Decal_Pack": {
       "ModName": "Big Brands Decal Pack",
       "PDX_ID": "87315",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Cities Skylines II Graffiti Decal Pack": {
+    "Sully_Skylines__Cities_Skylines_II_Graffiti_Decal_Pack": {
       "ModName": "Cities Skylines II Graffiti Decal Pack",
       "PDX_ID": "80582",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Concrete Tiles Surface Pack": {
+    "Sully_Skylines__Concrete_Tiles_Surface_Pack": {
       "ModName": "Concrete Tiles Surface Pack",
       "PDX_ID": "87997",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Cracks and Damage Decal Pack": {
+    "Sully_Skylines__Cracks_and_Damage_Decal_Pack": {
       "ModName": "Cracks and Damage Decal Pack",
       "PDX_ID": "80583",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Extra3.0 Graffiti Decal Pack": {
+    "Sully_Skylines__Extra3.0_Graffiti_Decal_Pack": {
       "ModName": "Extra3.0 Graffiti Decal Pack",
       "PDX_ID": "80578",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Golden Sand Beaches Texture Pack": {
+    "Sully_Skylines__Golden_Sand_Beaches_Texture_Pack": {
       "ModName": "Golden Sand Beaches Texture Pack",
       "PDX_ID": "80864",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__L.A. Misc. Decal Pack 1": {
+    "Sully_Skylines__L.A._Misc._Decal_Pack_1": {
       "ModName": "L.A. Misc. Decal Pack 1",
       "PDX_ID": "89406",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Modders Graffiti Decal Pack": {
+    "Sully_Skylines__Modders_Graffiti_Decal_Pack": {
       "ModName": "Modders Graffiti Decal Pack",
       "PDX_ID": "89403",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Movie Posters 2024 Decal Pack": {
+    "Sully_Skylines__Movie_Posters_2024_Decal_Pack": {
       "ModName": "Movie Posters 2024 Decal Pack",
       "PDX_ID": "87316",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Riverbeds Texture Pack": {
+    "Sully_Skylines__Riverbeds_Texture_Pack": {
       "ModName": "Riverbeds Texture Pack",
       "PDX_ID": "80758",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Sea Foam Decal Pack": {
+    "Sully_Skylines__Sea_Foam_Decal_Pack": {
       "ModName": "Sea Foam Decal Pack",
       "PDX_ID": "80585",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Stains and Leakage Decal Pack": {
+    "Sully_Skylines__Stains_and_Leakage_Decal_Pack": {
       "ModName": "Stains and Leakage Decal Pack",
       "PDX_ID": "80584",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Tennis Courts Decal Pack": {
+    "Sully_Skylines__Tennis_Courts_Decal_Pack": {
       "ModName": "Tennis Courts Decal Pack",
       "PDX_ID": "87996",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__Tire Marks Decal Pack": {
+    "Sully_Skylines__Tire_Marks_Decal_Pack": {
       "ModName": "Tire Marks Decal Pack",
       "PDX_ID": "87317",
       "Author": "Sully_Skylines"
     },
-    "Sully_Skylines__White Sand Beaches Texture Pack": {
+    "Sully_Skylines__White_Sand_Beaches_Texture_Pack": {
       "ModName": "White Sand Beaches Texture Pack",
       "PDX_ID": "80867",
       "Author": "Sully_Skylines"
     },
-    "tduck973564__Traffic Simulation Adjuster": {
+    "Taipei_Native__Carto": {
+      "ModName": "Carto",
+      "PDX_ID": "87428",
+      "Author": "Taipei Native"
+    },
+    "tduck973564__Traffic_Simulation_Adjuster": {
       "AssemblyName": "TrafficSimulationAdjuster",
       "FragmentSource": "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions",
       "ClassType": "TrafficSimulationAdjusterSettings",
@@ -1178,7 +2058,7 @@
       "Author": "tduck973564",
       "Backupable": true
     },
-    "TDW__Asset Icon Library": {
+    "TDW__Asset_Icon_Library": {
       "AssemblyName": "AssetIconLibrary",
       "FragmentSource": "AssetIconLibrary.Setting",
       "ClassType": "AssetIconLibrarySettings",
@@ -1187,7 +2067,7 @@
       "Author": "TDW",
       "Backupable": true
     },
-    "TDW__Find It": {
+    "TDW__Find_It": {
       "AssemblyName": "FindIt",
       "FragmentSource": "FindIt.FindItSettings",
       "ClassType": "FindItSettings",
@@ -1196,7 +2076,12 @@
       "Author": "TDW",
       "Backupable": true
     },
-    "TDW__Road Builder [BETA]": {
+    "TDW__Hard_Mode": {
+      "ModName": "Hard Mode",
+      "PDX_ID": "80205",
+      "Author": "TDW"
+    },
+    "TDW__Road_Builder_BETA": {
       "AssemblyName": "RoadBuilder",
       "FragmentSource": "RoadBuilder.Setting",
       "ClassType": "RoadBuilderSettings",
@@ -1205,13 +2090,13 @@
       "Author": "TDW",
       "Backupable": true
     },
-    "TDW__Skyve [BETA]": {
+    "TDW__Skyve_BETA": {
       "AssemblyName": "Skyve Mod",
       "ModName": "Skyve [BETA]",
       "PDX_ID": "75804",
       "Author": "TDW"
     },
-    "TDW__Toggle Overlays": {
+    "TDW__Toggle_Overlays": {
       "AssemblyName": "ToggleableOverlays",
       "FragmentSource": "ToggleableOverlays.Setting",
       "ClassType": "ToggleOverlaysSettings",
@@ -1220,7 +2105,7 @@
       "Author": "TDW",
       "Backupable": true
     },
-    "TDW__Zone Color Changer": {
+    "TDW__Zone_Color_Changer": {
       "AssemblyName": "ZoneColorChanger",
       "FragmentSource": "ZoneColorChanger.Setting",
       "ClassType": "ZoneColorChangerSettings",
@@ -1229,15 +2114,30 @@
       "Author": "TDW",
       "Backupable": true
     },
-    "TheBroMan10__EAI Rocky Surfaces": {
+    "TheBroMan10__EAI_Rocky_Surfaces": {
       "ModName": "EAI Rocky Surfaces",
       "PDX_ID": "80611",
       "Author": "TheBroMan10"
     },
-    "TheBroMan10__Gray Stained Surfaces": {
+    "TheBroMan10__Gray_Stained_Surfaces": {
       "ModName": "Gray Stained Surfaces",
       "PDX_ID": "83154",
       "Author": "TheBroMan10"
+    },
+    "TheOcter__Meridian_Gateway": {
+      "ModName": "Meridian Gateway",
+      "PDX_ID": "76193",
+      "Author": "TheOcter"
+    },
+    "TheOcter__Yenyang_Islands": {
+      "ModName": "Yenyang Islands",
+      "PDX_ID": "85876",
+      "Author": "TheOcter"
+    },
+    "TheSonnyX__PedestrianPathfinding": {
+      "ModName": "PedestrianPathfinding",
+      "PDX_ID": "78627",
+      "Author": "TheSonnyX"
     },
     "TheSonnyX__TransportPolicyAdjuster": {
       "AssemblyName": "TransportPolicyAdjuster",
@@ -1253,43 +2153,58 @@
       "PDX_ID": "84492",
       "Author": "TheSprtCZ"
     },
-    "Tigon Ologdring__DIN 1451 Autobahn Letters and Numbers": {
+    "Ti4goc__European_Portuguese_Localization": {
+      "ModName": "European Portuguese Localization",
+      "PDX_ID": "84230",
+      "Author": "Ti4goc"
+    },
+    "Tigon_Ologdring__DIN_1451_Autobahn_Letters_and_Numbers": {
       "ModName": "DIN 1451 Autobahn Letters and Numbers",
       "PDX_ID": "80539",
       "Author": "Tigon Ologdring"
     },
-    "Tigon Ologdring__Extra Team Graffiti": {
+    "Tigon_Ologdring__Extra_Team_Graffiti": {
       "ModName": "Extra Team Graffiti",
       "PDX_ID": "80540",
       "Author": "Tigon Ologdring"
     },
-    "Tigon Ologdring__Ground Textures Decal Pack": {
+    "Tigon_Ologdring__Ground_Textures_Decal_Pack": {
       "ModName": "Ground Textures Decal Pack",
       "PDX_ID": "80538",
       "Author": "Tigon Ologdring"
     },
-    "Tigon Ologdring__Letters & Numbers Decal Pack": {
+    "Tigon_Ologdring__Letters_and_Numbers_Decal_Pack": {
       "ModName": "Letters & Numbers Decal Pack",
       "PDX_ID": "80536",
       "Author": "Tigon Ologdring"
     },
-    "Tigon Ologdring__Road Markings (Lines & Arrows) Decal Pack": {
+    "Tigon_Ologdring__Road_Markings_(Lines_and_Arrows)_Decal_Pack": {
       "ModName": "Road Markings (Lines & Arrows) Decal Pack",
       "PDX_ID": "80534",
       "Author": "Tigon Ologdring"
     },
-    "Tigon Ologdring__Road Markings (Words & Symbols) Decal Pack": {
+    "Tigon_Ologdring__Road_Markings_(Words_and_Symbols)_Decal_Pack": {
       "ModName": "Road Markings (Words & Symbols) Decal Pack",
       "PDX_ID": "80537",
       "Author": "Tigon Ologdring"
     },
-    "Tigon Ologdring__Tigon's Rail Infrastructure Pack": {
+    "Tigon_Ologdring__Tigon's_Rail_Infrastructure_Pack": {
       "AssemblyName": "TigonsRailInfrastructureAssetPack",
       "ModName": "Tigon's Rail Infrastructure Pack",
       "PDX_ID": "90794",
       "Author": "Tigon Ologdring"
     },
-    "toverux__Hall of Fame": {
+    "TitanGod___Infinite_Demand": {
+      "ModName": "Infinite Demand",
+      "PDX_ID": "77321",
+      "Author": "TitanGod_"
+    },
+    "tonfarben__TuscanyVillages": {
+      "ModName": "TuscanyVillages",
+      "PDX_ID": "76463",
+      "Author": "tonfarben"
+    },
+    "toverux__Hall_of_Fame": {
       "AssemblyName": "HallOfFame",
       "FragmentSource": "HallOfFame.Settings",
       "ClassType": "HallOfFameSettings",
@@ -1298,32 +2213,62 @@
       "Author": "toverux",
       "Backupable": true
     },
-    "Trejak__[DEPRECATED] Realistic Building Occupancy [Beta]": {
+    "Trejak__DEPRECATED_Realistic_Building_Occupancy_Beta": {
       "ModName": "[DEPRECATED] Realistic Building Occupancy [Beta]",
       "PDX_ID": "75824",
       "Author": "Trejak"
     },
-    "Trejak__Prop Lights Mod": {
+    "Trejak__Prop_Lights_Mod": {
       "ModName": "Prop Lights Mod",
       "PDX_ID": "75104",
       "Author": "Trejak"
     },
-    "trist1322__Fire Station Mosaic Pack": {
+    "trist1322__Australian_English_localisation_mod": {
+      "ModName": "Australian English localisation mod",
+      "PDX_ID": "77135",
+      "Author": "trist1322"
+    },
+    "trist1322__Fire_Station_Mosaic_Pack": {
       "ModName": "Fire Station Mosaic Pack",
       "PDX_ID": "90442",
       "Author": "trist1322"
     },
-    "Triton Supreme__Content Creator Poster Pack (Decals)": {
+    "trist1322__Large_Melbourne_Murals_Vol_I": {
+      "ModName": "Large Melbourne Murals Vol I",
+      "PDX_ID": "80701",
+      "Author": "trist1322"
+    },
+    "trist1322__Melbourne_Laneway_Murals_Pack_Volume_I": {
+      "ModName": "Melbourne Laneway Murals Pack Volume I",
+      "PDX_ID": "80708",
+      "Author": "trist1322"
+    },
+    "trist1322__Melbourne_Paste_Ups_and_Stencils_Volume_I": {
+      "ModName": "Melbourne Paste Ups and Stencils Volume I",
+      "PDX_ID": "80706",
+      "Author": "trist1322"
+    },
+    "Triton_Supreme__Content_Creator_Poster_Pack_(Decals)": {
       "ModName": "Content Creator Poster Pack (Decals)",
       "PDX_ID": "80547",
       "Author": "Triton Supreme"
     },
-    "Triton Supreme__EAI - Surfaces Pack": {
+    "Triton_Supreme__Diamond_City_Radio": {
+      "ModName": "Diamond City Radio",
+      "PDX_ID": "75863",
+      "Author": "Triton Supreme"
+    },
+    "Triton_Supreme__EAI_-_Surfaces_Pack": {
       "ModName": "EAI - Surfaces Pack",
       "PDX_ID": "80530",
       "Author": "Triton Supreme"
     },
-    "Triton Supreme__ExtraAssetsImporter": {
+    "Triton_Supreme__ExtendedRadio": {
+      "ModName": "ExtendedRadio",
+      "PDX_ID": "75862",
+      "Author": "Triton Supreme"
+    },
+    "Triton_Supreme__ExtraAssetsImporter": {
       "AssemblyName": "ExtraAssetsImporter",
       "FragmentSource": "ExtraAssetsImporter.Setting",
       "ClassType": "ExtraAssetsImporterSettings",
@@ -1332,131 +2277,146 @@
       "Author": "Triton Supreme",
       "Backupable": true
     },
-    "Triton Supreme__ExtraDetailingTools": {
+    "Triton_Supreme__ExtraDetailingTools": {
       "ModName": "ExtraDetailingTools",
       "PDX_ID": "80528",
       "Author": "Triton Supreme"
     },
-    "Triton Supreme__ExtraLandscapingTools": {
+    "Triton_Supreme__ExtraLandscapingTools": {
       "ModName": "ExtraLandscapingTools",
       "PDX_ID": "75728",
       "Author": "Triton Supreme"
     },
-    "Triton Supreme__ExtraLib": {
+    "Triton_Supreme__ExtraLib": {
       "ModName": "ExtraLib",
       "PDX_ID": "75724",
       "Author": "Triton Supreme"
     },
-    "Washi776__Beach Pack WIP": {
+    "VictorWolfYT__New_Seattle_and_New_Bellevue": {
+      "ModName": "New Seattle & New Bellevue",
+      "PDX_ID": "86478",
+      "Author": "VictorWolfYT"
+    },
+    "Washi776__Beach_Pack_WIP": {
       "ModName": "Beach Pack WIP",
       "PDX_ID": "79222",
       "Author": "Washi776"
     },
-    "Washi776__Beach Row Zone": {
+    "Washi776__Beach_Row_Zone": {
       "AssemblyName": "W7BeachRowAssetPack",
       "ModName": "Beach Row Zone",
       "PDX_ID": "82966",
       "Author": "Washi776"
     },
-    "Washi776__Car Wash": {
+    "Washi776__Car_Wash": {
       "AssemblyName": "CarWashAssetPack",
       "ModName": "Car Wash",
       "PDX_ID": "81494",
       "Author": "Washi776"
     },
-    "Washi776__Corners for row zones": {
+    "Washi776__Corners_for_row_zones": {
       "AssemblyName": "W7CornersRowZonesAssetPack",
       "ModName": "Corners for row zones",
       "PDX_ID": "82020",
       "Author": "Washi776"
     },
-    "Washi776__Dunder Mifflin": {
+    "Washi776__Dunder_Mifflin": {
       "AssemblyName": "W7DunderMifflinAssetPack",
       "ModName": "Dunder Mifflin",
       "PDX_ID": "80943",
       "Author": "Washi776"
     },
-    "Washi776__Farming Zones": {
+    "Washi776__Farming_Zones": {
       "ModName": "Farming Zones",
       "PDX_ID": "80609",
       "Author": "Washi776"
     },
-    "Washi776__Farming Zones 2": {
+    "Washi776__Farming_Zones_2": {
       "AssemblyName": "W7MixedFarming2AssetPack",
       "ModName": "Farming Zones 2",
       "PDX_ID": "85804",
       "Author": "Washi776"
     },
-    "Washi776__Kiosks Pack": {
+    "Washi776__Kiosks_Pack": {
       "AssemblyName": "W7KiosksAssetPack",
       "ModName": "Kiosks Pack",
       "PDX_ID": "79827",
       "Author": "Washi776"
     },
-    "Washi776__Mixed Office Row Zone": {
+    "Washi776__Mixed_Office_Row_Zone": {
       "AssemblyName": "W7MixedOfficeRowAssetPack",
       "ModName": "Mixed Office Row Zone",
       "PDX_ID": "80881",
       "Author": "Washi776"
     },
-    "Washi776__Mixed Row Zone": {
+    "Washi776__Mixed_Row_Zone": {
       "AssemblyName": "W7MixedRowAssetPack",
       "ModName": "Mixed Row Zone",
       "PDX_ID": "80382",
       "Author": "Washi776"
     },
-    "Washi776__More Deathcare": {
+    "Washi776__More_Deathcare": {
       "AssemblyName": "W7MoreDeathcareAssetPack",
       "ModName": "More Deathcare",
       "PDX_ID": "80942",
       "Author": "Washi776"
     },
-    "Washi776__More Education Buildings": {
+    "Washi776__More_Education_Buildings": {
       "AssemblyName": "W7MoreEducationAssetPack",
       "ModName": "More Education Buildings",
       "PDX_ID": "81346",
       "Author": "Washi776"
     },
-    "Washi776__More Parking": {
+    "Washi776__More_Parking": {
       "AssemblyName": "W7MoreParkingAssetPack",
       "ModName": "More Parking",
       "PDX_ID": "79326",
       "Author": "Washi776"
     },
-    "Washi776__More Parks": {
+    "Washi776__More_Parks": {
       "ModName": "More Parks",
       "PDX_ID": "81837",
       "Author": "Washi776"
     },
-    "Washi776__More Recycling": {
+    "Washi776__More_Recycling": {
       "AssemblyName": "W7MoreRecyclingAssetPack",
       "ModName": "More Recycling",
       "PDX_ID": "82100",
       "Author": "Washi776"
     },
-    "Washi776__More Transport": {
+    "Washi776__More_Transport": {
       "ModName": "More Transport",
       "PDX_ID": "81040",
       "Author": "Washi776"
     },
-    "Washi776__Roundabouts Pack": {
+    "Washi776__Roundabouts_Pack": {
       "AssemblyName": "W7RoundaboutAssetPack",
       "ModName": "Roundabouts Pack",
       "PDX_ID": "79394",
       "Author": "Washi776"
     },
-    "Washi776__Row Services Pack": {
+    "Washi776__Row_Services_Pack": {
       "AssemblyName": "W7RowServicesAssetPack",
       "ModName": "Row Services Pack",
       "PDX_ID": "80897",
       "Author": "Washi776"
     },
-    "Washi776__Water Tower Park": {
+    "Washi776__Water_Tower_Park": {
       "ModName": "Water Tower Park",
       "PDX_ID": "80003",
       "Author": "Washi776"
     },
-    "Wayz__Depot Capacity Changer": {
+    "Wayz__Abandoned_Building_Remover": {
+      "ModName": "Abandoned Building Remover",
+      "PDX_ID": "75107",
+      "Author": "Wayz"
+    },
+    "Wayz__Achievement_Enabler": {
+      "ModName": "Achievement Enabler",
+      "PDX_ID": "75745",
+      "Author": "Wayz"
+    },
+    "Wayz__Depot_Capacity_Changer": {
       "AssemblyName": "DepotCapacityChanger",
       "FragmentSource": "DepotCapacityChanger.Setting",
       "ClassType": "DepotCapacityChangerSettings",
@@ -1465,7 +2425,17 @@
       "Author": "Wayz",
       "Backupable": true
     },
-    "Wayz__School Capacity Balancer": {
+    "Wayz__Magical_Garbage_Truck": {
+      "ModName": "Magical Garbage Truck",
+      "PDX_ID": "75587",
+      "Author": "Wayz"
+    },
+    "Wayz__Magical_Hearse": {
+      "ModName": "Magical Hearse",
+      "PDX_ID": "75102",
+      "Author": "Wayz"
+    },
+    "Wayz__School_Capacity_Balancer": {
       "AssemblyName": "SchoolCapacityBalancer",
       "FragmentSource": "SchoolCapacityBalancer.Setting",
       "ClassType": "SchoolCapacityBalancerSettings",
@@ -1474,11 +2444,21 @@
       "Author": "Wayz",
       "Backupable": true
     },
-    "wxdao__Bye Bye Homeless (updated for 1.1.8f)": {
+    "wxdao__Bye_Bye_Homeless": {
+      "ModName": "Bye Bye Homeless",
+      "PDX_ID": "84555",
+      "Author": "wxdao"
+    },
+    "wxdao__Bye_Bye_Homeless_(updated_for_1.1.8f)": {
       "AssemblyName": "ByeByeHomelessMod",
       "ModName": "Bye Bye Homeless (updated for 1.1.8f)",
       "PDX_ID": "84571",
       "Author": "wxdao"
+    },
+    "Xiyng__Daylight_Switch": {
+      "ModName": "Daylight Switch",
+      "PDX_ID": "78298",
+      "Author": "Xiyng"
     },
     "yenyang__Anarchy": {
       "AssemblyName": "Anarchy",
@@ -1489,7 +2469,7 @@
       "Author": "yenyang",
       "Backupable": true
     },
-    "yenyang__Better Bulldozer": {
+    "yenyang__Better_Bulldozer": {
       "AssemblyName": "BetterBulldozer",
       "FragmentSource": "Better_Bulldozer.Settings.BetterBulldozerModSettings",
       "ClassType": "BetterBulldozerSettings",
@@ -1507,7 +2487,7 @@
       "Author": "yenyang",
       "Backupable": true
     },
-    "yenyang__Tree Controller": {
+    "yenyang__Tree_Controller": {
       "AssemblyName": "Tree_Controller",
       "FragmentSource": "Tree_Controller.Settings.TreeControllerSettings",
       "ClassType": "TreeControllerSettings",
@@ -1516,7 +2496,7 @@
       "Author": "yenyang",
       "Backupable": true
     },
-    "yenyang__Water Features": {
+    "yenyang__Water_Features": {
       "AssemblyName": "Water_Features",
       "FragmentSource": "Water_Features.Settings.WaterFeaturesSettings",
       "ClassType": "WaterFeaturesSettings",
@@ -1524,11 +2504,6 @@
       "PDX_ID": "75613",
       "Author": "yenyang",
       "Backupable": true
-    },
-    "zakuro9715__SettingsManager": {
-      "ModName": "SettingsManager",
-      "PDX_ID": "81578",
-      "Author": "zakuro9715"
     },
     "zakuro9715__AdvancedSimulationSpeed": {
       "AssemblyName": "AdvancedSimulationSpeed",
@@ -1548,16 +2523,46 @@
       "Author": "zakuro9715",
       "Backupable": true
     },
-    "ZedeTTV__Vanilla Car Props Asset pack ": {
+    "zakuro9715__SettingsManager": {
+      "ModName": "SettingsManager",
+      "PDX_ID": "81578",
+      "Author": "zakuro9715"
+    },
+    "zakuro9715__TestDummy": {
+      "ModName": "TestDummy",
+      "PDX_ID": "82633",
+      "Author": "zakuro9715"
+    },
+    "ZedeTTV__DEPRECATED_CO_Vanilla_Car_Props_Asset_pack": {
+      "ModName": "[DEPRECATED] CO Vanilla Car Props Asset pack",
+      "PDX_ID": "82255",
+      "Author": "ZedeTTV"
+    },
+    "ZedeTTV__DEPRECATED_SF_Vanilla_Car_Props_Asset_pack": {
+      "ModName": "[DEPRECATED] SF Vanilla Car Props Asset pack",
+      "PDX_ID": "82256",
+      "Author": "ZedeTTV"
+    },
+    "ZedeTTV__Vanilla_Car_Props_Asset_pack_": {
       "AssemblyName": "VanillaCarProps_AssetPack",
       "ModName": "Vanilla Car Props Asset pack ",
       "PDX_ID": "82254",
       "Author": "ZedeTTV"
     },
-    "zeeshanabid94__Zoning Toolkit": {
+    "zeeshanabid94__Zoning_Toolkit": {
       "ModName": "Zoning Toolkit",
       "PDX_ID": "75750",
       "Author": "zeeshanabid94"
+    },
+    "zreezy_streams__Seaside_Serenity_Map_Theme": {
+      "ModName": "Seaside Serenity Map Theme",
+      "PDX_ID": "78145",
+      "Author": "zreezy_streams"
+    },
+    "zreezy_streams__VividCities_4k_Map_Theme": {
+      "ModName": "VividCities 4k Map Theme",
+      "PDX_ID": "78128",
+      "Author": "zreezy_streams"
     }
   }
 }
