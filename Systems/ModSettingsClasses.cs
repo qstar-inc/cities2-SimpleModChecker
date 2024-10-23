@@ -1489,6 +1489,11 @@ namespace SimpleModChecker.Systems
             get => (string)GetValue(nameof(CreatorName));
             set => SetValue(nameof(CreatorName), value);
         }
+        public int TrendingScreenshotWeight
+        {
+            get => (int)GetValue(nameof(TrendingScreenshotWeight));
+            set => SetValue(nameof(TrendingScreenshotWeight), value);
+        }
         public int RecentScreenshotWeight
         {
             get => (int)GetValue(nameof(RecentScreenshotWeight));
@@ -1519,10 +1524,15 @@ namespace SimpleModChecker.Systems
             get => (string)GetValue(nameof(ScreenshotResolution));
             set => SetValue(nameof(ScreenshotResolution), value);
         }
-        public bool MakePlatformScreenshots
+        public bool CreateLocalScreenshot
         {
-            get => (bool)GetValue(nameof(MakePlatformScreenshots));
-            set => SetValue(nameof(MakePlatformScreenshots), value);
+            get => (bool)GetValue(nameof(CreateLocalScreenshot));
+            set => SetValue(nameof(CreateLocalScreenshot), value);
+        }
+        public bool DisableGlobalIllumination
+        {
+            get => (bool)GetValue(nameof(DisableGlobalIllumination));
+            set => SetValue(nameof(DisableGlobalIllumination), value);
         }
         public string BaseUrl
         {

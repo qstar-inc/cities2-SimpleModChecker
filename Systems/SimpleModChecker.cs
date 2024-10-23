@@ -2,7 +2,6 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal.PSI.Environment;
 using Colossal.Serialization.Entities;
 using Game.PSI;
 using Game.SceneFlow;
@@ -13,8 +12,6 @@ using SimpleModCheckerPlus;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using static UnityEngine.Rendering.DebugUI;
-using Colossal.Json;
 
 namespace SimpleModChecker.Systems
 {

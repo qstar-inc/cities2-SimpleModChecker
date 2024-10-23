@@ -2,15 +2,16 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
+using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Game.PSI;
 using Game.Rendering.Utilities;
 using Game.Settings;
 using Game.UI.Localization;
 using Game;
+using Mod = SimpleModCheckerPlus.Mod;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using SimpleModCheckerPlus;
 using static Colossal.IO.AssetDatabase.AssetDatabase;
 using static Game.Settings.AnimationQualitySettings;
 using static Game.Settings.AntiAliasingQualitySettings;
@@ -255,6 +256,8 @@ namespace SimpleModChecker.Systems
     }
     public class GameSettings
     {
+        public string GameVersion { get; set; }
+        public string LastUpdated { get; set; }
         public GameAudioSettings GameAudioSettings { get; set; }
         public GameEditorSettings GameEditorSettings { get; set; }
         public GameGameplaySettings GameGameplaySettings { get; set; }
@@ -288,6 +291,30 @@ namespace SimpleModChecker.Systems
             {
                 if (File.Exists(backupFile1))
                 {
+                    string currentGameVersion = Game.Version.current.version;
+                    string jsonStringRead = File.ReadAllText(backupFile1);
+                    if (jsonStringRead != null && jsonStringRead != "")
+                    {
+                        try
+                        {
+                            JObject jsonObject = JObject.Parse(jsonStringRead);
+                            if (jsonObject != null)
+                            {
+                                if (!jsonObject.TryGetValue("GameVersion", out JToken BackupGameVersion) || BackupGameVersion == null)
+                                {
+                                    SendGameUpdateNotification(currentGameVersion, "null");
+                                }
+                                else
+                                {
+                                    if (BackupGameVersion.ToString() != currentGameVersion)
+                                    {
+                                        SendGameUpdateNotification(currentGameVersion, BackupGameVersion.ToString());
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex) { Mod.log.Info(ex); }
+                    }
                     CreateBackup(0, false);
                     if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
                     {
@@ -317,6 +344,20 @@ namespace SimpleModChecker.Systems
         protected override void OnUpdate()
         {
 
+        }
+        private void SendGameUpdateNotification(string current, string prev)
+        {
+            //var validVersions = new HashSet<string> { "2.2.4", "2.2.5", "2.2.6", "2.2.7" };
+            //if (validVersions.Contains(current) && (prev == "2.2.3" || validVersions.Contains(prev)))
+            //{
+            //    return;
+            //}
+            Mod.log.Info($"Game version mismatch. Current: {current}, Backup: {prev}");
+            NotificationSystem.Push("starq-smc-game-settings-update",
+                title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeGameBackup]"),
+                text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeGameBackup]"),
+                progressState: ProgressState.Warning,
+                onClicked: () => { NotificationSystem.Pop("starq-smc-game-settings-update", delay: 1f); CreateBackup(1); });
         }
 
         public void CreateBackup(int profile, bool log = true)
@@ -578,6 +619,8 @@ namespace SimpleModChecker.Systems
             if (log) Mod.log.Info("Collecting GameUserState");
             var GameSettings = new GameSettings
             {
+                GameVersion = Game.Version.current.version,
+                LastUpdated = DateTime.Now.ToLongDateString(),
                 GameAudioSettings = GameAudioSettings,
                 GameEditorSettings = GameEditorSettings,
                 GameGameplaySettings = GameGameplaySettings,
@@ -1280,6 +1323,7 @@ namespace SimpleModChecker.Systems
                         SharedSettings.instance.userState.unlockMapTiles = GameUserState.UnlockMapTiles;
                     }
                 }
+                //SharedSettings.instance.Apply();
                 Mod.log.Info("Game Settings Restoration Complete...");
             }
             catch (Exception ex)

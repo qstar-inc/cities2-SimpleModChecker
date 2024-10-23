@@ -116,14 +116,15 @@ namespace SimpleModChecker.Systems
 
         private void SendModUpdateNotification(string current, string prev)
         {
-            if ((current == "2.2.4" || current == "2.2.6") && (prev == "2.2.3" || prev == "2.2.4"))
-            {
-                return;
-            }
+            //var validVersions = new HashSet<string> { "2.2.4", "2.2.5", "2.2.6", "2.2.7" };
+            //if (validVersions.Contains(current) && (prev == "2.2.3" || validVersions.Contains(prev)))
+            //{
+            //    return;
+            //}
             Mod.log.Info($"Mod version mismatch. Current: {current}, Backup: {prev}");
             NotificationSystem.Push("starq-smc-mod-settings-update",
-                title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeBackup]"),
-                text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeBackup]"),
+                title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeModBackup]"),
+                text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeModBackup]"),
                 progressState: ProgressState.Warning,
                 onClicked: () => { NotificationSystem.Pop("starq-smc-mod-settings-update", delay: 1f); CreateBackup(1); });
         }

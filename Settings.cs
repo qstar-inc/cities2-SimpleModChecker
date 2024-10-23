@@ -15,9 +15,9 @@ using UnityEngine.Device;
 namespace SimpleModCheckerPlus
 {
     [FileLocation($"ModsSettings\\StarQ\\{Mod.Name}")]
-    [SettingsUITabOrder(AboutTab, MainTab, ModListTab, ProfileNameTab)]
-    [SettingsUIGroupOrder(OptionsGroup, BackupGroup, ModUtilityGroup, ModListGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
-    [SettingsUIShowGroupName(OptionsGroup, BackupGroup, ModListGroup, ModInfo, SupportedMod)]
+    [SettingsUITabOrder(ModListTab, MainTab, ProfileNameTab, AboutTab)]
+    [SettingsUIGroupOrder(ModListGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
+    [SettingsUIShowGroupName(ModListGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
     public class Setting : ModSetting
     {
         public static Setting Instance;
@@ -113,6 +113,8 @@ namespace SimpleModCheckerPlus
         public bool RefreshedRecently { get; set; } = false;
         [SettingsUIHidden]
         public long LastDownloaded { get; set; } = (long)0;
+        [SettingsUIHidden]
+        public long LastChecked { get; set; } = (long)0;
 
         [SettingsUIMultilineText]
         [SettingsUISection(ModListTab, ModListGroup)]
@@ -131,13 +133,9 @@ namespace SimpleModCheckerPlus
         public string ProfileName1
         {
             get => profileName1;
-            set
-            {
-                profileName1 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName1 = value;
         }
+
         private string profileName2 = "Profile 2";
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
@@ -145,13 +143,9 @@ namespace SimpleModCheckerPlus
         public string ProfileName2
         {
             get => profileName2;
-            set
-            {
-                profileName2 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName2 = value;
         }
+
         private string profileName3 = "Profile 3";
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
@@ -159,13 +153,9 @@ namespace SimpleModCheckerPlus
         public string ProfileName3
         {
             get => profileName3;
-            set
-            {
-                profileName3 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName3 = value;
         }
+
         private string profileName4 = "Profile 4";
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
@@ -173,13 +163,9 @@ namespace SimpleModCheckerPlus
         public string ProfileName4
         {
             get => profileName4;
-            set
-            {
-                profileName4 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName4 = value;
         }
+
         private string profileName5 = "Profile 5";
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
@@ -187,13 +173,9 @@ namespace SimpleModCheckerPlus
         public string ProfileName5
         {
             get => profileName5;
-            set
-            {
-                profileName5 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName5 = value;
         }
+
         private string profileName6 = "Profile 6";
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
@@ -201,13 +183,9 @@ namespace SimpleModCheckerPlus
         public string ProfileName6
         {
             get => profileName6;
-            set
-            {
-                profileName6 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName6 = value;
         }
+
         private string profileName7 = "Profile 7";
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
@@ -215,13 +193,9 @@ namespace SimpleModCheckerPlus
         public string ProfileName7
         {
             get => profileName7;
-            set
-            {
-                profileName7 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName7 = value;
         }
+
         private string profileName8 = "Profile 8";
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
@@ -229,13 +203,9 @@ namespace SimpleModCheckerPlus
         public string ProfileName8
         {
             get => profileName8;
-            set
-            {
-                profileName8 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName8 = value;
         }
+
         private string profileName9 = "Profile 9";
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
@@ -243,12 +213,7 @@ namespace SimpleModCheckerPlus
         public string ProfileName9
         {
             get => profileName9;
-            set
-            {
-                profileName9 = value;
-                //ProfileNameBackup.CreateBackup(value);
-                //++ProfileListVersion;
-            }
+            set => profileName9 = value;
         }
 
         [SettingsUIAdvanced]
@@ -349,6 +314,7 @@ namespace SimpleModCheckerPlus
             ProfileName9 = "Profile 9";
             RefreshedRecently = false;
             LastDownloaded = (long)0;
+            LastChecked = (long)0;
         }
     }
 }

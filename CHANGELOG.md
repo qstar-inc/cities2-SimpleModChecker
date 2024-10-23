@@ -1,4 +1,14 @@
-# 2.2.6 (2024-10-11) - 3586 sub
+# 2.2.8 (2024-10-23) - 4094 subs
+- Compatibility with game version 1.1.10f1.
+- Compatibility with 'Hall of Fame' update.
+- Extended and fixed ModDatabase update check logic.
+
+# 2.2.7 (2024-10-15) - 3785 subs
+- Fix for CID deletion not working in all cases as expected.
+- Fix for wrong OptionsUI tab layout.
+- Code cleanup.
+
+# 2.2.6 (2024-10-11) - 3586 subs
 - Code logic update for bug fixes in certain conditions.
 
 # 2.2.5 (2024-10-10) - 3553 subs

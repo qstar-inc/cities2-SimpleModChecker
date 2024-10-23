@@ -61,9 +61,13 @@ namespace SimpleModCheckerPlus
                 //            }));
                 Mod.log.Error(ex, $"Found {CanDelete.Count} mods with missing CID with no backup:\n{modList}\n{Mod.Name} will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically.");
                 NotificationSystem.Push("starq-smc-cid-check",
-                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods"),
-                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods"),
-                        onClicked: () => DeleteFolders());
+                        title: new LocalizedString("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods]", null,
+                            new Dictionary<string, ILocElement>
+                            {
+                                {"modCount", LocalizedString.Value(CanDelete.Count.ToString())},
+                            }),
+                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods]"),
+                        onClicked: () => DeleteFolders("Click"));
             }
             DateTime CIDManagerEnd = DateTime.Now;
             TimeSpan timeTaken = CIDManagerEnd - CIDManagerStart;
@@ -73,15 +77,17 @@ namespace SimpleModCheckerPlus
 
         public void DeleteFolders(string Method = null)
         {
+            Mod.log.Info(CanDelete.Count);
             for (int i = CanDelete.Count - 1; i >= 0; i--)
             {
-                Directory.Delete(CanDelete[i]);
+                Directory.Delete(CanDelete[i], true);
                 Mod.log.Info($"Deleted {CanDelete[i]}");
                 CanDelete.RemoveAt(i);
             }
 
             if (Method == "Click")
             {
+                NotificationSystem.Pop("starq-smc-cid-check");
                 Application.Quit(0);
             }
         }

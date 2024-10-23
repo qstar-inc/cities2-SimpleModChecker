@@ -135,10 +135,13 @@ namespace SimpleModCheckerPlus
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloaded]", "Mod Database has been updated, it is recommended to restart the game..." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseLocalCopy]", "Using offline Mod Database. Click to dismiss..." },
 
-                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeBackup]", $"{Mod.Name} is updated." },
-                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeBackup]", "Click here to recreate your Profile 1 (Mod) again..." },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeModBackup]", $"{Mod.Name} has updated." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeModBackup]", "Click here to recreate your Profile 1 (Mod) again..." },
 
-                //{ "Menu.ERROR[SimpleModCheckerPlus.Missing_CID_Exception]", "Found {modCount} mods with missing CID with no backup:\r\n{modList}\r\nSMC+ will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically." },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeGameBackup]", $"The game has updated." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeGameBackup]", "Click here to recreate your Profile 1 (Game) again..." },
+
+                { "Menu.ERROR[SimpleModCheckerPlus.Missing_CID_Exception]", "Found {modCount} mods with missing CID with no backup:\r\n{modList}\r\nSMC+ will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically." },
             };
         }
 
