@@ -25,7 +25,7 @@ namespace SimpleModChecker.Systems
     public partial class ModSettingsBackup : GameSystemBase
     {
         public Mod _mod;
-        public static ModNotification SMC = new();
+        public static ModCheckup SMC = new();
         private readonly List<string> loadedMods = SMC.GetLoadedMods();
         public static ModManager modManager;
         private static Dictionary<string, ModInfo> ModDatabaseInfo;

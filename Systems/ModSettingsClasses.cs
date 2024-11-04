@@ -70,11 +70,11 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(BusMaxDwellDelaySlider));
             set => SetValue(nameof(BusMaxDwellDelaySlider), value);
         }
-        public bool TestPathfindingCleanup
-        {
-            get => (bool)GetValue(nameof(TestPathfindingCleanup));
-            set => SetValue(nameof(TestPathfindingCleanup), value);
-        }
+        //public bool TestPathfindingCleanup
+        //{
+        //    get => (bool)GetValue(nameof(TestPathfindingCleanup));
+        //    set => SetValue(nameof(TestPathfindingCleanup), value);
+        //}
     }
 
     public class AnarchySettings : SettingsBackup

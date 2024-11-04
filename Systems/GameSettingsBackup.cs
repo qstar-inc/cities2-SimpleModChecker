@@ -271,7 +271,7 @@ namespace SimpleModChecker.Systems
     public partial class GameSettingsBackup : GameSystemBase
     {
         public Mod _mod;
-        public static ModNotification SMC = new();
+        public static ModCheckup SMC = new();
         private readonly List<string> loadedMods = SMC.GetLoadedMods();
         private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_prev.json";
         private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_1.json";

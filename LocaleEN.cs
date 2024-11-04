@@ -41,6 +41,7 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetSettingsLocaleID(), Mod.Name },
                 { m_Setting.GetOptionTabLocaleID(Setting.MainTab), Setting.MainTab },
                 { m_Setting.GetOptionTabLocaleID(Setting.ModListTab), Setting.ModListTab },
+                { m_Setting.GetOptionTabLocaleID(Setting.ModWithIssueListTab), Setting.ModWithIssueListTab},
                 { m_Setting.GetOptionTabLocaleID(Setting.ProfileNameTab), Setting.ProfileNameTab },
                 { m_Setting.GetOptionTabLocaleID(Setting.AboutTab), Setting.AboutTab },
 
@@ -48,6 +49,7 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionGroupLocaleID(Setting.BackupGroup), Setting.BackupGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModUtilityGroup), Setting.ModUtilityGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModListGroup), Setting.ModListGroup },
+                { m_Setting.GetOptionGroupLocaleID(Setting.ModWithIssueListGroup), Setting.ModWithIssueListGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ProfileNameGroup), Setting.ProfileNameGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModInfo), Setting.ModInfo },
                 { m_Setting.GetOptionGroupLocaleID(Setting.SupportedMod ), Setting.SupportedMod },
@@ -98,6 +100,8 @@ namespace SimpleModCheckerPlus
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModsLoaded)), "" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ModsLoaded)), "List of mods loaded in this session." },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModsWithIssueLoaded)), "" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ModsWithIssueLoaded)), "List of mods with issues loaded in this session." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RefreshModDatabase)), "Refresh Mod Database" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.RefreshModDatabase)), "Refresh Mod Database from the Internet." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModDatabaseTime)), "Mod Database Time" },
@@ -135,11 +139,15 @@ namespace SimpleModCheckerPlus
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloaded]", "Mod Database has been updated, it is recommended to restart the game..." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseLocalCopy]", "Using offline Mod Database. Click to dismiss..." },
 
-                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeModBackup]", $"{Mod.Name} has updated." },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeModBackup]", $"SMC+: This mod has updated." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeModBackup]", "Click here to recreate your Profile 1 (Mod) again..." },
 
-                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeGameBackup]", $"The game has updated." },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeGameBackup]", $"SMC+: The game has updated." },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeGameBackup]", "Click here to recreate your Profile 1 (Game) again..." },
+
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.ModWithIssueAuthor]", "SMC+: {count} of your published mod(s) has issues." },
+                { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.ModWithIssueLocal]", "SMC+: {count} of your locally installed mod(s) has issues." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LearnMore]", "Click here to go to settings and enable Show Advanced to view issues..." },
 
                 { "Menu.ERROR[SimpleModCheckerPlus.Missing_CID_Exception]", "Found {modCount} mods with missing CID with no backup:\r\n{modList}\r\nSMC+ will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically." },
             };

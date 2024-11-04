@@ -3,14 +3,14 @@
 // StarQ 2024
 
 using Colossal.PSI.Environment;
+using Game;
 using Game.PSI;
 using Game.UI.Localization;
-using Game;
 using SimpleModCheckerPlus;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System;
 using UnityEngine;
 
 namespace SimpleModChecker.Systems
@@ -86,17 +86,45 @@ namespace SimpleModChecker.Systems
                         {
                             using FileStream fs = new(file, FileMode.Open, FileAccess.Read, FileShare.Read);
                             using StreamReader reader = new(fs, Encoding.UTF8);
-                            string fileContent = reader.ReadToEnd();
 
-                            if (fileContent.Length == 0)
+                            string firstLine = null;
+                            string secondLine = null;
+                            string lastLine = null;
+
+                            if (!reader.EndOfStream)
                             {
-                                return;
+                                firstLine = reader.ReadLine()?.Trim();
                             }
 
-                            if (!IsLegibleText(fileContent))
+                            if (!reader.EndOfStream)
                             {
+                                secondLine = reader.ReadLine()?.Trim();
+                            }
+
+                            string currentLine;
+                            while (!reader.EndOfStream)
+                            {
+                                currentLine = reader.ReadLine()?.Trim();
+                                if (!string.IsNullOrEmpty(currentLine))
+                                {
+                                    lastLine = currentLine;
+                                }
+                            }
+
+                            if (string.IsNullOrEmpty(firstLine) && string.IsNullOrEmpty(secondLine) && string.IsNullOrEmpty(lastLine))
+                            {
+                                Mod.log.Info($"{file} looks empty");
                                 deleteables.Add(file);
-                                Mod.log.Info($"Scheduled for deletion: {file}");
+                            }
+                            else if (firstLine == null || secondLine != "{" || lastLine != "}")
+                            {
+                                Mod.log.Info($"{file} doesn't look right");
+                                deleteables.Add(file);
+                            }
+                            else if (!IsLegibleText(firstLine + secondLine + lastLine))
+                            {
+                                Mod.log.Info($"{file} is eligible");
+                                deleteables.Add(file);
                             }
                         }
                         catch (Exception ex)

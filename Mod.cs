@@ -25,10 +25,10 @@ namespace SimpleModCheckerPlus
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "2.2.8";
+        public static string Version = "2.3.0";
         
         public static Setting Setting;
-        public ModNotification ModNotification;
+        public ModCheckup ModNotification;
         public CIDBackupRestore CIDBackupRestore;
         public CocCleaner CocCleaner;
 
@@ -57,7 +57,7 @@ namespace SimpleModCheckerPlus
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
             Setting.RefreshedRecently = false;
             
-            ModNotification = new ModNotification();
+            ModNotification = new ModCheckup();
             CIDBackupRestore = new CIDBackupRestore(this);
             CocCleaner = new CocCleaner(this);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(ModNotification);

@@ -1,3 +1,9 @@
+# 2.3.0 (2024-11-04) - 4024 subs
+- New system for notifying about mods with issues. Currently only notifies about vanilla DLLs being shipped with the mod.
+- Compatibility with 'All Aboard' update.
+- More check to determine broken coc files.
+- Warning popup when known bad DLLs are being loaded.
+
 # 2.2.9 (2024-10-23) - 3676 subs
 - Fix for mod backup not keeping backups for not loaded mods.
 - Database layout changed.

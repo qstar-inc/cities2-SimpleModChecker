@@ -9,7 +9,7 @@
 		<AssemblyName>SimpleModChecker</AssemblyName>
 		<AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
 		<Authors>StarQ</Authors>
-		<Version>2.2.8</Version>
+		<Version>2.3.0</Version>
 		
 		<!--The folder where Game.dll is located. Set it only if the game is not installed in the default location, otherwise keep it empty-->
 		<CustomManagedPath></CustomManagedPath>
@@ -44,10 +44,16 @@
 		<Reference Include="Colossal.PSI.Common">
 			<Private>false</Private>
 		</Reference>
+		<Reference Include="Colossal.PSI.PdxSdk">
+			<Private>false</Private>
+		</Reference>
 		<Reference Include="Colossal.UI.Binding">
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="Newtonsoft.Json">
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="PDX.SDK">
 			<Private>false</Private>
 		</Reference>
 		<Reference Include="UnityEngine.CoreModule">

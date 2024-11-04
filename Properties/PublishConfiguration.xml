@@ -17,14 +17,13 @@ The notification will automatically hide once a Game or Editor is loaded.
 If for some reason a broken mod prevents other mods from loading, just by looking at the number you can recognize something is wrong.
 If you don't see the notification at all, it means no mods were loaded and you need to restart the game.
 
-You can also see a list of the current loaded mods in the in-game Options or on the Log file located here:
-* `%LocalAppData%Low/Colossal Order/Cities Skylines II/Logs/SimpleModChecker.log`
-
 ## Additional features
 * Get notified when some maps, savegames or assets have missing CIDs. (Includes automatic backup, original idea by Konsi/Mimonsi)
-* Get notified when some of the Setting files are corrupted/empty.
-* [NEW] Backup and Restore Game Settings and selected Mod Settings.
-* [NEW] Automatically restore settings with values saved to 'Profile 1' on startup.
+* Get notified when some of the Setting files are corrupted.
+* Get notified when any of your locally installed or published mods includes vanilla DLLs.
+* See list of all mods and additional DLLs loaded in the current session.
+* Backup and Restore Game Settings and selected Mod Settings.
+* Automatically restore settings with values saved to 'Profile 1' on startup.
 
 **IMPORTANT**: It is required to make separate backup manually in Profile 1 for both Game Settings and Mod Settings first time for the Auto Restore to work afterwards.
 
@@ -36,7 +35,7 @@ You can also see a list of the current loaded mods in the in-game Options or on 
 Safe to remove anytime.
 
 ### Skyve/PDX Mods says less. Why does this mod says more mods than I have?
-The way mods are loaded are a little different. What Skyve/PDX Mods is telling you the number of packages you're loading. However, it's possible one mod have more than one "modification" DLL (Dynamic-link Library), such as Harmony or other stuff. This mod checker (and the in-game Mod Initializer) counts them as separate mods, thus the reported value is more than that on the playset. Although, if a DLL of same name is loaded by two separate mods, only one is counted.
+The way mods are loaded are a little different. What Skyve/PDX Mods is telling you the number of packages you're loading. However, it's possible one mod have more than one "modification" DLL (Dynamic-link Library), such as Harmony or other stuff. This mod checker (and the in-game Mod Initializer) counts them as separate mods, thus the reported value is more than that on the playset. Although, if a DLL of same name is loaded by two separate mods, only one is counted. (Any DLL with names starting with "Colossal." and "0Harmony" are now ignored.
 
 Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding** Discord.
 
@@ -51,16 +50,18 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.2.9" />
+	<ModVersion Value="2.3.0" />
 	<!--Recommended version of the base game to use the mod-->
-	<GameVersion Value="1.1.10*" />
+	<GameVersion Value="1.1*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="2.2.9" />
+	<ChangeLog Value="2.3.0" />
 	<ChangeLog>
-* Fix for mod backup not keeping backups for not loaded mods.
-* Database layout changed.
+* New system for notifying about mods with issues. Currently only notifies about vanilla DLLs being shipped with the mod.
+* Compatibility with 'All Aboard' update.
+* More check to determine broken coc files.
+* Warning popup when known bad DLLs are being loaded.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
