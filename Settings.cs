@@ -15,9 +15,12 @@ using UnityEngine.Device;
 namespace SimpleModCheckerPlus
 {
     [FileLocation($"ModsSettings\\StarQ\\{Mod.Name}")]
-    [SettingsUITabOrder(ModListTab, ModWithIssueListTab, MainTab, ProfileNameTab, AboutTab)]
-    [SettingsUIGroupOrder(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
-    [SettingsUIShowGroupName(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
+    [SettingsUITabOrder(ModListTab, MainTab, ProfileNameTab, AboutTab)]
+    [SettingsUIGroupOrder(ModListGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
+    [SettingsUIShowGroupName(ModListGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
+    //[SettingsUITabOrder(ModListTab, ModWithIssueListTab, MainTab, ProfileNameTab, AboutTab)]
+    //[SettingsUIGroupOrder(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
+    //[SettingsUIShowGroupName(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
     public class Setting : ModSetting
     {
         public static Setting Instance;
@@ -25,6 +28,7 @@ namespace SimpleModCheckerPlus
         private readonly ModDatabase ModDatabase = new();
         private readonly GameSettingsBackup GameSettingsBackup = new();
         private readonly ModSettingsBackup ModSettingsBackup = new();
+        private readonly KeybindsBackup KeybindsBackup = new();
         private readonly ProfileNameBackup ProfileNameBackup = new();
 
         public Setting(IMod mod) : base(mod)
@@ -40,8 +44,8 @@ namespace SimpleModCheckerPlus
         public const string ModListTab = "Loaded Mods";
         public const string ModUtilityGroup = "";
         public const string ModListGroup = "Loaded Mods";
-        public const string ModWithIssueListTab = "Mods with Issues";
-        public const string ModWithIssueListGroup = "Loaded Mods with Issues";
+        //public const string ModWithIssueListTab = "Mods with Issues";
+        //public const string ModWithIssueListGroup = "Loaded Mods with Issues";
 
         public const string ProfileNameTab = "Profile Names";
         public const string ProfileNameGroup = ProfileNameTab;
@@ -60,7 +64,7 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(MainTab, OptionsGroup)]
         public bool DeleteCorrupted { get; set; } = true;
         [SettingsUISection(MainTab, OptionsGroup)]
-        public bool EnableVerboseLogging { get; set; } = false;
+        public bool EnableVerboseLogging { get; set; } = true; // SET TO FALSE //
 
         [SettingsUISection(MainTab, BackupGroup)]
         public bool AutoRestoreSettingBackupOnStartup { get; set; } = true;
@@ -93,6 +97,16 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(MainTab, BackupGroup)]
         public bool RestoreModBackup { set { ModSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); } }
 
+        //[SettingsUIButtonGroup("KeybindsBackup")]
+        //[SettingsUIButton]
+        //[SettingsUISection(MainTab, BackupGroup)]
+        //public bool CreateKeybindsBackup { set { KeybindsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging); } }
+
+        //[SettingsUIButtonGroup("KeybindsBackup")]
+        //[SettingsUIButton]
+        //[SettingsUISection(MainTab, BackupGroup)]
+        //public bool RestoreKeybindsBackup { set { KeybindsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); } }
+
         //[SettingsUIAdvanced]
         //[SettingsUIDeveloper]
         //[SettingsUISection(MainTab, BackupGroup)]
@@ -123,11 +137,11 @@ namespace SimpleModCheckerPlus
         [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListLocalized))]
         public string ModsLoaded => "";
 
-        [SettingsUIAdvanced]
-        [SettingsUIMultilineText]
-        [SettingsUISection(ModWithIssueListTab, ModWithIssueListGroup)]
-        [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListWithIssueLocalized))]
-        public string ModsWithIssueLoaded => "";
+        //[SettingsUIAdvanced]
+        //[SettingsUIMultilineText]
+        //[SettingsUISection(ModWithIssueListTab, ModWithIssueListGroup)]
+        //[SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListWithIssueLocalized))]
+        //public string ModsWithIssueLoaded => "";
 
         [SettingsUIAdvanced]
         [SettingsUIHidden]

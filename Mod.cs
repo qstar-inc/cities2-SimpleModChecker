@@ -4,31 +4,31 @@
 
 using Colossal.IO.AssetDatabase;
 using Colossal.Logging;
-using Game.Modding;
-using Game.SceneFlow;
-using Game;
-using SimpleModChecker.Systems;
-using Unity.Entities;
-using System.IO;
-using Colossal.PSI.Environment;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Game.PSI;
-using Game.UI.Localization;
 using Colossal.PSI.Common;
+using Colossal.PSI.Environment;
+using Game.Modding;
+using Game.PSI;
+using Game.SceneFlow;
+using Game.UI.Localization;
+using Game;
+using Newtonsoft.Json;
+using SimpleModChecker.Systems;
+using System.IO;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+using System;
+using Unity.Entities;
 
 namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "2.3.0";
+        public static string Version = "3.0.0";
         
         public static Setting Setting;
-        public ModCheckup ModNotification;
+        public ModCheckup ModCheckup;
         public CIDBackupRestore CIDBackupRestore;
         public CocCleaner CocCleaner;
 
@@ -57,15 +57,16 @@ namespace SimpleModCheckerPlus
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
             Setting.RefreshedRecently = false;
             
-            ModNotification = new ModCheckup();
+            ModCheckup = new ModCheckup();
             CIDBackupRestore = new CIDBackupRestore(this);
             CocCleaner = new CocCleaner(this);
-            World.DefaultGameObjectInjectionWorld.AddSystemManaged(ModNotification);
+            World.DefaultGameObjectInjectionWorld.AddSystemManaged(ModCheckup);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(CIDBackupRestore);
             World.DefaultGameObjectInjectionWorld.AddSystemManaged(CocCleaner);
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ProfileNameBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<GameSettingsBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModSettingsBackup>();
+            //World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<KeybindsBackup>();
         }
         
         public void OnDispose()

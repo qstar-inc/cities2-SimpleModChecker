@@ -4,13 +4,13 @@
 
 using Colossal.PSI.Environment;
 using Game.PSI;
+using Game.UI.Localization;
 using Game;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System;
 using UnityEngine;
-using Game.UI.Localization;
 
 namespace SimpleModCheckerPlus
 {
@@ -67,7 +67,10 @@ namespace SimpleModCheckerPlus
                                 {"modCount", LocalizedString.Value(CanDelete.Count.ToString())},
                             }),
                         text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods]"),
-                        onClicked: () => DeleteFolders("Click"));
+                        onClicked: () => {
+                            DeleteFolders("Click");
+                            NotificationSystem.Pop("starq-smc-cid-check");
+                        });
             }
             DateTime CIDManagerEnd = DateTime.Now;
             TimeSpan timeTaken = CIDManagerEnd - CIDManagerStart;

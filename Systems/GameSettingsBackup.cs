@@ -2,28 +2,31 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal.PSI.Common;
-using Colossal.PSI.Environment;
-using Game.PSI;
-using Game.Rendering.Utilities;
-using Game.Settings;
-using Game.UI.Localization;
-using Game;
-using Mod = SimpleModCheckerPlus.Mod;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using static Colossal.IO.AssetDatabase.AssetDatabase;
-using static Game.Settings.AnimationQualitySettings;
-using static Game.Settings.AntiAliasingQualitySettings;
-using static Game.Settings.GeneralSettings;
-using static Game.Settings.GraphicsSettings;
-using static Game.Settings.InterfaceSettings;
-using static Game.Simulation.SimulationSystem;
-using System.Collections.Generic;
-using System.IO;
-using System;
-using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
+using System;
+using System.IO;
+using System.Collections.Generic;
+using static Game.Simulation.SimulationSystem;
+using static Game.Settings.InterfaceSettings;
+using static Game.Settings.GraphicsSettings;
+using static Game.Settings.GeneralSettings;
+using static Game.Settings.AntiAliasingQualitySettings;
+using static Game.Settings.AnimationQualitySettings;
+using static Colossal.IO.AssetDatabase.AssetDatabase;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Mod = SimpleModCheckerPlus.Mod;
+using Game;
+using Game.UI.Localization;
+using Game.Settings;
+using Game.Rendering.Utilities;
+using Game.PSI;
+using Colossal.PSI.Environment;
+using Colossal.PSI.Common;
+using Game.Input;
+using System.Linq;
+using Game.Prefabs;
 
 namespace SimpleModChecker.Systems
 {
@@ -72,14 +75,14 @@ namespace SimpleModChecker.Systems
     {
         public bool VSync { get; set; }
         public int MaxFrameLatency { get; set; }
-        public Game.Settings.GraphicsSettings.CursorMode CursorMode { get; set; }
+        public CursorMode CursorMode { get; set; }
         public Game.Settings.GraphicsSettings.DepthOfFieldMode DepthOfFieldMode { get; set; }
         public float TiltShiftNearStart { get; set; }
         public float TiltShiftNearEnd { get; set; }
         public float TiltShiftFarStart { get; set; }
         public float TiltShiftFarEnd { get; set; }
         public DlssQuality DlssQuality { get; set; }
-        public Fsr2Quality Fsr2Quality { get; set; }
+        //public Fsr2Quality Fsr2Quality { get; set; }
         public GameQualitySettings GameQualitySettings { get; set; }
     }
     public class GameQualitySettings
@@ -227,6 +230,20 @@ namespace SimpleModChecker.Systems
     {
         public bool ElevationDraggingEnabled { get; set; }
         //public string Keybinds { get; set; }
+        public float MouseScrollSensitivity { get; set; }
+        public float KeyboardMoveSensitivity { get; set; }
+        public float KeyboardRotateSensitivity { get; set; }
+        public float KeyboardZoomSensitivity { get; set; }
+        public float MouseMoveSensitivity { get; set; }
+        public float MouseRotateSensitivity { get; set; }
+        public float MouseZoomSensitivity { get; set; }
+        public bool MouseInvertX { get; set; }
+        public bool MouseInvertY { get; set; }
+        public float GamepadMoveSensitivity { get; set; }
+        public float GamepadRotateSensitivity { get; set; }
+        public float GamepadZoomSensitivity { get; set; }
+        public bool GamepadInvertX { get; set; }
+        public bool GamepadInvertY { get; set; }
     }
 
     public class GameInterfaceSettings
@@ -254,6 +271,18 @@ namespace SimpleModChecker.Systems
         public bool UnlimitedMoney { get; set; }
         public bool UnlockMapTiles { get; set; }
     }
+
+    //public class GameKeybind
+    //{
+    //    public string ActionName { get; set; }
+    //    public InputManager.DeviceType Device {  get; set; }
+    //    public string MapName { get; set; }
+    //    public string BindingName {  get; set; }
+    //    public string Path { get; set; }
+    //    public IReadOnlyList<ProxyModifier> Modifiers { get; set; }
+    //    public string Title => $"{MapName}/{ActionName}/{BindingName}";
+    //}
+
     public class GameSettings
     {
         public string GameVersion { get; set; }
@@ -266,6 +295,7 @@ namespace SimpleModChecker.Systems
         public GameInputSettings GameInputSettings { get; set; }
         public GameInterfaceSettings GameInterfaceSettings { get; set; }
         public GameUserState GameUserState { get; set; }
+        //public List<GameKeybind> GameKeybind { get; set; }
     }
 
     public partial class GameSettingsBackup : GameSystemBase
@@ -287,6 +317,7 @@ namespace SimpleModChecker.Systems
 
         protected override void OnCreate()
         {
+            base.OnCreate();
             if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
             {
                 if (File.Exists(backupFile1))
@@ -322,8 +353,7 @@ namespace SimpleModChecker.Systems
                         NotificationSystem.Pop("starq-smc-game-settings-restore",
                                 title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
                                 text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreGame]"),
-                                onClicked: () => { },
-                                delay: 10f);
+                                delay: 10f);;
                     }
                     else
                     {
@@ -580,14 +610,28 @@ namespace SimpleModChecker.Systems
                 TiltShiftFarStart = SharedSettings.instance.graphics.tiltShiftFarStart,
                 TiltShiftFarEnd = SharedSettings.instance.graphics.tiltShiftFarEnd,
                 DlssQuality = SharedSettings.instance.graphics.dlssQuality,
-                Fsr2Quality = SharedSettings.instance.graphics.fsr2Quality,
+                //Fsr2Quality = SharedSettings.instance.graphics.fsr2Quality,
                 GameQualitySettings = GameQualitySettings
             };
             if (log) Mod.log.Info("Collecting GameGraphicsSettings");
             var GameInputSettings = new GameInputSettings
             {
                 ElevationDraggingEnabled = SharedSettings.instance.input.elevationDraggingEnabled,
-                //Keybinds = SharedSettings.instance.keybinding.bindings.ToJSONString()
+                //Keybinds = SharedSettings.instance.keybinding.bindings.ToJSONString(),
+                MouseScrollSensitivity = SharedSettings.instance.input.mouseScrollSensitivity,
+                KeyboardMoveSensitivity = SharedSettings.instance.input.keyboardMoveSensitivity,
+                KeyboardRotateSensitivity = SharedSettings.instance.input.keyboardRotateSensitivity,
+                KeyboardZoomSensitivity = SharedSettings.instance.input.keyboardZoomSensitivity,
+                MouseMoveSensitivity = SharedSettings.instance.input.mouseMoveSensitivity,
+                MouseRotateSensitivity = SharedSettings.instance.input.mouseRotateSensitivity,
+                MouseZoomSensitivity = SharedSettings.instance.input.mouseZoomSensitivity,
+                MouseInvertX = SharedSettings.instance.input.mouseInvertX,
+                MouseInvertY = SharedSettings.instance.input.mouseInvertY,
+                GamepadMoveSensitivity = SharedSettings.instance.input.gamepadMoveSensitivity,
+                GamepadRotateSensitivity = SharedSettings.instance.input.gamepadRotateSensitivity,
+                GamepadZoomSensitivity = SharedSettings.instance.input.gamepadZoomSensitivity,
+                GamepadInvertX = SharedSettings.instance.input.gamepadInvertX,
+                GamepadInvertY = SharedSettings.instance.input.gamepadInvertY,
             };
             if (log) Mod.log.Info("Collecting GameInputSettings");
             var GameInterfaceSettings = new GameInterfaceSettings
@@ -617,6 +661,67 @@ namespace SimpleModChecker.Systems
                 UnlockMapTiles = SharedSettings.instance.userState.unlockMapTiles
             };
             if (log) Mod.log.Info("Collecting GameUserState");
+            //List<GameKeybind> GameKeybinds = [];
+            //try
+            //{
+            //    List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
+
+            //    Mod.log.Info(bindings.Count);
+            //    foreach (ProxyBinding binding in bindings)
+            //    {
+            //        if (binding.isRebindable && !binding.isOriginal)
+            //        try
+            //        {
+            //                GameKeybinds.Add(new GameKeybind
+            //                {
+            //                    ActionName = binding.actionName,
+            //                    BindingName = binding.name,
+            //                    MapName = binding.mapName,
+            //                    Modifiers = binding.modifiers,
+            //                    Device = binding.device,
+            //                    Path = binding.path,
+            //                });
+            //        }
+            //        catch (Exception ex) { Mod.log.Info(ex); }
+            //        //try { Mod.log.Info("---------------------------------"); } catch { }
+            //        //try { Mod.log.Info($"binding: {binding}"); } catch { }
+            //        //try { Mod.log.Info($"binding.actionName: {binding.actionName}"); } catch { }
+            //        //try { Mod.log.Info($"binding.allowModifiers: {binding.allowModifiers}"); } catch { }
+            //        //try { Mod.log.Info($"binding.canBeEmpty: {binding.canBeEmpty}"); } catch { }
+            //        //try { Mod.log.Info($"binding.component: {binding.component}"); } catch { }
+            //        //try { Mod.log.Info($"binding.conflicts: {binding.conflicts}"); } catch { }
+            //        //try { Mod.log.Info($"binding.developerOnly: {binding.developerOnly}"); } catch { }
+            //        //try { Mod.log.Info($"binding.device: {binding.device}"); } catch { }
+            //        //try { Mod.log.Info($"binding.hasConflicts: {binding.hasConflicts}"); } catch { }
+            //        //try { Mod.log.Info($"binding.isBuiltIn: {binding.isBuiltIn}"); } catch { }
+            //        //try { Mod.log.Info($"binding.isGamepad: {binding.isGamepad}"); } catch { }
+            //        //try { Mod.log.Info($"binding.isKeyboard: {binding.isKeyboard}"); } catch { }
+            //        //try { Mod.log.Info($"binding.isModifiersRebindable: {binding.isModifiersRebindable}"); } catch { }
+            //        //try { Mod.log.Info($"binding.isMouse: {binding.isMouse}"); } catch { }
+            //        //try { Mod.log.Info($"binding.isOriginal: {binding.isOriginal}"); } catch { }
+            //        //try { Mod.log.Info($"binding.isRebindable: {binding.isRebindable}"); } catch { }
+            //        //try { Mod.log.Info($"binding.isSet: {binding.isSet}"); } catch { }
+            //        //try { Mod.log.Info($"binding.mapName: {binding.mapName}"); } catch { }
+            //        //try { Mod.log.Info($"binding.modifiers: {binding.modifiers}"); } catch { }
+            //        //try { Mod.log.Info($"binding.name: {binding.name}"); } catch { }
+            //        //try { Mod.log.Info($"binding.original: {binding.original}"); } catch { }
+            //        //try { Mod.log.Info($"binding.originalModifiers: {binding.originalModifiers}"); } catch { }
+            //        //try { Mod.log.Info($"binding.originalPath: {binding.originalPath}"); } catch { }
+            //        //try { Mod.log.Info($"binding.path: {binding.path}"); } catch { }
+            //        //try { Mod.log.Info($"binding.title: {binding.title}"); } catch { }
+            //        //try { Mod.log.Info($"binding.usages: {binding.usages}"); } catch { }
+            //        //if (binding.isKeyboard && binding.path == "<Keyboard>/r")
+            //        //{
+            //        //    ProxyBinding proxyBinding = binding.Copy();
+            //        //    proxyBinding.path = "<Keyboard>/f";
+            //        //    proxyBinding.device = InputManager.DeviceType.Keyboard;
+            //        //    InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
+            //        //    Mod.log.Info($"Setting {proxyBinding.actionName} to ({proxyBinding.modifiers}){proxyBinding.path}");
+            //        //}
+            //    }
+            //}
+            //catch { }
+            //if (log) Mod.log.Info("Collecting GameKeybinds");
             var GameSettings = new GameSettings
             {
                 GameVersion = Game.Version.current.version,
@@ -628,7 +733,8 @@ namespace SimpleModChecker.Systems
                 GameGraphicsSettings = GameGraphicsSettings,
                 GameInputSettings = GameInputSettings,
                 GameInterfaceSettings = GameInterfaceSettings,
-                GameUserState = GameUserState
+                GameUserState = GameUserState,
+                //GameKeybind = GameKeybinds
             };
             if (log) Mod.log.Info("Collecting GameSettings");
             try
@@ -641,6 +747,51 @@ namespace SimpleModChecker.Systems
             {
                 Mod.log.Info(ex);
             }
+            //try
+            //{
+            //    List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
+
+            //    Mod.log.Info(bindings.Count);
+            //    foreach (ProxyBinding binding in bindings)
+            //    {
+            //        try { Mod.log.Info("---------------------------------"); } catch { }
+            //        try { Mod.log.Info($"binding: {binding}"); } catch { }
+            //        try { Mod.log.Info($"binding.actionName: {binding.actionName}"); } catch { }
+            //        try { Mod.log.Info($"binding.allowModifiers: {binding.allowModifiers}"); } catch { }
+            //        try { Mod.log.Info($"binding.canBeEmpty: {binding.canBeEmpty}"); } catch { }
+            //        try { Mod.log.Info($"binding.component: {binding.component}"); } catch { }
+            //        try { Mod.log.Info($"binding.conflicts: {binding.conflicts}"); } catch { }
+            //        try { Mod.log.Info($"binding.developerOnly: {binding.developerOnly}"); } catch { }
+            //        try { Mod.log.Info($"binding.device: {binding.device}"); } catch { }
+            //        try { Mod.log.Info($"binding.hasConflicts: {binding.hasConflicts}"); } catch { }
+            //        try { Mod.log.Info($"binding.isBuiltIn: {binding.isBuiltIn}"); } catch { }
+            //        try { Mod.log.Info($"binding.isGamepad: {binding.isGamepad}"); } catch { }
+            //        try { Mod.log.Info($"binding.isKeyboard: {binding.isKeyboard}"); } catch { }
+            //        try { Mod.log.Info($"binding.isModifiersRebindable: {binding.isModifiersRebindable}"); } catch { }
+            //        try { Mod.log.Info($"binding.isMouse: {binding.isMouse}"); } catch { }
+            //        try { Mod.log.Info($"binding.isOriginal: {binding.isOriginal}"); } catch { }
+            //        try { Mod.log.Info($"binding.isRebindable: {binding.isRebindable}"); } catch { }
+            //        try { Mod.log.Info($"binding.isSet: {binding.isSet}"); } catch { }
+            //        try { Mod.log.Info($"binding.mapName: {binding.mapName}"); } catch { }
+            //        try { Mod.log.Info($"binding.modifiers: {binding.modifiers}"); } catch { }
+            //        try { Mod.log.Info($"binding.name: {binding.name}"); } catch { }
+            //        try { Mod.log.Info($"binding.original: {binding.original}"); } catch { }
+            //        try { Mod.log.Info($"binding.originalModifiers: {binding.originalModifiers}"); } catch { }
+            //        try { Mod.log.Info($"binding.originalPath: {binding.originalPath}"); } catch { }
+            //        try { Mod.log.Info($"binding.path: {binding.path}"); } catch { }
+            //        try { Mod.log.Info($"binding.title: {binding.title}"); } catch { }
+            //        try { Mod.log.Info($"binding.usages: {binding.usages}"); } catch { }
+            //        //if (binding.isKeyboard && binding.path == "<Keyboard>/r")
+            //        //{
+            //        //    ProxyBinding proxyBinding = binding.Copy();
+            //        //    proxyBinding.path = "<Keyboard>/f";
+            //        //    proxyBinding.device = InputManager.DeviceType.Keyboard;
+            //        //    InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
+            //        //    Mod.log.Info($"Setting {proxyBinding.actionName} to ({proxyBinding.modifiers}){proxyBinding.path}");
+            //        //}
+            //    }
+            //}
+            //catch { }
         }
 
         public void RestoreBackup(int profile, bool log = true)
@@ -885,11 +1036,11 @@ namespace SimpleModChecker.Systems
                         if (log) Mod.log.Info($"Restoring 'graphics.dlssQuality'=> '{GameGraphicsSettings.DlssQuality}'");
                         SharedSettings.instance.graphics.dlssQuality = GameGraphicsSettings.DlssQuality;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["Fsr2Quality"] != null)
-                    {
-                        if (log) Mod.log.Info($"Restoring 'graphics.fsr2Quality'=> '{GameGraphicsSettings.Fsr2Quality}'");
-                        SharedSettings.instance.graphics.fsr2Quality = GameGraphicsSettings.Fsr2Quality;
-                    }
+                    //if (jsonObject["GameGraphicsSettings"]["Fsr2Quality"] != null)
+                    //{
+                    //    if (log) Mod.log.Info($"Restoring 'graphics.fsr2Quality'=> '{GameGraphicsSettings.Fsr2Quality}'");
+                    //    SharedSettings.instance.graphics.fsr2Quality = GameGraphicsSettings.Fsr2Quality;
+                    //}
                     if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"] != null)
                     {
                         GameDynamicResolutionQualitySettings GameDynamicResolutionQualitySettings = jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"].ToObject<GameDynamicResolutionQualitySettings>();
@@ -1211,6 +1362,76 @@ namespace SimpleModChecker.Systems
                     //{
                     //    SharedSettings.instance.keybinding.bindings = JsonConvert.DeserializeObject<List<ProxyBinding>>(jsonObject["GameInputSettings"]["Keybinds"].ToString());
                     //}
+                    if (jsonObject["GameInputSettings"]["MouseScrollSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.mouseScrollSensitivity'=> '{GameInputSettings.MouseScrollSensitivity}'");
+                        SharedSettings.instance.input.mouseScrollSensitivity = GameInputSettings.MouseScrollSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["KeyboardMoveSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.keyboardMoveSensitivity'=> '{GameInputSettings.KeyboardMoveSensitivity}'");
+                        SharedSettings.instance.input.keyboardMoveSensitivity = GameInputSettings.KeyboardMoveSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["KeyboardRotateSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.keyboardRotateSensitivity'=> '{GameInputSettings.KeyboardRotateSensitivity}'");
+                        SharedSettings.instance.input.keyboardRotateSensitivity = GameInputSettings.KeyboardRotateSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["KeyboardZoomSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.keyboardZoomSensitivity'=> '{GameInputSettings.KeyboardZoomSensitivity}'");
+                        SharedSettings.instance.input.keyboardZoomSensitivity = GameInputSettings.KeyboardZoomSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["MouseMoveSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.mouseMoveSensitivity'=> '{GameInputSettings.MouseMoveSensitivity}'");
+                        SharedSettings.instance.input.mouseMoveSensitivity = GameInputSettings.MouseMoveSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["MouseRotateSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.mouseRotateSensitivity'=> '{GameInputSettings.MouseRotateSensitivity}'");
+                        SharedSettings.instance.input.mouseRotateSensitivity = GameInputSettings.MouseRotateSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["MouseZoomSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.mouseZoomSensitivity'=> '{GameInputSettings.MouseZoomSensitivity}'");
+                        SharedSettings.instance.input.mouseZoomSensitivity = GameInputSettings.MouseZoomSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["MouseInvertX"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.mouseInvertX'=> '{GameInputSettings.MouseInvertX}'");
+                        SharedSettings.instance.input.mouseInvertX = GameInputSettings.MouseInvertX;
+                    }
+                    if (jsonObject["GameInputSettings"]["MouseInvertY"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.mouseInvertY'=> '{GameInputSettings.MouseInvertY}'");
+                        SharedSettings.instance.input.mouseInvertY = GameInputSettings.MouseInvertY;
+                    }
+                    if (jsonObject["GameInputSettings"]["GamepadMoveSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.gamepadMoveSensitivity'=> '{GameInputSettings.GamepadMoveSensitivity}'");
+                        SharedSettings.instance.input.gamepadMoveSensitivity = GameInputSettings.GamepadMoveSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["GamepadRotateSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.gamepadRotateSensitivity'=> '{GameInputSettings.GamepadRotateSensitivity}'");
+                        SharedSettings.instance.input.gamepadRotateSensitivity = GameInputSettings.GamepadRotateSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["GamepadZoomSensitivity"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.gamepadZoomSensitivity'=> '{GameInputSettings.GamepadZoomSensitivity}'");
+                        SharedSettings.instance.input.gamepadZoomSensitivity = GameInputSettings.GamepadZoomSensitivity;
+                    }
+                    if (jsonObject["GameInputSettings"]["GamepadInvertX"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.gamepadInvertX'=> '{GameInputSettings.GamepadInvertX}'");
+                        SharedSettings.instance.input.gamepadInvertX = GameInputSettings.GamepadInvertX;
+                    }
+                    if (jsonObject["GameInputSettings"]["GamepadInvertY"] != null)
+                    {
+                        if (log) Mod.log.Info($"Restoring 'input.gamepadInvertY'=> '{GameInputSettings.GamepadInvertY}'");
+                        SharedSettings.instance.input.gamepadInvertY = GameInputSettings.GamepadInvertY;
+                    }
                 }
 
                 if (jsonObject["GameInterfaceSettings"] != null)
@@ -1323,7 +1544,7 @@ namespace SimpleModChecker.Systems
                         SharedSettings.instance.userState.unlockMapTiles = GameUserState.UnlockMapTiles;
                     }
                 }
-                //SharedSettings.instance.Apply();
+                SharedSettings.instance.Apply();
                 Mod.log.Info("Game Settings Restoration Complete...");
             }
             catch (Exception ex)

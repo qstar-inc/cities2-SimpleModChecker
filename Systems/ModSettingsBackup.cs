@@ -2,23 +2,22 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using System;
-using System.Reflection;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Mod = SimpleModCheckerPlus.Mod;
-using Game;
-using Game.UI.Localization;
-using Game.PSI;
-using Game.Modding;
-using Colossal.Serialization.Entities;
-using Colossal.PSI.Environment;
-using Colossal.PSI.Common;
 using Colossal.IO.AssetDatabase;
-using static Colossal.AssetPipeline.Importers.DidimoImporter.DidimoData;
+using Colossal.PSI.Common;
+using Colossal.PSI.Environment;
+using Colossal.Serialization.Entities;
+using Game.Modding;
+using Game.PSI;
+using Game.UI.Localization;
+using Game;
+using Mod = SimpleModCheckerPlus.Mod;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System;
 
 namespace SimpleModChecker.Systems
 {
@@ -45,68 +44,71 @@ namespace SimpleModChecker.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
-        }
+        //}
 
-        protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
-        {
-            ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
-            base.OnGameLoadingComplete(purpose, mode);
-            if (!AutoRestoreDone && mode == GameMode.MainMenu)
+        //protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
+        //{
+            //base.OnGameLoadingComplete(purpose, mode);
+            while (!AutoRestoreDone && Mod.Setting.AutoRestoreSettingBackupOnStartup)
             {
-                if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
+                Mod.log.Info("Starting ModSettingsBackup process");
+                ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
+                if (!AutoRestoreDone)// && mode == GameMode.MainMenu)
                 {
-                    if (File.Exists(backupFile1))
+                    if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
                     {
-                        string currentModVersion = Mod.Version;
-                        string jsonStringRead = File.ReadAllText(backupFile1);
-                        if (jsonStringRead != null && jsonStringRead != "")
+                        if (File.Exists(backupFile1))
                         {
-                            try
+                            string currentModVersion = Mod.Version;
+                            string jsonStringRead = File.ReadAllText(backupFile1);
+                            if (jsonStringRead != null && jsonStringRead != "")
                             {
-                                JObject jsonObject = JObject.Parse(jsonStringRead);
-                                if (jsonObject != null)
+                                try
                                 {
-                                    if (!jsonObject.TryGetValue("ModVersion", out JToken BackupModVersion) || BackupModVersion == null)
+                                    JObject jsonObject = JObject.Parse(jsonStringRead);
+                                    if (jsonObject != null)
                                     {
-                                        SendModUpdateNotification(currentModVersion, "null");
-                                    }
-                                    else
-                                    {
-                                        if (BackupModVersion.ToString() != currentModVersion)
+                                        if (!jsonObject.TryGetValue("ModVersion", out JToken BackupModVersion) || BackupModVersion == null)
                                         {
-                                            SendModUpdateNotification(currentModVersion, BackupModVersion.ToString());
+                                            SendModUpdateNotification(currentModVersion, "null");
+                                        }
+                                        else
+                                        {
+                                            if (BackupModVersion.ToString() != currentModVersion)
+                                            {
+                                                SendModUpdateNotification(currentModVersion, BackupModVersion.ToString());
+                                            }
                                         }
                                     }
                                 }
+                                catch (Exception ex) { Mod.log.Info(ex); }
                             }
-                            catch (Exception ex) { Mod.log.Info(ex); }
-                        }
-                            
-                        CreateBackup(0, false);
-                        if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
-                        {
-                            RestoreBackup(1, false);
-                            NotificationSystem.Pop("starq-smc-mod-settings-restore",
-                                    title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                                    text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreMods]"),
-                                    onClicked: () => { },
-                                    delay: 10f);
+
+                            CreateBackup(0, false);
+                            if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
+                            {
+                                RestoreBackup(1, false);
+                                NotificationSystem.Pop("starq-smc-mod-settings-restore",
+                                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreMods]"),
+                                        delay: 10f);
+                            }
+                            else
+                            {
+                                Mod.log.Info("Nothing to restore");
+                            }
                         }
                         else
                         {
-                            Mod.log.Info("Nothing to restore");
+                            Mod.log.Info("Auto Restore failed, no Mod Setting Backup was found.");
                         }
                     }
                     else
                     {
-                        Mod.log.Info("Auto Restore failed, no Mod Setting Backup was found.");
+                        Mod.log.Info("Auto Restore is disabled...");
                     }
+                    AutoRestoreDone = true;
                 }
-                else
-                {
-                    Mod.log.Info("Auto Restore is disabled...");
-                }
-                AutoRestoreDone = true;
             }
         }
 
@@ -277,13 +279,22 @@ namespace SimpleModChecker.Systems
             bool ProcessedFragmentSource = false;
             foreach (SettingAsset settingAsset in settingAssets)
             {
-                //try { Mod.log.Info(settingAsset.name); } catch (Exception ex) { Mod.log.Info(ex); }
+                //try { Mod.log.Info("settingAsset.name is " + settingAsset.name); } catch (Exception ex) { Mod.log.Info(ex); }
                 //foreach (var fragment in settingAsset)
                 //{ try { Mod.log.Info(fragment.name); } catch (Exception ex) { Mod.log.Info(ex); } }
                 foreach (var fragment in settingAsset)
                 {
+                    //Mod.log.Info("var fragment in settingAsset");
                     //try { Mod.log.Info(fragment.name); } catch (Exception ex) { Mod.log.Info(ex); }
-                    
+                    if (fragment.source == null)
+                    {
+                        //Mod.log.Info("fragment.source == null");
+                        continue;
+                    }
+                    //try { Mod.log.Info(fragment.source); } catch (Exception ex) { Mod.log.Info(ex); }
+                    //try { Mod.log.Info(fragment.source.GetType()); } catch (Exception ex) { Mod.log.Info(ex); }
+                    //try { Mod.log.Info(fragment.source.GetType().Name); } catch (Exception ex) { Mod.log.Info(ex); }
+
                     //try { Mod.log.Info($"{fragment.name} is {fragment.source.GetType().Name}"); } catch (Exception ex) { Mod.log.Info(ex); }
                     if (fragment.source.GetType().Name == "UnityLogger" ) { }
                     else if (fragment.source.ToString().Contains("=====APM Settings=====") && name == "78903")
@@ -298,7 +309,7 @@ namespace SimpleModChecker.Systems
                         if (validity)
                         {
                             (ProcessedFragmentSource, settingsBackup) = ProcessFragmentSource(fragment.source, classType, JsonSerializerSettings);
-                        }else { continue; }
+                        } else { continue; }
                     }
                 }
                 if (ProcessedFragmentSource)

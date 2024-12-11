@@ -50,18 +50,18 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="2.3.0" />
+	<ModVersion Value="3.0.0" />
 	<!--Recommended version of the base game to use the mod-->
-	<GameVersion Value="1.1*" />
+	<GameVersion Value="1.2*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="2.3.0" />
+	<ChangeLog Value="3.0.0" />
 	<ChangeLog>
-* New system for notifying about mods with issues. Currently only notifies about vanilla DLLs being shipped with the mod.
-* Compatibility with 'All Aboard' update.
-* More check to determine broken coc files.
-* Warning popup when known bad DLLs are being loaded.
+- Compatibility with 1.2.0f1
+- Frameworks for Keybind Backup/Restore (Not available yet)
+- Better settings apply procedure
+- Removed "Mods with issues" (shipped with vanilla DLLs) section
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

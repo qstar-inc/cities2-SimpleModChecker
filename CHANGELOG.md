@@ -1,3 +1,9 @@
+# 3.0.0 (2024-12-11) - 4840 subs
+- Compatibility with 1.2.0f1
+- Frameworks for Keybind Backup/Restore (Not available yet)
+- Better settings apply procedure
+- Removed "Mods with issues" (shipped with vanilla DLLs) section
+
 # 2.3.0 (2024-11-04) - 4024 subs
 - New system for notifying about mods with issues. Currently only notifies about vanilla DLLs being shipped with the mod.
 - Compatibility with 'All Aboard' update.

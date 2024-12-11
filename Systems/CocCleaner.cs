@@ -3,14 +3,14 @@
 // StarQ 2024
 
 using Colossal.PSI.Environment;
-using Game;
 using Game.PSI;
 using Game.UI.Localization;
+using Game;
 using SimpleModCheckerPlus;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System;
 using UnityEngine;
 
 namespace SimpleModChecker.Systems
@@ -41,7 +41,11 @@ namespace SimpleModChecker.Systems
                                 {"fileCount", LocalizedString.Value(CanDelete.Count.ToString())}
                             }),
                         text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]"),
-                        onClicked: () => DeleteFolders("Click"));
+                        onClicked: () =>
+                        {
+                            DeleteFolders("Click");
+                            NotificationSystem.Pop("starq-smc-coc-check");
+                        });
             }
 
         }

@@ -3,7 +3,6 @@
 // StarQ 2024
 
 using Game.Settings;
-using System;
 using System.Collections.Generic;
 
 namespace SimpleModChecker.Systems

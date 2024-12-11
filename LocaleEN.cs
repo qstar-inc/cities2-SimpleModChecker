@@ -6,7 +6,6 @@ using Colossal;
 using Game.Modding;
 using SimpleModChecker.Systems;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SimpleModCheckerPlus
 {
@@ -41,7 +40,7 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetSettingsLocaleID(), Mod.Name },
                 { m_Setting.GetOptionTabLocaleID(Setting.MainTab), Setting.MainTab },
                 { m_Setting.GetOptionTabLocaleID(Setting.ModListTab), Setting.ModListTab },
-                { m_Setting.GetOptionTabLocaleID(Setting.ModWithIssueListTab), Setting.ModWithIssueListTab},
+                //{ m_Setting.GetOptionTabLocaleID(Setting.ModWithIssueListTab), Setting.ModWithIssueListTab},
                 { m_Setting.GetOptionTabLocaleID(Setting.ProfileNameTab), Setting.ProfileNameTab },
                 { m_Setting.GetOptionTabLocaleID(Setting.AboutTab), Setting.AboutTab },
 
@@ -49,7 +48,7 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionGroupLocaleID(Setting.BackupGroup), Setting.BackupGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModUtilityGroup), Setting.ModUtilityGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModListGroup), Setting.ModListGroup },
-                { m_Setting.GetOptionGroupLocaleID(Setting.ModWithIssueListGroup), Setting.ModWithIssueListGroup },
+                //{ m_Setting.GetOptionGroupLocaleID(Setting.ModWithIssueListGroup), Setting.ModWithIssueListGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ProfileNameGroup), Setting.ProfileNameGroup },
                 { m_Setting.GetOptionGroupLocaleID(Setting.ModInfo), Setting.ModInfo },
                 { m_Setting.GetOptionGroupLocaleID(Setting.SupportedMod ), Setting.SupportedMod },
@@ -97,11 +96,15 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.CreateModBackup)), "Backup Mod Settings to the selected profile." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RestoreModBackup)), "Restore Mod Settings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.RestoreModBackup)), "Restore Mod Settings from the selected profile." },
+                //{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.CreateKeybindsBackup)), "Backup Keybinds" },
+                //{ m_Setting.GetOptionDescLocaleID(nameof(Setting.CreateKeybindsBackup)), "Backup Keybinds to the selected profile." },
+                //{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.RestoreKeybindsBackup)), "Restore Keybinds" },
+                //{ m_Setting.GetOptionDescLocaleID(nameof(Setting.RestoreKeybindsBackup)), "Restore Keybinds from the selected profile." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModsLoaded)), "" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ModsLoaded)), "List of mods loaded in this session." },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModsWithIssueLoaded)), "" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ModsWithIssueLoaded)), "List of mods with issues loaded in this session." },
+                //{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModsWithIssueLoaded)), "" },
+                //{ m_Setting.GetOptionDescLocaleID(nameof(Setting.ModsWithIssueLoaded)), "List of mods with issues loaded in this session." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.RefreshModDatabase)), "Refresh Mod Database" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.RefreshModDatabase)), "Refresh Mod Database from the Internet." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModDatabaseTime)), "Mod Database Time" },
