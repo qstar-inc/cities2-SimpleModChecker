@@ -25,7 +25,7 @@ namespace SimpleModCheckerPlus
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "3.0.0";
+        public static string Version = "3.2.0";
         
         public static Setting Setting;
         public ModCheckup ModCheckup;
@@ -55,8 +55,9 @@ namespace SimpleModCheckerPlus
             Task.Run(() => EnsureModDatabaseAsync()).Wait();
             ModDatabase.LoadModDatabase();
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
-            Setting.RefreshedRecently = false;
-            
+            Setting.VerifiedRecently = false;
+            Setting.IsInGameOrEditor = false;
+
             ModCheckup = new ModCheckup();
             CIDBackupRestore = new CIDBackupRestore(this);
             CocCleaner = new CocCleaner(this);
@@ -66,7 +67,7 @@ namespace SimpleModCheckerPlus
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ProfileNameBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<GameSettingsBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModSettingsBackup>();
-            //World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<KeybindsBackup>();
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<KeybindsBackup>();
         }
         
         public void OnDispose()
@@ -80,7 +81,8 @@ namespace SimpleModCheckerPlus
             {
                 CocCleaner.DeleteFolders();
             }
-            Setting.RefreshedRecently = false;
+            Setting.VerifiedRecently = false;
+            Setting.IsInGameOrEditor = false;
             MakeBackupOfModsData.MakePrev();
             Setting.UnregisterInOptionsUI();
             log.Info($"Shutting down {Name}");
@@ -129,7 +131,7 @@ namespace SimpleModCheckerPlus
             }
             Setting.LastChecked = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             string downloadUrl = "https://github.com/qstar-inc/cities2-SimpleModChecker/raw/refs/heads/master/Resources/ModDatabase.json";
-            if (mode == 2) { Setting.RefreshedRecently = true; }
+            if (mode == 2) { Setting.VerifiedRecently = true; }
             
             NotificationSystem.Push("starq-smc-mod-database-downloaded",
                 title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),

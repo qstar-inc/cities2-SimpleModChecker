@@ -2,31 +2,16 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
 using System;
 using System.IO;
 using System.Collections.Generic;
-using static Game.Simulation.SimulationSystem;
-using static Game.Settings.InterfaceSettings;
-using static Game.Settings.GraphicsSettings;
-using static Game.Settings.GeneralSettings;
-using static Game.Settings.AntiAliasingQualitySettings;
-using static Game.Settings.AnimationQualitySettings;
-using static Colossal.IO.AssetDatabase.AssetDatabase;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Mod = SimpleModCheckerPlus.Mod;
 using Game;
-using Game.UI.Localization;
-using Game.Settings;
-using Game.Rendering.Utilities;
-using Game.PSI;
 using Colossal.PSI.Environment;
-using Colossal.PSI.Common;
 using Game.Input;
 using System.Linq;
-using Game.Prefabs;
 
 namespace SimpleModChecker.Systems
 {
@@ -34,11 +19,9 @@ namespace SimpleModChecker.Systems
     {
         public string ActionName { get; set; }
         public InputManager.DeviceType Device {  get; set; }
-        public string MapName { get; set; }
         public string BindingName {  get; set; }
         public string Path { get; set; }
         public IReadOnlyList<ProxyModifier> Modifiers { get; set; }
-        public string Title => $"{MapName}/{ActionName}/{BindingName}";
     }
 
     public class Keybinds
@@ -53,6 +36,7 @@ namespace SimpleModChecker.Systems
         public Mod _mod;
         public static ModCheckup SMC = new();
         private readonly List<string> loadedMods = SMC.GetLoadedMods();
+        private InputManager inputManager = InputManager.instance;
         private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_prev.json";
         private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_1.json";
         private readonly string backupFile2 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_2.json";
@@ -179,9 +163,9 @@ namespace SimpleModChecker.Systems
                     .SelectMany(kv => kv.Value.Select(g => new { MapName = kv.Key, Keybind = g }))
                     .ToList();
 
-                List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
+                List<ProxyBinding> bindings = [.. inputManager.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
 
-                Mod.log.Info(bindings.Count);
+                //Mod.log.Info(bindings.Count);
                 foreach (ProxyBinding binding in bindings)
                 {
                     if (binding.isRebindable)
@@ -239,7 +223,7 @@ namespace SimpleModChecker.Systems
             catch { }
             //try
             //    {
-            //    List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
+            //    List<ProxyBinding> bindings = [.. inputManager.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
 
             //    Mod.log.Info(bindings.Count);
             //    foreach (ProxyBinding binding in bindings)
@@ -311,53 +295,99 @@ namespace SimpleModChecker.Systems
 
             try
             {
-                //JObject jsonObject = JObject.Parse(jsonString);
+                var bindings = inputManager.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None);
+                JObject jsonObject = JObject.Parse(jsonString);
 
-                //if (jsonObject["GameKeybind"] != null)
-                //{
-                //    var gameKeybindDict = jsonObject["GameKeybind"] as JObject;
+                if (jsonObject["GameKeybind"] != null)
+                {
+                    var gameKeybindDict = jsonObject["GameKeybind"] as JObject;
 
-                //    foreach (var mapEntry in gameKeybindDict)
-                //    {
-                //        string mapName = mapEntry.Key;
+                    foreach (var mapEntry in gameKeybindDict)
+                    {
+                        string mapName = mapEntry.Key;
 
-                //        if (InputManager.instance.TryFindActionMap(mapName, out var _))
-                //        {
-                //            JArray keybindsArray = (JArray)mapEntry.Value;
+                        if (inputManager.TryFindActionMap(mapName, out var _))
+                        {
+                            JArray keybindsArray = (JArray)mapEntry.Value;
 
-                //            Mod.log.Info($"Map: {mapName}");
+                            if (log) Mod.log.Info($"Checking {mapName}");
 
-                //            foreach (var keybind in keybindsArray)
-                //            {
-                //                if (InputManager.instance.TryGetBinding(keybind["BindingName"], InputManager.PathType.Effective, InputManager.BindingOptions.None, out var _))
-                //                {
-                //                    Mod.log.Info(keybind.ToString(Formatting.Indented));
-                //                    // You can access properties of each GameKeybind like this:
-                //                    string actionName = keybind["ActionName"]?.ToString();
-                //                    string bindingName = keybind["BindingName"]?.ToString();
-                //                    string path = keybind["Path"]?.ToString();
+                            foreach (var keybind in keybindsArray)
+                            {
+                                string actionName = keybind["ActionName"]?.ToString();
+                                string bindingName = keybind["BindingName"]?.ToString();
+                                int deviceString = keybind["Device"].Value<int>();
+                                JArray modifiers = keybind["Modifiers"] as JArray;
+                                string path = keybind["Path"]?.ToString();
+                                InputManager.DeviceType device = (InputManager.DeviceType)deviceString;
+                                if (inputManager.TryFindAction(mapName, actionName, out var action))
+                                {
+                                    ProxyBinding oldBinding = bindings.FirstOrDefault(b =>
+                                        b.mapName == mapName &&
+                                        b.actionName == actionName &&
+                                        b.name == bindingName &&
+                                        b.device == device);
 
-                //                    Mod.log.Info($" - Action: {actionName}, Binding: {bindingName}, Path: {path}"); }
-                //            }
-                //        }
-                //    }
+                                    if (oldBinding != null)
+                                    {
+                                        ProxyBinding newBinding = oldBinding.Copy();
 
-                //    //List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
-                //    //foreach (var item in jsonObject["GameKeybind"])
-                //    //{
-                //    //    if (InputManager.instance.TryFindAction(item["MapName"].ToString(), item["ActionName"].ToString(), out ProxyAction action))
-                //    //    {
-                //    //        InputManager.instance.TryGetBinding()
-                //    //        ProxyBinding proxyBinding = binding.Copy();
-                //    //        proxyBinding.path = "<Keyboard>/f";
-                //    //        proxyBinding.device = InputManager.DeviceType.Keyboard;
-                //    //        InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
-                //    //        Mod.log.Info($"Setting {proxyBinding.actionName} to ({proxyBinding.modifiers}){proxyBinding.path}");
-                //    //    }
-                //    //}
-                //}
-                ////SharedSettings.instance.Apply();
-                //Mod.log.Info("Keybinds Restoration Complete...");
+                                        newBinding.modifiers = modifiers != null
+                                            ? modifiers.Select(m => new ProxyModifier
+                                            {
+                                                m_Component = (ActionComponent)Enum.Parse(typeof(ActionComponent), m["m_Component"]?.ToString() ?? "None"),
+                                                m_Name = m["m_Name"]?.ToString(),
+                                                m_Path = m["m_Path"]?.ToString()
+                                            }).ToArray() : [];
+                                        newBinding.path = string.IsNullOrEmpty(path) ? oldBinding.path : path;
+
+                                        if (!(newBinding.path == oldBinding.path))
+                                        {
+                                            inputManager.SetBinding(newBinding, out ProxyBinding _);
+
+                                            if (log)
+                                            {
+                                                string newBindingText = string.IsNullOrEmpty(newBinding.path) ? "Not set" : string.Join(" + ", newBinding.modifiers.Select((ProxyModifier m) => m.m_Path).Append(newBinding.path));
+                                                Mod.log.Info($"Setting {newBinding.title} to {newBindingText}");
+                                            }
+                                        }
+                                    }
+                                }
+                                //if (InputManager.instance.TryFindAction(mapName, keybind["ActionName"], out var action))
+                                //{
+                                //    Mod.log.Info(keybind.ToString(Formatting.Indented));
+                                //    // You can access properties of each GameKeybind like this:
+                                //    string actionName = keybind["ActionName"]?.ToString();
+                                //    string bindingName = keybind["BindingName"]?.ToString();
+                                //    string path = keybind["Path"]?.ToString();
+
+                                //    ProxyBinding proxyBinding = binding.Copy();
+                                //    proxyBinding.path = "<Keyboard>/f";
+                                //    proxyBinding.device = InputManager.DeviceType.Keyboard;
+                                //    InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
+
+                                //    Mod.log.Info($" - Action: {actionName}, Binding: {bindingName}, Path: {path}");
+                                //}
+                            }
+                        }
+                    }
+
+                    //List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
+                    //foreach (var item in jsonObject["GameKeybind"])
+                    //{
+                    //    if (InputManager.instance.TryFindAction(item["MapName"].ToString(), item["ActionName"].ToString(), out ProxyAction action))
+                    //    {
+                    //        InputManager.instance.TryGetBinding()
+                    //        ProxyBinding proxyBinding = binding.Copy();
+                    //        proxyBinding.path = "<Keyboard>/f";
+                    //        proxyBinding.device = InputManager.DeviceType.Keyboard;
+                    //        InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
+                    //        Mod.log.Info($"Setting {proxyBinding.actionName} to ({proxyBinding.modifiers}){proxyBinding.path}");
+                    //    }
+                    //}
+                }
+                //SharedSettings.instance.Apply();
+                Mod.log.Info("Keybinds Restoration Complete...");
             }
             catch (Exception ex)
             {

@@ -72,7 +72,7 @@ namespace SimpleModChecker.Systems
                     $"{timeSinceLastUpdate.Minutes} minute{(timeSinceLastUpdate.Minutes != 1 ? "s" : "")}, " +
                     $"{timeSinceLastUpdate.Seconds} second{(timeSinceLastUpdate.Seconds != 1 ? "s" : "")} old";
             ModDatabaseTime = DateTimeOffset.FromUnixTimeSeconds(metaData.Time).ToLocalTime().ToString("dd MMMM yyyy hh:mm:ss tt zzz");
-            Mod.Setting.ModsLoadedVersion++;
+            //Mod.Setting.ModsLoadedVersion++;
             Mod.log.Info($"ModDatabase is {readableAge} ({ModDatabaseTime})...");
             
             ModDatabaseInfo = [];
@@ -85,7 +85,7 @@ namespace SimpleModChecker.Systems
                     FragmentSource = modInfoTemp.FragmentSource ?? "",
                     ClassType = !string.IsNullOrEmpty(modInfoTemp.ClassType) ? Type.GetType($"SimpleModChecker.Systems.{modInfoTemp.ClassType}") : null,
                     ModName = modInfoTemp.ModName ?? "",
-                    PDX_ID = modInfoTemp.PDX_ID ?? "",
+                    PDX_ID = entry.Key ?? "",
                     Author = modInfoTemp.Author ?? "",
                     Backupable = modInfoTemp.Backupable
                 };
@@ -115,39 +115,39 @@ namespace SimpleModChecker.Systems
             return sortedMods;
         }
 
-        public static List<ModInfo> SortByModName(Dictionary<string, ModInfo> type = null)
-        {
-            Dictionary<string, ModInfo>.ValueCollection list;
-            if (type == null)
-            {
-                list = ModDatabase.ModDatabaseInfo.Values;
-            }
-            else
-            {
-                list = type.Values;
-            }
-            var sortedMods = list
-            .OrderBy(mod => mod.ModName)
-            .ThenBy(mod => mod.PDX_ID)
-            .ToList();
-            return sortedMods;
-        }
+        //public static List<ModInfo> SortByModName(Dictionary<string, ModInfo> type = null)
+        //{
+        //    Dictionary<string, ModInfo>.ValueCollection list;
+        //    if (type == null)
+        //    {
+        //        list = ModDatabase.ModDatabaseInfo.Values;
+        //    }
+        //    else
+        //    {
+        //        list = type.Values;
+        //    }
+        //    var sortedMods = list
+        //    .OrderBy(mod => mod.ModName)
+        //    .ThenBy(mod => mod.PDX_ID)
+        //    .ToList();
+        //    return sortedMods;
+        //}
 
-        public static List<ModInfo> SortByAssembly(Dictionary<string, ModInfo> type = null)
-        {
-            Dictionary<string, ModInfo>.ValueCollection list;
-            if (type == null)
-            {
-                list = ModDatabase.ModDatabaseInfo.Values;
-            }
-            else
-            {
-                list = type.Values;
-            }
-            var sortedMods = list
-            .OrderBy(mod => mod.AssemblyName)
-            .ToList();
-            return sortedMods;
-        }
+        //public static List<ModInfo> SortByAssembly(Dictionary<string, ModInfo> type = null)
+        //{
+        //    Dictionary<string, ModInfo>.ValueCollection list;
+        //    if (type == null)
+        //    {
+        //        list = ModDatabase.ModDatabaseInfo.Values;
+        //    }
+        //    else
+        //    {
+        //        list = type.Values;
+        //    }
+        //    var sortedMods = list
+        //    .OrderBy(mod => mod.AssemblyName)
+        //    .ToList();
+        //    return sortedMods;
+        //}
     }
 }

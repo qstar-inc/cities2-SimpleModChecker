@@ -741,7 +741,7 @@ namespace SimpleModChecker.Systems
             {
                 string jsonString = JsonConvert.SerializeObject(GameSettings, Formatting.Indented);
                 File.WriteAllText(backupFile, jsonString);
-                if (log) Mod.log.Info($"Game Settings backup created successfully: {backupFile}");
+                Mod.log.Info($"Game Settings backup created successfully: {backupFile}");
             }
             catch (Exception ex)
             {

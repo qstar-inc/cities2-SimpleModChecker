@@ -69,11 +69,6 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(BusMaxDwellDelaySlider));
             set => SetValue(nameof(BusMaxDwellDelaySlider), value);
         }
-        //public bool TestPathfindingCleanup
-        //{
-        //    get => (bool)GetValue(nameof(TestPathfindingCleanup));
-        //    set => SetValue(nameof(TestPathfindingCleanup), value);
-        //}
     }
 
     public class AnarchySettings : SettingsBackup
@@ -138,6 +133,11 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(ReplaceUpgradesBehavior));
             set => SetValue(nameof(ReplaceUpgradesBehavior), value);
         }
+        public bool ResetNetworkToolOptionsWhenChangingPrefab
+        {
+            get => (bool)GetValue(nameof(ResetNetworkToolOptionsWhenChangingPrefab));
+            set => SetValue(nameof(ResetNetworkToolOptionsWhenChangingPrefab), value);
+        }
         public float MinimumClearanceBelowElevatedNetworks
         {
             get => (float)GetValue(nameof(MinimumClearanceBelowElevatedNetworks));
@@ -153,34 +153,6 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(PropRefreshFrequency));
             set => SetValue(nameof(PropRefreshFrequency), value);
         }
-        //public string ApplyMimic
-        //{
-        //    get
-        //    {
-        //        var applyMimicObj = GetValue(nameof(ApplyMimic));
-        //        if (applyMimicObj is ProxyBinding applyMimic)
-        //        {
-        //            return JsonConvert.SerializeObject(applyMimic, new JsonSerializerSettings
-        //            {
-        //                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        //            });
-        //        }
-        //        else
-        //        {
-        //            throw new InvalidCastException($"The value returned by GetValue is not of type ProxyBinding, it is of type {applyMimicObj?.GetType().Name ?? "null"}.");
-        //        }
-        //    }
-        //    set
-        //    {
-        //        ProxyBinding applyMimic = JsonConvert.DeserializeObject<ProxyBinding>(value);
-        //        SetValue(nameof(ApplyMimic), applyMimic);
-        //    }
-        //}
-        //public ProxyBinding SecondaryApplyMimic
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(SecondaryApplyMimic));
-        //    set => SetValue(nameof(SecondaryApplyMimic), value);
-        //}
         public bool AllowPlacingMultipleUniqueBuildings
         {
             get => (bool)GetValue(nameof(AllowPlacingMultipleUniqueBuildings));
@@ -191,35 +163,10 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(PreventOverrideInEditor));
             set => SetValue(nameof(PreventOverrideInEditor), value);
         }
-        //public ProxyBinding ToggleAnarchy
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(ToggleAnarchy));
-        //    set => SetValue(nameof(ToggleAnarchy), value);
-        //}
-        //public ProxyBinding ResetElevation
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(ResetElevation));
-        //    set => SetValue(nameof(ResetElevation), value);
-        //}
-        //public ProxyBinding ElevationStep
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(ElevationStep));
-        //    set => SetValue(nameof(ElevationStep), value);
-        //}
-        //public ProxyBinding IncreaseElevation
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(IncreaseElevation));
-        //    set => SetValue(nameof(IncreaseElevation), value);
-        //}
-        //public ProxyBinding DecreaseElevation
-        //{
-        //    get => (ProxyBinding)GetValue(nameof(DecreaseElevation));
-        //    set => SetValue(nameof(DecreaseElevation), value);
-        //}
-        public bool ElevationLock
+        public bool UseElevationMimics
         {
-            get => (bool)GetValue(nameof(ElevationLock));
-            set => SetValue(nameof(ElevationLock), value);
+            get => (bool)GetValue(nameof(UseElevationMimics));
+            set => SetValue(nameof(UseElevationMimics), value);
         }
     }
 
@@ -264,6 +211,11 @@ namespace SimpleModChecker.Systems
 
     public class AssetIconLibrarySettings : SettingsBackup
     {
+        public string IconsStyle
+        {
+            get => (string)GetValue(nameof(IconsStyle));
+            set => SetValue(nameof(IconsStyle), value);
+        }
         public bool OverwriteIcons
         {
             get => (bool)GetValue(nameof(OverwriteIcons));
@@ -293,11 +245,16 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(AdaptiveAssetLoading));
             set => SetValue(nameof(AdaptiveAssetLoading), value);
         }
-        //public int LogCooldownTicks
-        //{
-        //    get => (int)GetValue(nameof(LogCooldownTicks));
-        //    set => SetValue(nameof(LogCooldownTicks), value);
-        //}
+        public bool DisableSettingsWarning
+        {
+            get => (bool)GetValue(nameof(DisableSettingsWarning));
+            set => SetValue(nameof(DisableSettingsWarning), value);
+        }
+        public bool DisableTelemetry
+        {
+            get => (bool)GetValue(nameof(DisableTelemetry));
+            set => SetValue(nameof(DisableTelemetry), value);
+        }
         public bool AutoHideNotifications
         {
             get => (bool)GetValue(nameof(AutoHideNotifications));
@@ -642,20 +599,6 @@ namespace SimpleModChecker.Systems
         }
     }
 
-    //public class ByeByeHomelessSettings : SettingsBackup
-    //{
-    //    public bool ShowUpdateNotice20240911
-    //    {
-    //        get => (bool)GetValue(nameof(ShowUpdateNotice20240911));
-    //        set => SetValue(nameof(ShowUpdateNotice20240911), value);
-    //    }
-    //    public bool EvictExtraCompany
-    //    {
-    //        get => (bool)GetValue(nameof(EvictExtraCompany));
-    //        set => SetValue(nameof(EvictExtraCompany), value);
-    //    }
-    //}
-
     public class CimRouteHighlighterSettings : SettingsBackup
     {
         public bool highlightWorkplaces
@@ -682,6 +625,11 @@ namespace SimpleModChecker.Systems
         {
             get => (bool)GetValue(nameof(highlightDestinations));
             set => SetValue(nameof(highlightDestinations), value);
+        }
+        public bool showToolIconsInUI
+        {
+            get => (bool)GetValue(nameof(showToolIconsInUI));
+            set => SetValue(nameof(showToolIconsInUI), value);
         }
         public float vehicleRouteWidth
         {
@@ -727,6 +675,115 @@ namespace SimpleModChecker.Systems
         {
             get => (bool)GetValue(nameof(highlightSelectedTransitVehiclePassengerRoutes));
             set => SetValue(nameof(highlightSelectedTransitVehiclePassengerRoutes), value);
+        }
+        public bool showCountsOnInfoPanel
+        {
+            get => (bool)GetValue(nameof(showCountsOnInfoPanel));
+            set => SetValue(nameof(showCountsOnInfoPanel), value);
+        }
+    }
+
+    public class CitizenModelManagerSettings : SettingsBackup
+    {
+        public string Child_Female_Warm
+        {
+            get => (string)GetValue(nameof(Child_Female_Warm));
+            set => SetValue(nameof(Child_Female_Warm), value);
+        }
+        public string Child_Male_Warm
+        {
+            get => (string)GetValue(nameof(Child_Male_Warm));
+            set => SetValue(nameof(Child_Male_Warm), value);
+        }
+        public string Child_Female_Cold
+        {
+            get => (string)GetValue(nameof(Child_Female_Cold));
+            set => SetValue(nameof(Child_Female_Cold), value);
+        }
+        public string Child_Male_Cold
+        {
+            get => (string)GetValue(nameof(Child_Male_Cold));
+            set => SetValue(nameof(Child_Male_Cold), value);
+        }
+        public string Teen_Female_Warm
+        {
+            get => (string)GetValue(nameof(Teen_Female_Warm));
+            set => SetValue(nameof(Teen_Female_Warm), value);
+        }
+        public string Teen_Male_Warm
+        {
+            get => (string)GetValue(nameof(Teen_Male_Warm));
+            set => SetValue(nameof(Teen_Male_Warm), value);
+        }
+        public string Teen_Female_Cold
+        {
+            get => (string)GetValue(nameof(Teen_Female_Cold));
+            set => SetValue(nameof(Teen_Female_Cold), value);
+        }
+        public string Teen_Male_Cold
+        {
+            get => (string)GetValue(nameof(Teen_Male_Cold));
+            set => SetValue(nameof(Teen_Male_Cold), value);
+        }
+        public string Adult_Female_Warm
+        {
+            get => (string)GetValue(nameof(Adult_Female_Warm));
+            set => SetValue(nameof(Adult_Female_Warm), value);
+        }
+        public string Adult_Male_Warm
+        {
+            get => (string)GetValue(nameof(Adult_Male_Warm));
+            set => SetValue(nameof(Adult_Male_Warm), value);
+        }
+        public string Adult_Female_Cold
+        {
+            get => (string)GetValue(nameof(Adult_Female_Cold));
+            set => SetValue(nameof(Adult_Female_Cold), value);
+        }
+        public string Adult_Male_Cold
+        {
+            get => (string)GetValue(nameof(Adult_Male_Cold));
+            set => SetValue(nameof(Adult_Male_Cold), value);
+        }
+        public string Adult_Female_Homeless
+        {
+            get => (string)GetValue(nameof(Adult_Female_Homeless));
+            set => SetValue(nameof(Adult_Female_Homeless), value);
+        }
+        public string Adult_Male_Homeless
+        {
+            get => (string)GetValue(nameof(Adult_Male_Homeless));
+            set => SetValue(nameof(Adult_Male_Homeless), value);
+        }
+        public string Elderly_Female_Warm
+        {
+            get => (string)GetValue(nameof(Elderly_Female_Warm));
+            set => SetValue(nameof(Elderly_Female_Warm), value);
+        }
+        public string Elderly_Male_Warm
+        {
+            get => (string)GetValue(nameof(Elderly_Male_Warm));
+            set => SetValue(nameof(Elderly_Male_Warm), value);
+        }
+        public string Elderly_Female_Cold
+        {
+            get => (string)GetValue(nameof(Elderly_Female_Cold));
+            set => SetValue(nameof(Elderly_Female_Cold), value);
+        }
+        public string Elderly_Male_Cold
+        {
+            get => (string)GetValue(nameof(Elderly_Male_Cold));
+            set => SetValue(nameof(Elderly_Male_Cold), value);
+        }
+        public string Elderly_Female_Homeless
+        {
+            get => (string)GetValue(nameof(Elderly_Female_Homeless));
+            set => SetValue(nameof(Elderly_Female_Homeless), value);
+        }
+        public string Elderly_Male_Homeless
+        {
+            get => (string)GetValue(nameof(Elderly_Male_Homeless));
+            set => SetValue(nameof(Elderly_Male_Homeless), value);
         }
     }
 
@@ -1293,6 +1350,11 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(Decals));
             set => SetValue(nameof(Decals), value);
         }
+        public bool NetLanes
+        {
+            get => (bool)GetValue(nameof(NetLanes));
+            set => SetValue(nameof(NetLanes), value);
+        }
         public int CompatibilityDropDown
         {
             get => (int)GetValue(nameof(CompatibilityDropDown));
@@ -1567,6 +1629,16 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(UseNewModDetectMethod));
             set => SetValue(nameof(UseNewModDetectMethod), value);
         }
+        public bool HideLocaleAssets
+        {
+            get => (bool)GetValue(nameof(HideLocaleAssets));
+            set => SetValue(nameof(HideLocaleAssets), value);
+        }
+        public string SelectedModDropDown
+        {
+            get => (string)GetValue(nameof(SelectedModDropDown));
+            set => SetValue(nameof(SelectedModDropDown), value);
+        }
     }
 
     public class ImageOverlaySettings : SettingsBackup
@@ -1610,6 +1682,20 @@ namespace SimpleModChecker.Systems
         {
             get => (float)GetValue(nameof(OverlayRotation));
             set => SetValue(nameof(OverlayRotation), value);
+        }
+    }
+
+    public class InfoLoomTwoSettings : SettingsBackup
+    {
+        public float TaxRateEffect
+        {
+            get => (float)GetValue(nameof(TaxRateEffect));
+            set => SetValue(nameof(TaxRateEffect), value);
+        }
+        public float AgeCapSetting
+        {
+            get => (float)GetValue(nameof(AgeCapSetting));
+            set => SetValue(nameof(AgeCapSetting), value);
         }
     }
 
@@ -3009,6 +3095,11 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(DoNotAddSides));
             set => SetValue(nameof(DoNotAddSides), value);
         }
+        public bool AskToResetRoads
+        {
+            get => (bool)GetValue(nameof(AskToResetRoads));
+            set => SetValue(nameof(AskToResetRoads), value);
+        }
     }
 
     public class RoadNameRemoverSettings : SettingsBackup
@@ -3042,6 +3133,30 @@ namespace SimpleModChecker.Systems
         {
             get => (bool)GetValue(nameof(HideDistrictNames));
             set => SetValue(nameof(HideDistrictNames), value);
+        }
+    }
+
+    public class RoadWearAdjusterSettings : SettingsBackup
+    {
+        public int TextureVariant
+        {
+            get => (int)GetValue(nameof(TextureVariant));
+            set => SetValue(nameof(TextureVariant), value);
+        }
+        public float TextureBrightness
+        {
+            get => (float)GetValue(nameof(TextureBrightness));
+            set => SetValue(nameof(TextureBrightness), value);
+        }
+        public float TextureOpacity
+        {
+            get => (float)GetValue(nameof(TextureOpacity));
+            set => SetValue(nameof(TextureOpacity), value);
+        }
+        public float TextureSmoothness
+        {
+            get => (float)GetValue(nameof(TextureSmoothness));
+            set => SetValue(nameof(TextureSmoothness), value);
         }
     }
 
@@ -3080,6 +3195,11 @@ namespace SimpleModChecker.Systems
         {
             get => (bool)GetValue(nameof(ShowNotif));
             set => SetValue(nameof(ShowNotif), value);
+        }
+        public bool PlaySound
+        {
+            get => (bool)GetValue(nameof(PlaySound));
+            set => SetValue(nameof(PlaySound), value);
         }
         public bool DeleteMissing
         {
@@ -3254,6 +3374,11 @@ namespace SimpleModChecker.Systems
         {
             get => (int)GetValue(nameof(updateFreq));
             set => SetValue(nameof(updateFreq), value);
+        }
+        public bool debug
+        {
+            get => (bool)GetValue(nameof(debug));
+            set => SetValue(nameof(debug), value);
         }
     }
 
@@ -3540,11 +3665,6 @@ namespace SimpleModChecker.Systems
         {
             get => (bool)GetValue(nameof(AutomaticallySwitchInfoViewIfOpen));
             set => SetValue(nameof(AutomaticallySwitchInfoViewIfOpen), value);
-        }
-        public bool DisableAutomaticallySwitchInfoViewIfOpen
-        {
-            get => (bool)GetValue(nameof(DisableAutomaticallySwitchInfoViewIfOpen));
-            set => SetValue(nameof(DisableAutomaticallySwitchInfoViewIfOpen), value);
         }
     }
 
@@ -3834,61 +3954,96 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(ColorVariationSet));
             set => SetValue(nameof(ColorVariationSet), value);
         }
-        public bool RandomRotation
+        public int SelectedWindOption
         {
-            get => (bool)GetValue(nameof(RandomRotation));
-            set => SetValue(nameof(RandomRotation), value);
+            get => (int)GetValue(nameof(SelectedWindOption));
+            set => SetValue(nameof(SelectedWindOption), value);
+        }
+        public bool DisableWindWhenPaused
+        {
+            get => (bool)GetValue(nameof(DisableWindWhenPaused));
+            set => SetValue(nameof(DisableWindWhenPaused), value);
+        }
+        public float WindGlobalStrength
+        {
+            get => (float)GetValue(nameof(WindGlobalStrength));
+            set => SetValue(nameof(WindGlobalStrength), value);
+        }
+        public float WindGlobalStrength2
+        {
+            get => (float)GetValue(nameof(WindGlobalStrength2));
+            set => SetValue(nameof(WindGlobalStrength2), value);
+        }
+        public float WindDirection
+        {
+            get => (float)GetValue(nameof(WindDirection));
+            set => SetValue(nameof(WindDirection), value);
+        }
+        public float WindDirectionVariance
+        {
+            get => (float)GetValue(nameof(WindDirectionVariance));
+            set => SetValue(nameof(WindDirectionVariance), value);
+        }
+        public float WindDirectionVariancePeriod
+        {
+            get => (float)GetValue(nameof(WindDirectionVariancePeriod));
+            set => SetValue(nameof(WindDirectionVariancePeriod), value);
+        }
+        public float WindInterpolationDuration
+        {
+            get => (float)GetValue(nameof(WindInterpolationDuration));
+            set => SetValue(nameof(WindInterpolationDuration), value);
         }
     }
 
-    public class TripsDataSettings : SettingsBackup
-    {
-        public int numOutputs
-        {
-            get => (int)GetValue(nameof(numOutputs));
-            set => SetValue(nameof(numOutputs), value);
-        }
-        public bool trip_type
-        {
-            get => (bool)GetValue(nameof(trip_type));
-            set => SetValue(nameof(trip_type), value);
-        }
-        public bool citizen_purpose
-        {
-            get => (bool)GetValue(nameof(citizen_purpose));
-            set => SetValue(nameof(citizen_purpose), value);
-        }
-        public bool avg_commute
-        {
-            get => (bool)GetValue(nameof(avg_commute));
-            set => SetValue(nameof(avg_commute), value);
-        }
-        public bool cars
-        {
-            get => (bool)GetValue(nameof(cars));
-            set => SetValue(nameof(cars), value);
-        }
-        public bool transit_passengers
-        {
-            get => (bool)GetValue(nameof(transit_passengers));
-            set => SetValue(nameof(transit_passengers), value);
-        }
-        public bool transit_waiting
-        {
-            get => (bool)GetValue(nameof(transit_waiting));
-            set => SetValue(nameof(transit_waiting), value);
-        }
-        public bool truck
-        {
-            get => (bool)GetValue(nameof(truck));
-            set => SetValue(nameof(truck), value);
-        }
-        public bool smooth_speed
-        {
-            get => (bool)GetValue(nameof(smooth_speed));
-            set => SetValue(nameof(smooth_speed), value);
-        }
-    }
+    //public class TripsDataSettings : SettingsBackup
+    //{
+    //    public int numOutputs
+    //    {
+    //        get => (int)GetValue(nameof(numOutputs));
+    //        set => SetValue(nameof(numOutputs), value);
+    //    }
+    //    public bool trip_type
+    //    {
+    //        get => (bool)GetValue(nameof(trip_type));
+    //        set => SetValue(nameof(trip_type), value);
+    //    }
+    //    public bool citizen_purpose
+    //    {
+    //        get => (bool)GetValue(nameof(citizen_purpose));
+    //        set => SetValue(nameof(citizen_purpose), value);
+    //    }
+    //    public bool avg_commute
+    //    {
+    //        get => (bool)GetValue(nameof(avg_commute));
+    //        set => SetValue(nameof(avg_commute), value);
+    //    }
+    //    public bool cars
+    //    {
+    //        get => (bool)GetValue(nameof(cars));
+    //        set => SetValue(nameof(cars), value);
+    //    }
+    //    public bool transit_passengers
+    //    {
+    //        get => (bool)GetValue(nameof(transit_passengers));
+    //        set => SetValue(nameof(transit_passengers), value);
+    //    }
+    //    public bool transit_waiting
+    //    {
+    //        get => (bool)GetValue(nameof(transit_waiting));
+    //        set => SetValue(nameof(transit_waiting), value);
+    //    }
+    //    public bool truck
+    //    {
+    //        get => (bool)GetValue(nameof(truck));
+    //        set => SetValue(nameof(truck), value);
+    //    }
+    //    public bool smooth_speed
+    //    {
+    //        get => (bool)GetValue(nameof(smooth_speed));
+    //        set => SetValue(nameof(smooth_speed), value);
+    //    }
+    //}
 
     public class VehicleVariationPacksSettings : SettingsBackup
     {
@@ -4189,6 +4344,7 @@ namespace SimpleModChecker.Systems
         public BoundaryLinesModifierSettings BoundaryLinesModifierSettings { get; set; }
         public BrushSizeUnlimiterSettings BrushSizeUnlimiterSettings { get; set; }
         public CimRouteHighlighterSettings CimRouteHighlighterSettings { get; set; }
+        public CitizenModelManagerSettings CitizenModelManagerSettings { get; set; }
         public CityStatsSettings CityStatsSettings { get; set; }
         public DemandMasterSettings DemandMasterSettings { get; set; }
         public DepotCapacityChangerSettings DepotCapacityChangerSettings { get; set; }
@@ -4201,6 +4357,7 @@ namespace SimpleModChecker.Systems
         public HallOfFameSettings HallOfFameSettings { get; set; }
         public I18NEverywhereSettings I18NEverywhereSettings { get; set; }
         public ImageOverlaySettings ImageOverlaySettings { get; set; }
+        public InfoLoomTwoSettings InfoLoomTwoSettings { get; set; }
         public MoveItSettings MoveItSettings { get; set; }
         public NoPollutionSettings NoPollutionSettings { get; set; }
         public NoTeleportingSettings NoTeleportingSettings { get; set; }
@@ -4214,6 +4371,7 @@ namespace SimpleModChecker.Systems
         public RecolorSettings RecolorSettings { get; set; }
         public RoadBuilderSettings RoadBuilderSettings { get; set; }
         public RoadNameRemoverSettings RoadNameRemoverSettings { get; set; }
+        public RoadWearAdjusterSettings RoadWearAdjusterSettings { get; set; }
         public SchoolCapacityBalancerSettings SchoolCapacityBalancerSettings { get; set; }
         public SimpleModCheckerSettings SimpleModCheckerSettings { get; set; }
         public SmartTransportationSettings SmartTransportationSettings { get; set; }
@@ -4228,7 +4386,7 @@ namespace SimpleModChecker.Systems
         public TransitCapacityMultiplierSettings TransitCapacityMultiplierSettings { get; set; }
         public TransportPolicyAdjusterSettings TransportPolicyAdjusterSettings { get; set; }
         public TreeControllerSettings TreeControllerSettings { get; set; }
-        public TripsDataSettings TripsDataSettings { get; set; }
+        //public TripsDataSettings TripsDataSettings { get; set; }
         public VehicleVariationPacksSettings VehicleVariationPacksSettings { get; set; }
         public WaterFeaturesSettings WaterFeaturesSettings { get; set; }
         public WaterVisualTweaksSettings WaterVisualTweaksSettings { get; set; }

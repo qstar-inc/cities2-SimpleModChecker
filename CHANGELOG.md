@@ -1,3 +1,17 @@
+# 3.2.0 (2024-12-19) - 4949 subs
+- Play a sound after Mod Initialization completes.
+- New "Loaded Mods" list which now includes Package (non code) mods as well in a separate group.
+- "Loaded Mods" now will show info directly from your current playset instead of curated ModDatabase, including mod version and if a mod is outdated (info depend on latest PDX mod sync data run by the game/Skyve).
+- ModDatabase is now only used for enabling/disabling what mod to back up. If a mod is causing issue, you can manually edit the `ModDatabase.json` file until I get an update out.
+- Under the "Loaded Mods" list, there is now a "Verify Mods" button, which when clicked will launch a set of checks to ensure the integrity of the mods. It will check if you have multiple version of the same mod downloaded and also the integrity of each file in your whole PDX Mods folder. Any files ending with "backup" are ignored.
+- The process will only inform you about the verification result, any other steps to resolve those issues will need to be done manually.
+- Removed deprecated mod "TripsData" from Mod Settings Backup/Restore.
+- Added "InfoLoom", "Citizen Model Manager" and "Road Wear Adjuster" to Mod Settings Backup/Restore.
+- Fixes for Mod Settings Backup/Restore not working for "Tree Controller", "Better Bulldozer", "FPS Limiter".
+
+# 3.1.0 (2024-12-11) - 4843 subs
+- Keybind backup for all mods.
+
 # 3.0.0 (2024-12-11) - 4840 subs
 - Compatibility with 1.2.0f1
 - Frameworks for Keybind Backup/Restore (Not available yet)

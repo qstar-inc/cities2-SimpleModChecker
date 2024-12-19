@@ -7,6 +7,7 @@ using Game.Modding;
 using Game.Settings;
 using Game.UI.Widgets;
 using SimpleModChecker.Systems;
+using SimpleModChecker;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
@@ -16,8 +17,8 @@ namespace SimpleModCheckerPlus
 {
     [FileLocation($"ModsSettings\\StarQ\\{Mod.Name}")]
     [SettingsUITabOrder(ModListTab, MainTab, ProfileNameTab, AboutTab)]
-    [SettingsUIGroupOrder(ModListGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
-    [SettingsUIShowGroupName(ModListGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
+    [SettingsUIGroupOrder(CodeModsGroup, PackageModsGroup, VerifyGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
+    [SettingsUIShowGroupName(CodeModsGroup, PackageModsGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
     //[SettingsUITabOrder(ModListTab, ModWithIssueListTab, MainTab, ProfileNameTab, AboutTab)]
     //[SettingsUIGroupOrder(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
     //[SettingsUIShowGroupName(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
@@ -43,7 +44,10 @@ namespace SimpleModCheckerPlus
 
         public const string ModListTab = "Loaded Mods";
         public const string ModUtilityGroup = "";
-        public const string ModListGroup = "Loaded Mods";
+        //public const string ModListGroup = "Loaded Mods";
+        public const string CodeModsGroup = "Code Mods";
+        public const string PackageModsGroup = "Package Mods";
+        public const string VerifyGroup = "Mod Verification";
         //public const string ModWithIssueListTab = "Mods with Issues";
         //public const string ModWithIssueListGroup = "Loaded Mods with Issues";
 
@@ -59,12 +63,15 @@ namespace SimpleModCheckerPlus
         public bool ShowNotif { get; set; } = true;
 
         [SettingsUISection(MainTab, OptionsGroup)]
+        public bool PlaySound { get; set; } = true;
+
+        [SettingsUISection(MainTab, OptionsGroup)]
         public bool DeleteMissing { get; set; } = true;
 
         [SettingsUISection(MainTab, OptionsGroup)]
         public bool DeleteCorrupted { get; set; } = true;
         [SettingsUISection(MainTab, OptionsGroup)]
-        public bool EnableVerboseLogging { get; set; } = true; // SET TO FALSE //
+        public bool EnableVerboseLogging { get; set; } = false; // SET TO FALSE //
 
         [SettingsUISection(MainTab, BackupGroup)]
         public bool AutoRestoreSettingBackupOnStartup { get; set; } = true;
@@ -97,28 +104,23 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(MainTab, BackupGroup)]
         public bool RestoreModBackup { set { ModSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); } }
 
-        //[SettingsUIButtonGroup("KeybindsBackup")]
-        //[SettingsUIButton]
-        //[SettingsUISection(MainTab, BackupGroup)]
-        //public bool CreateKeybindsBackup { set { KeybindsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging); } }
+        [SettingsUIButtonGroup("KeybindsBackup")]
+        [SettingsUIButton]
+        [SettingsUISection(MainTab, BackupGroup)]
+        public bool CreateKeybindsBackup { set { KeybindsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging); } }
 
-        //[SettingsUIButtonGroup("KeybindsBackup")]
-        //[SettingsUIButton]
-        //[SettingsUISection(MainTab, BackupGroup)]
-        //public bool RestoreKeybindsBackup { set { KeybindsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); } }
+        [SettingsUIButtonGroup("KeybindsBackup")]
+        [SettingsUIButton]
+        [SettingsUISection(MainTab, BackupGroup)]
+        public bool RestoreKeybindsBackup { set { KeybindsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); } }
 
         //[SettingsUIAdvanced]
         //[SettingsUIDeveloper]
         //[SettingsUISection(MainTab, BackupGroup)]
         //public bool GetSettingsFiles { set { ModSettingsBackup.GetSettingsFiles(); } }
 
-        [SettingsUIHidden]
-        public int ModsLoadedVersion { get; set; }
-
-        [SettingsUIAdvanced]
-        [SettingsUISection(MainTab, BackupGroup)]
-        [SettingsUIDisableByCondition(typeof(Setting), nameof(RefreshedRecently))]
-        public bool RefreshModDatabase { set { Task.Run(() => Mod.DownloadNow(2)); } }
+        //[SettingsUIHidden]
+        //public int ModsLoadedVersion { get; set; }
 
         [SettingsUIHidden]
         public int ModDatabaseTimeVersion { get; set; }
@@ -126,22 +128,45 @@ namespace SimpleModCheckerPlus
         public string ModDatabaseTime => ModDatabase.ModDatabaseTime;
 
         [SettingsUIHidden]
-        public bool RefreshedRecently { get; set; } = false;
+        public bool VerifiedRecently { get; set; } = false;
+        [SettingsUIHidden]
+        public bool IsInGameOrEditor { get; set; } = false;
+        [SettingsUIHidden]
+        public bool ReadyForVerify => !(!VerifiedRecently && !IsInGameOrEditor);
         [SettingsUIHidden]
         public long LastDownloaded { get; set; } = (long)0;
         [SettingsUIHidden]
         public long LastChecked { get; set; } = (long)0;
 
-        [SettingsUIMultilineText]
-        [SettingsUISection(ModListTab, ModListGroup)]
-        [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListLocalized))]
-        public string ModsLoaded => "";
+        //[SettingsUIMultilineText]
+        //[SettingsUISection(ModListTab, ModListGroup)]
+        //[SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListLocalized))]
+        //public string ModsLoaded => "";
 
         //[SettingsUIAdvanced]
         //[SettingsUIMultilineText]
         //[SettingsUISection(ModWithIssueListTab, ModWithIssueListGroup)]
         //[SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListWithIssueLocalized))]
         //public string ModsWithIssueLoaded => "";
+
+        [SettingsUIMultilineText]
+        [SettingsUISection(ModListTab, CodeModsGroup)]
+        [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.CodeModsText))]
+        public string CodeMods => "";
+
+        [SettingsUIMultilineText]
+        [SettingsUISection(ModListTab, PackageModsGroup)]
+        [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.PackageModsText))]
+        public string PackageMods => "";
+
+        [SettingsUIMultilineText]
+        [SettingsUISection(ModListTab, VerifyGroup)]
+        [SettingsUIDisplayName(typeof(ModVerifier), nameof(ModVerifier.VerificationResultText))]
+        public string VerificationResult => "";
+
+        [SettingsUISection(ModListTab, VerifyGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
+        public bool VerifyMods { set { Task.Run(() => ModVerifier.VerifyMods()); } }
 
         [SettingsUIAdvanced]
         [SettingsUIHidden]
@@ -241,7 +266,7 @@ namespace SimpleModCheckerPlus
         [SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUIButton]
-        public bool CreateProfileNameBackup
+        public bool SaveProfileName
         {
             set
             {
@@ -321,6 +346,7 @@ namespace SimpleModCheckerPlus
         public override void SetDefaults()
         {
             ShowNotif = true;
+            PlaySound = true;
             DeleteMissing = true;
             DeleteCorrupted = true;
             AutoRestoreSettingBackupOnStartup = true;
@@ -334,7 +360,8 @@ namespace SimpleModCheckerPlus
             ProfileName7 = "Profile 7";
             ProfileName8 = "Profile 8";
             ProfileName9 = "Profile 9";
-            RefreshedRecently = false;
+            VerifiedRecently = false;
+            IsInGameOrEditor = false;
             LastDownloaded = (long)0;
             LastChecked = (long)0;
         }

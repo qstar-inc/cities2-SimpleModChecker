@@ -5,7 +5,6 @@
 using Colossal.IO.AssetDatabase;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
-using Colossal.Serialization.Entities;
 using Game.Modding;
 using Game.PSI;
 using Game.UI.Localization;
@@ -164,6 +163,8 @@ namespace SimpleModChecker.Systems
             
             foreach (var entry in ModDatabaseInfo)
             {
+                //try { Mod.log.Info(entry.Key); } catch (Exception) { Mod.log.Info($"entry.Key"); }
+                //try { Mod.log.Info(entry.Value.ToString()); } catch (Exception) { Mod.log.Info($"entry.Value"); }
                 if (entry.Value.Backupable == false)
                 {
                     continue;
@@ -174,14 +175,18 @@ namespace SimpleModChecker.Systems
                     string fragmentSource = entry.Value.FragmentSource;
                     Type classType = entry.Value.ClassType;
                     string assembly = entry.Value.AssemblyName;
+
                     //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
 
-                    if (fragmentSource == "FiveTwentyNineTiles.ModS ettings") { fragmentSource = "529."; }
+                    if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
                     if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
+                    //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
 
                     PropertyInfo property = typeof(ModSettings).GetProperty($"{entry.Value.ClassType.Name}");
+                    //try { Mod.log.Info($"{property.Name} found"); } catch (Exception) { Mod.log.Info($"property found"); }
                     object sectionSettings;// = Activator.CreateInstance(classType);
                     sectionSettings = default;
+                    //Mod.log.Info(loadedMods.Contains(assembly));
                     if (!loadedMods.Contains(assembly))
                     {
                         if (log) Mod.log.Info($"{sectionName} is not currently loaded.");
@@ -194,10 +199,13 @@ namespace SimpleModChecker.Systems
                                 {
                                     JObject jsonObject = JObject.Parse(jsonStringRead);
                                     var settingsJson = jsonObject[classType.Name];
+                                    //Mod.log.Info("5");
                                     if (settingsJson != null && settingsJson.Type != JTokenType.Null)
                                     {
+                                        //Mod.log.Info("4");
                                         try
                                         {
+                                            //Mod.log.Info("1");
                                             ConstructorInfo constructor = classType.GetConstructor(Type.EmptyTypes);
                                             if (constructor != null)
                                             {
@@ -208,16 +216,24 @@ namespace SimpleModChecker.Systems
                                                 Mod.log.Info($"No parameterless constructor found for {classType.Name}");
                                                 sectionSettings = null;
                                             }
+                                            //Mod.log.Info("2");
                                             foreach (PropertyInfo prop in classType.GetProperties())
                                             {
+                                                //Mod.log.Info("3");
+                                                //Mod.log.Info(prop.Name);
+                                                //Mod.log.Info(settingsJson[prop.Name] != null);
+                                                //Mod.log.Info(settingsJson[prop.Name].Type != JTokenType.Null);
                                                 if (settingsJson[prop.Name] != null && settingsJson[prop.Name].Type != JTokenType.Null)
                                                 {
+                                                    //Mod.log.Info("X");
                                                     var value = settingsJson[prop.Name].ToObject(prop.PropertyType);
                                                     prop.SetValue(sectionSettings, value);
+                                                    //Mod.log.Info(value);
                                                 }
                                                 else
                                                 {
                                                     prop.SetValue(sectionSettings, null);
+                                                    //Mod.log.Info("setting null");
                                                 }
                                             }
                                             //Mod.log.Info($"Existing {sectionName}Settings found.");
@@ -248,7 +264,7 @@ namespace SimpleModChecker.Systems
             {
                 string jsonString = JsonConvert.SerializeObject(ModSettings, Formatting.Indented);
                 File.WriteAllText(backupFile, jsonString);
-                if (log) Mod.log.Info($"Mod Settings backup created successfully: {backupFile}");
+                Mod.log.Info($"Mod Settings backup created successfully: {backupFile}");
             }
             catch (Exception ex) { Mod.log.Info(ex); }
         }
@@ -265,9 +281,24 @@ namespace SimpleModChecker.Systems
                 var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Traffic General Settings"));
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
-            else if(name == "75613")
+            else if (name == "74286")
+            {
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("FPSLimiter General Settings") || asset.name.Contains("FPSLimiter") || asset.name.Contains("FPS_Limiter"));
+                settingAssets = AssetDatabase.global.GetAssets(filter);
+            }
+            else if (name == "75613")
             {
                 var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Mods_Yenyang_Water_Features") || asset.name.Contains("WaterFeatures") || asset.name.Contains("Water_Feature"));
+                settingAssets = AssetDatabase.global.GetAssets(filter);
+            }
+            else if (name == "75250")
+            {
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Mods_Yenyang_Better_Bulldozer") || asset.name.Contains("BetterBulldozer") || asset.name.Contains("Better_Bulldozer"));
+                settingAssets = AssetDatabase.global.GetAssets(filter);
+            }
+            else if (name == "75993")
+            {
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Mods_Yenyang_Tree_Controller") || asset.name.Contains("TreeController") || asset.name.Contains("Tree_Controller"));
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
             else
@@ -319,7 +350,7 @@ namespace SimpleModChecker.Systems
             }
             if (ProcessedFragmentSource)
             {
-                if (log) Mod.log.Info($"Retrieved valid settings for {name}");
+                //if (log) Mod.log.Info($"Retrieved valid settings for {name}");
                 return settingsBackup;
             } else
             {
@@ -367,7 +398,6 @@ namespace SimpleModChecker.Systems
                 case "79634+AssetIconLibrary.Setting":
                 case "79794+AdvancedSimulationSpeed.Setting":
                 case "79872+AutoVehicleRenamer.AutoVehicleRenamerSetting":
-                case "79875+TripsData.Setting":
                 case "80095+Traffic.ModSettings":
                 case "80403+TransitCapacityMultiplier.Setting":
                 case "80529+ExtraAssetsImporter.Setting":
@@ -393,6 +423,9 @@ namespace SimpleModChecker.Systems
                 case "87755+RealisticWorkplacesAndHouseholds.Setting":
                 case "90264+SmartTransportation.Setting":
                 case "90641+HallOfFame.Settings":
+                case "91433+InfoLoomTwo.Setting":
+                case "92952+CitizenModelManager.Setting":
+                case "96718+RoadWearAdjuster.Setting":
                     return true;
                 default:
                     return false;
@@ -449,6 +482,7 @@ namespace SimpleModChecker.Systems
 
             try
             {
+                Mod.log.Info($"{ModDatabaseInfo.Count} mods in DB");
                 foreach (var entry in ModDatabaseInfo)
                 {
                     if (entry.Value.Backupable != true)
@@ -461,16 +495,18 @@ namespace SimpleModChecker.Systems
                     string assembly = entry.Value.AssemblyName;
 
                     //Mod.log.Info($"{sectionName}__{fragmentSource}");
+                    //Mod.log.Info($"{assembly}");
+                    //Mod.log.Info($"{classType.Name}");
                     if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
                     if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
 
                     if (!loadedMods.Contains(assembly))
                     {
-                        if (log) Mod.log.Info($"skipping {sectionName}...");
+                        if (log) Mod.log.Info($"skipping {assembly}...");
                     }
                     else
                     {
-                        SetSettings(sectionName, fragmentSource, jsonObject, classType.Name, log);
+                        SetSettings(assembly, fragmentSource, jsonObject, classType.Name, log);
                     }
                 }
                 Mod.log.Info("Mod Settings Restoration Complete...");
@@ -483,6 +519,7 @@ namespace SimpleModChecker.Systems
 
         public void SetSettings(string name, string fragmentSource, JObject sourceObj, string className, bool log)
         {
+            //Mod.log.Info($"Setting Settings for {name} with {fragmentSource} in {className}");
             JsonSerializerSettings JsonSerializerSettings = new()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -499,13 +536,18 @@ namespace SimpleModChecker.Systems
                         if (fragment.source == null) break;
                         string fragmentSourceType = fragment.source.ToString();
                         string sectionKey = GetSectionKey($"{fragmentSourceType}+{name}");
-
+                        //Mod.log.Info(fragmentSourceType);
+                        //Mod.log.Info($"{fragmentSourceType}+{name}");
+                        //Mod.log.Info($"{sectionKey} == {className}");
+                        //Mod.log.Info($"{sectionKey != null}");
                         if (sectionKey != null && sectionKey == className)
                         {
+                            //Mod.log.Info("sectionKey != null && sectionKey == className");
                             JObject sectionSource = JObject.FromObject(fragment.source, JsonSerializer.Create(JsonSerializerSettings));
 
                             if (sourceObj[sectionKey] is JObject jsonSettingsSection)
                             {
+                                //Mod.log.Info("sourceObj[sectionKey] is JObject jsonSettingsSection)");
                                 foreach (var prop in jsonSettingsSection.Properties())
                                 {
                                     var propInfo = fragment.source.GetType().GetProperty(prop.Name);
@@ -547,67 +589,68 @@ namespace SimpleModChecker.Systems
             return fragmentSourceType switch
             {
                 // fragment.source => class
-                "FiveTwentyNineTiles.ModSettings+529Tile" => "FiveTwentyNineTilesSettings",
-                "AdvancedSimulationSpeed.Setting+AdvancedSimulationSpeed" => "AdvancedSimulationSpeedSettings",
-                "AllAboard.Setting+AllAboard" => "AllAboardSettings",
-                "Anarchy.Settings.AnarchyModSettings+Anarchy" => "AnarchySettings",
-                "AreaBucket.Setting+AreaBucket" => "AreaBucketSettings",
-                "AssetIconLibrary.Setting+AssetIconLibrary" => "AssetIconLibrarySettings",
-                "AssetPacksManager.Setting+AssetPacksManager" => "AssetPacksManagerSettings",
-                "AssetVariationChanger.Setting+AssetVariationChanger" => "AssetVariationChangerSettings",
-                "AutoDistrictNameStations.ModOptions+AutoDistrictNameStations" => "AutoDistrictNameStationsSettings",
-                "AutoVehicleRenamer.AutoVehicleRenamerSetting+AutoVehicleRenamer" => "AutoVehicleRenamerSettings",
-                "Better_Bulldozer.Settings.BetterBulldozerModSettings+BetterBulldozer" => "BetterBulldozerSettings",
-                "BetterMoonLight.Setting+BetterMoonLight" => "BetterMoonLightSettings",
-                "BetterSaveList.Setting+BetterSaveList" => "BetterSaveListSettings",
-                "BoundaryLinesModifier.Setting+BoundaryLinesModifier" => "BoundaryLinesModifierSettings",
-                "BrushSizeUnlimiter.MyOptions+BrushSizeUnlimiter" => "BrushSizeUnlimiterSettings",
-                "EmploymentTracker.EmploymentTrackerSettings+CimRouteHighlighter" => "CimRouteHighlighterSettings",
-                "CityStats.ModSettings+CityStats" => "CityStatsSettings",
-                "DemandMaster.Setting+DemandMaster" => "DemandMasterSettings",
-                "DepotCapacityChanger.Setting+DepotCapacityChanger" => "DepotCapacityChangerSettings",
-                "ExtendedTooltip.ModSettings+ExtendedTooltip" => "ExtendedTooltipSettings",
-                "ExtraAssetsImporter.Setting+ExtraAssetsImporter" => "ExtraAssetsImporterSettings",
-                "FindIt.FindItSettings+FindIt" => "FindItSettings",
-                "FirstPersonCameraContinued.Setting+FirstPersonCameraContinued" => "FirstPersonCameraContinuedSettings",
-                "FPS_Limiter.FPSLimiterSettings+FPSLimiter" => "FPSLimiterSettings",
-                "HallOfFame.Settings+HallOfFame" => "HallOfFameSettings",
-                "I18NEverywhere.Setting+I18NEverywhere" => "I18NEverywhereSettings",
-                "ImageOverlay.ModSettings+ImageOverlay" => "ImageOverlaySettings",
+                "FPS_Limiter.FPSLimiterSettings+FPS_Limiter" => "FPSLimiterSettings",
                 "MoveIt.Settings.Settings+MoveIt" => "MoveItSettings",
-                "NoPollution.Setting+NoPollution" => "NoPollutionSettings",
-                "NoTeleporting.Setting+NoTeleporting" => "NoTeleportingSettings",
-                "NoTrafficDespawn.TrafficDespawnSettings+NoVehicleDespawn" => "NoVehicleDespawnSettings",
-                "PathfindingCustomizer.Setting+PathfindingCustomizer" => "PathfindingCustomizerSettings",
-                "PlopTheGrowables.ModSettings+PlopTheGrowables" => "PlopTheGrowablesSettings",
-                "RealisticParking.Setting+RealisticParking" => "RealisticParkingSettings",
-                "Time2Work.Setting+RealisticTrips" => "RealisticTripsSettings",
-                "RealisticWorkplacesAndHouseholds.Setting+RealisticWorkplacesAndHouseholds" => "RealisticWorkplacesAndHouseholdsSettings",
-                "RealLife.Setting+RealLife" => "RealLifeSettings",
-                "Recolor.Settings.Setting+Recolor" => "RecolorSettings",
-                "RoadBuilder.Setting+RoadBuilder" => "RoadBuilderSettings",
-                "RoadNameRemover.Setting+RoadNameRemover" => "RoadNameRemoverSettings",
+                "FiveTwentyNineTiles.ModSettings+FiveTwentyNineTiles" => "FiveTwentyNineTilesSettings",
+                "ImageOverlay.ModSettings+ImageOverlay" => "ImageOverlaySettings",
+                "Anarchy.Settings.AnarchyModSettings+Anarchy" => "AnarchySettings",
                 "SchoolCapacityBalancer.Setting+SchoolCapacityBalancer" => "SchoolCapacityBalancerSettings",
-                "SimpleModCheckerPlus.Setting+SimpleModChecker" => "SimpleModCheckerSettings",
-                "SmartTransportation.Setting+SmartTransportation" => "SmartTransportationSettings",
-                "StationNaming.Setting.StationNamingSettings+StationNaming" => "StationNamingSettings",
-                "StifferVehicles.Setting+StifferVehicles" => "StifferVehiclesSettings",
-                "SunGlasses.Setting+SunGlasses" => "SunGlassesSettings",
-                "ToggleableOverlays.Setting+ToggleOverlays" => "ToggleOverlaysSettings",
-                "TradingCostTweaker.Setting+TradingCostTweaker" => "TradingCostTweakerSettings",
-                "Traffic.ModSettings+Traffic" => "TrafficSettings",
-                "C2VM.TrafficLightsEnhancement.Settings+TrafficLightsEnhancement" => "TrafficLightsEnhancementSettings",
+                "BrushSizeUnlimiter.MyOptions+BrushSizeUnlimiter" => "BrushSizeUnlimiterSettings",
+                "Better_Bulldozer.Settings.BetterBulldozerModSettings+BetterBulldozer" => "BetterBulldozerSettings",
+                "I18NEverywhere.Setting+I18NEverywhere" => "I18NEverywhereSettings",
+                "Water_Features.Settings.WaterFeaturesSettings+Water_Features" => "WaterFeaturesSettings",
+                "DepotCapacityChanger.Setting+DepotCapacityChanger" => "DepotCapacityChangerSettings",
+                "PlopTheGrowables.ModSettings+PlopTheGrowables" => "PlopTheGrowablesSettings",
+                "Tree_Controller.Settings.TreeControllerSettings+Tree_Controller" => "TreeControllerSettings",
+                "EmploymentTracker.EmploymentTrackerSettings+EmploymentTracker" => "CimRouteHighlighterSettings",
                 "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions+TrafficSimulationAdjuster" => "TrafficSimulationAdjusterSettings",
-                "TransitCapacityMultiplier.Setting+TransitCapacityMultiplier" => "TransitCapacityMultiplierSettings",
-                "TransportPolicyAdjuster.Setting+TransportPolicyAdjuster" => "TransportPolicyAdjusterSettings",
-                "Tree_Controller.Settings.TreeControllerSettings+TreeController" => "TreeControllerSettings",
-                "TripsData.Setting+TripsData" => "TripsDataSettings",
-                "VehicleVariationPacks.Setting+VehicleVariationPacks" => "VehicleVariationPacksSettings",
-                "Water_Features.Settings.WaterFeaturesSettings+WaterFeatures" => "WaterFeaturesSettings",
+                "SunGlasses.Setting+SunGlasses" => "SunGlassesSettings",
+                "AutoDistrictNameStations.ModOptions+AutoDistrictNameStations" => "AutoDistrictNameStationsSettings",
+                "Time2Work.Setting+Time2Work" => "RealisticTripsSettings",
+                "FindIt.FindItSettings+FindIt" => "FindItSettings",
                 "WaterVisualTweaksMod.WaterVisualTweaksSettings+WaterVisualTweaks" => "WaterVisualTweaksSettings",
-                "Whiteness_Toggle.Setting+WhitenessToggle" => "WhitenessToggleSettings",
+                "RoadNameRemover.Setting+RoadNameRemover" => "RoadNameRemoverSettings",
+                "BetterMoonLight.Setting+BetterMoonLight" => "BetterMoonLightSettings",
+                "StationNaming.Setting.StationNamingSettings+StationNaming" => "StationNamingSettings",
+                "ExtendedTooltip.ModSettings+ExtendedTooltip" => "ExtendedTooltipSettings",
+                "NoPollution.Setting+NoPollution" => "NoPollutionSettings",
+                "TransportPolicyAdjuster.Setting+TransportPolicyAdjuster" => "TransportPolicyAdjusterSettings",
+                "AssetVariationChanger.Setting+AssetVariationChanger" => "AssetVariationChangerSettings",
+                "AssetPacksManager.Setting+AssetPacksManager" => "AssetPacksManagerSettings",
+                "C2VM.TrafficLightsEnhancement.Settings+C2VM.TrafficLightsEnhancement" => "TrafficLightsEnhancementSettings",
+                "SimpleModCheckerPlus.Setting+SimpleModChecker" => "SimpleModCheckerSettings",
+                "FirstPersonCameraContinued.Setting+FirstPersonCameraContinued" => "FirstPersonCameraContinuedSettings",
+                "AssetIconLibrary.Setting+AssetIconLibrary" => "AssetIconLibrarySettings",
+                "AdvancedSimulationSpeed.Setting+AdvancedSimulationSpeed" => "AdvancedSimulationSpeedSettings",
+                "AutoVehicleRenamer.AutoVehicleRenamerSetting+AutoVehicleRenamer" => "AutoVehicleRenamerSettings",
+                "Traffic.ModSettings+Traffic" => "TrafficSettings",
+                "TransitCapacityMultiplier.Setting+TransitCapacityMultiplier" => "TransitCapacityMultiplierSettings",
+                "ExtraAssetsImporter.Setting+ExtraAssetsImporter" => "ExtraAssetsImporterSettings",
+                "Whiteness_Toggle.Setting+Whiteness-Toggle" => "WhitenessToggleSettings",
+                "ToggleableOverlays.Setting+ToggleableOverlays" => "ToggleOverlaysSettings",
+                "VehicleVariationPacks.Setting+VehicleVariationPacks" => "VehicleVariationPacksSettings",
+                "AreaBucket.Setting+AreaBucket" => "AreaBucketSettings",
+                "StifferVehicles.Setting+StifferVehicles" => "StifferVehiclesSettings",
                 "ZoneColorChanger.Setting+ZoneColorChanger" => "ZoneColorChangerSettings",
-
+                "BetterSaveList.Setting+BetterSaveList" => "BetterSaveListSettings",
+                "Recolor.Settings.Setting+Recolor" => "RecolorSettings",
+                "NoTrafficDespawn.TrafficDespawnSettings+NoTrafficDespawn" => "NoVehicleDespawnSettings",
+                "CityStats.ModSettings+CityStats" => "CityStatsSettings",
+                "TradingCostTweaker.Setting+TradingCostTweaker" => "TradingCostTweakerSettings",
+                "PathfindingCustomizer.Setting+PathfindingCustomizer" => "PathfindingCustomizerSettings",
+                "NoTeleporting.Setting+NoTeleporting" => "NoTeleportingSettings",
+                "AllAboard.Setting+AllAboard" => "AllAboardSettings",
+                "BoundaryLinesModifier.Setting+BoundaryLinesModifier" => "BoundaryLinesModifierSettings",
+                "RealLife.Setting+RealLife" => "RealLifeSettings",
+                "DemandMaster.Setting+DemandMaster" => "DemandMasterSettings",
+                "RoadBuilder.Setting+RoadBuilder" => "RoadBuilderSettings",
+                "RealisticParking.Setting+RealisticParking" => "RealisticParkingSettings",
+                "RealisticWorkplacesAndHouseholds.Setting+RWH" => "RealisticWorkplacesAndHouseholdsSettings",
+                "SmartTransportation.Setting+SmartTransportation" => "SmartTransportationSettings",
+                "HallOfFame.Settings+HallOfFame" => "HallOfFameSettings",
+                "InfoLoomTwo.Setting+InfoLoomTwo" => "InfoLoomTwoSettings",
+                "CitizenModelManager.Setting+CitizenModelManager" => "CitizenModelManagerSettings",
+                "RoadWearAdjuster.Setting+RoadWearAdjuster" => "RoadWearAdjusterSettings",
                 _ => null
             };
         }
@@ -618,13 +661,19 @@ namespace SimpleModChecker.Systems
             Mod.log.Info($"Found: {settingAssets.Count()}");
             foreach (var settingAsset in settingAssets)
             {
-                if (!settingAsset.name.Contains("Logger"))
+                if (settingAsset.name.Contains("Logger"))
                 {
-                    Mod.log.Info(settingAsset.name);
-                    foreach (var fragment in settingAsset)
+                    continue;  
+                }
+                Mod.log.Info(settingAsset.name);
+                foreach (var fragment in settingAsset)
                     {
                         try
                         {
+                        if (fragment.source == null)
+                        {
+                            continue;
+                        }
                             string fragmentSourceType = fragment.source.ToString();
                             Mod.log.Info($"fragment.source = \"{fragmentSourceType}\"");
                             //try
@@ -643,7 +692,6 @@ namespace SimpleModChecker.Systems
                             Mod.log.Info(ex);
                         }
                     }
-                }
             }
         }
     }
