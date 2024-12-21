@@ -52,7 +52,7 @@ namespace SimpleModChecker.Systems
         public static ModDatabaseMetadata Metadata { get; private set; }
         public static string ModDatabaseTime;
         private static readonly string modDatabaseJson = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ModDatabase.json";
-        
+        public static bool isModDatabaseLoaded = false;
 
         public static void LoadModDatabase()
         {
@@ -73,7 +73,7 @@ namespace SimpleModChecker.Systems
                     $"{timeSinceLastUpdate.Seconds} second{(timeSinceLastUpdate.Seconds != 1 ? "s" : "")} old";
             ModDatabaseTime = DateTimeOffset.FromUnixTimeSeconds(metaData.Time).ToLocalTime().ToString("dd MMMM yyyy hh:mm:ss tt zzz");
             //Mod.Setting.ModsLoadedVersion++;
-            Mod.log.Info($"ModDatabase is {readableAge} ({ModDatabaseTime})...");
+            Mod.log.Info($"ModDatabase.json is {readableAge} ({ModDatabaseTime})...");
             
             ModDatabaseInfo = [];
             foreach (var entry in rawModData)
@@ -91,6 +91,8 @@ namespace SimpleModChecker.Systems
                 };
                 ModDatabaseInfo.Add(entry.Key, modInfo);
             }
+            Mod.log.Info($"Found {ModDatabaseInfo.Count} mods in the database");
+            isModDatabaseLoaded = true;
         }
     }
 

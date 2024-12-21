@@ -2,16 +2,18 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using System;
-using System.IO;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Mod = SimpleModCheckerPlus.Mod;
-using Game;
 using Colossal.PSI.Environment;
 using Game.Input;
+using Game.PSI;
+using Game.UI.Localization;
+using Game;
+using Mod = SimpleModCheckerPlus.Mod;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System;
 
 namespace SimpleModChecker.Systems
 {
@@ -47,7 +49,7 @@ namespace SimpleModChecker.Systems
         private readonly string backupFile7 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_7.json";
         private readonly string backupFile8 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_8.json";
         private readonly string backupFile9 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_9.json";
-
+        private static int i = 0;
 
         protected override void OnCreate()
         {
@@ -213,7 +215,7 @@ namespace SimpleModChecker.Systems
                 {
                     string jsonString = JsonConvert.SerializeObject(Keybinds, Formatting.Indented);
                     File.WriteAllText(backupFile, jsonString);
-                    if (log) Mod.log.Info($"Keybinds backup created successfully: {backupFile}");
+                    Mod.log.Info($"Keybinds backup created successfully: {Path.GetFileName(backupFile)}");
                 }
                 catch (Exception ex)
                 {
@@ -270,6 +272,7 @@ namespace SimpleModChecker.Systems
 
         public void RestoreBackup(int profile, bool log = true)
         {
+            i = 0;
             string backupFile = profile switch
             {
                 0 => backupFile0,
@@ -290,7 +293,7 @@ namespace SimpleModChecker.Systems
                 return;
             }
 
-            Mod.log.Info($"Restoring Backup {backupFile}");
+            Mod.log.Info($"Restoring Backup {Path.GetFileName(backupFile)}");
             string jsonString = File.ReadAllText(backupFile);
 
             try
@@ -343,6 +346,7 @@ namespace SimpleModChecker.Systems
 
                                         if (!(newBinding.path == oldBinding.path))
                                         {
+                                            i++;
                                             inputManager.SetBinding(newBinding, out ProxyBinding _);
 
                                             if (log)
@@ -387,7 +391,19 @@ namespace SimpleModChecker.Systems
                     //}
                 }
                 //SharedSettings.instance.Apply();
-                Mod.log.Info("Keybinds Restoration Complete...");
+                //Mod.log.Info("Keybinds Restoration Complete...");
+                if (i > 0)
+                {
+                    NotificationSystem.Pop("starq-smc-mod-settings-restore",
+                            title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                            text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreKeybinds]"),
+                            delay: 5f);
+                    Mod.log.Info($"Keybinds Restoration Complete... ({i} options restored)");
+                }
+                else
+                {
+                    Mod.log.Info("No changes found to restore Keybinds...");
+                }
             }
             catch (Exception ex)
             {

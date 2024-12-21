@@ -2,31 +2,28 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using static Game.Simulation.SimulationSystem;
-using static Game.Settings.InterfaceSettings;
-using static Game.Settings.GraphicsSettings;
-using static Game.Settings.GeneralSettings;
-using static Game.Settings.AntiAliasingQualitySettings;
-using static Game.Settings.AnimationQualitySettings;
-using static Colossal.IO.AssetDatabase.AssetDatabase;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Mod = SimpleModCheckerPlus.Mod;
-using Game;
-using Game.UI.Localization;
-using Game.Settings;
-using Game.Rendering.Utilities;
-using Game.PSI;
-using Colossal.PSI.Environment;
 using Colossal.PSI.Common;
-using Game.Input;
-using System.Linq;
-using Game.Prefabs;
+using Colossal.PSI.Environment;
+using Game.PSI;
+using Game.Rendering.Utilities;
+using Game.Settings;
+using Game.UI.Localization;
+using Game;
+using Mod = SimpleModCheckerPlus.Mod;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using static Colossal.IO.AssetDatabase.AssetDatabase;
+using static Game.Settings.AnimationQualitySettings;
+using static Game.Settings.AntiAliasingQualitySettings;
+using static Game.Settings.GeneralSettings;
+using static Game.Settings.GraphicsSettings;
+using static Game.Settings.InterfaceSettings;
+using static Game.Simulation.SimulationSystem;
+using System.Collections.Generic;
+using System.IO;
+using System;
+using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Rendering;
 
 namespace SimpleModChecker.Systems
 {
@@ -272,17 +269,6 @@ namespace SimpleModChecker.Systems
         public bool UnlockMapTiles { get; set; }
     }
 
-    //public class GameKeybind
-    //{
-    //    public string ActionName { get; set; }
-    //    public InputManager.DeviceType Device {  get; set; }
-    //    public string MapName { get; set; }
-    //    public string BindingName {  get; set; }
-    //    public string Path { get; set; }
-    //    public IReadOnlyList<ProxyModifier> Modifiers { get; set; }
-    //    public string Title => $"{MapName}/{ActionName}/{BindingName}";
-    //}
-
     public class GameSettings
     {
         public string GameVersion { get; set; }
@@ -295,7 +281,6 @@ namespace SimpleModChecker.Systems
         public GameInputSettings GameInputSettings { get; set; }
         public GameInterfaceSettings GameInterfaceSettings { get; set; }
         public GameUserState GameUserState { get; set; }
-        //public List<GameKeybind> GameKeybind { get; set; }
     }
 
     public partial class GameSettingsBackup : GameSystemBase
@@ -313,6 +298,7 @@ namespace SimpleModChecker.Systems
         private readonly string backupFile7 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_7.json";
         private readonly string backupFile8 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_8.json";
         private readonly string backupFile9 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_9.json";
+        private static int i = 0;
 
 
         protected override void OnCreate()
@@ -350,10 +336,6 @@ namespace SimpleModChecker.Systems
                     if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
                     {
                         RestoreBackup(1, false);
-                        NotificationSystem.Pop("starq-smc-game-settings-restore",
-                                title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                                text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreGame]"),
-                                delay: 10f);;
                     }
                     else
                     {
@@ -617,7 +599,6 @@ namespace SimpleModChecker.Systems
             var GameInputSettings = new GameInputSettings
             {
                 ElevationDraggingEnabled = SharedSettings.instance.input.elevationDraggingEnabled,
-                //Keybinds = SharedSettings.instance.keybinding.bindings.ToJSONString(),
                 MouseScrollSensitivity = SharedSettings.instance.input.mouseScrollSensitivity,
                 KeyboardMoveSensitivity = SharedSettings.instance.input.keyboardMoveSensitivity,
                 KeyboardRotateSensitivity = SharedSettings.instance.input.keyboardRotateSensitivity,
@@ -661,67 +642,6 @@ namespace SimpleModChecker.Systems
                 UnlockMapTiles = SharedSettings.instance.userState.unlockMapTiles
             };
             if (log) Mod.log.Info("Collecting GameUserState");
-            //List<GameKeybind> GameKeybinds = [];
-            //try
-            //{
-            //    List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
-
-            //    Mod.log.Info(bindings.Count);
-            //    foreach (ProxyBinding binding in bindings)
-            //    {
-            //        if (binding.isRebindable && !binding.isOriginal)
-            //        try
-            //        {
-            //                GameKeybinds.Add(new GameKeybind
-            //                {
-            //                    ActionName = binding.actionName,
-            //                    BindingName = binding.name,
-            //                    MapName = binding.mapName,
-            //                    Modifiers = binding.modifiers,
-            //                    Device = binding.device,
-            //                    Path = binding.path,
-            //                });
-            //        }
-            //        catch (Exception ex) { Mod.log.Info(ex); }
-            //        //try { Mod.log.Info("---------------------------------"); } catch { }
-            //        //try { Mod.log.Info($"binding: {binding}"); } catch { }
-            //        //try { Mod.log.Info($"binding.actionName: {binding.actionName}"); } catch { }
-            //        //try { Mod.log.Info($"binding.allowModifiers: {binding.allowModifiers}"); } catch { }
-            //        //try { Mod.log.Info($"binding.canBeEmpty: {binding.canBeEmpty}"); } catch { }
-            //        //try { Mod.log.Info($"binding.component: {binding.component}"); } catch { }
-            //        //try { Mod.log.Info($"binding.conflicts: {binding.conflicts}"); } catch { }
-            //        //try { Mod.log.Info($"binding.developerOnly: {binding.developerOnly}"); } catch { }
-            //        //try { Mod.log.Info($"binding.device: {binding.device}"); } catch { }
-            //        //try { Mod.log.Info($"binding.hasConflicts: {binding.hasConflicts}"); } catch { }
-            //        //try { Mod.log.Info($"binding.isBuiltIn: {binding.isBuiltIn}"); } catch { }
-            //        //try { Mod.log.Info($"binding.isGamepad: {binding.isGamepad}"); } catch { }
-            //        //try { Mod.log.Info($"binding.isKeyboard: {binding.isKeyboard}"); } catch { }
-            //        //try { Mod.log.Info($"binding.isModifiersRebindable: {binding.isModifiersRebindable}"); } catch { }
-            //        //try { Mod.log.Info($"binding.isMouse: {binding.isMouse}"); } catch { }
-            //        //try { Mod.log.Info($"binding.isOriginal: {binding.isOriginal}"); } catch { }
-            //        //try { Mod.log.Info($"binding.isRebindable: {binding.isRebindable}"); } catch { }
-            //        //try { Mod.log.Info($"binding.isSet: {binding.isSet}"); } catch { }
-            //        //try { Mod.log.Info($"binding.mapName: {binding.mapName}"); } catch { }
-            //        //try { Mod.log.Info($"binding.modifiers: {binding.modifiers}"); } catch { }
-            //        //try { Mod.log.Info($"binding.name: {binding.name}"); } catch { }
-            //        //try { Mod.log.Info($"binding.original: {binding.original}"); } catch { }
-            //        //try { Mod.log.Info($"binding.originalModifiers: {binding.originalModifiers}"); } catch { }
-            //        //try { Mod.log.Info($"binding.originalPath: {binding.originalPath}"); } catch { }
-            //        //try { Mod.log.Info($"binding.path: {binding.path}"); } catch { }
-            //        //try { Mod.log.Info($"binding.title: {binding.title}"); } catch { }
-            //        //try { Mod.log.Info($"binding.usages: {binding.usages}"); } catch { }
-            //        //if (binding.isKeyboard && binding.path == "<Keyboard>/r")
-            //        //{
-            //        //    ProxyBinding proxyBinding = binding.Copy();
-            //        //    proxyBinding.path = "<Keyboard>/f";
-            //        //    proxyBinding.device = InputManager.DeviceType.Keyboard;
-            //        //    InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
-            //        //    Mod.log.Info($"Setting {proxyBinding.actionName} to ({proxyBinding.modifiers}){proxyBinding.path}");
-            //        //}
-            //    }
-            //}
-            //catch { }
-            //if (log) Mod.log.Info("Collecting GameKeybinds");
             var GameSettings = new GameSettings
             {
                 GameVersion = Game.Version.current.version,
@@ -734,68 +654,23 @@ namespace SimpleModChecker.Systems
                 GameInputSettings = GameInputSettings,
                 GameInterfaceSettings = GameInterfaceSettings,
                 GameUserState = GameUserState,
-                //GameKeybind = GameKeybinds
             };
             if (log) Mod.log.Info("Collecting GameSettings");
             try
             {
                 string jsonString = JsonConvert.SerializeObject(GameSettings, Formatting.Indented);
                 File.WriteAllText(backupFile, jsonString);
-                Mod.log.Info($"Game Settings backup created successfully: {backupFile}");
+                Mod.log.Info($"Game Settings backup created successfully: {Path.GetFileName(backupFile)}");
             }
             catch (Exception ex)
             {
                 Mod.log.Info(ex);
             }
-            //try
-            //{
-            //    List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
-
-            //    Mod.log.Info(bindings.Count);
-            //    foreach (ProxyBinding binding in bindings)
-            //    {
-            //        try { Mod.log.Info("---------------------------------"); } catch { }
-            //        try { Mod.log.Info($"binding: {binding}"); } catch { }
-            //        try { Mod.log.Info($"binding.actionName: {binding.actionName}"); } catch { }
-            //        try { Mod.log.Info($"binding.allowModifiers: {binding.allowModifiers}"); } catch { }
-            //        try { Mod.log.Info($"binding.canBeEmpty: {binding.canBeEmpty}"); } catch { }
-            //        try { Mod.log.Info($"binding.component: {binding.component}"); } catch { }
-            //        try { Mod.log.Info($"binding.conflicts: {binding.conflicts}"); } catch { }
-            //        try { Mod.log.Info($"binding.developerOnly: {binding.developerOnly}"); } catch { }
-            //        try { Mod.log.Info($"binding.device: {binding.device}"); } catch { }
-            //        try { Mod.log.Info($"binding.hasConflicts: {binding.hasConflicts}"); } catch { }
-            //        try { Mod.log.Info($"binding.isBuiltIn: {binding.isBuiltIn}"); } catch { }
-            //        try { Mod.log.Info($"binding.isGamepad: {binding.isGamepad}"); } catch { }
-            //        try { Mod.log.Info($"binding.isKeyboard: {binding.isKeyboard}"); } catch { }
-            //        try { Mod.log.Info($"binding.isModifiersRebindable: {binding.isModifiersRebindable}"); } catch { }
-            //        try { Mod.log.Info($"binding.isMouse: {binding.isMouse}"); } catch { }
-            //        try { Mod.log.Info($"binding.isOriginal: {binding.isOriginal}"); } catch { }
-            //        try { Mod.log.Info($"binding.isRebindable: {binding.isRebindable}"); } catch { }
-            //        try { Mod.log.Info($"binding.isSet: {binding.isSet}"); } catch { }
-            //        try { Mod.log.Info($"binding.mapName: {binding.mapName}"); } catch { }
-            //        try { Mod.log.Info($"binding.modifiers: {binding.modifiers}"); } catch { }
-            //        try { Mod.log.Info($"binding.name: {binding.name}"); } catch { }
-            //        try { Mod.log.Info($"binding.original: {binding.original}"); } catch { }
-            //        try { Mod.log.Info($"binding.originalModifiers: {binding.originalModifiers}"); } catch { }
-            //        try { Mod.log.Info($"binding.originalPath: {binding.originalPath}"); } catch { }
-            //        try { Mod.log.Info($"binding.path: {binding.path}"); } catch { }
-            //        try { Mod.log.Info($"binding.title: {binding.title}"); } catch { }
-            //        try { Mod.log.Info($"binding.usages: {binding.usages}"); } catch { }
-            //        //if (binding.isKeyboard && binding.path == "<Keyboard>/r")
-            //        //{
-            //        //    ProxyBinding proxyBinding = binding.Copy();
-            //        //    proxyBinding.path = "<Keyboard>/f";
-            //        //    proxyBinding.device = InputManager.DeviceType.Keyboard;
-            //        //    InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
-            //        //    Mod.log.Info($"Setting {proxyBinding.actionName} to ({proxyBinding.modifiers}){proxyBinding.path}");
-            //        //}
-            //    }
-            //}
-            //catch { }
         }
 
         public void RestoreBackup(int profile, bool log = true)
         {
+            i = 0;
             string backupFile = profile switch
             {
                 0 => backupFile0,
@@ -816,7 +691,7 @@ namespace SimpleModChecker.Systems
                 return;
             }
 
-            Mod.log.Info($"Restoring Backup {backupFile}");
+            Mod.log.Info($"Restoring Backup {Path.GetFileName(backupFile)}");
             string jsonString = File.ReadAllText(backupFile);
 
             try
@@ -826,63 +701,75 @@ namespace SimpleModChecker.Systems
                 if (jsonObject["GameAudioSettings"] != null)
                 {
                     GameAudioSettings GameAudioSettings = jsonObject["GameAudioSettings"].ToObject<GameAudioSettings>();
-                    if (jsonObject["GameAudioSettings"]["MasterVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["MasterVolume"] != null && SharedSettings.instance.audio.masterVolume != GameAudioSettings.MasterVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.masterVolume'=> '{GameAudioSettings.MasterVolume}'");
                         SharedSettings.instance.audio.masterVolume = GameAudioSettings.MasterVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["UiVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["UiVolume"] != null && SharedSettings.instance.audio.uiVolume != GameAudioSettings.UiVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.uiVolume'=> '{GameAudioSettings.UiVolume}'");
                         SharedSettings.instance.audio.uiVolume = GameAudioSettings.UiVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["MenuVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["MenuVolume"] != null && SharedSettings.instance.audio.menuVolume != GameAudioSettings.MenuVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.menuVolume'=> '{GameAudioSettings.MenuVolume}'");
                         SharedSettings.instance.audio.menuVolume = GameAudioSettings.MenuVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["IngameVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["IngameVolume"] != null && SharedSettings.instance.audio.ingameVolume != GameAudioSettings.IngameVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.ingameVolume'=> '{GameAudioSettings.IngameVolume}'");
                         SharedSettings.instance.audio.ingameVolume = GameAudioSettings.IngameVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["RadioActive"] != null)
+                    if (jsonObject["GameAudioSettings"]["RadioActive"] != null && SharedSettings.instance.audio.radioActive != GameAudioSettings.RadioActive)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.radioActive'=> '{GameAudioSettings.RadioActive}'");
                         SharedSettings.instance.audio.radioActive = GameAudioSettings.RadioActive;
                     }
-                    if (jsonObject["GameAudioSettings"]["RadioVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["RadioVolume"] != null && SharedSettings.instance.audio.radioVolume != GameAudioSettings.RadioVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.radioVolume'=> '{GameAudioSettings.RadioVolume}'");
                         SharedSettings.instance.audio.radioVolume = GameAudioSettings.RadioVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["AmbienceVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["AmbienceVolume"] != null && SharedSettings.instance.audio.ambienceVolume != GameAudioSettings.AmbienceVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.ambienceVolume'=> '{GameAudioSettings.AmbienceVolume}'");
                         SharedSettings.instance.audio.ambienceVolume = GameAudioSettings.AmbienceVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["DisastersVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["DisastersVolume"] != null && SharedSettings.instance.audio.disastersVolume != GameAudioSettings.DisastersVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.disastersVolume'=> '{GameAudioSettings.DisastersVolume}'");
                         SharedSettings.instance.audio.disastersVolume = GameAudioSettings.DisastersVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["WorldVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["WorldVolume"] != null && SharedSettings.instance.audio.worldVolume != GameAudioSettings.WorldVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.worldVolume'=> '{GameAudioSettings.WorldVolume}'");
                         SharedSettings.instance.audio.worldVolume = GameAudioSettings.WorldVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["AudioGroupsVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["AudioGroupsVolume"] != null && SharedSettings.instance.audio.audioGroupsVolume != GameAudioSettings.AudioGroupsVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.audioGroupsVolume'=> '{GameAudioSettings.AudioGroupsVolume}'");
                         SharedSettings.instance.audio.audioGroupsVolume = GameAudioSettings.AudioGroupsVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["ServiceBuildingsVolume"] != null)
+                    if (jsonObject["GameAudioSettings"]["ServiceBuildingsVolume"] != null && SharedSettings.instance.audio.serviceBuildingsVolume != GameAudioSettings.ServiceBuildingsVolume)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.serviceBuildingsVolume'=> '{GameAudioSettings.ServiceBuildingsVolume}'");
                         SharedSettings.instance.audio.serviceBuildingsVolume = GameAudioSettings.ServiceBuildingsVolume;
                     }
-                    if (jsonObject["GameAudioSettings"]["ClipMemoryBudget"] != null)
+                    if (jsonObject["GameAudioSettings"]["ClipMemoryBudget"] != null && SharedSettings.instance.audio.clipMemoryBudget != GameAudioSettings.ClipMemoryBudget)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'audio.clipMemoryBudget'=> '{GameAudioSettings.ClipMemoryBudget}'");
                         SharedSettings.instance.audio.clipMemoryBudget = GameAudioSettings.ClipMemoryBudget;
                     }
@@ -891,38 +778,45 @@ namespace SimpleModChecker.Systems
                 if (jsonObject["GameEditorSettings"] != null)
                 {
                     GameEditorSettings GameEditorSettings = jsonObject["GameEditorSettings"].ToObject<GameEditorSettings>();
-                    if (jsonObject["GameEditorSettings"]["AssetPickerColumnCount"] != null)
+                    if (jsonObject["GameEditorSettings"]["AssetPickerColumnCount"] != null && SharedSettings.instance.editor.assetPickerColumnCount != GameEditorSettings.AssetPickerColumnCount)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'editor.assetPickerColumnCount'=> '{GameEditorSettings.AssetPickerColumnCount}'");
                         SharedSettings.instance.editor.assetPickerColumnCount = GameEditorSettings.AssetPickerColumnCount;
                     }
-                    if (jsonObject["GameEditorSettings"]["InspectorWidth"] != null)
+                    if (jsonObject["GameEditorSettings"]["InspectorWidth"] != null && SharedSettings.instance.editor.inspectorWidth != GameEditorSettings.InspectorWidth)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'editor.inspectorWidth'=> '{GameEditorSettings.InspectorWidth}'");
                         SharedSettings.instance.editor.inspectorWidth = GameEditorSettings.InspectorWidth;
                     }
-                    if (jsonObject["GameEditorSettings"]["HierarchyWidth"] != null)
+                    if (jsonObject["GameEditorSettings"]["HierarchyWidth"] != null && SharedSettings.instance.editor.hierarchyWidth != GameEditorSettings.HierarchyWidth)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'editor.hierarchyWidth'=> '{GameEditorSettings.HierarchyWidth}'");
                         SharedSettings.instance.editor.hierarchyWidth = GameEditorSettings.HierarchyWidth;
                     }
-                    if (jsonObject["GameEditorSettings"]["UseParallelImport"] != null)
+                    if (jsonObject["GameEditorSettings"]["UseParallelImport"] != null && SharedSettings.instance.editor.useParallelImport != GameEditorSettings.UseParallelImport)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'editor.useParallelImport'=> '{GameEditorSettings.UseParallelImport}'");
                         SharedSettings.instance.editor.useParallelImport = GameEditorSettings.UseParallelImport;
                     }
-                    if (jsonObject["GameEditorSettings"]["LowQualityTextureCompression"] != null)
+                    if (jsonObject["GameEditorSettings"]["LowQualityTextureCompression"] != null && SharedSettings.instance.editor.lowQualityTextureCompression != GameEditorSettings.LowQualityTextureCompression)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'editor.lowQualityTextureCompression'=> '{GameEditorSettings.LowQualityTextureCompression}'");
                         SharedSettings.instance.editor.lowQualityTextureCompression = GameEditorSettings.LowQualityTextureCompression;
                     }
-                    if (jsonObject["GameEditorSettings"]["LastSelectedProjectRootDirectory"] != null)
+                    if (jsonObject["GameEditorSettings"]["LastSelectedProjectRootDirectory"] != null && SharedSettings.instance.editor.lastSelectedProjectRootDirectory != GameEditorSettings.LastSelectedProjectRootDirectory)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'editor.lastSelectedProjectRootDirectory'=> '{GameEditorSettings.LastSelectedProjectRootDirectory}'");
                         SharedSettings.instance.editor.lastSelectedProjectRootDirectory = GameEditorSettings.LastSelectedProjectRootDirectory;
                     }
-                    if (jsonObject["GameEditorSettings"]["LastSelectedImportDirectory"] != null)
+                    if (jsonObject["GameEditorSettings"]["LastSelectedImportDirectory"] != null && SharedSettings.instance.editor.lastSelectedImportDirectory != GameEditorSettings.LastSelectedImportDirectory)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'editor.lastSelectedImportDirectory'=> '{GameEditorSettings.LastSelectedImportDirectory}'");
                         SharedSettings.instance.editor.lastSelectedImportDirectory = GameEditorSettings.LastSelectedImportDirectory;
                     }
@@ -931,23 +825,27 @@ namespace SimpleModChecker.Systems
                 if (jsonObject["GameGameplaySettings"] != null)
                 {
                     GameGameplaySettings GameGameplaySettings = jsonObject["GameGameplaySettings"].ToObject<GameGameplaySettings>();
-                    if (jsonObject["GameGameplaySettings"]["EdgeScrolling"] != null)
+                    if (jsonObject["GameGameplaySettings"]["EdgeScrolling"] != null && SharedSettings.instance.gameplay.edgeScrolling != GameGameplaySettings.EdgeScrolling)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'gameplay.edgeScrolling'=> '{GameGameplaySettings.EdgeScrolling}'");
                         SharedSettings.instance.gameplay.edgeScrolling = GameGameplaySettings.EdgeScrolling;
                     }
-                    if (jsonObject["GameGameplaySettings"]["DayNightVisual"] != null)
+                    if (jsonObject["GameGameplaySettings"]["DayNightVisual"] != null && SharedSettings.instance.gameplay.dayNightVisual != GameGameplaySettings.DayNightVisual)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'gameplay.dayNightVisual'=> '{GameGameplaySettings.DayNightVisual}'");
                         SharedSettings.instance.gameplay.dayNightVisual = GameGameplaySettings.DayNightVisual;
                     }
-                    if (jsonObject["GameGameplaySettings"]["PausedAfterLoading"] != null)
+                    if (jsonObject["GameGameplaySettings"]["PausedAfterLoading"] != null && SharedSettings.instance.gameplay.pausedAfterLoading != GameGameplaySettings.PausedAfterLoading)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'gameplay.pausedAfterLoading'=> '{GameGameplaySettings.PausedAfterLoading}'");
                         SharedSettings.instance.gameplay.pausedAfterLoading = GameGameplaySettings.PausedAfterLoading;
                     }
-                    if (jsonObject["GameGameplaySettings"]["ShowTutorials"] != null)
+                    if (jsonObject["GameGameplaySettings"]["ShowTutorials"] != null && SharedSettings.instance.gameplay.showTutorials != GameGameplaySettings.ShowTutorials)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'gameplay.showTutorials'=> '{GameGameplaySettings.ShowTutorials}'");
                         SharedSettings.instance.gameplay.showTutorials = GameGameplaySettings.ShowTutorials;
                     }
@@ -956,33 +854,39 @@ namespace SimpleModChecker.Systems
                 if (jsonObject["GameGeneralSettings"] != null)
                 {
                     GameGeneralSettings GameGeneralSettings = jsonObject["GameGeneralSettings"].ToObject<GameGeneralSettings>();
-                    if (jsonObject["GameGeneralSettings"]["AssetDatabaseAutoReloadMode"] != null)
+                    if (jsonObject["GameGeneralSettings"]["AssetDatabaseAutoReloadMode"] != null && SharedSettings.instance.general.assetDatabaseAutoReloadMode != GameGeneralSettings.AssetDatabaseAutoReloadMode)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'general.assetDatabaseAutoReloadMode'=> '{GameGeneralSettings.AssetDatabaseAutoReloadMode}'");
                         SharedSettings.instance.general.assetDatabaseAutoReloadMode = GameGeneralSettings.AssetDatabaseAutoReloadMode;
                     }
-                    if (jsonObject["GameGeneralSettings"]["PerformancePreference"] != null)
+                    if (jsonObject["GameGeneralSettings"]["PerformancePreference"] != null && SharedSettings.instance.general.performancePreference != GameGeneralSettings.PerformancePreference)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'general.performancePreference'=> '{GameGeneralSettings.PerformancePreference}'");
                         SharedSettings.instance.general.performancePreference = GameGeneralSettings.PerformancePreference;
                     }
-                    if (jsonObject["GameGeneralSettings"]["FpsMode"] != null)
+                    if (jsonObject["GameGeneralSettings"]["FpsMode"] != null && SharedSettings.instance.general.fpsMode != GameGeneralSettings.FpsMode)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'general.fpsMode'=> '{GameGeneralSettings.FpsMode}'");
                         SharedSettings.instance.general.fpsMode = GameGeneralSettings.FpsMode;
                     }
-                    if (jsonObject["GameGeneralSettings"]["AutoSave"] != null)
+                    if (jsonObject["GameGeneralSettings"]["AutoSave"] != null && SharedSettings.instance.general.autoSave != GameGeneralSettings.AutoSave)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'general.autoSave'=> '{GameGeneralSettings.AutoSave}'");
                         SharedSettings.instance.general.autoSave = GameGeneralSettings.AutoSave;
                     }
-                    if (jsonObject["GameGeneralSettings"]["AutoSaveInterval"] != null)
+                    if (jsonObject["GameGeneralSettings"]["AutoSaveInterval"] != null && SharedSettings.instance.general.autoSaveInterval != GameGeneralSettings.AutoSaveInterval)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'general.autoSaveInterval'=> '{GameGeneralSettings.AutoSaveInterval}'");
                         SharedSettings.instance.general.autoSaveInterval = GameGeneralSettings.AutoSaveInterval;
                     }
-                    if (jsonObject["GameGeneralSettings"]["AutoSaveCount"] != null)
+                    if (jsonObject["GameGeneralSettings"]["AutoSaveCount"] != null && SharedSettings.instance.general.autoSaveCount != GameGeneralSettings.AutoSaveCount)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'general.autoSaveCount'=> '{GameGeneralSettings.AutoSaveCount}'");
                         SharedSettings.instance.general.autoSaveCount = GameGeneralSettings.AutoSaveCount;
                     }
@@ -991,48 +895,57 @@ namespace SimpleModChecker.Systems
                 if (jsonObject["GameGraphicsSettings"] != null)
                 {
                     GameGraphicsSettings GameGraphicsSettings = jsonObject["GameGraphicsSettings"].ToObject<GameGraphicsSettings>();
-                    if (jsonObject["GameGraphicsSettings"]["VSync"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["VSync"] != null && SharedSettings.instance.graphics.vSync != GameGraphicsSettings.VSync)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.vSync'=> '{GameGraphicsSettings.VSync}'");
                         SharedSettings.instance.graphics.vSync = GameGraphicsSettings.VSync;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["MaxFrameLatency"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["MaxFrameLatency"] != null && SharedSettings.instance.graphics.maxFrameLatency != GameGraphicsSettings.MaxFrameLatency)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.maxFrameLatency'=> '{GameGraphicsSettings.MaxFrameLatency}'");
                         SharedSettings.instance.graphics.maxFrameLatency = GameGraphicsSettings.MaxFrameLatency;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["CursorMode"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["CursorMode"] != null && SharedSettings.instance.graphics.cursorMode != GameGraphicsSettings.CursorMode)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.cursorMode'=> '{GameGraphicsSettings.CursorMode}'");
                         SharedSettings.instance.graphics.cursorMode = GameGraphicsSettings.CursorMode;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["DepthOfFieldMode"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["DepthOfFieldMode"] != null && SharedSettings.instance.graphics.depthOfFieldMode != GameGraphicsSettings.DepthOfFieldMode)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.depthOfFieldMode'=> '{GameGraphicsSettings.DepthOfFieldMode}'");
                         SharedSettings.instance.graphics.depthOfFieldMode = GameGraphicsSettings.DepthOfFieldMode;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["TiltShiftNearStart"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["TiltShiftNearStart"] != null && SharedSettings.instance.graphics.tiltShiftNearStart != GameGraphicsSettings.TiltShiftNearStart)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.tiltShiftNearStart'=> '{GameGraphicsSettings.TiltShiftNearStart}'");
                         SharedSettings.instance.graphics.tiltShiftNearStart = GameGraphicsSettings.TiltShiftNearStart;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["TiltShiftNearEnd"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["TiltShiftNearEnd"] != null && SharedSettings.instance.graphics.tiltShiftNearEnd != GameGraphicsSettings.TiltShiftNearEnd)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.tiltShiftNearEnd'=> '{GameGraphicsSettings.TiltShiftNearEnd}'");
                         SharedSettings.instance.graphics.tiltShiftNearEnd = GameGraphicsSettings.TiltShiftNearEnd;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["TiltShiftFarStart"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["TiltShiftFarStart"] != null && SharedSettings.instance.graphics.tiltShiftFarStart != GameGraphicsSettings.TiltShiftFarStart)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.tiltShiftFarStart'=> '{GameGraphicsSettings.TiltShiftFarStart}'");
                         SharedSettings.instance.graphics.tiltShiftFarStart = GameGraphicsSettings.TiltShiftFarStart;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["TiltShiftFarEnd"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["TiltShiftFarEnd"] != null && SharedSettings.instance.graphics.tiltShiftFarEnd != GameGraphicsSettings.TiltShiftFarEnd)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.tiltShiftFarEnd'=> '{GameGraphicsSettings.TiltShiftFarEnd}'");
                         SharedSettings.instance.graphics.tiltShiftFarEnd = GameGraphicsSettings.TiltShiftFarEnd;
                     }
-                    if (jsonObject["GameGraphicsSettings"]["DlssQuality"] != null)
+                    if (jsonObject["GameGraphicsSettings"]["DlssQuality"] != null && SharedSettings.instance.graphics.dlssQuality != GameGraphicsSettings.DlssQuality)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'graphics.dlssQuality'=> '{GameGraphicsSettings.DlssQuality}'");
                         SharedSettings.instance.graphics.dlssQuality = GameGraphicsSettings.DlssQuality;
                     }
@@ -1060,288 +973,345 @@ namespace SimpleModChecker.Systems
                         GameAnimationQualitySetting GameAnimationQualitySetting = jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAnimationQualitySetting"].ToObject<GameAnimationQualitySetting>();
                         GameTextureQualitySettings GameTextureQualitySettings = jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTextureQualitySettings"].ToObject<GameTextureQualitySettings>();
 
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>().enabled != GameDynamicResolutionQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DynamicResolutionScaleSettings>().enabled'=> '{GameDynamicResolutionQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>().enabled = GameDynamicResolutionQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"]["IsAdaptive"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"]["IsAdaptive"] != null && SharedSettings.instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>().isAdaptive != GameDynamicResolutionQualitySettings.IsAdaptive)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DynamicResolutionScaleSettings>().isAdaptive'=> '{GameDynamicResolutionQualitySettings.IsAdaptive}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>().isAdaptive = GameDynamicResolutionQualitySettings.IsAdaptive;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"]["UpscaleFilter"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"]["UpscaleFilter"] != null && SharedSettings.instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>().upscaleFilter != GameDynamicResolutionQualitySettings.UpscaleFilter)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DynamicResolutionScaleSettings>().upscaleFilter'=> '{GameDynamicResolutionQualitySettings.UpscaleFilter}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>().upscaleFilter = GameDynamicResolutionQualitySettings.UpscaleFilter;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"]["MinScale"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDynamicResolutionQualitySettings"]["MinScale"] != null && SharedSettings.instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>().minScale != GameDynamicResolutionQualitySettings.MinScale)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DynamicResolutionScaleSettings>().minScale'=> '{GameDynamicResolutionQualitySettings.MinScale}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>().minScale = GameDynamicResolutionQualitySettings.MinScale;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAntiAliasingQualitySettings"]["AntiAliasingMethod"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAntiAliasingQualitySettings"]["AntiAliasingMethod"] != null && SharedSettings.instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>().antiAliasingMethod != GameAntiAliasingQualitySettings.AntiAliasingMethod)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<AntiAliasingQualitySettings>().antiAliasingMethod'=> '{GameAntiAliasingQualitySettings.AntiAliasingMethod}'");
                             SharedSettings.instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>().antiAliasingMethod = GameAntiAliasingQualitySettings.AntiAliasingMethod;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAntiAliasingQualitySettings"]["SmaaQuality"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAntiAliasingQualitySettings"]["SmaaQuality"] != null && SharedSettings.instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>().smaaQuality != GameAntiAliasingQualitySettings.SmaaQuality)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<AntiAliasingQualitySettings>().smaaQuality'=> '{GameAntiAliasingQualitySettings.SmaaQuality}'");
                             SharedSettings.instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>().smaaQuality = GameAntiAliasingQualitySettings.SmaaQuality;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAntiAliasingQualitySettings"]["OutlinesMSAA"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAntiAliasingQualitySettings"]["OutlinesMSAA"] != null && SharedSettings.instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>().outlinesMSAA != GameAntiAliasingQualitySettings.OutlinesMSAA)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<AntiAliasingQualitySettings>().outlinesMSAA'=> '{GameAntiAliasingQualitySettings.OutlinesMSAA}'");
                             SharedSettings.instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>().outlinesMSAA = GameAntiAliasingQualitySettings.OutlinesMSAA;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameCloudsQualitySettings"]["VolumetricCloudsEnabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameCloudsQualitySettings"]["VolumetricCloudsEnabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<CloudsQualitySettings>().volumetricCloudsEnabled != GameCloudsQualitySettings.VolumetricCloudsEnabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<CloudsQualitySettings>().volumetricCloudsEnabled'=> '{GameCloudsQualitySettings.VolumetricCloudsEnabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<CloudsQualitySettings>().volumetricCloudsEnabled = GameCloudsQualitySettings.VolumetricCloudsEnabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameCloudsQualitySettings"]["DistanceCloudsEnabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameCloudsQualitySettings"]["DistanceCloudsEnabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<CloudsQualitySettings>().distanceCloudsEnabled != GameCloudsQualitySettings.DistanceCloudsEnabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<CloudsQualitySettings>().distanceCloudsEnabled'=> '{GameCloudsQualitySettings.DistanceCloudsEnabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<CloudsQualitySettings>().distanceCloudsEnabled = GameCloudsQualitySettings.DistanceCloudsEnabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameCloudsQualitySettings"]["VolumetricCloudsShadows"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameCloudsQualitySettings"]["VolumetricCloudsShadows"] != null && SharedSettings.instance.graphics.GetQualitySetting<CloudsQualitySettings>().volumetricCloudsShadows != GameCloudsQualitySettings.VolumetricCloudsShadows)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<CloudsQualitySettings>().volumetricCloudsShadows'=> '{GameCloudsQualitySettings.VolumetricCloudsShadows}'");
                             SharedSettings.instance.graphics.GetQualitySetting<CloudsQualitySettings>().volumetricCloudsShadows = GameCloudsQualitySettings.VolumetricCloudsShadows;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameCloudsQualitySettings"]["DistanceCloudsShadows"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameCloudsQualitySettings"]["DistanceCloudsShadows"] != null && SharedSettings.instance.graphics.GetQualitySetting<CloudsQualitySettings>().distanceCloudsShadows != GameCloudsQualitySettings.DistanceCloudsShadows)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<CloudsQualitySettings>().distanceCloudsShadows'=> '{GameCloudsQualitySettings.DistanceCloudsShadows}'");
                             SharedSettings.instance.graphics.GetQualitySetting<CloudsQualitySettings>().distanceCloudsShadows = GameCloudsQualitySettings.DistanceCloudsShadows;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameFogQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameFogQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<FogQualitySettings>().enabled != GameFogQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<FogQualitySettings>().enabled'=> '{GameFogQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<FogQualitySettings>().enabled = GameFogQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameVolumetricsQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameVolumetricsQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<VolumetricsQualitySettings>().enabled != GameVolumetricsQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<VolumetricsQualitySettings>().enabled'=> '{GameVolumetricsQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<VolumetricsQualitySettings>().enabled = GameVolumetricsQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameVolumetricsQualitySettings"]["Budget"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameVolumetricsQualitySettings"]["Budget"] != null && SharedSettings.instance.graphics.GetQualitySetting<VolumetricsQualitySettings>().budget != GameVolumetricsQualitySettings.Budget)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<VolumetricsQualitySettings>().budget'=> '{GameVolumetricsQualitySettings.Budget}'");
                             SharedSettings.instance.graphics.GetQualitySetting<VolumetricsQualitySettings>().budget = GameVolumetricsQualitySettings.Budget;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameVolumetricsQualitySettings"]["ResolutionDepthRatio"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameVolumetricsQualitySettings"]["ResolutionDepthRatio"] != null && SharedSettings.instance.graphics.GetQualitySetting<VolumetricsQualitySettings>().resolutionDepthRatio != GameVolumetricsQualitySettings.ResolutionDepthRatio)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<VolumetricsQualitySettings>().resolutionDepthRatio'=> '{GameVolumetricsQualitySettings.ResolutionDepthRatio}'");
                             SharedSettings.instance.graphics.GetQualitySetting<VolumetricsQualitySettings>().resolutionDepthRatio = GameVolumetricsQualitySettings.ResolutionDepthRatio;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAmbientOcclustionQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAmbientOcclustionQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSAOQualitySettings>().enabled != GameAmbientOcclustionQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSAOQualitySettings>().enabled'=> '{GameAmbientOcclustionQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSAOQualitySettings>().enabled = GameAmbientOcclustionQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAmbientOcclustionQualitySettings"]["MaxPixelRadius"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAmbientOcclustionQualitySettings"]["MaxPixelRadius"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSAOQualitySettings>().maxPixelRadius != GameAmbientOcclustionQualitySettings.MaxPixelRadius)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSAOQualitySettings>().maxPixelRadius'=> '{GameAmbientOcclustionQualitySettings.MaxPixelRadius}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSAOQualitySettings>().maxPixelRadius = GameAmbientOcclustionQualitySettings.MaxPixelRadius;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAmbientOcclustionQualitySettings"]["Fullscreen"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAmbientOcclustionQualitySettings"]["Fullscreen"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSAOQualitySettings>().fullscreen != GameAmbientOcclustionQualitySettings.Fullscreen)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSAOQualitySettings>().fullscreen'=> '{GameAmbientOcclustionQualitySettings.Fullscreen}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSAOQualitySettings>().fullscreen = GameAmbientOcclustionQualitySettings.Fullscreen;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAmbientOcclustionQualitySettings"]["StepCount"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAmbientOcclustionQualitySettings"]["StepCount"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSAOQualitySettings>().stepCount != GameAmbientOcclustionQualitySettings.StepCount)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSAOQualitySettings>().stepCount'=> '{GameAmbientOcclustionQualitySettings.StepCount}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSAOQualitySettings>().stepCount = GameAmbientOcclustionQualitySettings.StepCount;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().enabled != GameIlluminationQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().enabled'=> '{GameIlluminationQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().enabled = GameIlluminationQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["Fullscreen"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["Fullscreen"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().fullscreen != GameIlluminationQualitySettings.Fullscreen)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().fullscreen'=> '{GameIlluminationQualitySettings.Fullscreen}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().fullscreen = GameIlluminationQualitySettings.Fullscreen;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["RaySteps"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["RaySteps"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().raySteps != GameIlluminationQualitySettings.RaySteps)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().raySteps'=> '{GameIlluminationQualitySettings.RaySteps}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().raySteps = GameIlluminationQualitySettings.RaySteps;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["DenoiserRadius"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["DenoiserRadius"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().denoiserRadius != GameIlluminationQualitySettings.DenoiserRadius)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().denoiserRadius'=> '{GameIlluminationQualitySettings.DenoiserRadius}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().denoiserRadius = GameIlluminationQualitySettings.DenoiserRadius;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["HalfResolutionPass"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["HalfResolutionPass"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().halfResolutionPass != GameIlluminationQualitySettings.HalfResolutionPass)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().halfResolutionPass'=> '{GameIlluminationQualitySettings.HalfResolutionPass}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().halfResolutionPass = GameIlluminationQualitySettings.HalfResolutionPass;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["SecondDenoiserPass"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["SecondDenoiserPass"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().secondDenoiserPass != GameIlluminationQualitySettings.SecondDenoiserPass)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().secondDenoiserPass'=> '{GameIlluminationQualitySettings.SecondDenoiserPass}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().secondDenoiserPass = GameIlluminationQualitySettings.SecondDenoiserPass;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["DepthBufferThickness"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameIlluminationQualitySettings"]["DepthBufferThickness"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().depthBufferThickness != GameIlluminationQualitySettings.DepthBufferThickness)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().depthBufferThickness'=> '{GameIlluminationQualitySettings.DepthBufferThickness}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSGIQualitySettings>().depthBufferThickness = GameIlluminationQualitySettings.DepthBufferThickness;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameReflectionQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameReflectionQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSRQualitySettings>().enabled != GameReflectionQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSRQualitySettings>().enabled'=> '{GameReflectionQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSRQualitySettings>().enabled = GameReflectionQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameReflectionQualitySettings"]["EnabledTransparent"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameReflectionQualitySettings"]["EnabledTransparent"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSRQualitySettings>().enabledTransparent != GameReflectionQualitySettings.EnabledTransparent)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSRQualitySettings>().enabledTransparent'=> '{GameReflectionQualitySettings.EnabledTransparent}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSRQualitySettings>().enabledTransparent = GameReflectionQualitySettings.EnabledTransparent;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameReflectionQualitySettings"]["MaxRaySteps"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameReflectionQualitySettings"]["MaxRaySteps"] != null && SharedSettings.instance.graphics.GetQualitySetting<SSRQualitySettings>().maxRaySteps != GameReflectionQualitySettings.MaxRaySteps)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<SSRQualitySettings>().maxRaySteps'=> '{GameReflectionQualitySettings.MaxRaySteps}'");
                             SharedSettings.instance.graphics.GetQualitySetting<SSRQualitySettings>().maxRaySteps = GameReflectionQualitySettings.MaxRaySteps;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().enabled != GameDepthOfFieldQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().enabled'=> '{GameDepthOfFieldQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().enabled = GameDepthOfFieldQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["NearSampleCount"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["NearSampleCount"] != null && SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().nearSampleCount != GameDepthOfFieldQualitySettings.NearSampleCount)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().nearSampleCount'=> '{GameDepthOfFieldQualitySettings.NearSampleCount}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().nearSampleCount = GameDepthOfFieldQualitySettings.NearSampleCount;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["NearMaxRadius"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["NearMaxRadius"] != null && SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().nearMaxRadius != GameDepthOfFieldQualitySettings.NearMaxRadius)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().nearMaxRadius'=> '{GameDepthOfFieldQualitySettings.NearMaxRadius}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().nearMaxRadius = GameDepthOfFieldQualitySettings.NearMaxRadius;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["FarSampleCount"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["FarSampleCount"] != null && SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().farSampleCount != GameDepthOfFieldQualitySettings.FarSampleCount)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().farSampleCount'=> '{GameDepthOfFieldQualitySettings.FarSampleCount}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().farSampleCount = GameDepthOfFieldQualitySettings.FarSampleCount;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["FarMaxRadius"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["FarMaxRadius"] != null && SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().farMaxRadius != GameDepthOfFieldQualitySettings.FarMaxRadius)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().farMaxRadius'=> '{GameDepthOfFieldQualitySettings.FarMaxRadius}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().farMaxRadius = GameDepthOfFieldQualitySettings.FarMaxRadius;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["Resolution"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["Resolution"] != null && SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().resolution != GameDepthOfFieldQualitySettings.Resolution)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().resolution'=> '{GameDepthOfFieldQualitySettings.Resolution}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().resolution = GameDepthOfFieldQualitySettings.Resolution;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["HighQualityFiltering"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameDepthOfFieldQualitySettings"]["HighQualityFiltering"] != null && SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().highQualityFiltering != GameDepthOfFieldQualitySettings.HighQualityFiltering)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().highQualityFiltering'=> '{GameDepthOfFieldQualitySettings.HighQualityFiltering}'");
                             SharedSettings.instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>().highQualityFiltering = GameDepthOfFieldQualitySettings.HighQualityFiltering;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameMotionBlurQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameMotionBlurQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<MotionBlurQualitySettings>().enabled != GameMotionBlurQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<MotionBlurQualitySettings>().enabled'=> '{GameMotionBlurQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<MotionBlurQualitySettings>().enabled = GameMotionBlurQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameMotionBlurQualitySettings"]["SampleCount"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameMotionBlurQualitySettings"]["SampleCount"] != null && SharedSettings.instance.graphics.GetQualitySetting<MotionBlurQualitySettings>().sampleCount != GameMotionBlurQualitySettings.SampleCount)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<MotionBlurQualitySettings>().sampleCount'=> '{GameMotionBlurQualitySettings.SampleCount}'");
                             SharedSettings.instance.graphics.GetQualitySetting<MotionBlurQualitySettings>().sampleCount = GameMotionBlurQualitySettings.SampleCount;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["Enabled"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["Enabled"] != null && SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().enabled != GameShadowsQualitySettings.Enabled)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().enabled'=> '{GameShadowsQualitySettings.Enabled}'");
                             SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().enabled = GameShadowsQualitySettings.Enabled;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["TerrainCastShadows"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["TerrainCastShadows"] != null && SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().terrainCastShadows != GameShadowsQualitySettings.TerrainCastShadows)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().terrainCastShadows'=> '{GameShadowsQualitySettings.TerrainCastShadows}'");
                             SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().terrainCastShadows = GameShadowsQualitySettings.TerrainCastShadows;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["DirectionalShadowResolution"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["DirectionalShadowResolution"] != null && SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().directionalShadowResolution != GameShadowsQualitySettings.DirectionalShadowResolution)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().directionalShadowResolution'=> '{GameShadowsQualitySettings.DirectionalShadowResolution}'");
                             SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().directionalShadowResolution = GameShadowsQualitySettings.DirectionalShadowResolution;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["ShadowCullingThresholdHeight"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["ShadowCullingThresholdHeight"] != null && SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().shadowCullingThresholdHeight != GameShadowsQualitySettings.ShadowCullingThresholdHeight)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().shadowCullingThresholdHeight'=> '{GameShadowsQualitySettings.ShadowCullingThresholdHeight}'");
                             SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().shadowCullingThresholdHeight = GameShadowsQualitySettings.ShadowCullingThresholdHeight;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["ShadowCullingThresholdVolume"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameShadowsQualitySettings"]["ShadowCullingThresholdVolume"] != null && SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().shadowCullingThresholdVolume != GameShadowsQualitySettings.ShadowCullingThresholdVolume)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().shadowCullingThresholdVolume'=> '{GameShadowsQualitySettings.ShadowCullingThresholdVolume}'");
                             SharedSettings.instance.graphics.GetQualitySetting<ShadowsQualitySettings>().shadowCullingThresholdVolume = GameShadowsQualitySettings.ShadowCullingThresholdVolume;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTerrainQualitySettings"]["FinalTessellation"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTerrainQualitySettings"]["FinalTessellation"] != null && SharedSettings.instance.graphics.GetQualitySetting<TerrainQualitySettings>().finalTessellation != GameTerrainQualitySettings.FinalTessellation)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<TerrainQualitySettings>().finalTessellation'=> '{GameTerrainQualitySettings.FinalTessellation}'");
                             SharedSettings.instance.graphics.GetQualitySetting<TerrainQualitySettings>().finalTessellation = GameTerrainQualitySettings.FinalTessellation;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTerrainQualitySettings"]["TargetPatchSize"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTerrainQualitySettings"]["TargetPatchSize"] != null && SharedSettings.instance.graphics.GetQualitySetting<TerrainQualitySettings>().targetPatchSize != GameTerrainQualitySettings.TargetPatchSize)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<TerrainQualitySettings>().targetPatchSize'=> '{GameTerrainQualitySettings.TargetPatchSize}'");
                             SharedSettings.instance.graphics.GetQualitySetting<TerrainQualitySettings>().targetPatchSize = GameTerrainQualitySettings.TargetPatchSize;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameWaterQualitySettings"]["Waterflow"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameWaterQualitySettings"]["Waterflow"] != null && SharedSettings.instance.graphics.GetQualitySetting<WaterQualitySettings>().waterflow != GameWaterQualitySettings.Waterflow)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<WaterQualitySettings>().waterflow'=> '{GameWaterQualitySettings.Waterflow}'");
                             SharedSettings.instance.graphics.GetQualitySetting<WaterQualitySettings>().waterflow = GameWaterQualitySettings.Waterflow;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameWaterQualitySettings"]["MaxTessellationFactor"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameWaterQualitySettings"]["MaxTessellationFactor"] != null && SharedSettings.instance.graphics.GetQualitySetting<WaterQualitySettings>().maxTessellationFactor != GameWaterQualitySettings.MaxTessellationFactor)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<WaterQualitySettings>().maxTessellationFactor'=> '{GameWaterQualitySettings.MaxTessellationFactor}'");
                             SharedSettings.instance.graphics.GetQualitySetting<WaterQualitySettings>().maxTessellationFactor = GameWaterQualitySettings.MaxTessellationFactor;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameWaterQualitySettings"]["TessellationFactorFadeStart"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameWaterQualitySettings"]["TessellationFactorFadeStart"] != null && SharedSettings.instance.graphics.GetQualitySetting<WaterQualitySettings>().tessellationFactorFadeStart != GameWaterQualitySettings.TessellationFactorFadeStart)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<WaterQualitySettings>().tessellationFactorFadeStart'=> '{GameWaterQualitySettings.TessellationFactorFadeStart}'");
                             SharedSettings.instance.graphics.GetQualitySetting<WaterQualitySettings>().tessellationFactorFadeStart = GameWaterQualitySettings.TessellationFactorFadeStart;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameWaterQualitySettings"]["TessellationFactorFadeRange"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameWaterQualitySettings"]["TessellationFactorFadeRange"] != null && SharedSettings.instance.graphics.GetQualitySetting<WaterQualitySettings>().tessellationFactorFadeRange != GameWaterQualitySettings.TessellationFactorFadeRange)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<WaterQualitySettings>().tessellationFactorFadeRange'=> '{GameWaterQualitySettings.TessellationFactorFadeRange}'");
                             SharedSettings.instance.graphics.GetQualitySetting<WaterQualitySettings>().tessellationFactorFadeRange = GameWaterQualitySettings.TessellationFactorFadeRange;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["LevelOfDetail"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["LevelOfDetail"] != null && SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().levelOfDetail != GameLevelOfDetailQualitySettings.LevelOfDetail)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().levelOfDetail'=> '{GameLevelOfDetailQualitySettings.LevelOfDetail}'");
                             SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().levelOfDetail = GameLevelOfDetailQualitySettings.LevelOfDetail;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["LodCrossFade"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["LodCrossFade"] != null && SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().lodCrossFade != GameLevelOfDetailQualitySettings.LodCrossFade)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().lodCrossFade'=> '{GameLevelOfDetailQualitySettings.LodCrossFade}'");
                             SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().lodCrossFade = GameLevelOfDetailQualitySettings.LodCrossFade;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["MaxLightCount"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["MaxLightCount"] != null && SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().maxLightCount != GameLevelOfDetailQualitySettings.MaxLightCount)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().maxLightCount'=> '{GameLevelOfDetailQualitySettings.MaxLightCount}'");
                             SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().maxLightCount = GameLevelOfDetailQualitySettings.MaxLightCount;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["MeshMemoryBudget"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["MeshMemoryBudget"] != null && SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().meshMemoryBudget != GameLevelOfDetailQualitySettings.MeshMemoryBudget)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().meshMemoryBudget'=> '{GameLevelOfDetailQualitySettings.MeshMemoryBudget}'");
                             SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().meshMemoryBudget = GameLevelOfDetailQualitySettings.MeshMemoryBudget;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["StrictMeshMemory"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]["StrictMeshMemory"] != null && SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().strictMeshMemory != GameLevelOfDetailQualitySettings.StrictMeshMemory)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().strictMeshMemory'=> '{GameLevelOfDetailQualitySettings.StrictMeshMemory}'");
                             SharedSettings.instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>().strictMeshMemory = GameLevelOfDetailQualitySettings.StrictMeshMemory;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAnimationQualitySetting"]["MaxBoneInfuence"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameAnimationQualitySetting"]["MaxBoneInfuence"] != null && SharedSettings.instance.graphics.GetQualitySetting<AnimationQualitySettings>().maxBoneInfuence != GameAnimationQualitySetting.MaxBoneInfuence)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<AnimationQualitySettings>().maxBoneInfuence'=> '{GameAnimationQualitySetting.MaxBoneInfuence}'");
                             SharedSettings.instance.graphics.GetQualitySetting<AnimationQualitySettings>().maxBoneInfuence = GameAnimationQualitySetting.MaxBoneInfuence;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTextureQualitySettings"]["Mipbias"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTextureQualitySettings"]["Mipbias"] != null && SharedSettings.instance.graphics.GetQualitySetting<TextureQualitySettings>().mipbias != GameTextureQualitySettings.Mipbias)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<TextureQualitySettings>().mipbias'=> '{GameTextureQualitySettings.Mipbias}'");
                             SharedSettings.instance.graphics.GetQualitySetting<TextureQualitySettings>().mipbias = GameTextureQualitySettings.Mipbias;
                         }
-                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTextureQualitySettings"]["FilterMode"] != null)
+                        if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"]["GameTextureQualitySettings"]["FilterMode"] != null && SharedSettings.instance.graphics.GetQualitySetting<TextureQualitySettings>().filterMode != GameTextureQualitySettings.FilterMode)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'graphics.GetQualitySetting<TextureQualitySettings>().filterMode'=> '{GameTextureQualitySettings.FilterMode}'");
                             SharedSettings.instance.graphics.GetQualitySetting<TextureQualitySettings>().filterMode = GameTextureQualitySettings.FilterMode;
                         }
@@ -1353,82 +1323,93 @@ namespace SimpleModChecker.Systems
                 {
                     GameInputSettings GameInputSettings = jsonObject["GameInputSettings"].ToObject<GameInputSettings>();
 
-                    if (jsonObject["GameInputSettings"]["ElevationDraggingEnabled"] != null)
+                    if (jsonObject["GameInputSettings"]["ElevationDraggingEnabled"] != null && SharedSettings.instance.input.elevationDraggingEnabled != GameInputSettings.ElevationDraggingEnabled)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.elevationDraggingEnabled'=> '{GameInputSettings.ElevationDraggingEnabled}'");
                         SharedSettings.instance.input.elevationDraggingEnabled = GameInputSettings.ElevationDraggingEnabled;
                     }
-                    //if (jsonObject["GameInputSettings"]["Keybinds"] != null)
-                    //{
-                    //    SharedSettings.instance.keybinding.bindings = JsonConvert.DeserializeObject<List<ProxyBinding>>(jsonObject["GameInputSettings"]["Keybinds"].ToString());
-                    //}
-                    if (jsonObject["GameInputSettings"]["MouseScrollSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["MouseScrollSensitivity"] != null && SharedSettings.instance.input.mouseScrollSensitivity != GameInputSettings.MouseScrollSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.mouseScrollSensitivity'=> '{GameInputSettings.MouseScrollSensitivity}'");
                         SharedSettings.instance.input.mouseScrollSensitivity = GameInputSettings.MouseScrollSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["KeyboardMoveSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["KeyboardMoveSensitivity"] != null && SharedSettings.instance.input.keyboardMoveSensitivity != GameInputSettings.KeyboardMoveSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.keyboardMoveSensitivity'=> '{GameInputSettings.KeyboardMoveSensitivity}'");
                         SharedSettings.instance.input.keyboardMoveSensitivity = GameInputSettings.KeyboardMoveSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["KeyboardRotateSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["KeyboardRotateSensitivity"] != null && SharedSettings.instance.input.keyboardRotateSensitivity != GameInputSettings.KeyboardRotateSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.keyboardRotateSensitivity'=> '{GameInputSettings.KeyboardRotateSensitivity}'");
                         SharedSettings.instance.input.keyboardRotateSensitivity = GameInputSettings.KeyboardRotateSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["KeyboardZoomSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["KeyboardZoomSensitivity"] != null && SharedSettings.instance.input.keyboardZoomSensitivity != GameInputSettings.KeyboardZoomSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.keyboardZoomSensitivity'=> '{GameInputSettings.KeyboardZoomSensitivity}'");
                         SharedSettings.instance.input.keyboardZoomSensitivity = GameInputSettings.KeyboardZoomSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["MouseMoveSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["MouseMoveSensitivity"] != null && SharedSettings.instance.input.mouseMoveSensitivity != GameInputSettings.MouseMoveSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.mouseMoveSensitivity'=> '{GameInputSettings.MouseMoveSensitivity}'");
                         SharedSettings.instance.input.mouseMoveSensitivity = GameInputSettings.MouseMoveSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["MouseRotateSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["MouseRotateSensitivity"] != null && SharedSettings.instance.input.mouseRotateSensitivity != GameInputSettings.MouseRotateSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.mouseRotateSensitivity'=> '{GameInputSettings.MouseRotateSensitivity}'");
                         SharedSettings.instance.input.mouseRotateSensitivity = GameInputSettings.MouseRotateSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["MouseZoomSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["MouseZoomSensitivity"] != null && SharedSettings.instance.input.mouseZoomSensitivity != GameInputSettings.MouseZoomSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.mouseZoomSensitivity'=> '{GameInputSettings.MouseZoomSensitivity}'");
                         SharedSettings.instance.input.mouseZoomSensitivity = GameInputSettings.MouseZoomSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["MouseInvertX"] != null)
+                    if (jsonObject["GameInputSettings"]["MouseInvertX"] != null && SharedSettings.instance.input.mouseInvertX != GameInputSettings.MouseInvertX)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.mouseInvertX'=> '{GameInputSettings.MouseInvertX}'");
                         SharedSettings.instance.input.mouseInvertX = GameInputSettings.MouseInvertX;
                     }
-                    if (jsonObject["GameInputSettings"]["MouseInvertY"] != null)
+                    if (jsonObject["GameInputSettings"]["MouseInvertY"] != null && SharedSettings.instance.input.mouseInvertY != GameInputSettings.MouseInvertY)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.mouseInvertY'=> '{GameInputSettings.MouseInvertY}'");
                         SharedSettings.instance.input.mouseInvertY = GameInputSettings.MouseInvertY;
                     }
-                    if (jsonObject["GameInputSettings"]["GamepadMoveSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["GamepadMoveSensitivity"] != null && SharedSettings.instance.input.gamepadMoveSensitivity != GameInputSettings.GamepadMoveSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.gamepadMoveSensitivity'=> '{GameInputSettings.GamepadMoveSensitivity}'");
                         SharedSettings.instance.input.gamepadMoveSensitivity = GameInputSettings.GamepadMoveSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["GamepadRotateSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["GamepadRotateSensitivity"] != null && SharedSettings.instance.input.gamepadRotateSensitivity != GameInputSettings.GamepadRotateSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.gamepadRotateSensitivity'=> '{GameInputSettings.GamepadRotateSensitivity}'");
                         SharedSettings.instance.input.gamepadRotateSensitivity = GameInputSettings.GamepadRotateSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["GamepadZoomSensitivity"] != null)
+                    if (jsonObject["GameInputSettings"]["GamepadZoomSensitivity"] != null && SharedSettings.instance.input.gamepadZoomSensitivity != GameInputSettings.GamepadZoomSensitivity)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.gamepadZoomSensitivity'=> '{GameInputSettings.GamepadZoomSensitivity}'");
                         SharedSettings.instance.input.gamepadZoomSensitivity = GameInputSettings.GamepadZoomSensitivity;
                     }
-                    if (jsonObject["GameInputSettings"]["GamepadInvertX"] != null)
+                    if (jsonObject["GameInputSettings"]["GamepadInvertX"] != null && SharedSettings.instance.input.gamepadInvertX != GameInputSettings.GamepadInvertX)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.gamepadInvertX'=> '{GameInputSettings.GamepadInvertX}'");
                         SharedSettings.instance.input.gamepadInvertX = GameInputSettings.GamepadInvertX;
                     }
-                    if (jsonObject["GameInputSettings"]["GamepadInvertY"] != null)
+                    if (jsonObject["GameInputSettings"]["GamepadInvertY"] != null && SharedSettings.instance.input.gamepadInvertY != GameInputSettings.GamepadInvertY)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'input.gamepadInvertY'=> '{GameInputSettings.GamepadInvertY}'");
                         SharedSettings.instance.input.gamepadInvertY = GameInputSettings.GamepadInvertY;
                     }
@@ -1438,72 +1419,85 @@ namespace SimpleModChecker.Systems
                 {
                     GameInterfaceSettings GameInterfaceSettings = jsonObject["GameInterfaceSettings"].ToObject<GameInterfaceSettings>();
 
-                    if (jsonObject["GameInterfaceSettings"]["CurrentLocale"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["CurrentLocale"] != null && SharedSettings.instance.userInterface.currentLocale != GameInterfaceSettings.CurrentLocale)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.currentLocale'=> '{GameInterfaceSettings.CurrentLocale}'");
                         SharedSettings.instance.userInterface.currentLocale = GameInterfaceSettings.CurrentLocale;
                     }
                     if (!loadedMods.Contains("ExtraUIScreens"))
                     {
-                        if (jsonObject["GameInterfaceSettings"]["InterfaceStyle"] != null)
+                        if (jsonObject["GameInterfaceSettings"]["InterfaceStyle"] != null && SharedSettings.instance.userInterface.interfaceStyle != GameInterfaceSettings.InterfaceStyle)
                         {
+                            i++;
                             if (log) Mod.log.Info($"Restoring 'userInterface.interfaceStyle'=> '{GameInterfaceSettings.InterfaceStyle}'");
                             SharedSettings.instance.userInterface.interfaceStyle = GameInterfaceSettings.InterfaceStyle;
                         }
                     }
                     else { Mod.log.Info("InterfaceStyle ignored because ExtraUIScreen is present."); }
-                    if (jsonObject["GameInterfaceSettings"]["InterfaceTransparency"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["InterfaceTransparency"] != null && SharedSettings.instance.userInterface.interfaceTransparency != GameInterfaceSettings.InterfaceTransparency)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.interfaceTransparency'=> '{GameInterfaceSettings.InterfaceTransparency}'");
                         SharedSettings.instance.userInterface.interfaceTransparency = GameInterfaceSettings.InterfaceTransparency;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["InterfaceScaling"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["InterfaceScaling"] != null && SharedSettings.instance.userInterface.interfaceScaling != GameInterfaceSettings.InterfaceScaling)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.interfaceScaling'=> '{GameInterfaceSettings.InterfaceScaling}'");
                         SharedSettings.instance.userInterface.interfaceScaling = GameInterfaceSettings.InterfaceScaling;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["TextScale"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["TextScale"] != null && SharedSettings.instance.userInterface.textScale != GameInterfaceSettings.TextScale)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.textScale'=> '{GameInterfaceSettings.TextScale}'");
                         SharedSettings.instance.userInterface.textScale = GameInterfaceSettings.TextScale;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["UnlockHighlightsEnabled"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["UnlockHighlightsEnabled"] != null && SharedSettings.instance.userInterface.unlockHighlightsEnabled != GameInterfaceSettings.UnlockHighlightsEnabled)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.unlockHighlightsEnabled'=> '{GameInterfaceSettings.UnlockHighlightsEnabled}'");
                         SharedSettings.instance.userInterface.unlockHighlightsEnabled = GameInterfaceSettings.UnlockHighlightsEnabled;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["ChirperPopupsEnabled"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["ChirperPopupsEnabled"] != null && SharedSettings.instance.userInterface.chirperPopupsEnabled != GameInterfaceSettings.ChirperPopupsEnabled)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.chirperPopupsEnabled'=> '{GameInterfaceSettings.ChirperPopupsEnabled}'");
                         SharedSettings.instance.userInterface.chirperPopupsEnabled = GameInterfaceSettings.ChirperPopupsEnabled;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["InputHintsType"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["InputHintsType"] != null && SharedSettings.instance.userInterface.inputHintsType != GameInterfaceSettings.InputHintsType)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.inputHintsType'=> '{GameInterfaceSettings.InputHintsType}'");
                         SharedSettings.instance.userInterface.inputHintsType = GameInterfaceSettings.InputHintsType;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["KeyboardLayout"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["KeyboardLayout"] != null && SharedSettings.instance.userInterface.keyboardLayout != GameInterfaceSettings.KeyboardLayout)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.keyboardLayout'=> '{GameInterfaceSettings.KeyboardLayout}'");
                         SharedSettings.instance.userInterface.keyboardLayout = GameInterfaceSettings.KeyboardLayout;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["TimeFormat"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["TimeFormat"] != null && SharedSettings.instance.userInterface.timeFormat != GameInterfaceSettings.TimeFormat)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.timeFormat'=> '{GameInterfaceSettings.TimeFormat}'");
                         SharedSettings.instance.userInterface.timeFormat = GameInterfaceSettings.TimeFormat;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["TemperatureUnit"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["TemperatureUnit"] != null && SharedSettings.instance.userInterface.temperatureUnit != GameInterfaceSettings.TemperatureUnit)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.temperatureUnit'=> '{GameInterfaceSettings.TemperatureUnit}'");
                         SharedSettings.instance.userInterface.temperatureUnit = GameInterfaceSettings.TemperatureUnit;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["UnitSystem"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["UnitSystem"] != null && SharedSettings.instance.userInterface.unitSystem != GameInterfaceSettings.UnitSystem)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.unitSystem'=> '{GameInterfaceSettings.UnitSystem}'");
                         SharedSettings.instance.userInterface.unitSystem = GameInterfaceSettings.UnitSystem;
                     }
-                    if (jsonObject["GameInterfaceSettings"]["BlockingPopupsEnabled"] != null)
+                    if (jsonObject["GameInterfaceSettings"]["BlockingPopupsEnabled"] != null && SharedSettings.instance.userInterface.blockingPopupsEnabled != GameInterfaceSettings.BlockingPopupsEnabled)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userInterface.blockingPopupsEnabled'=> '{GameInterfaceSettings.BlockingPopupsEnabled}'");
                         SharedSettings.instance.userInterface.blockingPopupsEnabled = GameInterfaceSettings.BlockingPopupsEnabled;
                     }
@@ -1513,39 +1507,56 @@ namespace SimpleModChecker.Systems
                 {
                     GameUserState GameUserState = jsonObject["GameUserState"].ToObject<GameUserState>();
 
-                    if (jsonObject["GameUserState"]["lastCloudTarget"] != null)
+                    if (jsonObject["GameUserState"]["lastCloudTarget"] != null && SharedSettings.instance.userState.lastCloudTarget != GameUserState.LastCloudTarget)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userState.lastCloudTarget'=> '{GameUserState.LastCloudTarget}'");
                         SharedSettings.instance.userState.lastCloudTarget = GameUserState.LastCloudTarget;
                     }
-                    if (jsonObject["GameUserState"]["leftHandTraffic"] != null)
+                    if (jsonObject["GameUserState"]["leftHandTraffic"] != null && SharedSettings.instance.userState.leftHandTraffic != GameUserState.LeftHandTraffic)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userState.leftHandTraffic'=> '{GameUserState.LeftHandTraffic}'");
                         SharedSettings.instance.userState.leftHandTraffic = GameUserState.LeftHandTraffic;
                     }
-                    if (jsonObject["GameUserState"]["naturalDisasters"] != null)
+                    if (jsonObject["GameUserState"]["naturalDisasters"] != null && SharedSettings.instance.userState.naturalDisasters != GameUserState.NaturalDisasters)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userState.naturalDisasters'=> '{GameUserState.NaturalDisasters}'");
                         SharedSettings.instance.userState.naturalDisasters = GameUserState.NaturalDisasters;
                     }
-                    if (jsonObject["GameUserState"]["unlockAll"] != null)
+                    if (jsonObject["GameUserState"]["unlockAll"] != null && SharedSettings.instance.userState.unlockAll != GameUserState.UnlockAll)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userState.unlockAll'=> '{GameUserState.UnlockAll}'");
                         SharedSettings.instance.userState.unlockAll = GameUserState.UnlockAll;
                     }
-                    if (jsonObject["GameUserState"]["unlimitedMoney"] != null)
+                    if (jsonObject["GameUserState"]["unlimitedMoney"] != null && SharedSettings.instance.userState.unlimitedMoney != GameUserState.UnlimitedMoney)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userState.unlimitedMoney'=> '{GameUserState.UnlimitedMoney}'");
                         SharedSettings.instance.userState.unlimitedMoney = GameUserState.UnlimitedMoney;
                     }
-                    if (jsonObject["GameUserState"]["unlockMapTiles"] != null)
+                    if (jsonObject["GameUserState"]["unlockMapTiles"] != null && SharedSettings.instance.userState.unlockMapTiles != GameUserState.UnlockMapTiles)
                     {
+                        i++;
                         if (log) Mod.log.Info($"Restoring 'userState.unlockMapTiles'=> '{GameUserState.UnlockMapTiles}'");
                         SharedSettings.instance.userState.unlockMapTiles = GameUserState.UnlockMapTiles;
                     }
                 }
-                SharedSettings.instance.Apply();
-                Mod.log.Info("Game Settings Restoration Complete...");
+                if (i>0)
+                {
+                    SharedSettings.instance.Apply();
+                    Mod.log.Info($"Game Settings Restoration Complete: {Path.GetFileName(backupFile)}... {i} options restored.");
+                    NotificationSystem.Pop("starq-smc-game-settings-restore",
+                            title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                            text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreGame]"),
+                            delay: 5f); ;
+                }
+                else
+                {
+                    Mod.log.Info("No changes found to restore Game Settings...");
+                }
             }
             catch (Exception ex)
             {

@@ -133,10 +133,10 @@ namespace SimpleModCheckerPlus
         public bool IsInGameOrEditor { get; set; } = false;
         [SettingsUIHidden]
         public bool ReadyForVerify => !(!VerifiedRecently && !IsInGameOrEditor);
-        [SettingsUIHidden]
-        public long LastDownloaded { get; set; } = (long)0;
-        [SettingsUIHidden]
-        public long LastChecked { get; set; } = (long)0;
+        //[SettingsUIHidden]
+        //public long LastDownloaded { get; set; } = (long)0;
+        //[SettingsUIHidden]
+        //public long LastChecked { get; set; } = (long)0;
 
         //[SettingsUIMultilineText]
         //[SettingsUISection(ModListTab, ModListGroup)]
@@ -362,8 +362,8 @@ namespace SimpleModCheckerPlus
             ProfileName9 = "Profile 9";
             VerifiedRecently = false;
             IsInGameOrEditor = false;
-            LastDownloaded = (long)0;
-            LastChecked = (long)0;
+            //LastDownloaded = (long)0;
+            //LastChecked = (long)0;
         }
     }
 }

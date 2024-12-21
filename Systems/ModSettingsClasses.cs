@@ -1602,6 +1602,55 @@ namespace SimpleModChecker.Systems
         }
     }
 
+    public class HistoricalStartSettings : SettingsBackup
+    {
+        public bool UnlockBus
+        {
+            get => (bool)GetValue(nameof(UnlockBus));
+            set => SetValue(nameof(UnlockBus), value);
+        }
+        public bool UnlockTrams
+        {
+            get => (bool)GetValue(nameof(UnlockTrams));
+            set => SetValue(nameof(UnlockTrams), value);
+        }
+        public bool UnlockTrains
+        {
+            get => (bool)GetValue(nameof(UnlockTrains));
+            set => SetValue(nameof(UnlockTrains), value);
+        }
+        public bool UnlockShips
+        {
+            get => (bool)GetValue(nameof(UnlockShips));
+            set => SetValue(nameof(UnlockShips), value);
+        }
+        public bool UnlockFarming
+        {
+            get => (bool)GetValue(nameof(UnlockFarming));
+            set => SetValue(nameof(UnlockFarming), value);
+        }
+        public bool UnlockMining
+        {
+            get => (bool)GetValue(nameof(UnlockMining));
+            set => SetValue(nameof(UnlockMining), value);
+        }
+        public bool UnlockOil
+        {
+            get => (bool)GetValue(nameof(UnlockOil));
+            set => SetValue(nameof(UnlockOil), value);
+        }
+        public bool UnlockBasicHighways
+        {
+            get => (bool)GetValue(nameof(UnlockBasicHighways));
+            set => SetValue(nameof(UnlockBasicHighways), value);
+        }
+        public bool UnlockAllHighways
+        {
+            get => (bool)GetValue(nameof(UnlockAllHighways));
+            set => SetValue(nameof(UnlockAllHighways), value);
+        }
+    }
+
     public class I18NEverywhereSettings : SettingsBackup
     {
         public bool Overwrite
@@ -3949,10 +3998,35 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(AgeSelectionTechnique));
             set => SetValue(nameof(AgeSelectionTechnique), value);
         }
+        public bool IncludeStumps
+        {
+            get => (bool)GetValue(nameof(IncludeStumps));
+            set => SetValue(nameof(IncludeStumps), value);
+        }
+        public bool FasterFullBrushStrength
+        {
+            get => (bool)GetValue(nameof(FasterFullBrushStrength));
+            set => SetValue(nameof(FasterFullBrushStrength), value);
+        }
+        public bool LimitedTreeAnarchy
+        {
+            get => (bool)GetValue(nameof(LimitedTreeAnarchy));
+            set => SetValue(nameof(LimitedTreeAnarchy), value);
+        }
         public int ColorVariationSet
         {
             get => (int)GetValue(nameof(ColorVariationSet));
             set => SetValue(nameof(ColorVariationSet), value);
+        }
+        public bool FreeVegetation
+        {
+            get => (bool)GetValue(nameof(FreeVegetation));
+            set => SetValue(nameof(FreeVegetation), value);
+        }
+        public bool ConstrainBrush
+        {
+            get => (bool)GetValue(nameof(ConstrainBrush));
+            set => SetValue(nameof(ConstrainBrush), value);
         }
         public int SelectedWindOption
         {
@@ -4355,6 +4429,7 @@ namespace SimpleModChecker.Systems
         public FiveTwentyNineTilesSettings FiveTwentyNineTilesSettings { get; set; }
         public FPSLimiterSettings FPSLimiterSettings { get; set; }
         public HallOfFameSettings HallOfFameSettings { get; set; }
+        public HistoricalStartSettings HistoricalStartSettings { get; set; }
         public I18NEverywhereSettings I18NEverywhereSettings { get; set; }
         public ImageOverlaySettings ImageOverlaySettings { get; set; }
         public InfoLoomTwoSettings InfoLoomTwoSettings { get; set; }

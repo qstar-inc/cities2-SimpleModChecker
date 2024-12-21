@@ -5,7 +5,6 @@
 using Colossal.IO.AssetDatabase;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
-using Game.Modding;
 using Game.PSI;
 using Game.UI.Localization;
 using Game;
@@ -16,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System;
 
 namespace SimpleModChecker.Systems
@@ -24,9 +24,9 @@ namespace SimpleModChecker.Systems
     {
         public Mod _mod;
         public static ModCheckup SMC = new();
-        private readonly List<string> loadedMods = SMC.GetLoadedMods();
-        public static ModManager modManager;
-        private static Dictionary<string, ModInfo> ModDatabaseInfo;
+        public static readonly List<string> loadedMods = SMC.GetLoadedMods();
+        //public static ModManager modManager;
+        public static Dictionary<string, ModInfo> ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
         private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_prev.json";
         private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_1.json";
         private readonly string backupFile2 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_2.json";
@@ -37,6 +37,7 @@ namespace SimpleModChecker.Systems
         private readonly string backupFile7 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_7.json";
         private readonly string backupFile8 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_8.json";
         private readonly string backupFile9 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_9.json";
+        private static int i = 0;
 
         private bool AutoRestoreDone = false;
  
@@ -87,10 +88,6 @@ namespace SimpleModChecker.Systems
                             if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
                             {
                                 RestoreBackup(1, false);
-                                NotificationSystem.Pop("starq-smc-mod-settings-restore",
-                                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreMods]"),
-                                        delay: 10f);
                             }
                             else
                             {
@@ -133,7 +130,14 @@ namespace SimpleModChecker.Systems
 
         public void CreateBackup(int profile, bool log = true)
         {
-            
+            if (!ModDatabase.isModDatabaseLoaded)
+            {
+                Mod.log.Info("Mod Database wasn't loaded. Attempting to reload");
+                ModDatabase.LoadModDatabase();
+                CreateBackup(profile, log);
+                return;
+            }
+
             string backupFile = profile switch
             {
                 0 => backupFile0,
@@ -160,111 +164,121 @@ namespace SimpleModChecker.Systems
                 ModVersion = Mod.Version,
                 LastUpdated = DateTime.Now.ToLongDateString()
             };
-            
-            foreach (var entry in ModDatabaseInfo)
+
+            try
             {
-                //try { Mod.log.Info(entry.Key); } catch (Exception) { Mod.log.Info($"entry.Key"); }
-                //try { Mod.log.Info(entry.Value.ToString()); } catch (Exception) { Mod.log.Info($"entry.Value"); }
-                if (entry.Value.Backupable == false)
+                if (ModDatabaseInfo == null)
                 {
-                    continue;
+                    ModDatabase.LoadModDatabase();
+                    Mod.log.Info($"Trying to backup {ModDatabaseInfo.Count} mods");
                 }
-                try
+                foreach (var entry in ModDatabaseInfo)
                 {
-                    string sectionName = entry.Key;
-                    string fragmentSource = entry.Value.FragmentSource;
-                    Type classType = entry.Value.ClassType;
-                    string assembly = entry.Value.AssemblyName;
-
-                    //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
-
-                    if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
-                    if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
-                    //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
-
-                    PropertyInfo property = typeof(ModSettings).GetProperty($"{entry.Value.ClassType.Name}");
-                    //try { Mod.log.Info($"{property.Name} found"); } catch (Exception) { Mod.log.Info($"property found"); }
-                    object sectionSettings;// = Activator.CreateInstance(classType);
-                    sectionSettings = default;
-                    //Mod.log.Info(loadedMods.Contains(assembly));
-                    if (!loadedMods.Contains(assembly))
+                    Mod.log.Info($"Backing up {entry.Value.ModName}"); // if (log) 
+                    //try { Mod.log.Info(entry.Key); } catch (Exception) { Mod.log.Info($"entry.Key"); }
+                    //try { Mod.log.Info(entry.Value.ToString()); } catch (Exception) { Mod.log.Info($"entry.Value"); }
+                    if (entry.Value.Backupable == false)
                     {
-                        if (log) Mod.log.Info($"{sectionName} is not currently loaded.");
-                        if (File.Exists(backupFile))
+                        continue;
+                    }
+                    try
+                    {
+                        string sectionName = entry.Key;
+                        string fragmentSource = entry.Value.FragmentSource;
+                        Type classType = entry.Value.ClassType;
+                        string assembly = entry.Value.AssemblyName;
+
+                        //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
+
+                        if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
+                        if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
+                        //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
+
+                        PropertyInfo property = typeof(ModSettings).GetProperty($"{entry.Value.ClassType.Name}");
+                        //try { Mod.log.Info($"{property.Name} found"); } catch (Exception) { Mod.log.Info($"property found"); }
+                        object sectionSettings;// = Activator.CreateInstance(classType);
+                        sectionSettings = default;
+                        //Mod.log.Info(loadedMods.Contains(assembly));
+                        if (!loadedMods.Contains(assembly))
                         {
-                            string jsonStringRead = File.ReadAllText(backupFile);
-                            if (!string.IsNullOrEmpty(jsonStringRead))
+                            if (log) Mod.log.Info($"{sectionName} is not currently loaded.");
+                            if (File.Exists(backupFile))
                             {
-                                try
+                                string jsonStringRead = File.ReadAllText(backupFile);
+                                if (!string.IsNullOrEmpty(jsonStringRead))
                                 {
-                                    JObject jsonObject = JObject.Parse(jsonStringRead);
-                                    var settingsJson = jsonObject[classType.Name];
-                                    //Mod.log.Info("5");
-                                    if (settingsJson != null && settingsJson.Type != JTokenType.Null)
+                                    try
                                     {
-                                        //Mod.log.Info("4");
-                                        try
+                                        JObject jsonObject = JObject.Parse(jsonStringRead);
+                                        var settingsJson = jsonObject[classType.Name];
+                                        //Mod.log.Info("5");
+                                        if (settingsJson != null && settingsJson.Type != JTokenType.Null)
                                         {
-                                            //Mod.log.Info("1");
-                                            ConstructorInfo constructor = classType.GetConstructor(Type.EmptyTypes);
-                                            if (constructor != null)
+                                            //Mod.log.Info("4");
+                                            try
                                             {
-                                                sectionSettings = constructor.Invoke(null);
-                                            }
-                                            else
-                                            {
-                                                Mod.log.Info($"No parameterless constructor found for {classType.Name}");
-                                                sectionSettings = null;
-                                            }
-                                            //Mod.log.Info("2");
-                                            foreach (PropertyInfo prop in classType.GetProperties())
-                                            {
-                                                //Mod.log.Info("3");
-                                                //Mod.log.Info(prop.Name);
-                                                //Mod.log.Info(settingsJson[prop.Name] != null);
-                                                //Mod.log.Info(settingsJson[prop.Name].Type != JTokenType.Null);
-                                                if (settingsJson[prop.Name] != null && settingsJson[prop.Name].Type != JTokenType.Null)
+                                                //Mod.log.Info("1");
+                                                ConstructorInfo constructor = classType.GetConstructor(Type.EmptyTypes);
+                                                if (constructor != null)
                                                 {
-                                                    //Mod.log.Info("X");
-                                                    var value = settingsJson[prop.Name].ToObject(prop.PropertyType);
-                                                    prop.SetValue(sectionSettings, value);
-                                                    //Mod.log.Info(value);
+                                                    sectionSettings = constructor.Invoke(null);
                                                 }
                                                 else
                                                 {
-                                                    prop.SetValue(sectionSettings, null);
-                                                    //Mod.log.Info("setting null");
+                                                    Mod.log.Info($"No parameterless constructor found for {classType.Name}");
+                                                    sectionSettings = null;
                                                 }
-                                            }
-                                            //Mod.log.Info($"Existing {sectionName}Settings found.");
-                                            //sectionSettings = jsonObject[entry.Value.ClassType.Name].ToObject(classType);
-                                            if (log) Mod.log.Info($"Keeping existing backup for {sectionName}.");
-                                        } catch (Exception ex) { Mod.log.Info("Error: " + ex); }
-                                    }
-                                } catch (Exception ex) { Mod.log.Info("Error: " + ex); }
+                                                //Mod.log.Info("2");
+                                                foreach (PropertyInfo prop in classType.GetProperties())
+                                                {
+                                                    //Mod.log.Info("3");
+                                                    //Mod.log.Info(prop.Name);
+                                                    //Mod.log.Info(settingsJson[prop.Name] != null);
+                                                    //Mod.log.Info(settingsJson[prop.Name].Type != JTokenType.Null);
+                                                    if (settingsJson[prop.Name] != null && settingsJson[prop.Name].Type != JTokenType.Null)
+                                                    {
+                                                        //Mod.log.Info("X");
+                                                        var value = settingsJson[prop.Name].ToObject(prop.PropertyType);
+                                                        prop.SetValue(sectionSettings, value);
+                                                        //Mod.log.Info(value);
+                                                    }
+                                                    else
+                                                    {
+                                                        prop.SetValue(sectionSettings, null);
+                                                        //Mod.log.Info("setting null");
+                                                    }
+                                                }
+                                                //Mod.log.Info($"Existing {sectionName}Settings found.");
+                                                //sectionSettings = jsonObject[entry.Value.ClassType.Name].ToObject(classType);
+                                                if (log) Mod.log.Info($"Keeping existing backup for {sectionName}.");
+                                            } catch (Exception ex) { Mod.log.Info("Error: " + ex); }
+                                        }
+                                    } catch (Exception ex) { Mod.log.Info("Error: " + ex); }
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        try
+                        else
                         {
-                            sectionSettings = GetSettingsData(sectionName, fragmentSource, sectionSettings, classType, log);
-                        } catch (Exception ex ) { Mod.log.Info("ERR: "+ex); }
-                    }
+                            try
+                            {
+                                sectionSettings = GetSettingsData(sectionName, fragmentSource, sectionSettings, classType, log);
+                            } catch (Exception ex ) { Mod.log.Info("ERR: "+ex); }
+                        }
 
-                    //string TempForLogging = JsonConvert.SerializeObject(sectionSettings);
-                    //Mod.log.Info(TempForLogging);
-                    property?.SetValue(ModSettings, sectionSettings);
+                        //string TempForLogging = JsonConvert.SerializeObject(sectionSettings);
+                        //Mod.log.Info(TempForLogging);
+                        property?.SetValue(ModSettings, sectionSettings);
+                    }
+                    catch (Exception ex) { Mod.log.Info(ex); }
                 }
-                catch (Exception ex) { Mod.log.Info(ex); }
             }
+            catch (Exception ex) { Mod.log.Info(ex); }
 
             try
             {
                 string jsonString = JsonConvert.SerializeObject(ModSettings, Formatting.Indented);
                 File.WriteAllText(backupFile, jsonString);
-                Mod.log.Info($"Mod Settings backup created successfully: {backupFile}");
+                Mod.log.Info($"Mod Settings backup created successfully: {Path.GetFileName(backupFile)}");
             }
             catch (Exception ex) { Mod.log.Info(ex); }
         }
@@ -367,6 +381,7 @@ namespace SimpleModChecker.Systems
                 case "74286+FPS_Limiter.FPSLimiterSettings":
                 case "74324+MoveIt.Settings.Settings":
                 case "74328+FiveTwentyNineTiles.ModSettings":
+                case "74535+HistoricalStart.ModSettings":
                 case "74539+ImageOverlay.ModSettings":
                 case "74604+Anarchy.Settings.AnarchyModSettings":
                 case "75190+SchoolCapacityBalancer.Setting":
@@ -456,6 +471,7 @@ namespace SimpleModChecker.Systems
 
         public void RestoreBackup(int profile, bool log = true)
         {
+            i = 0;
             string backupFile = profile switch
             {
                 0 => backupFile0,
@@ -509,7 +525,20 @@ namespace SimpleModChecker.Systems
                         SetSettings(assembly, fragmentSource, jsonObject, classType.Name, log);
                     }
                 }
-                Mod.log.Info("Mod Settings Restoration Complete...");
+
+                if (i>0)
+                {
+                    NotificationSystem.Pop("starq-smc-mod-settings-restore",
+                            title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                            text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreMods]"),
+                            delay: 5f);
+                    Mod.log.Info($"Mod Settings Restoration Complete: {Path.GetFileName(backupFile)}... ({i} options restored)");
+                }
+                else
+                {
+                    Mod.log.Info("No changes found to restore Mod Settings...");
+                }
+
             }
             catch (Exception ex)
             {
@@ -519,6 +548,7 @@ namespace SimpleModChecker.Systems
 
         public void SetSettings(string name, string fragmentSource, JObject sourceObj, string className, bool log)
         {
+            
             //Mod.log.Info($"Setting Settings for {name} with {fragmentSource} in {className}");
             JsonSerializerSettings JsonSerializerSettings = new()
             {
@@ -553,14 +583,23 @@ namespace SimpleModChecker.Systems
                                     var propInfo = fragment.source.GetType().GetProperty(prop.Name);
                                     if (propInfo != null && propInfo.CanWrite && !propInfo.ToString().StartsWith("Game.Input.ProxyBinding"))
                                     {
-                                        propInfo.SetValue(fragment.source, prop.Value.ToObject(propInfo.PropertyType));
+                                        var oldValue = propInfo.GetValue(fragment.source);
+                                        var newValue = prop.Value.ToObject(propInfo.PropertyType);
+                                        if (oldValue != newValue)
+                                        {
+                                            if (sectionKey != "SimpleModCheckerSettings")
+                                            {
+                                                Mod.log.Info($"Restoring '{sectionKey}:{prop.Name}'.");
+                                                i++;
+                                            }
+                                            propInfo.SetValue(fragment.source, newValue);
+                                        }
                                     }
                                 }
 
-                                Mod.log.Info($"Restoring {sectionKey} settings.");
                                 try
                                 {
-                                    settingAsset.Save();
+                                    Task.Run(() => settingAsset.Save(true)).Wait(); 
                                     if (log) Mod.log.Info($"{sectionKey} setting saved.");
                                 }
                                 catch (Exception ex)
@@ -592,6 +631,7 @@ namespace SimpleModChecker.Systems
                 "FPS_Limiter.FPSLimiterSettings+FPS_Limiter" => "FPSLimiterSettings",
                 "MoveIt.Settings.Settings+MoveIt" => "MoveItSettings",
                 "FiveTwentyNineTiles.ModSettings+FiveTwentyNineTiles" => "FiveTwentyNineTilesSettings",
+                "HistoricalStart.ModSettings+HistoricalStart" => "HistoricalStartSettings",
                 "ImageOverlay.ModSettings+ImageOverlay" => "ImageOverlaySettings",
                 "Anarchy.Settings.AnarchyModSettings+Anarchy" => "AnarchySettings",
                 "SchoolCapacityBalancer.Setting+SchoolCapacityBalancer" => "SchoolCapacityBalancerSettings",
@@ -667,31 +707,31 @@ namespace SimpleModChecker.Systems
                 }
                 Mod.log.Info(settingAsset.name);
                 foreach (var fragment in settingAsset)
+                {
+                    try
                     {
-                        try
-                        {
-                        if (fragment.source == null)
-                        {
-                            continue;
-                        }
-                            string fragmentSourceType = fragment.source.ToString();
-                            Mod.log.Info($"fragment.source = \"{fragmentSourceType}\"");
-                            //try
-                            //{
-                            //    if (fragmentSourceType == "XX")
-                            //    {
-                            //        try { Mod.log.Info(fragment.source.ToJSONString()); } catch (Exception ex) { Mod.log.Info(ex); }
-                            //        try { Mod.log.Info(fragment.source.ToString()); } catch (Exception ex) { Mod.log.Info(ex); }
-                            //    }
-                            //}
-                            //catch (Exception ex)
-                            //{ Mod.log.Info(ex); }
-                        }
-                        catch (Exception ex)
-                        {
-                            Mod.log.Info(ex);
-                        }
+                    if (fragment.source == null)
+                    {
+                        continue;
                     }
+                        string fragmentSourceType = fragment.source.ToString();
+                        Mod.log.Info($"fragment.source = \"{fragmentSourceType}\"");
+                        //try
+                        //{
+                        //    if (fragmentSourceType == "XX")
+                        //    {
+                        //        try { Mod.log.Info(fragment.source.ToJSONString()); } catch (Exception ex) { Mod.log.Info(ex); }
+                        //        try { Mod.log.Info(fragment.source.ToString()); } catch (Exception ex) { Mod.log.Info(ex); }
+                        //    }
+                        //}
+                        //catch (Exception ex)
+                        //{ Mod.log.Info(ex); }
+                    }
+                    catch (Exception ex)
+                    {
+                        Mod.log.Info(ex);
+                    }
+                }
             }
         }
     }

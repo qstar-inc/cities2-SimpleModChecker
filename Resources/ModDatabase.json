@@ -28,6 +28,14 @@
       "Author": "algernon",
       "Backupable": true
     },
+    "74535": {
+      "AssemblyName": "HistoricalStart",
+      "FragmentSource": "HistoricalStart.ModSettings",
+      "ClassType": "HistoricalStartSettings",
+      "ModName": "Historical Start",
+      "Author": "algernon",
+      "Backupable": true
+    },
     "74539": {
       "AssemblyName": "ImageOverlay",
       "FragmentSource": "ImageOverlay.ModSettings",

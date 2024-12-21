@@ -1,3 +1,10 @@
+# 3.2.2 (2024-12-21) - 4987 subs
+- Added trackers to keep count of how many settings restored.
+- Show the restore notification only if there's anything to restore.
+- Remove obsolete online ModDatabase check. ModDatabase is now retrieved locally.
+- Added "Historical Start" to Mod Settings Backup/Restore.
+- Fixed cases where Mod Restore caused error to be triggered.
+
 # 3.2.0 (2024-12-19) - 4949 subs
 - Play a sound after Mod Initialization completes.
 - New "Loaded Mods" list which now includes Package (non code) mods as well in a separate group.

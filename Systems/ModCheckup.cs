@@ -5,6 +5,8 @@
 using Colossal.PSI.Common;
 using Colossal.PSI.PdxSdk;
 using Colossal.Serialization.Entities;
+using Game.Audio;
+using Game.Prefabs;
 using Game.PSI;
 using Game.SceneFlow;
 using Game.UI.Localization;
@@ -14,13 +16,10 @@ using Mod = SimpleModCheckerPlus.Mod;
 using System.Collections.Generic;
 using System.IO;
 using System;
-using Game.Audio;
-using Game.Prefabs;
 using Unity.Entities;
 
 namespace SimpleModChecker.Systems
 {
-
     public partial class ModCheckup : GameSystemBase
     {
         public Mod _mod;
@@ -396,7 +395,7 @@ namespace SimpleModChecker.Systems
             }
             else { version = $" v{mod.UserModVersion}"; }
 
-            return $"• <{mod.DisplayName.Replace("<", "(").Replace(">", ")")}>{version} [{mod.Id}] — <{mod.Author}>{outDatedText}\r\n";
+            return $"• [{mod.Id}] <{mod.DisplayName.Replace("<", "(").Replace(">", ")")}>{version} — <{mod.Author}>{outDatedText}\r\n";
         }
 
         public static LocalizedString CodeModsText => LocalizedString.Id(LoadedList("CodeMods"));

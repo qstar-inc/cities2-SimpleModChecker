@@ -14,10 +14,10 @@ using UnityEngine;
 
 namespace SimpleModCheckerPlus
 {
-    public partial class CIDBackupRestore(Mod mod) : GameSystemBase
+    public partial class CIDBackupRestore : GameSystemBase
     {
-        public Mod _mod = mod;
-        public List<string> CanDelete = [];
+        public Mod _mod;
+        public static List<string> CanDelete = [];
 
         protected override void OnCreate()
         {
@@ -78,7 +78,7 @@ namespace SimpleModCheckerPlus
 
         }
 
-        public void DeleteFolders(string Method = null)
+        public static void DeleteFolders(string Method = null)
         {
             Mod.log.Info(CanDelete.Count);
             for (int i = CanDelete.Count - 1; i >= 0; i--)

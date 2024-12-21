@@ -238,8 +238,8 @@ namespace SimpleModChecker
                 textId: "SimpleModCheckerPlus.VerifyEnd",
                 progressState: hasIssue,
                 onClicked: () => {
-                    ModCheckup.uISystem.OpenPage("SimpleModChecker.SimpleModCheckerPlus.Mod", "Setting.ModListTab", false);
                     NotificationSystem.Pop("starq-smc-verify-mod");
+                    ModCheckup.uISystem.OpenPage("SimpleModChecker.SimpleModCheckerPlus.Mod", "Setting.ModListTab", false);
                 }
             );
         }

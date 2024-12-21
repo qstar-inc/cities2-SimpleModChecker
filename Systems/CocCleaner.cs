@@ -6,7 +6,7 @@ using Colossal.PSI.Environment;
 using Game.PSI;
 using Game.UI.Localization;
 using Game;
-using SimpleModCheckerPlus;
+using Mod = SimpleModCheckerPlus.Mod;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -15,10 +15,10 @@ using UnityEngine;
 
 namespace SimpleModChecker.Systems
 {
-    public partial class CocCleaner(Mod mod) : GameSystemBase
+    public partial class CocCleaner : GameSystemBase
     {
-        public Mod _mod = mod;
-        public List<string> CanDelete = [];
+        public Mod _mod;
+        public static List<string> CanDelete = [];
 
         protected override void OnCreate()
         {
@@ -50,7 +50,7 @@ namespace SimpleModChecker.Systems
 
         }
 
-        public void DeleteFolders(string Method = null)
+        public static void DeleteFolders(string Method = null)
         {
             for (int i = CanDelete.Count - 1; i >= 0; i--)
             {

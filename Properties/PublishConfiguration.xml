@@ -25,7 +25,8 @@ If you don't see the notification at all, it means no mods were loaded and you n
 * See list of all mods loaded in the current session (grouped by Code Mods and non-Code mods).
 * Backup and Restore Game Settings and selected Mod Settings, and all keybinds (game and mod).
 * Automatically restore settings with values saved to 'Profile 1' on startup.
-* Trigger a mod verification checkup for all downloaded mods (checks weather the files has been tampered, or if there's more than one version of the same mode is on storage)
+* Trigger a mod verification checkup for all downloaded mods (checks weather the files has been tampered, or if there's more than one version of the same mode is on storage). Found under the "Loaded Mods" list, which when clicked will launch a set of checks to ensure the integrity of the mods. It will check if you have multiple version of the same mod downloaded and also the integrity of each file in your whole PDX Mods folder. Any files ending with "backup" are ignored. The process will only inform you about the verification result, any other steps to resolve those issues will need to be done manually.
+* `ModsData/ModDatabase.json` is now only used for enabling/disabling what mod to back up. If a mod is causing issue, you can manually edit the `ModDatabase.json` file until I get an update out.
 
 **IMPORTANT**: It is required to make separate backup manually in Profile 1 for Game Settings, Mod Settings and Keybinds first time for the Auto Restore to work afterwards.
 
@@ -57,23 +58,19 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="3.2.0" />
+	<ModVersion Value="3.2.2" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.2*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="3.2.0" />
+	<ChangeLog Value="3.2.2" />
 	<ChangeLog>
-- Play a sound after Mod Initialization completes.
-- New "Loaded Mods" list which now includes Package (non code) mods as well in a separate group.
-- "Loaded Mods" now will show info directly from your current playset instead of curated ModDatabase, including mod version and if a mod is outdated (info depend on latest PDX mod sync data run by the game/Skyve).
-- ModDatabase is now only used for enabling/disabling what mod to back up. If a mod is causing issue, you can manually edit the `ModDatabase.json` file until I get an update out.
-- Under the "Loaded Mods" list, there is now a "Verify Mods" button, which when clicked will launch a set of checks to ensure the integrity of the mods. It will check if you have multiple version of the same mod downloaded and also the integrity of each file in your whole PDX Mods folder. Any files ending with "backup" are ignored.
-- The process will only inform you about the verification result, any other steps to resolve those issues will need to be done manually.
-- Removed deprecated mod "TripsData" from Mod Settings Backup/Restore.
-- Added "InfoLoom", "Citizen Model Manager" and "Road Wear Adjuster" to Mod Settings Backup/Restore.
-- Fixes for Mod Settings Backup/Restore not working for "Tree Controller", "Better Bulldozer", "FPS Limiter".
+- Added trackers to keep count of how many settings restored.
+- Show the restore notification only if there's anything to restore.
+- Remove obsolete online ModDatabase check. ModDatabase is now retrieved locally.
+- Added "Historical Start" to Mod Settings Backup/Restore.
+- Fixed cases where Mod Restore caused error to be triggered.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
