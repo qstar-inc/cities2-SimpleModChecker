@@ -1101,10 +1101,10 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(ShowEfficiency));
             set => SetValue(nameof(ShowEfficiency), value);
         }
-        public bool ShowLandValue
+        public bool ShowLotSize
         {
-            get => (bool)GetValue(nameof(ShowLandValue));
-            set => SetValue(nameof(ShowLandValue), value);
+            get => (bool)GetValue(nameof(ShowLotSize));
+            set => SetValue(nameof(ShowLotSize), value);
         }
         public bool ShowCompanyOutput
         {
@@ -1270,6 +1270,11 @@ namespace SimpleModChecker.Systems
         {
             get => (bool)GetValue(nameof(ShowGrowables));
             set => SetValue(nameof(ShowGrowables), value);
+        }
+        public bool ShowLandValue
+        {
+            get => (bool)GetValue(nameof(ShowLandValue));
+            set => SetValue(nameof(ShowLandValue), value);
         }
         public bool ShowGrowablesHousehold
         {
@@ -1740,11 +1745,6 @@ namespace SimpleModChecker.Systems
         {
             get => (float)GetValue(nameof(TaxRateEffect));
             set => SetValue(nameof(TaxRateEffect), value);
-        }
-        public float AgeCapSetting
-        {
-            get => (float)GetValue(nameof(AgeCapSetting));
-            set => SetValue(nameof(AgeCapSetting), value);
         }
     }
 

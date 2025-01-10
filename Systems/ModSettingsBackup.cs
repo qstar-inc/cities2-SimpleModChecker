@@ -130,12 +130,14 @@ namespace SimpleModChecker.Systems
 
         public void CreateBackup(int profile, bool log = true)
         {
+            Mod.log.Info($"isModDatabaseLoaded is {ModDatabase.isModDatabaseLoaded}");
             if (!ModDatabase.isModDatabaseLoaded)
             {
                 Mod.log.Info("Mod Database wasn't loaded. Attempting to reload");
-                ModDatabase.LoadModDatabase();
-                CreateBackup(profile, log);
-                return;
+                Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
+            }
+            else
+            {
             }
 
             string backupFile = profile switch
@@ -167,10 +169,16 @@ namespace SimpleModChecker.Systems
 
             try
             {
-                if (ModDatabaseInfo == null)
+                if (ModDatabaseInfo == null || !ModDatabaseInfo.Any())
                 {
-                    ModDatabase.LoadModDatabase();
-                    Mod.log.Info($"Trying to backup {ModDatabaseInfo.Count} mods");
+                    Mod.log.Info("ModDatabaseInfo is null or empty. Reloading Mod Database...");
+                    Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
+                    ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
+                    if (ModDatabaseInfo == null || !ModDatabaseInfo.Any())
+                    {
+                        Mod.log.Error("Failed to initialize ModDatabaseInfo after reloading. Aborting backup.");
+                        return;
+                    }
                 }
                 foreach (var entry in ModDatabaseInfo)
                 {
@@ -276,7 +284,16 @@ namespace SimpleModChecker.Systems
 
             try
             {
-                string jsonString = JsonConvert.SerializeObject(ModSettings, Formatting.Indented);
+                var jsonSerializerSettings = new JsonSerializerSettings
+                {
+                    Formatting = Formatting.Indented,
+                    Error = (sender, args) =>
+                    {
+                        Mod.log.Info($"Serialization error on property '{args.ErrorContext.Member}': {args.ErrorContext.Error.Message}");
+                        args.ErrorContext.Handled = true;
+                    }
+                };
+                string jsonString = JsonConvert.SerializeObject(ModSettings, jsonSerializerSettings);
                 File.WriteAllText(backupFile, jsonString);
                 Mod.log.Info($"Mod Settings backup created successfully: {Path.GetFileName(backupFile)}");
             }
@@ -585,11 +602,13 @@ namespace SimpleModChecker.Systems
                                     {
                                         var oldValue = propInfo.GetValue(fragment.source);
                                         var newValue = prop.Value.ToObject(propInfo.PropertyType);
-                                        if (oldValue != newValue)
+                                        if (!oldValue.Equals(newValue))
                                         {
+                                            Mod.log.Info(oldValue.GetType());
+                                            Mod.log.Info(newValue.GetType());
+                                            Mod.log.Info($"Restoring '{sectionKey}:{prop.Name}': {oldValue} => {newValue}.");
                                             if (sectionKey != "SimpleModCheckerSettings")
                                             {
-                                                Mod.log.Info($"Restoring '{sectionKey}:{prop.Name}'.");
                                                 i++;
                                             }
                                             propInfo.SetValue(fragment.source, newValue);

@@ -1,3 +1,6 @@
+# 3.3.3 (2025-01-10) - 5384 subs
+- Fixed "InfoLoom" causing backups to fail.
+
 # 3.2.2 (2024-12-21) - 4987 subs
 - Added trackers to keep count of how many settings restored.
 - Show the restore notification only if there's anything to restore.
@@ -16,7 +19,7 @@
 - Added "InfoLoom", "Citizen Model Manager" and "Road Wear Adjuster" to Mod Settings Backup/Restore.
 - Fixes for Mod Settings Backup/Restore not working for "Tree Controller", "Better Bulldozer", "FPS Limiter".
 
-# 3.1.0 (2024-12-11) - 4843 subs
+# 3.1.0 (2024-12-12) - 4843 subs
 - Keybind backup for all mods.
 
 # 3.0.0 (2024-12-11) - 4840 subs

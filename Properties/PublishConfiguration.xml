@@ -58,19 +58,15 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="3.2.2" />
+	<ModVersion Value="3.3.3" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.2*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="3.2.2" />
+	<!--ChangeLog Value="" /-->
 	<ChangeLog>
-- Added trackers to keep count of how many settings restored.
-- Show the restore notification only if there's anything to restore.
-- Remove obsolete online ModDatabase check. ModDatabase is now retrieved locally.
-- Added "Historical Start" to Mod Settings Backup/Restore.
-- Fixed cases where Mod Restore caused error to be triggered.
+- Fixed "InfoLoom" causing backups to fail.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

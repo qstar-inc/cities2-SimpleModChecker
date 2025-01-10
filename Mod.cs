@@ -19,7 +19,7 @@ namespace SimpleModCheckerPlus
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "3.2.2";
+        public static string Version = "3.3.3";
         
         public static Setting Setting;
         //public ModCheckup ModCheckup;
@@ -47,7 +47,7 @@ namespace SimpleModCheckerPlus
             Task.Run(() => MigrateFiles(Directory.GetParent(modDatabaseJson).FullName)).Wait();
 
             Task.Run(() => GetModDatabase()).Wait();
-            ModDatabase.LoadModDatabase();
+            Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
             Setting.VerifiedRecently = false;
             Setting.IsInGameOrEditor = false;
