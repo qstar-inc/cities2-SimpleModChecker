@@ -1,3 +1,7 @@
+# 3.3.4 (2025-01-17) - 5522 subs
+- Added "Asset UI Manager".
+- Update to "Auto Vehicle Renamer" changes.
+
 # 3.3.3 (2025-01-10) - 5384 subs
 - Fixed "InfoLoom" causing backups to fail.
 

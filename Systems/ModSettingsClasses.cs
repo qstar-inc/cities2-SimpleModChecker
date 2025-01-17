@@ -267,6 +267,60 @@ namespace SimpleModChecker.Systems
         }
     }
 
+    public class AssetUIManagerSettings : SettingsBackup
+    {
+        public bool PathwayInRoads
+        {
+            get => (bool)GetValue(nameof(PathwayInRoads));
+            set => SetValue(nameof(PathwayInRoads), value);
+        }
+        public bool PedestrianInPathway
+        {
+            get => (bool)GetValue(nameof(PedestrianInPathway));
+            set => SetValue(nameof(PedestrianInPathway), value);
+        }
+        public int PathwayPriorityDropdown
+        {
+            get => (int)GetValue(nameof(PathwayPriorityDropdown));
+            set => SetValue(nameof(PathwayPriorityDropdown), value);
+        }
+        public bool BridgesInRoads
+        {
+            get => (bool)GetValue(nameof(BridgesInRoads));
+            set => SetValue(nameof(BridgesInRoads), value);
+        }
+        public bool ParkingRoadsInRoads
+        {
+            get => (bool)GetValue(nameof(ParkingRoadsInRoads));
+            set => SetValue(nameof(ParkingRoadsInRoads), value);
+        }
+        public bool SeparatedSchools
+        {
+            get => (bool)GetValue(nameof(SeparatedSchools));
+            set => SetValue(nameof(SeparatedSchools), value);
+        }
+        public bool SeparatedPocketParks
+        {
+            get => (bool)GetValue(nameof(SeparatedPocketParks));
+            set => SetValue(nameof(SeparatedPocketParks), value);
+        }
+        public bool SeparatedCityParks
+        {
+            get => (bool)GetValue(nameof(SeparatedCityParks));
+            set => SetValue(nameof(SeparatedCityParks), value);
+        }
+        public bool EnableAssetPacks
+        {
+            get => (bool)GetValue(nameof(EnableAssetPacks));
+            set => SetValue(nameof(EnableAssetPacks), value);
+        }
+        public bool VerboseLogging
+        {
+            get => (bool)GetValue(nameof(VerboseLogging));
+            set => SetValue(nameof(VerboseLogging), value);
+        }
+    }
+
     public class AssetVariationChangerSettings : SettingsBackup
     {
         public bool EnableVariationChooser
@@ -407,25 +461,25 @@ namespace SimpleModChecker.Systems
 
     public class AutoVehicleRenamerSettings : SettingsBackup
     {
-        public bool enableDefault
+        public bool EnableDefault
         {
-            get => (bool)GetValue(nameof(enableDefault));
-            set => SetValue(nameof(enableDefault), value);
+            get => (bool)GetValue(nameof(EnableDefault));
+            set => SetValue(nameof(EnableDefault), value);
         }
-        public string separator
+        public string Separator
         {
-            get => (string)GetValue(nameof(separator));
-            set => SetValue(nameof(separator), value);
+            get => (string)GetValue(nameof(Separator));
+            set => SetValue(nameof(Separator), value);
         }
-        public int textFormat
+        public int TextFormat
         {
-            get => (int)GetValue(nameof(textFormat));
-            set => SetValue(nameof(textFormat), value);
+            get => (int)GetValue(nameof(TextFormat));
+            set => SetValue(nameof(TextFormat), value);
         }
-        public bool enableVerbose
+        public bool EnableVerbose
         {
-            get => (bool)GetValue(nameof(enableVerbose));
-            set => SetValue(nameof(enableVerbose), value);
+            get => (bool)GetValue(nameof(EnableVerbose));
+            set => SetValue(nameof(EnableVerbose), value);
         }
     }
 
@@ -4409,6 +4463,7 @@ namespace SimpleModChecker.Systems
         public AreaBucketSettings AreaBucketSettings { get; set; }
         public AssetIconLibrarySettings AssetIconLibrarySettings { get; set; }
         public AssetPacksManagerSettings AssetPacksManagerSettings { get; set; }
+        public AssetUIManagerSettings AssetUIManagerSettings { get; set; }
         public AssetVariationChangerSettings AssetVariationChangerSettings { get; set; }
         public AutoDistrictNameStationsSettings AutoDistrictNameStationsSettings { get; set; }
         public AutoVehicleRenamerSettings AutoVehicleRenamerSettings { get; set; }

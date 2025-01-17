@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "Version": "3.2.0",
-    "Time": 1734514621
+    "Version": "3.3.4",
+    "Time": 1737125220
   },
   "ModDatabaseInfo": {
     "74286": {
@@ -278,7 +278,7 @@
     },
     "79872": {
       "AssemblyName": "AutoVehicleRenamer",
-      "FragmentSource": "AutoVehicleRenamer.AutoVehicleRenamerSetting",
+      "FragmentSource": "AutoVehicleRenamer.Setting",
       "ClassType": "AutoVehicleRenamerSettings",
       "ModName": "Auto Vehicle Renamer",
       "Author": "Qoushik",
@@ -506,6 +506,14 @@
       "ClassType": "RoadWearAdjusterSettings",
       "ModName": "Road Wear Adjuster",
       "Author": "HX2003",
+      "Backupable": true
+    },
+    "98560": {
+      "AssemblyName": "AssetUIManager",
+      "FragmentSource": "AssetUIManager.Setting",
+      "ClassType": "AssetUIManagerSettings",
+      "ModName": "Asset UI Manager",
+      "Author": "Qoushik",
       "Backupable": true
     }
   }
