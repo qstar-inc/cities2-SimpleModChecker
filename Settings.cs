@@ -7,7 +7,6 @@ using Game.Modding;
 using Game.Settings;
 using Game.UI.Widgets;
 using SimpleModChecker.Systems;
-using SimpleModChecker;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;

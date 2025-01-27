@@ -2,7 +2,6 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal.PSI.Environment;
 using Game.PSI;
 using Game.UI.Localization;
 using Game;
@@ -11,13 +10,14 @@ using System.IO;
 using System.Linq;
 using System;
 using UnityEngine;
+using SimpleModCheckerPlus;
 
-namespace SimpleModCheckerPlus
+namespace SimpleModChecker.Systems
 {
     public partial class CIDBackupRestore : GameSystemBase
     {
         public Mod _mod;
-        public static List<string> CanDelete = [];
+        public static List<PDX.SDK.Contracts.Service.Mods.Models.Mod> CanDelete = [];
 
         protected override void OnCreate()
         {
@@ -29,37 +29,40 @@ namespace SimpleModCheckerPlus
         {
             DateTime CIDManagerStart = DateTime.Now;
 
-            string rootFolderPath = $"{EnvPath.kUserDataPath}/.cache/Mods/mods_subscribed/";
-            foreach (var immediateDirectory in Directory.GetDirectories(rootFolderPath))
+            foreach (PDX.SDK.Contracts.Service.Mods.Models.Mod mod in ModCheckup.allMods.Values)
             {
+                string immediateDirectory = mod.LocalData?.FolderAbsolutePath;
+                if (!Directory.Exists(immediateDirectory))
+                {
+                    continue;
+                }
                 bool toBeDeleted = LoopThroughModsSubscribed(immediateDirectory);
                 if (toBeDeleted)
                 {
-                    CanDelete.Add(immediateDirectory);
+                    CanDelete.Add(mod);
                 }
             }
             if (CanDelete.Count > 0)
             {
                 string modList = "";
-                foreach (var modID in CanDelete)
+                foreach (PDX.SDK.Contracts.Service.Mods.Models.Mod mod in CanDelete)
                 {
-                    if (modList == "")
-                    {
-                        modList += modID.Replace(rootFolderPath, "").Remove(5).ToString();
-                    }
-                    else
-                    {
-                        modList += ", " + modID.Replace(rootFolderPath, "").Remove(5).ToString();
-                    }
+                    modList += $"- {mod.DisplayName} ({mod.Id}) by {mod.Author}\n";
                 }
-                Exception ex = new("Missing_CID_Exception");
-                //Mod.log.Error(ex, new LocalizedString("Menu.ERROR[SimpleModCheckerPlus.Missing_CID_Exception]", null,
-                //            new Dictionary<string, ILocElement>
-                //            {
-                //                {"modCount", LocalizedString.Value(CanDelete.Count.ToString())},
-                //                {"modList", LocalizedString.Value(modList)},
-                //            }));
-                Mod.log.Error(ex, $"Found {CanDelete.Count} mods with missing CID with no backup:\n{modList}\n{Mod.Name} will handle the deletion of these folders on exit. On next restart, the missing mods will be redownloaded automatically.");
+
+                string plural = "mods";
+                if (CanDelete.Count == 1) plural = "mod";
+                string errorText = $"Found {CanDelete.Count} {plural} with missing/invalid CID with no backup:\n{modList}\n{Mod.Name} will handle the deletion of these folders on exit. On next restart, the missing {plural} will be redownloaded automatically. If this persists, contact the author of the {plural} listed above.";
+                if (Mod.Setting.DeleteMissing)
+                {
+                    Exception ex = new("Missing_CID_Exception");
+                    Mod.log.Error(ex, errorText);
+                }
+                else
+                {
+                    Mod.log.Info(errorText);
+                }
+
                 NotificationSystem.Push("starq-smc-cid-check",
                         title: new LocalizedString("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods]", null,
                             new Dictionary<string, ILocElement>
@@ -80,11 +83,11 @@ namespace SimpleModCheckerPlus
 
         public static void DeleteFolders(string Method = null)
         {
-            Mod.log.Info(CanDelete.Count);
+            Mod.log.Info($"Deleting {CanDelete.Count} folders for missing CID.");
             for (int i = CanDelete.Count - 1; i >= 0; i--)
             {
-                Directory.Delete(CanDelete[i], true);
-                Mod.log.Info($"Deleted {CanDelete[i]}");
+                Directory.Delete(CanDelete[i].LocalData.FolderAbsolutePath, true);
+                Mod.log.Info($"Deleted {CanDelete[i].DisplayName} ({CanDelete[i].Id})");
                 CanDelete.RemoveAt(i);
             }
 
@@ -97,7 +100,7 @@ namespace SimpleModCheckerPlus
 
         private static bool LoopThroughModsSubscribed(string directoryPath)
         {
-            string[] validExtensions = { ".Prefab", ".cok", ".Texture", ".Geometry", ".Surface" };
+            string[] validExtensions = [".Prefab", ".cok", ".Texture", ".Geometry", ".Surface"];
             bool hasValidFile = false;
 
             var files = Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories)

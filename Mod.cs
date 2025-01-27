@@ -13,16 +13,17 @@ using System.IO;
 using System.Threading.Tasks;
 using System;
 using Unity.Entities;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "3.3.4";
+        public static string Version = "3.3.5";
         
         public static Setting Setting;
-        //public ModCheckup ModCheckup;
         public CIDBackupRestore CIDBackupRestore;
         public CocCleaner CocCleaner;
 
@@ -32,6 +33,7 @@ namespace SimpleModCheckerPlus
         private static readonly string modDatabaseJson = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ModDatabase.json";
         public static string localBackupPath;
         public static ModDatabaseMetadata oldMetadata;
+        public static ModDatabaseMetadata newMetadata;
 
         public void OnLoad(UpdateSystem updateSystem)
         {
@@ -89,20 +91,17 @@ namespace SimpleModCheckerPlus
                 if (!File.Exists(modDatabaseJson))
                 {
                     log.Info("ModDatabase not found. Attempting to copy...");
-                    //await DownloadNow(0);
                     CopyLocalBackup();
                 }
 
-                //string jsonData = File.ReadAllText(modDatabaseJson, Encoding.UTF8);
-                //oldMetadata = JsonConvert.DeserializeObject<ModDatabaseWrapper>(jsonData).Metadata;
-                //if (Setting.LastDownloaded == 0) Setting.LastDownloaded = oldMetadata.Time;
-                //TimeSpan timeSinceLastUpdate = TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() - oldMetadata.Time);
-                //log.Info($"Current ModDatabase is {ReadableAge(timeSinceLastUpdate)}. Version {oldMetadata.Version}.");
-                //if ((timeSinceLastUpdate > TimeSpan.FromDays(10) && (DateTime.UtcNow - DateTimeOffset.FromUnixTimeSeconds(Setting.LastChecked).UtcDateTime) > TimeSpan.FromDays(5)) || (new System.Version(oldMetadata.Version) < new System.Version(Version)))
-                //{
-                //    log.Info($"Looking for update...");
-                //    await DownloadNow(1);
-                //}
+                string oldJsonData = File.ReadAllText(modDatabaseJson, Encoding.UTF8);
+                oldMetadata = JsonConvert.DeserializeObject<ModDatabaseWrapper>(oldJsonData).Metadata;
+                string newJsonData = File.ReadAllText(localBackupPath, Encoding.UTF8);
+                newMetadata = JsonConvert.DeserializeObject<ModDatabaseWrapper>(newJsonData).Metadata;
+                if (oldMetadata.Time < newMetadata.Time)
+                {
+                    CopyLocalBackup();
+                }
 
             }
             catch (Exception ex)
@@ -110,87 +109,6 @@ namespace SimpleModCheckerPlus
                 log.Info("An error occurred: " + ex.Message);
             }
         }
-
-        //public static async Task DownloadNow(int mode)
-        //{
-        //    log.Info("Downloading ModDatabase");
-        //    if (Setting.LastDownloaded == 0)
-        //    {
-        //        log.Info($"First download in progress...");
-        //    }
-        //    else
-        //    {
-        //        TimeSpan timeSinceLastDownload = TimeSpan.FromSeconds((DateTimeOffset.UtcNow.ToUnixTimeSeconds() - Setting.LastDownloaded));
-        //        log.Info($"Last download was {ReadableAge(timeSinceLastDownload)}...");
-        //    }
-        //    Setting.LastChecked = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        //    string downloadUrl = "https://github.com/qstar-inc/cities2-SimpleModChecker/raw/refs/heads/master/Resources/ModDatabase.json";
-        //    if (mode == 2) { Setting.VerifiedRecently = true; }
-            
-        //    NotificationSystem.Push("starq-smc-mod-database-downloaded",
-        //        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-        //        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloadStarting]"),
-        //        progressState: ProgressState.Indeterminate
-        //        );
-        //    try
-        //    {
-        //        using HttpClient client = new();
-        //        client.DefaultRequestHeaders.ExpectContinue = false;
-        //        client.Timeout = TimeSpan.FromSeconds(120);
-        //        var content = await client.GetStringAsync(downloadUrl);
-        //        string newJsonData = content;
-        //        var newMetadata = JsonConvert.DeserializeObject<ModDatabaseWrapper>(newJsonData).Metadata;
-        //        Setting.LastDownloaded = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-
-        //        if (oldMetadata.Time < newMetadata.Time)
-        //        {
-        //            TimeSpan newTimeSinceLastUpdate = TimeSpan.FromSeconds(DateTimeOffset.UtcNow.ToUnixTimeSeconds() - newMetadata.Time);
-        //            log.Info($"New ModDatabase is {ReadableAge(newTimeSinceLastUpdate)}...");
-        //            NotificationSystem.Push("starq-smc-mod-database-downloaded",
-        //            title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-        //            text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.ModDatabaseDownloaded]"),
-        //            progressState: ProgressState.Complete,
-        //            onClicked: () =>
-        //            {
-        //                NotificationSystem.Pop("starq-smc-mod-database-downloaded");
-        //            });
-        //            await Task.Run(() => File.WriteAllText(modDatabaseJson, content));
-        //            log.Info("ModDatabase Updated successfully.");
-        //        }
-        //        else
-        //        {
-        //            log.Info("No update found... Enjoy.");
-        //            NotificationSystem.Pop("starq-smc-mod-database-downloaded");
-        //        }
-        //    }
-        //    catch (HttpRequestException)
-        //    {
-        //        log.Info($"Network error occurred while trying to download. Copying local backup...");
-        //        if (mode == 0)
-        //        {
-        //            CopyLocalBackup();
-        //        }
-        //        NotificationSystem.Pop("starq-smc-mod-database-downloaded");
-        //    }
-        //    catch (TimeoutException timeoutEx)
-        //    {
-        //        log.Info($"Download timed out: {timeoutEx.Message}");
-        //        if (mode == 0)
-        //        {
-        //            CopyLocalBackup();
-        //        }
-        //        NotificationSystem.Pop("starq-smc-mod-database-downloaded");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        log.Info($"Failed to download file: {ex.Message}");
-        //        if (mode == 0)
-        //        {
-        //            CopyLocalBackup();
-        //        }
-        //        NotificationSystem.Pop("starq-smc-mod-database-downloaded");
-        //    }
-        //}
 
         private static void CopyLocalBackup()
         {
@@ -267,14 +185,5 @@ namespace SimpleModCheckerPlus
             Directory.Delete(sourceDir);
             Mod.log.Info($"Deleted source directory: {sourceDir}");
         }
-
-        //public static string ReadableAge (TimeSpan timeSinceLastUpdate)
-        //{
-        //    string readableAge = $"{timeSinceLastUpdate.Days} day{(timeSinceLastUpdate.Days != 1 ? "s" : "")}, " +
-        //                    $"{timeSinceLastUpdate.Hours} hour{(timeSinceLastUpdate.Hours != 1 ? "s" : "")}, " +
-        //                    $"{timeSinceLastUpdate.Minutes} minute{(timeSinceLastUpdate.Minutes != 1 ? "s" : "")}, " +
-        //                    $"{timeSinceLastUpdate.Seconds} second{(timeSinceLastUpdate.Seconds != 1 ? "s" : "")} old";
-        //    return readableAge;
-        //}
     }
 }

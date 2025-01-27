@@ -6,7 +6,6 @@ using Colossal.PSI.Environment;
 using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json.Linq;
-using SimpleModChecker.Systems;
 using SimpleModCheckerPlus;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System;
 
-namespace SimpleModChecker
+namespace SimpleModChecker.Systems
 {
     public class ModVerifier
     {
@@ -400,24 +399,20 @@ namespace SimpleModChecker
             try
             {
                 filePath = AddLongPathPrefix(filePath);
-                using (var sha256 = SHA256.Create())
+                using var sha256 = SHA256.Create();
+                using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 8192, useAsync: true);
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+
+                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                 {
-                    using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 8192, useAsync: true))
-                    {
-                        byte[] buffer = new byte[8192];
-                        int bytesRead;
-
-                        while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                        {
-                            sha256.TransformBlock(buffer, 0, bytesRead, buffer, 0);
-                        }
-
-                        // Finalize the hash
-                        sha256.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-
-                        return Convert.ToBase64String(sha256.Hash!).Replace("/", "_").Replace("+", "-");
-                    }
+                    sha256.TransformBlock(buffer, 0, bytesRead, buffer, 0);
                 }
+
+                // Finalize the hash
+                sha256.TransformFinalBlock([], 0, 0);
+
+                return Convert.ToBase64String(sha256.Hash!).Replace("/", "_").Replace("+", "-");
             }
             catch (UnauthorizedAccessException)
             {
@@ -439,8 +434,8 @@ namespace SimpleModChecker
         {
             try
             {
-                Uri baseUri = new Uri(basePath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar);
-                Uri fullUri = new Uri(fullPath);
+                Uri baseUri = new(basePath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar);
+                Uri fullUri = new(fullPath);
                 return Uri.UnescapeDataString(baseUri.MakeRelativeUri(fullUri).ToString().Replace('/', Path.DirectorySeparatorChar));
             }
             catch (Exception ex)

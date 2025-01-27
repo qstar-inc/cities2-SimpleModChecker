@@ -140,8 +140,12 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.SupportedModText)), "A list of currently supported mod for settings backup/restore." },
 
                 { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]", Mod.Name },
-                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]", "Loaded {modCount} mod." },
-                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]", "Loaded {modCount} mods." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]", "Loaded {codeCount} mod." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]", "Loaded {codeCount} mods." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModAndPackage]", "Loaded {codeCount} mod and {packageCount} package." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModsAndPackage]", "Loaded {codeCount} mods and {packageCount} package." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModAndPackages]", "Loaded {codeCount} mod and {packageCount} packages." },
+                { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModsAndPackages]", "Loaded {codeCount} mods and {packageCount} packages." },
 
                 { "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]", "SMC+: Found {fileCount} corrupted Settings file" },
                 { "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]", "Click here to delete and restart to prevent errors..." },

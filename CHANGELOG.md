@@ -1,3 +1,9 @@
+# 3.3.5 (2025-01-28) - 5701 subs
+- Changed CID backup/restore to work only on currently active mods.
+- Shows more details about the mod with CID backup/restore.
+- Missing CID Exception will show in UI only if the "Delete Mods with Missing CID" active.
+- Updated for I18N Everywhere.
+
 # 3.3.4 (2025-01-17) - 5522 subs
 - Added "Asset UI Manager".
 - Update to "Auto Vehicle Renamer" changes.

@@ -36,6 +36,11 @@ namespace SimpleModChecker.Systems
         //public static string LoadedModsListWithIssue { get; set; } = "";
         public static string LoggedInUserName { get; set; } = "";
 
+        public static Dictionary<string, string> localMods = [];
+        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> codeMods = [];
+        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> packageMods = [];
+        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> allMods = [];
+
         //public static LocalizedString LoadedModsListLocalized()
         //{
         //    return LocalizedString.Id(LoadedModsList);
@@ -63,7 +68,7 @@ namespace SimpleModChecker.Systems
             //ProcessMods();
             if (Mod.Setting.ShowNotif)
             {
-                SendNotification(codeMods.Count + localMods.Count);
+                SendNotification(codeMods.Count + localMods.Count, packageMods.Count);
             }
             Mod.log.Info($"\r\nCods mods loaded:\r\n{LoadedList("CodeMods").Trim()}\r\n");
             Mod.log.Info($"\r\nPackage mods loaded:\r\n{LoadedList("PackageMods").Trim()}\r\n");
@@ -110,7 +115,7 @@ namespace SimpleModChecker.Systems
                 Mod.Setting.IsInGameOrEditor = false;
                 if (Mod.Setting.ShowNotif)
                 {
-                    SendNotification(codeMods.Count + localMods.Count);
+                    SendNotification(codeMods.Count + localMods.Count, packageMods.Count);
                 }
             }
             //ProcessModsWithIssue();
@@ -333,10 +338,6 @@ namespace SimpleModChecker.Systems
             catch (Exception ex) { Mod.log.Info(ex); }
         }
 
-        static Dictionary<string, string> localMods = [];
-        static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> codeMods = [];
-        static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> packageMods = [];
-
         public static string LoadedList(string type)
         {
             string returnText = "";
@@ -444,6 +445,7 @@ namespace SimpleModChecker.Systems
                 if (extensionCounts.ContainsKey(".dll") && extensionCounts[".dll"] > 0 || extensionCounts.ContainsKey(".mjs") && extensionCounts[".mjs"] > 0 || extensionCounts.ContainsKey(".pdb") && extensionCounts[".pdb"] > 0 || extensionCounts.ContainsKey(".so") && extensionCounts[".so"] > 0 || extensionCounts.ContainsKey(".bundle") && extensionCounts[".bundle"] > 0)
                 {
                     codeMods.Add(mod.DisplayName, mod);
+                    allMods.Add(mod.DisplayName, mod);
                 }
                 //else if (extensionCounts.ContainsKey(".prefab") && extensionCounts[".prefab"] > 0)
                 //{
@@ -456,6 +458,7 @@ namespace SimpleModChecker.Systems
                 else
                 {
                     packageMods.Add(mod.DisplayName, mod);
+                    allMods.Add(mod.DisplayName, mod);
                     //Mod.log.Info($"Unknown mod info: {mod.DisplayName}: {string.Join(", ", extensionCounts.Select(kv => $"{kv.Key} = {kv.Value}"))}");
                 }
             }
@@ -523,43 +526,34 @@ namespace SimpleModChecker.Systems
             Mod.log.Info(mods.Count + " subbed mods");
         }
 
-        public void SendNotification(int count)
+        public void SendNotification(int code, int package)
         {
             uISystem = World.GetOrCreateSystemManaged<OptionsUISystem>();
-            var modstext = "mod";
-            if (count < 2)
+
+            string modMessageKey = "";
+            Dictionary<string, ILocElement> dict = new()
             {
-                modstext += "";
+                {"codeCount", LocalizedString.Value(code.ToString())},
+                {"packageCount", LocalizedString.Value(package.ToString())},
+            };
+
+            if (package == 0)
+            {
+                modMessageKey = code > 1 ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]" : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]";
+                dict.Remove("packageCount");
+            }
+            else if (package == 1)
+            {
+                modMessageKey = code > 1 ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModsAndPackage]" : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModAndPackage]";
             }
             else
             {
-                modstext += "s";
+                modMessageKey = code > 1 ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModsAndPackages]" : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModAndPackages]";
             }
-            //string pageID = "SimpleModChecker.SimpleModCheckerPlus.Mod";
-            //Dictionary<string, OptionsUISystem.Page> pages = [];
-            //if (pages.TryGetValue(pageID, out OptionsUISystem.Page value))
-            //{
-            //    var sections = value.visibleSections;
-            //    foreach (OptionsUISystem.Section item in sections)
-            //    {
-            //        Mod.log.Info(item.id);
-            //        try { Mod.log.Info(item.ToJSONString()); } catch (Exception) { }
-            //    }
-            //}
-            //else { Mod.log.Info(":("); }
-
-            string modMessageKey = count > 1
-                ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]"
-                : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]";
 
             NotificationSystem.Push("starq-smc-mod-check",
-                //title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
                 titleId: "SimpleModCheckerPlus",
-                text: new LocalizedString(modMessageKey, null,
-                    new Dictionary<string, ILocElement>
-                    {
-                        {"modCount", LocalizedString.Value(count.ToString())}
-                    }),
+                text: new LocalizedString(modMessageKey, null, dict),
                 onClicked: () => {
                     //System.Diagnostics.Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.logFileName}.log");
                     uISystem.OpenPage("SimpleModChecker.SimpleModCheckerPlus.Mod", "Setting.ModListTab", false);

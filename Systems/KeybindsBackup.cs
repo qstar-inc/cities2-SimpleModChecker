@@ -37,7 +37,6 @@ namespace SimpleModChecker.Systems
     {
         public Mod _mod;
         public static ModCheckup SMC = new();
-        private readonly List<string> loadedMods = SMC.GetLoadedMods();
         private InputManager inputManager = InputManager.instance;
         private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_prev.json";
         private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_1.json";
@@ -58,43 +57,11 @@ namespace SimpleModChecker.Systems
             {
                 if (File.Exists(backupFile1))
                 {
-                    //string currentGameVersion = Game.Version.current.version;
-                    //string jsonStringRead = File.ReadAllText(backupFile1);
-                    //if (jsonStringRead != null && jsonStringRead != "")
-                    //{
-                    //    try
-                    //    {
-                    //        JObject jsonObject = JObject.Parse(jsonStringRead);
-                    //        if (jsonObject != null)
-                    //        {
-                    //            if (!jsonObject.TryGetValue("GameVersion", out JToken BackupGameVersion) || BackupGameVersion == null)
-                    //            {
-                    //                SendGameUpdateNotification(currentGameVersion, "null");
-                    //            }
-                    //            else
-                    //            {
-                    //                if (BackupGameVersion.ToString() != currentGameVersion)
-                    //                {
-                    //                    SendGameUpdateNotification(currentGameVersion, BackupGameVersion.ToString());
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //    catch (Exception ex) { Mod.log.Info(ex); }
-                    //}
                     CreateBackup(0, false);
                     if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
                     {
                         RestoreBackup(1, false);
-                        //NotificationSystem.Pop("starq-smc-game-settings-restore",
-                        //        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                        //        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.AutoRestoreGame]"),
-                        //        delay: 10f);;
                     }
-                    //else
-                    //{
-                    //    Mod.log.Info("Nothing to restore");
-                    //}
                 }
                 else
                 {
@@ -111,20 +78,6 @@ namespace SimpleModChecker.Systems
         {
 
         }
-        //private void SendGameUpdateNotification(string current, string prev)
-        //{
-        //    //var validVersions = new HashSet<string> { "2.2.4", "2.2.5", "2.2.6", "2.2.7" };
-        //    //if (validVersions.Contains(current) && (prev == "2.2.3" || validVersions.Contains(prev)))
-        //    //{
-        //    //    return;
-        //    //}
-        //    Mod.log.Info($"Game version mismatch. Current: {current}, Backup: {prev}");
-        //    NotificationSystem.Push("starq-smc-game-settings-update",
-        //        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeGameBackup]"),
-        //        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeGameBackup]"),
-        //        progressState: ProgressState.Warning,
-        //        onClicked: () => { NotificationSystem.Pop("starq-smc-game-settings-update", delay: 1f); CreateBackup(1); });
-        //}
 
         public void CreateBackup(int profile, bool log = true)
         {
@@ -150,7 +103,6 @@ namespace SimpleModChecker.Systems
                 Directory.CreateDirectory(directoryPath);
             }
 
-            //List<GameKeybind> GameKeybinds = [];
             Dictionary<string, List<GameKeybind>> existingKeybinds = [];
             try
             {
@@ -167,7 +119,6 @@ namespace SimpleModChecker.Systems
 
                 List<ProxyBinding> bindings = [.. inputManager.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
 
-                //Mod.log.Info(bindings.Count);
                 foreach (ProxyBinding binding in bindings)
                 {
                     if (binding.isRebindable)
@@ -222,52 +173,10 @@ namespace SimpleModChecker.Systems
                     Mod.log.Info(ex);
                 }
             }
-            catch { }
-            //try
-            //    {
-            //    List<ProxyBinding> bindings = [.. inputManager.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
-
-            //    Mod.log.Info(bindings.Count);
-            //    foreach (ProxyBinding binding in bindings)
-            //    {
-            //        try { Mod.log.Info("---------------------------------"); } catch { }
-            //        try { Mod.log.Info($"binding: {binding}"); } catch { }
-            //        try { Mod.log.Info($"binding.actionName: {binding.actionName}"); } catch { }
-            //        try { Mod.log.Info($"binding.allowModifiers: {binding.allowModifiers}"); } catch { }
-            //        try { Mod.log.Info($"binding.canBeEmpty: {binding.canBeEmpty}"); } catch { }
-            //        try { Mod.log.Info($"binding.component: {binding.component}"); } catch { }
-            //        try { Mod.log.Info($"binding.conflicts: {binding.conflicts}"); } catch { }
-            //        try { Mod.log.Info($"binding.developerOnly: {binding.developerOnly}"); } catch { }
-            //        try { Mod.log.Info($"binding.device: {binding.device}"); } catch { }
-            //        try { Mod.log.Info($"binding.hasConflicts: {binding.hasConflicts}"); } catch { }
-            //        try { Mod.log.Info($"binding.isBuiltIn: {binding.isBuiltIn}"); } catch { }
-            //        try { Mod.log.Info($"binding.isGamepad: {binding.isGamepad}"); } catch { }
-            //        try { Mod.log.Info($"binding.isKeyboard: {binding.isKeyboard}"); } catch { }
-            //        try { Mod.log.Info($"binding.isModifiersRebindable: {binding.isModifiersRebindable}"); } catch { }
-            //        try { Mod.log.Info($"binding.isMouse: {binding.isMouse}"); } catch { }
-            //        try { Mod.log.Info($"binding.isOriginal: {binding.isOriginal}"); } catch { }
-            //        try { Mod.log.Info($"binding.isRebindable: {binding.isRebindable}"); } catch { }
-            //        try { Mod.log.Info($"binding.isSet: {binding.isSet}"); } catch { }
-            //        try { Mod.log.Info($"binding.mapName: {binding.mapName}"); } catch { }
-            //        try { Mod.log.Info($"binding.modifiers: {binding.modifiers}"); } catch { }
-            //        try { Mod.log.Info($"binding.name: {binding.name}"); } catch { }
-            //        try { Mod.log.Info($"binding.original: {binding.original}"); } catch { }
-            //        try { Mod.log.Info($"binding.originalModifiers: {binding.originalModifiers}"); } catch { }
-            //        try { Mod.log.Info($"binding.originalPath: {binding.originalPath}"); } catch { }
-            //        try { Mod.log.Info($"binding.path: {binding.path}"); } catch { }
-            //        try { Mod.log.Info($"binding.title: {binding.title}"); } catch { }
-            //        try { Mod.log.Info($"binding.usages: {binding.usages}"); } catch { }
-            //        //if (binding.isKeyboard && binding.path == "<Keyboard>/r")
-            //        //{
-            //        //    ProxyBinding proxyBinding = binding.Copy();
-            //        //    proxyBinding.path = "<Keyboard>/f";
-            //        //    proxyBinding.device = InputManager.DeviceType.Keyboard;
-            //        //    InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
-            //        //    Mod.log.Info($"Setting {proxyBinding.actionName} to ({proxyBinding.modifiers}){proxyBinding.path}");
-            //        //}
-            //    }
-            //}
-            //catch { }
+            catch (Exception ex)
+            {
+                Mod.log.Info(ex);
+            }
         }
 
         public void RestoreBackup(int profile, bool log = true)
@@ -357,38 +266,9 @@ namespace SimpleModChecker.Systems
                                         }
                                     }
                                 }
-                                //if (InputManager.instance.TryFindAction(mapName, keybind["ActionName"], out var action))
-                                //{
-                                //    Mod.log.Info(keybind.ToString(Formatting.Indented));
-                                //    // You can access properties of each GameKeybind like this:
-                                //    string actionName = keybind["ActionName"]?.ToString();
-                                //    string bindingName = keybind["BindingName"]?.ToString();
-                                //    string path = keybind["Path"]?.ToString();
-
-                                //    ProxyBinding proxyBinding = binding.Copy();
-                                //    proxyBinding.path = "<Keyboard>/f";
-                                //    proxyBinding.device = InputManager.DeviceType.Keyboard;
-                                //    InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
-
-                                //    Mod.log.Info($" - Action: {actionName}, Binding: {bindingName}, Path: {path}");
-                                //}
                             }
                         }
                     }
-
-                    //List<ProxyBinding> bindings = [.. InputManager.instance.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
-                    //foreach (var item in jsonObject["GameKeybind"])
-                    //{
-                    //    if (InputManager.instance.TryFindAction(item["MapName"].ToString(), item["ActionName"].ToString(), out ProxyAction action))
-                    //    {
-                    //        InputManager.instance.TryGetBinding()
-                    //        ProxyBinding proxyBinding = binding.Copy();
-                    //        proxyBinding.path = "<Keyboard>/f";
-                    //        proxyBinding.device = InputManager.DeviceType.Keyboard;
-                    //        InputManager.instance.SetBinding(proxyBinding, out ProxyBinding _);
-                    //        Mod.log.Info($"Setting {proxyBinding.actionName} to ({proxyBinding.modifiers}){proxyBinding.path}");
-                    //    }
-                    //}
                 }
                 //SharedSettings.instance.Apply();
                 //Mod.log.Info("Keybinds Restoration Complete...");

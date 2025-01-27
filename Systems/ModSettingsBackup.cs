@@ -130,14 +130,10 @@ namespace SimpleModChecker.Systems
 
         public void CreateBackup(int profile, bool log = true)
         {
-            Mod.log.Info($"isModDatabaseLoaded is {ModDatabase.isModDatabaseLoaded}");
             if (!ModDatabase.isModDatabaseLoaded)
             {
                 Mod.log.Info("Mod Database wasn't loaded. Attempting to reload");
                 Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
-            }
-            else
-            {
             }
 
             string backupFile = profile switch
@@ -182,13 +178,13 @@ namespace SimpleModChecker.Systems
                 }
                 foreach (var entry in ModDatabaseInfo)
                 {
-                    Mod.log.Info($"Backing up {entry.Value.ModName}"); // if (log) 
                     //try { Mod.log.Info(entry.Key); } catch (Exception) { Mod.log.Info($"entry.Key"); }
                     //try { Mod.log.Info(entry.Value.ToString()); } catch (Exception) { Mod.log.Info($"entry.Value"); }
                     if (entry.Value.Backupable == false)
                     {
                         continue;
                     }
+                    if (log) Mod.log.Info($"Backing up {entry.Value.ModName}");
                     try
                     {
                         string sectionName = entry.Key;
@@ -269,7 +265,7 @@ namespace SimpleModChecker.Systems
                         {
                             try
                             {
-                                sectionSettings = GetSettingsData(sectionName, fragmentSource, sectionSettings, classType, log);
+                                sectionSettings = GetSettingsData(sectionName, fragmentSource, sectionSettings, classType);
                             } catch (Exception ex ) { Mod.log.Info("ERR: "+ex); }
                         }
 
@@ -300,7 +296,7 @@ namespace SimpleModChecker.Systems
             catch (Exception ex) { Mod.log.Info(ex); }
         }
 
-        public object GetSettingsData(string name, string fragmentSource, object settingsBackup, Type classType, bool log)
+        public object GetSettingsData(string name, string fragmentSource, object settingsBackup, Type classType)
         {
             JsonSerializerSettings JsonSerializerSettings = new()
             {

@@ -10,12 +10,12 @@
 	<LongDescription>
 I'm a simple man; I see "Loaded {x} mods", I start playing.
 
-This mod adds a **persistent** notification to the Main Menu, showing how many mods have loaded the current session.
-Although this was the first 
+This mod adds a **persistent** notification to the Main Menu, showing how many mods have loaded in the current session.
 
 The notification will automatically hide once a Game or Editor is loaded.
 
 If for some reason a broken mod prevents other mods from loading, just by looking at the number you can recognize something is wrong.
+
 If you don't see the notification at all, it means no mods were loaded and you need to restart the game.
 
 ## Additional features
@@ -30,10 +30,9 @@ If you don't see the notification at all, it means no mods were loaded and you n
 
 **IMPORTANT**: It is required to make separate backup manually in Profile 1 for Game Settings, Mod Settings and Keybinds first time for the Auto Restore to work afterwards.
 
-# By default on exit, the mod folder with missing CIDs and corrupted setting files will be deleted automatically. All additional features are configurable.
+### By default on exit, the mod folder with missing CIDs and corrupted setting files will be deleted automatically. All options are optional..
 
-## Supported mods for settings backup/restore:
-* 529 Tiles, AdvancedSimulationSpeed, All Aboard! (Faster Boarding Mod), Anarchy, AreaBucket, Asset Icon Library, Asset Packs Manager, Asset Variation Changer, Auto Vehicle Renamer, AutoDistrictNameStations, Better Bulldozer, BetterMoonLight, BetterSaveList, Boundary Lines Modifier, Brush Size Unlimiter, Cim Route Highlighter, Citizen Model Manager, City Stats, Demand Master Pro [Alpha], Depot Capacity Changer, Extended Tooltip, ExtraAssetsImporter, Find It, First Person Camera Continued, FPS Limiter, Hall of Fame, I18n EveryWhere, Image Overlay, InfoLoom, Move It, No Pollution, No Teleporting, No Vehicle Despawn, Pathfinding Customizer, Plop the Growables, Real Life, Realistic Parking Mod, Realistic Trips, Realistic Workplaces And Households, Recolor, Road Builder [BETA], Road Name Remover, Road Wear Adjuster, School Capacity Balancer, Simple Mod Checker Plus, SmartTransportation, Station Naming, Stiffer Vehicles, SunGlasses, Toggle Overlays, Trading Cost Tweaker, Traffic, Traffic Lights Enhancement Alpha, Traffic Simulation Adjuster, TransitCapacityMultiplier, TransportPolicyAdjuster, Tree Controller, Vehicle Variation Packs, Water Features, Water Visual Tweaks, Whiteness Toggle, Zone Color Changer.
+Check Options in-game for the current list of supported mods for settings backup/restore.
 
 Safe to remove anytime.
 
@@ -58,7 +57,7 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="3.3.4" />
+	<ModVersion Value="3.3.5" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.2*" />
 	<!--Dependency for the mod, can be set multiple times-->
@@ -66,8 +65,10 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<!--ChangeLog Value="" /-->
 	<ChangeLog>
-- Added "Asset UI Manager".
-- Update to "Auto Vehicle Renamer" changes.
+- Changed CID backup/restore to work only on currently active mods.
+- Shows more details about the mod with CID backup/restore.
+- Missing CID Exception will show in UI only if the "Delete Mods with Missing CID" active.
+- Updated for I18N Everywhere.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

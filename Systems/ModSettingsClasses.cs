@@ -1737,10 +1737,15 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(UseNewModDetectMethod));
             set => SetValue(nameof(UseNewModDetectMethod), value);
         }
-        public bool HideLocaleAssets
+        public bool SuppressNullError
         {
-            get => (bool)GetValue(nameof(HideLocaleAssets));
-            set => SetValue(nameof(HideLocaleAssets), value);
+            get => (bool)GetValue(nameof(SuppressNullError));
+            set => SetValue(nameof(SuppressNullError), value);
+        }
+        public string LocaleType
+        {
+            get => (string)GetValue(nameof(LocaleType));
+            set => SetValue(nameof(LocaleType), value);
         }
         public string SelectedModDropDown
         {
