@@ -1,3 +1,8 @@
+# 3.3.6 (2025-01-30) - 5716 subs
+- Fixes to Mod Verification process showing incorrect dirtyness.
+- Mod Verification is now on a different tab.
+- Moved Profile Name out of Advanced section.
+
 # 3.3.5 (2025-01-28) - 5701 subs
 - Changed CID backup/restore to work only on currently active mods.
 - Shows more details about the mod with CID backup/restore.

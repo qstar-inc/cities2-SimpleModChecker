@@ -98,7 +98,8 @@ namespace SimpleModChecker.Systems
             ModCount = Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly).Length;
             int i = 0;
 
-            foreach (var subfolder in Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly))
+            foreach (var subfolder in Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+                                   .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0])))
             {
                 i++;
                 float percent = (i/ (float)ModCount) * 100;
@@ -112,7 +113,6 @@ namespace SimpleModChecker.Systems
                 string modId = "";
                 string modVersion = "";
                 string modName = modId;
-                Mod.log.Info($"{modFolderParts.Length}");
                 if (modFolderParts.Length == 2)
                 {
                     modId = modFolderParts[0];
@@ -247,11 +247,19 @@ namespace SimpleModChecker.Systems
         {
             try
             {
-                var randomFolders = Directory.GetDirectories(cpatchFolder, "*", SearchOption.AllDirectories);
+                string folderName = Path.GetFileName(Path.GetDirectoryName(cpatchFolder));
+                Mod.log.Info(folderName);
+                if (folderName == null || !folderName.Contains("_")) return null;
+
+                string version = folderName.Split('_')[1];
+                Mod.log.Info(version);
+
+                var randomFolders = Directory.GetDirectories(cpatchFolder, "*", SearchOption.TopDirectoryOnly);
 
                 foreach (var folder in randomFolders)
                 {
-                    string manifestPath = Path.Combine(folder, "manifest");
+                    string manifestPath = Path.Combine(folder, version, "complete", "manifest");
+                    Mod.log.Info(manifestPath);
                     if (File.Exists(manifestPath))
                     {
                         return manifestPath;
@@ -344,7 +352,7 @@ namespace SimpleModChecker.Systems
                                 posted = true;
                             }
                             IssueList += $"- '{relativePathForText}' is dirty/modified\r\n";
-                            Mod.log.Info($"File '{relativePath}' is invalid. Expected: {expectedHash}, Found: {actualHash}");
+                            Mod.log.Info($"File '{relativePath}' is dirty/modified. Expected: {expectedHash}, Found: {actualHash}");
                         }
                         manifestData.Remove(relativePath);
                     }
@@ -409,7 +417,6 @@ namespace SimpleModChecker.Systems
                     sha256.TransformBlock(buffer, 0, bytesRead, buffer, 0);
                 }
 
-                // Finalize the hash
                 sha256.TransformFinalBlock([], 0, 0);
 
                 return Convert.ToBase64String(sha256.Hash!).Replace("/", "_").Replace("+", "-");

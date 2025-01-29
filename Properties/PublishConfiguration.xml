@@ -57,7 +57,7 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="3.3.5" />
+	<ModVersion Value="3.3.6" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.2*" />
 	<!--Dependency for the mod, can be set multiple times-->
@@ -65,10 +65,9 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<!--ChangeLog Value="" /-->
 	<ChangeLog>
-- Changed CID backup/restore to work only on currently active mods.
-- Shows more details about the mod with CID backup/restore.
-- Missing CID Exception will show in UI only if the "Delete Mods with Missing CID" active.
-- Updated for I18N Everywhere.
+- Fixes to Mod Verification process showing incorrect dirtyness.
+- Mod Verification is now on a different tab.
+- Moved Profile Name out of Advanced section.
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

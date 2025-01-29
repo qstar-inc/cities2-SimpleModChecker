@@ -15,9 +15,9 @@ using UnityEngine.Device;
 namespace SimpleModCheckerPlus
 {
     [FileLocation($"ModsSettings\\StarQ\\{Mod.Name}")]
-    [SettingsUITabOrder(ModListTab, MainTab, ProfileNameTab, AboutTab)]
-    [SettingsUIGroupOrder(CodeModsGroup, PackageModsGroup, VerifyGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
-    [SettingsUIShowGroupName(CodeModsGroup, PackageModsGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
+    [SettingsUITabOrder(ModListTab, VerifyTab, MainTab, ProfileNameTab, AboutTab)]
+    [SettingsUIGroupOrder(CodeModsGroup, PackageModsGroup, ModVerifyGroup, BackupGroup, OptionsGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
+    [SettingsUIShowGroupName(CodeModsGroup, PackageModsGroup, BackupGroup, OptionsGroup, ModInfo, SupportedMod)]
     //[SettingsUITabOrder(ModListTab, ModWithIssueListTab, MainTab, ProfileNameTab, AboutTab)]
     //[SettingsUIGroupOrder(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
     //[SettingsUIShowGroupName(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
@@ -36,17 +36,17 @@ namespace SimpleModCheckerPlus
             SetDefaults();
         }
 
-        public const string MainTab = "Options and Backup";
+        public const string MainTab = "Options & Backup";
 
         public const string OptionsGroup = "Options";
         public const string BackupGroup = "Settings Backup";
 
-        public const string ModListTab = "Loaded Mods";
-        public const string ModUtilityGroup = "";
+        public const string ModListTab = "Mods";
+        public const string VerifyTab = "Verify";
         //public const string ModListGroup = "Loaded Mods";
-        public const string CodeModsGroup = "Code Mods";
-        public const string PackageModsGroup = "Package Mods";
-        public const string VerifyGroup = "Mod Verification";
+        public const string CodeModsGroup = "Code Mods Loaded";
+        public const string PackageModsGroup = "Package Mods Loaded";
+        public const string ModVerifyGroup = "Mod Verification";
         //public const string ModWithIssueListTab = "Mods with Issues";
         //public const string ModWithIssueListGroup = "Loaded Mods with Issues";
 
@@ -159,21 +159,21 @@ namespace SimpleModCheckerPlus
         public string PackageMods => "";
 
         [SettingsUIMultilineText]
-        [SettingsUISection(ModListTab, VerifyGroup)]
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
         [SettingsUIDisplayName(typeof(ModVerifier), nameof(ModVerifier.VerificationResultText))]
         public string VerificationResult => "";
 
-        [SettingsUISection(ModListTab, VerifyGroup)]
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
         [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
         public bool VerifyMods { set { Task.Run(() => ModVerifier.VerifyMods()); } }
 
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUIHidden]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         public string ProfileName0 { get; set; } = "Profile Auto";
 
         private string profileName1 = "Profile 1";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName1
@@ -183,7 +183,7 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName2 = "Profile 2";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName2
@@ -193,7 +193,7 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName3 = "Profile 3";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName3
@@ -203,7 +203,7 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName4 = "Profile 4";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName4
@@ -213,7 +213,7 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName5 = "Profile 5";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName5
@@ -223,7 +223,7 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName6 = "Profile 6";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName6
@@ -233,7 +233,7 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName7 = "Profile 7";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName7
@@ -243,7 +243,7 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName8 = "Profile 8";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName8
@@ -253,7 +253,7 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName9 = "Profile 9";
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName9
@@ -262,7 +262,7 @@ namespace SimpleModCheckerPlus
             set => profileName9 = value;
         }
 
-        [SettingsUIAdvanced]
+        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUIButton]
         public bool SaveProfileName
