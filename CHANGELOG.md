@@ -1,3 +1,7 @@
+# 3.3.7 (2025-02-05) - 5827 subs
+- Added new options to backup for 'Realistic Workplaces And Households' and 'Realistic Trips'.
+- Added ability to verify one selected mod at a time.
+
 # 3.3.6 (2025-01-30) - 5716 subs
 - Fixes to Mod Verification process showing incorrect dirtyness.
 - Mod Verification is now on a different tab.

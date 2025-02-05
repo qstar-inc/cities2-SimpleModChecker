@@ -11,6 +11,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using UnityEngine.Device;
+using System.IO;
+using Colossal.PSI.Environment;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace SimpleModCheckerPlus
 {
@@ -30,6 +34,7 @@ namespace SimpleModCheckerPlus
         private readonly ModSettingsBackup ModSettingsBackup = new();
         private readonly KeybindsBackup KeybindsBackup = new();
         private readonly ProfileNameBackup ProfileNameBackup = new();
+        private readonly string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
 
         public Setting(IMod mod) : base(mod)
         {
@@ -75,7 +80,7 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(MainTab, BackupGroup)]
         public bool AutoRestoreSettingBackupOnStartup { get; set; } = true;
 
-        [SettingsUIDropdown(typeof(Setting), nameof(GetIntDropdownItems))]
+        [SettingsUIDropdown(typeof(Setting), nameof(GetProfileNames))]
         [SettingsUIValueVersion(typeof(Setting), nameof(ProfileListVersion))]
         [SettingsUISection(MainTab, BackupGroup)]
         public int ProfileDropdown { get; set; } = 1;
@@ -163,17 +168,33 @@ namespace SimpleModCheckerPlus
         [SettingsUIDisplayName(typeof(ModVerifier), nameof(ModVerifier.VerificationResultText))]
         public string VerificationResult => "";
 
+        [SettingsUIHidden]
+        public int ModFolderListVersion { get; set; }
+
+        [SettingsUIDropdown(typeof(Setting), nameof(GetModFolderList))]
+        [SettingsUIValueVersion(typeof(Setting), nameof(ModFolderListVersion))]
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
+        public string ModFolderDropdown { get; set; } = string.Empty;
+
+        [SettingsUIHidden]
+        public bool ReadyForVerifySelected => !(!ReadyForVerify && !(ModFolderDropdown == string.Empty));
+
+        [SettingsUIButtonGroup("VerifyMod")]
         [SettingsUISection(VerifyTab, ModVerifyGroup)]
         [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
         public bool VerifyMods { set { Task.Run(() => ModVerifier.VerifyMods()); } }
 
-        //[SettingsUIAdvanced]
+        [SettingsUIButtonGroup("VerifyMod")]
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerifySelected))]
+        public bool VerifyModSelected { set { Task.Run(() => ModVerifier.VerifyMods(ModFolderDropdown)); } }
+
         [SettingsUIHidden]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         public string ProfileName0 { get; set; } = "Profile Auto";
 
         private string profileName1 = "Profile 1";
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName1
@@ -183,7 +204,6 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName2 = "Profile 2";
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName2
@@ -193,7 +213,6 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName3 = "Profile 3";
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName3
@@ -213,7 +232,6 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName5 = "Profile 5";
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName5
@@ -223,7 +241,6 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName6 = "Profile 6";
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName6
@@ -233,7 +250,6 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName7 = "Profile 7";
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName7
@@ -243,7 +259,6 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName8 = "Profile 8";
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName8
@@ -253,7 +268,6 @@ namespace SimpleModCheckerPlus
         }
 
         private string profileName9 = "Profile 9";
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUITextInput]
         public string ProfileName9
@@ -261,8 +275,6 @@ namespace SimpleModCheckerPlus
             get => profileName9;
             set => profileName9 = value;
         }
-
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
         [SettingsUIButton]
         public bool SaveProfileName
@@ -325,21 +337,86 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(AboutTab, SupportedMod)]
         public string SupportedModText => string.Empty;
 
-        public DropdownItem<int>[] GetIntDropdownItems()
+        public DropdownItem<int>[] GetProfileNames()
         {
             var profileNames = new[] { ProfileName0, ProfileName1, ProfileName2, ProfileName3, ProfileName4, ProfileName5, ProfileName6, ProfileName7, ProfileName8, ProfileName9 };
             var items = new List<DropdownItem<int>>();
 
-            for (var i = 1; i < 10; i += 1)
-            {
-                items.Add(new DropdownItem<int>()
-                {
-                    value = i,
-                    displayName = profileNames[i],
-                });
-            }
+            return Enumerable.Range(1, 9)
+                .Select(i => new DropdownItem<int> { value = i, displayName = profileNames[i] })
+                .ToArray();
+        }
 
-            return [.. items];
+        public DropdownItem<string>[] GetModFolderList()
+        {
+            //var folders = Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+            //           .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]));
+            //var items = new List<DropdownItem<string>>();
+
+            //foreach (var subfolder in folders)
+            //{
+            //    string modFolder = Path.GetFileName(subfolder);
+
+            //    string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
+
+            //    string[] modFolderParts = modFolder.Split('_');
+            //    string modId = "";
+            //    string modVersion = "";
+            //    string modName = modId;
+            //    if (modFolderParts.Length == 2)
+            //    {
+            //        modId = modFolderParts[0];
+            //        modVersion = modFolderParts[1];
+
+            //        modName = modId;
+            //        try
+            //        {
+            //            string jsonContent = File.ReadAllText(metadataFile);
+            //            JObject jsonObject = JObject.Parse(jsonContent);
+            //            if (jsonObject["DisplayName"] != null)
+            //            {
+            //                modName = jsonObject["DisplayName"].ToString();
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Mod.log.Info("Error: " + ex.Message);
+            //        }
+            //    }
+
+            //    items.Add(new DropdownItem<string>()
+            //    {
+            //        value = subfolder,
+            //        displayName = modName,
+            //    });
+            //}
+
+            //return [.. items];
+            return Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+            .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
+            .Select(subfolder =>
+            {
+                string modFolder = Path.GetFileName(subfolder);
+                string[] modFolderParts = modFolder.Split('_');
+
+                string modId = modFolderParts.Length == 2 ? modFolderParts[0] : "";
+                string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
+                string modName = modId;
+
+                if (modFolderParts.Length == 2)
+                {
+                    try
+                    {
+                        var jsonContent = File.ReadAllText(metadataFile);
+                        var jsonObject = JObject.Parse(jsonContent);
+                        modName = jsonObject["DisplayName"]?.ToString() ?? modId;
+                    }
+                    catch (Exception) {}
+                }
+
+                return new DropdownItem<string> { value = subfolder, displayName = $"{modName} [{modFolder}]" };
+            })
+            .ToArray();
         }
 
         public override void SetDefaults()

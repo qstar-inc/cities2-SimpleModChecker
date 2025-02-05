@@ -2707,6 +2707,46 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(service_expenses_night_reduction));
             set => SetValue(nameof(service_expenses_night_reduction), value);
         }
+        public int trafficReduction
+        {
+            get => (int)GetValue(nameof(trafficReduction));
+            set => SetValue(nameof(trafficReduction), value);
+        }
+        public int min_attraction
+        {
+            get => (int)GetValue(nameof(min_attraction));
+            set => SetValue(nameof(min_attraction), value);
+        }
+        public int min_event_weekday
+        {
+            get => (int)GetValue(nameof(min_event_weekday));
+            set => SetValue(nameof(min_event_weekday), value);
+        }
+        public int min_event_avg_day
+        {
+            get => (int)GetValue(nameof(min_event_avg_day));
+            set => SetValue(nameof(min_event_avg_day), value);
+        }
+        public int min_event_weekend
+        {
+            get => (int)GetValue(nameof(min_event_weekend));
+            set => SetValue(nameof(min_event_weekend), value);
+        }
+        public int max_event_weekday
+        {
+            get => (int)GetValue(nameof(max_event_weekday));
+            set => SetValue(nameof(max_event_weekday), value);
+        }
+        public int max_event_avg_day
+        {
+            get => (int)GetValue(nameof(max_event_avg_day));
+            set => SetValue(nameof(max_event_avg_day), value);
+        }
+        public int max_event_weekend
+        {
+            get => (int)GetValue(nameof(max_event_weekend));
+            set => SetValue(nameof(max_event_weekend), value);
+        }
     }
 
     public class RealisticWorkplacesAndHouseholdsSettings : SettingsBackup
@@ -2730,6 +2770,11 @@ namespace SimpleModChecker.Systems
         {
             get => (int)GetValue(nameof(residential_sqm_per_apartment));
             set => SetValue(nameof(residential_sqm_per_apartment), value);
+        }
+        public int residential_vacancy_rate
+        {
+            get => (int)GetValue(nameof(residential_vacancy_rate));
+            set => SetValue(nameof(residential_vacancy_rate), value);
         }
         public int residential_hallway_space
         {
@@ -3005,6 +3050,11 @@ namespace SimpleModChecker.Systems
         {
             get => (int)GetValue(nameof(electricity_consumption_reduction));
             set => SetValue(nameof(electricity_consumption_reduction), value);
+        }
+        public int water_consumption_reduction
+        {
+            get => (int)GetValue(nameof(water_consumption_reduction));
+            set => SetValue(nameof(water_consumption_reduction), value);
         }
         public int rent_discount
         {

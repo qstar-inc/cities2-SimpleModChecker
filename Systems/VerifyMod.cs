@@ -61,7 +61,7 @@ namespace SimpleModChecker.Systems
         }
 
 
-        public static async Task VerifyMods()
+        public static async Task VerifyMods(string selected = null)
         {
             NotificationSystem.Push("starq-smc-verify-mod",
                 titleId: "SimpleModCheckerPlus",
@@ -95,12 +95,16 @@ namespace SimpleModChecker.Systems
                 return;
             }
 
-            ModCount = Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly).Length;
+            ModCount = selected != null ? 1 : Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly).Length;
             int i = 0;
 
             foreach (var subfolder in Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
                                    .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0])))
             {
+                if (selected != null && subfolder != selected)
+                {
+                    continue;
+                }
                 i++;
                 float percent = (i/ (float)ModCount) * 100;
                 bool posted = false;
@@ -165,7 +169,7 @@ namespace SimpleModChecker.Systems
                 {
                     continue;
                 }
-                Progress = $"- {i} ({modName}) out of {ModCount} mods processed...";
+                Progress = $"- {i} ({modName}) out of {ModCount} mods processing...";
 
                 string cpatchFolder = Path.Combine(subfolder, ".cpatch");
                 if (!Directory.Exists(cpatchFolder))
@@ -241,6 +245,10 @@ namespace SimpleModChecker.Systems
                     ModCheckup.uISystem.OpenPage("SimpleModChecker.SimpleModCheckerPlus.Mod", "Setting.ModListTab", false);
                 }
             );
+            if (selected != null)
+            {
+                Mod.Setting.VerifiedRecently = false;
+            }
         }
 
         private static string FindManifestFile(string cpatchFolder)
