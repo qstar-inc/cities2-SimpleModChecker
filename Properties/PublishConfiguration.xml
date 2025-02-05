@@ -57,7 +57,7 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="3.3.7" />
+	<ModVersion Value="3.3.8" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.2*" />
 	<!--Dependency for the mod, can be set multiple times-->
@@ -65,8 +65,7 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<!--ChangeLog Value="" /-->
 	<ChangeLog>
-- Added new options to backup for 'Realistic Workplaces And Households' and 'Realistic Trips'.
-- Added ability to verify one selected mod at a time.
+- Hotfix for verification failing when there are more than 2 versions of the same mod (thanks to computment).
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />

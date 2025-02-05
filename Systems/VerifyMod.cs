@@ -113,6 +113,8 @@ namespace SimpleModChecker.Systems
 
                 string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
 
+                string multiText = "Multiple versions of the same mod downloaded";
+
                 string[] modFolderParts = modFolder.Split('_');
                 string modId = "";
                 string modVersion = "";
@@ -157,8 +159,13 @@ namespace SimpleModChecker.Systems
                             IssueTextHeader(modId, modName);
                             posted = true;
                         }
-                        IssueList += "- Multiple versions of the same mod downloaded.\r\n";
-                        DupedModList.Add(modId);
+                        IssueList += $"- {multiText}\r\n";
+                        if (!DupedModList.Contains(modId))
+                        {
+                            Mod.log.Info($"{multiText}: {modId}");
+                            DupedModList.Add(modId);
+                        }
+                        
                     }
                     else
                     {
@@ -256,20 +263,18 @@ namespace SimpleModChecker.Systems
             try
             {
                 string folderName = Path.GetFileName(Path.GetDirectoryName(cpatchFolder));
-                Mod.log.Info(folderName);
                 if (folderName == null || !folderName.Contains("_")) return null;
 
                 string version = folderName.Split('_')[1];
-                Mod.log.Info(version);
 
                 var randomFolders = Directory.GetDirectories(cpatchFolder, "*", SearchOption.TopDirectoryOnly);
 
                 foreach (var folder in randomFolders)
                 {
                     string manifestPath = Path.Combine(folder, version, "complete", "manifest");
-                    Mod.log.Info(manifestPath);
                     if (File.Exists(manifestPath))
                     {
+                        Mod.log.Info($"Found manifest for {folderName}");
                         return manifestPath;
                     }
                 }
