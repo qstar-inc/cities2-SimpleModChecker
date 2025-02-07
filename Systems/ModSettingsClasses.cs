@@ -1419,6 +1419,11 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(CompatibilityDropDown));
             set => SetValue(nameof(CompatibilityDropDown), value);
         }
+        public string DatabasePath
+        {
+            get => (string)GetValue(nameof(DatabasePath));
+            set => SetValue(nameof(DatabasePath), value);
+        }
         public bool DeleteNotLoadedAssets
         {
             get => (bool)GetValue(nameof(DeleteNotLoadedAssets));
@@ -1433,6 +1438,16 @@ namespace SimpleModChecker.Systems
             get => (string)GetValue(nameof(DefaultViewStyle));
             set => SetValue(nameof(DefaultViewStyle), value);
         }
+        public string DefaultAlignmentStyle
+        {
+            get => (string)GetValue(nameof(DefaultAlignmentStyle));
+            set => SetValue(nameof(DefaultAlignmentStyle), value);
+        }
+        public bool VehicleWarningShown
+        {
+            get => (bool)GetValue(nameof(VehicleWarningShown));
+            set => SetValue(nameof(VehicleWarningShown), value);
+        }
         public bool OpenPanelOnPicker
         {
             get => (bool)GetValue(nameof(OpenPanelOnPicker));
@@ -1443,11 +1458,6 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(SelectPrefabOnOpen));
             set => SetValue(nameof(SelectPrefabOnOpen), value);
         }
-        public bool StrictSearch
-        {
-            get => (bool)GetValue(nameof(StrictSearch));
-            set => SetValue(nameof(StrictSearch), value);
-        }
         public bool HideRandomAssets
         {
             get => (bool)GetValue(nameof(HideRandomAssets));
@@ -1457,6 +1467,16 @@ namespace SimpleModChecker.Systems
         {
             get => (bool)GetValue(nameof(HideBrandsFromAny));
             set => SetValue(nameof(HideBrandsFromAny), value);
+        }
+        public bool StrictSearch
+        {
+            get => (bool)GetValue(nameof(StrictSearch));
+            set => SetValue(nameof(StrictSearch), value);
+        }
+        public bool NoAssetImage
+        {
+            get => (bool)GetValue(nameof(NoAssetImage));
+            set => SetValue(nameof(NoAssetImage), value);
         }
         public bool SmoothScroll
         {
@@ -1487,6 +1507,16 @@ namespace SimpleModChecker.Systems
         {
             get => (float)GetValue(nameof(ExpandedColumnSize));
             set => SetValue(nameof(ExpandedColumnSize), value);
+        }
+        public float RightRowSize
+        {
+            get => (float)GetValue(nameof(RightRowSize));
+            set => SetValue(nameof(RightRowSize), value);
+        }
+        public float RightColumnSize
+        {
+            get => (float)GetValue(nameof(RightColumnSize));
+            set => SetValue(nameof(RightColumnSize), value);
         }
     }
 

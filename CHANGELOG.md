@@ -1,3 +1,7 @@
+# 3.3.9 (2025-02-08) - 5981 subs
+- Fix notification not disappearing in certain cases.
+- Added new option to backup for 'ExtraAssetImporter' and 'Find It'.
+
 # 3.3.8 (2025-02-06) - 5852 subs
 - Hotfix for verification failing when there are more than 2 versions of the same mod (thanks to computment).
 

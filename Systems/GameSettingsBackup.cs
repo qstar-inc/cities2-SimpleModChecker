@@ -369,11 +369,15 @@ namespace SimpleModChecker.Systems
                 title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeGameBackup]"),
                 text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeGameBackup]"),
                 progressState: ProgressState.Warning,
-                onClicked: () => { NotificationSystem.Pop("starq-smc-game-settings-update", delay: 1f); CreateBackup(1); });
+                onClicked: () => CreateBackup(1) );
         }
 
         public void CreateBackup(int profile, bool log = true)
         {
+            if (profile == 1)
+            {
+                NotificationSystem.Pop("starq-smc-game-settings-update", delay: 1f);
+            }
             string backupFile = profile switch
             {
                 0 => backupFile0,

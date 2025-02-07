@@ -125,11 +125,15 @@ namespace SimpleModChecker.Systems
                 title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeModBackup]"),
                 text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeModBackup]"),
                 progressState: ProgressState.Warning,
-                onClicked: () => { NotificationSystem.Pop("starq-smc-mod-settings-update", delay: 1f); CreateBackup(1); });
+                onClicked: () => CreateBackup(1));
         }
 
         public void CreateBackup(int profile, bool log = true)
         {
+            if (profile == 1)
+            {
+                NotificationSystem.Pop("starq-smc-mod-settings-update", delay: 1f);
+            }
             if (!ModDatabase.isModDatabaseLoaded)
             {
                 Mod.log.Info("Mod Database wasn't loaded. Attempting to reload");
