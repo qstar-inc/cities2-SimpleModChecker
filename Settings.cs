@@ -3,18 +3,18 @@
 // StarQ 2024
 
 using Colossal.IO.AssetDatabase;
+using Colossal.PSI.Environment;
 using Game.Modding;
 using Game.Settings;
 using Game.UI.Widgets;
+using Newtonsoft.Json.Linq;
 using SimpleModChecker.Systems;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System;
 using UnityEngine.Device;
-using System.IO;
-using Colossal.PSI.Environment;
-using System.Linq;
-using Newtonsoft.Json.Linq;
 
 namespace SimpleModCheckerPlus
 {
@@ -349,52 +349,12 @@ namespace SimpleModCheckerPlus
 
         public DropdownItem<string>[] GetModFolderList()
         {
-            //var folders = Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
-            //           .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]));
-            //var items = new List<DropdownItem<string>>();
+            var x = new List<DropdownItem<string>>();
 
-            //foreach (var subfolder in folders)
-            //{
-            //    string modFolder = Path.GetFileName(subfolder);
+            var directories = Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+                .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]));
 
-            //    string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
-
-            //    string[] modFolderParts = modFolder.Split('_');
-            //    string modId = "";
-            //    string modVersion = "";
-            //    string modName = modId;
-            //    if (modFolderParts.Length == 2)
-            //    {
-            //        modId = modFolderParts[0];
-            //        modVersion = modFolderParts[1];
-
-            //        modName = modId;
-            //        try
-            //        {
-            //            string jsonContent = File.ReadAllText(metadataFile);
-            //            JObject jsonObject = JObject.Parse(jsonContent);
-            //            if (jsonObject["DisplayName"] != null)
-            //            {
-            //                modName = jsonObject["DisplayName"].ToString();
-            //            }
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Mod.log.Info("Error: " + ex.Message);
-            //        }
-            //    }
-
-            //    items.Add(new DropdownItem<string>()
-            //    {
-            //        value = subfolder,
-            //        displayName = modName,
-            //    });
-            //}
-
-            //return [.. items];
-            return Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
-            .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
-            .Select(subfolder =>
+            foreach (var subfolder in directories)
             {
                 string modFolder = Path.GetFileName(subfolder);
                 string[] modFolderParts = modFolder.Split('_');
@@ -411,13 +371,66 @@ namespace SimpleModCheckerPlus
                         var jsonObject = JObject.Parse(jsonContent);
                         modName = jsonObject["DisplayName"]?.ToString() ?? modId;
                     }
-                    catch (Exception) {}
+                    catch (Exception) { }
                 }
 
-                return new DropdownItem<string> { value = subfolder, displayName = $"{modName} [{modFolder}]" };
-            })
-            .ToArray();
+                x.Add(new DropdownItem<string> { value = subfolder, displayName = $"{modName} [{modFolder}]" });
+            }
+
+            x.Sort((a, b) => a.displayName.id.CompareTo(b.displayName.id));
+
+            return [.. x];
         }
+
+        //public override AutomaticSettings.SettingPageData GetPageData(string id, bool addPrefix)
+        //{
+        //    AutomaticSettings.SettingPageData pageData = base.GetPageData(id, addPrefix);
+        //    if (ModDatabase.ModDatabaseInfo == null)
+        //    {
+        //        ModDatabase.OnDatabaseLoaded += () => GetPageSection(pageData);
+        //        //return;
+        //    }
+        //    //GetPageSection(pageData);
+        //    return pageData;
+        //}
+
+        //private void GetPageSection(AutomaticSettings.SettingPageData pageData)
+        //{
+        //    //if (ModDatabase.ModDatabaseInfo == null) {
+        //    //    ModDatabase.OnDatabaseLoaded += () => GetPageSection(pageData);
+        //    //    return;
+        //    //}
+            
+        //    foreach (var kvp in ModDatabase.ModDatabaseInfo)
+        //    {
+        //        string modName = kvp.Key;
+        //        ModInfo modInfo = kvp.Value;
+
+        //        Mod.log.Info($"{modName}");
+
+        //        AutomaticSettings.ManualProperty property = new AutomaticSettings.ManualProperty(typeof(Setting), typeof(bool), modName)
+        //        {
+        //            canRead = true,
+        //            canWrite = true,
+        //            //attributes =
+        //            //{
+        //            //    (Attribute)new SettingsUIPathAttribute($"Mods.{modName}"),
+        //            //    (Attribute)new SettingsUIDisplayNameAttribute(modName)
+        //            //},
+        //            getter = (_) => modInfo.Backupable,
+        //            setter = (_, obj) => modInfo.Backupable = (bool)obj
+        //        };
+
+        //        AutomaticSettings.SettingItemData item = new AutomaticSettings.SettingItemData(AutomaticSettings.WidgetType.BoolToggle, this, property, pageData.prefix)
+        //        {
+        //            simpleGroup = "BackupGroup"
+        //        };
+
+        //        pageData["B&R"].AddItem(item);
+        //        pageData.AddGroup("B&R");
+        //        pageData.AddGroupToShowName("B&R");
+        //    }
+        //}
 
         public override void SetDefaults()
         {
@@ -438,6 +451,7 @@ namespace SimpleModCheckerPlus
             ProfileName9 = "Profile 9";
             VerifiedRecently = false;
             IsInGameOrEditor = false;
+            ModFolderDropdown = "";
             //LastDownloaded = (long)0;
             //LastChecked = (long)0;
         }

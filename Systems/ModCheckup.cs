@@ -5,8 +5,6 @@
 using Colossal.PSI.Common;
 using Colossal.PSI.PdxSdk;
 using Colossal.Serialization.Entities;
-using Game.Audio;
-using Game.Prefabs;
 using Game.PSI;
 using Game.SceneFlow;
 using Game.UI.Localization;

@@ -8,20 +8,20 @@ using Colossal.PSI.Environment;
 using Game.Modding;
 using Game.SceneFlow;
 using Game;
+using Newtonsoft.Json;
 using SimpleModChecker.Systems;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System;
 using Unity.Entities;
-using System.Text;
-using Newtonsoft.Json;
 
 namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "3.3.9";
+        public static string Version = "3.4.0";
         
         public static Setting Setting;
         public CIDBackupRestore CIDBackupRestore;
@@ -53,6 +53,9 @@ namespace SimpleModCheckerPlus
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
             Setting.VerifiedRecently = false;
             Setting.IsInGameOrEditor = false;
+            Setting.ModFolderDropdown = "";
+
+            //RegisterSetting(Setting, nameof(SimpleModCheckerPlus));
 
             ////ModCheckup = new ModCheckup();
             //CIDBackupRestore = new CIDBackupRestore(this);
@@ -80,6 +83,7 @@ namespace SimpleModCheckerPlus
             }
             Setting.VerifiedRecently = false;
             Setting.IsInGameOrEditor = false;
+            Setting.ModFolderDropdown = "";
             MakeBackupOfModsData.MakePrev();
             Setting.UnregisterInOptionsUI();
             log.Info($"Shutting down {Name}");
@@ -186,5 +190,13 @@ namespace SimpleModCheckerPlus
             Directory.Delete(sourceDir);
             Mod.log.Info($"Deleted source directory: {sourceDir}");
         }
+
+        //private static void RegisterSetting(Setting setting, string id, bool addPrefix = false)
+        //{
+        //    Game.UI.Menu.OptionsUISystem.Page page = setting.GetPageData(id, addPrefix).BuildPage();
+        //    Mod.log.Info(page.ToString() );
+        //    page.UpdateVisibility(false);
+        //    page.UpdateNameAndDescription(false);
+        //}
     }
 }

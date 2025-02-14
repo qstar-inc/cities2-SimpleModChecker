@@ -63,6 +63,10 @@ namespace SimpleModChecker.Systems
 
         public static async Task VerifyMods(string selected = null)
         {
+            DownloadedModList.Clear();
+            DupedModList.Clear();
+            IssueList = "";
+
             NotificationSystem.Push("starq-smc-verify-mod",
                 titleId: "SimpleModCheckerPlus",
                 textId: "SimpleModCheckerPlus.VerifyStart",
@@ -95,6 +99,8 @@ namespace SimpleModChecker.Systems
                 return;
             }
 
+            string selectedModName = "";
+            string selectedModFolder = "";
             ModCount = selected != null ? 1 : Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly).Length;
             int i = 0;
 
@@ -132,6 +138,8 @@ namespace SimpleModChecker.Systems
                         if (jsonObject["DisplayName"] != null)
                         {
                             modName = jsonObject["DisplayName"].ToString();
+                            selectedModName = modName;
+                            selectedModFolder = modFolder;
                         }
                     }
                     catch (Exception ex)
@@ -242,6 +250,10 @@ namespace SimpleModChecker.Systems
             else
             {
                 IssueList = "No issues found";
+                if (selected != null)
+                {
+                    IssueList += $" for {selectedModName} ({selectedModFolder})";
+                }
             }
             NotificationSystem.Push("starq-smc-verify-mod",
                 titleId: "SimpleModCheckerPlus",

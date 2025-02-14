@@ -49,6 +49,7 @@ namespace SimpleModChecker.Systems
 
         public Mod _mod;
         public static Dictionary<string, ModInfo> ModDatabaseInfo { get; private set; }
+        //public static event Action OnDatabaseLoaded;
         public static ModDatabaseMetadata Metadata { get; private set; }
         public static string ModDatabaseTime;
         private static readonly string modDatabaseJson = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ModDatabase.json";
@@ -97,6 +98,7 @@ namespace SimpleModChecker.Systems
                 Mod.log.Info($"Found {ModDatabaseInfo.Count} mods in the database");
                 isModDatabaseLoaded = true;
             }
+            //OnDatabaseLoaded?.Invoke();
         }
     }
 

@@ -1,14 +1,8 @@
 ﻿<Publish>
-	<!--Id must be set in order to update existed mod. it is not required for publishing mod for the first time-->
 	<ModId Value="79186" />
-	<!--Name of the mod to display to players-->
 	<DisplayName Value="Simple Mod Checker Plus" />
-	<!--Short description of the mod-->
 	<ShortDescription Value="Mod load notification, backup/restore game/mods settings/keybinds, and more tools." />
-	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
-	<!--LongDescription Value="" /-->
-	<LongDescription>
-I'm a simple man; I see "Loaded {x} mods", I start playing.
+	<LongDescription>I'm a simple man; I see "Loaded {x} mods", I start playing.
 
 This mod adds a **persistent** notification to the Main Menu, showing how many mods have loaded in the current session.
 
@@ -30,7 +24,9 @@ If you don't see the notification at all, it means no mods were loaded and you n
 
 **IMPORTANT**: It is required to make separate backup manually in Profile 1 for Game Settings, Mod Settings and Keybinds first time for the Auto Restore to work afterwards.
 
-### By default on exit, the mod folder with missing CIDs and corrupted setting files will be deleted automatically. All options are optional..
+### By default on exit, the mod folder with missing CIDs and corrupted setting files will be deleted automatically.
+
+# All options are optional...
 
 Check Options in-game for the current list of supported mods for settings backup/restore.
 
@@ -43,32 +39,22 @@ Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding**
 
 Feedback / Bug Report: https://discord.com/channels/1024242828114673724/1287440491239047208
 	</LongDescription>
-	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
-	<!--Screenshot, can be set multiple times-->
 	<Screenshot Value="Properties/Screenshot01.jpg" />
 	<Screenshot Value="Properties/Screenshot02.jpg" />
 	<Screenshot Value="Properties/Screenshot03.jpg" />
 	<Screenshot Value="Properties/Screenshot04.jpg" />
 	<Screenshot Value="Properties/Screenshot05.jpg" />
 	<Screenshot Value="Properties/Screenshot06.jpg" />
-	<!--Tag, can be set multiple times-->
 	<Tag Value="Code Mod" />
-	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
-	<!--Version of the mod-->
-	<ModVersion Value="3.3.9" />
-	<!--Recommended version of the base game to use the mod-->
+	<ModVersion Value="3.4.0" />
 	<GameVersion Value="1.2*" />
-	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
-	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<!--ChangeLog Value="" /-->
 	<ChangeLog>
-- Fix notification not disappearing in certain cases.
-- Added new option to backup for 'ExtraAssetImporter' and 'Find It'.
+- Sort downloaded mods list.
+- Fix for Verify All Mods not showing accurate result after using Verify Selected Mod.
 	</ChangeLog>
-	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
 	<ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
 	<ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />

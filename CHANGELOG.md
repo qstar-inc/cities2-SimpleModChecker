@@ -1,3 +1,7 @@
+# 3.4.0 (2025-02-14) - 6705 subs
+- Sort downloaded mods list.
+- Fix for Verify All Mods not showing accurate result after using Verify Selected Mod.
+
 # 3.3.9 (2025-02-08) - 5981 subs
 - Fix notification not disappearing in certain cases.
 - Added new option to backup for 'ExtraAssetImporter' and 'Find It'.
