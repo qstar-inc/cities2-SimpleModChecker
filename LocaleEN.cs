@@ -9,7 +9,6 @@ using System.Collections.Generic;
 
 namespace SimpleModCheckerPlus
 {
-
     public class LocaleEN(Setting setting) : IDictionarySource
     {
         private readonly Setting m_Setting = setting;
@@ -122,6 +121,8 @@ namespace SimpleModCheckerPlus
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.VerifyModSelected)), "Verify only the mod package selected above which are downloaded from PDX Mods and currently stored on disk.\r\nThe process will take some time depending on the number and size of the mods.\r\n- Please do not run this while in game/editor.\r\n- Please do not launch game/editor while the verification is running." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.VerificationResult)), "" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.VerificationResult)), "" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.OpenLog)), "Open Log File" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.OpenLog)), "Open the log file for the mod." },
                 //{ m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModsWithIssueLoaded)), "" },
                 //{ m_Setting.GetOptionDescLocaleID(nameof(Setting.ModsWithIssueLoaded)), "List of mods with issues loaded in this session." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ModDatabaseTime)), "Mod Database Time" },

@@ -45,6 +45,7 @@ namespace SimpleModChecker.Systems
 
         protected override void OnUpdate()
         {
+            Enabled = false;
         }
     }
 }

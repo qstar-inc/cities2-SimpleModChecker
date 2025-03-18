@@ -331,11 +331,12 @@ namespace SimpleModChecker.Systems
                         .Select(m => m.Groups["value"].Value)
                         .ToList();
 
-                    if (parts.Count >= 3)
+                    if (parts.Count >= 4)
                     {
                         string relativePath = parts[0];
+                        string size = parts[1];
                         string hash = parts[2];
-                        manifestData[relativePath] = hash;
+                        manifestData[relativePath] = $"{size};;{hash}";
                     }
                 }
 
@@ -363,13 +364,14 @@ namespace SimpleModChecker.Systems
                     //Mod.log.Info(relativePath);
                     if (manifestData.ContainsKey(relativePath) || manifestData.ContainsKey($"\"{relativePath}\""))
                     {
-                        string expectedHash = manifestData[relativePath];
+                        string[] manifestParts = manifestData[relativePath].Split([";;"], StringSplitOptions.None);
+                        string expectedSize = manifestParts[0];
+                        string expectedHash = manifestParts[1];
+
+                        long actualSize = new FileInfo(filePath).Length;
                         string actualHash = await ComputeSHA256Hash(filePath);
-                        if (expectedHash == actualHash)
-                        {
-                            //Mod.log.Info($"File '{relativePath}' is valid.");
-                        }
-                        else
+
+                        if (expectedHash != actualHash || expectedSize != actualSize.ToString())
                         {
                             if (!posted)
                             {
@@ -377,7 +379,7 @@ namespace SimpleModChecker.Systems
                                 posted = true;
                             }
                             IssueList += $"- '{relativePathForText}' is dirty/modified\r\n";
-                            Mod.log.Info($"File '{relativePath}' is dirty/modified. Expected: {expectedHash}, Found: {actualHash}");
+                            Mod.log.Info($"File '{relativePath}' is dirty/modified. Expected: {expectedHash} ({expectedSize} bytes), Found: {actualHash} ({actualSize} bytes)");
                         }
                         manifestData.Remove(relativePath);
                     }
@@ -390,6 +392,26 @@ namespace SimpleModChecker.Systems
                         }
                         IssueList += $"- '{relativePathForText}' is not from the mod\r\n";
                         Mod.log.Info($"File '{relativePath}' is not listed in the manifest.");
+                    }
+                    else if (filePath.EndsWith(".backup"))
+                    {
+                        string realFilePath = filePath.Substring(0, filePath.Length - 7);
+                        relativePath = GetRelativePath(subfolder, realFilePath).Replace("/", "\\");
+                        relativePathForText = relativePath.Replace("\\", "/");
+
+                        string actualCid = File.Exists(realFilePath) ? File.ReadAllText(realFilePath) : ""; ;
+                        string backupCid = File.Exists(filePath) ? File.ReadAllText(filePath) : "";
+
+                        if (actualCid != backupCid)
+                        {
+                            if (!posted)
+                            {
+                                IssueTextHeader(modId, modName);
+                                posted = true;
+                            }
+                            IssueList += $"- '{relativePathForText}' does not match with the backup\r\n";
+                            Mod.log.Info($"Value of '{relativePath}' does not match with the backup.");
+                        }
                     }
                 }
                 catch (UnauthorizedAccessException)

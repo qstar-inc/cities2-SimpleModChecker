@@ -48,12 +48,13 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<Screenshot Value="Properties/Screenshot06.jpg" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="" />
-	<ModVersion Value="3.4.0" />
+	<ModVersion Value="3.4.1" />
 	<GameVersion Value="1.2*" />
 	<Dependency Id="" />
 	<ChangeLog>
-- Sort downloaded mods list.
-- Fix for Verify All Mods not showing accurate result after using Verify Selected Mod.
+- Recompiled for 1.2.5f1.
+- Disabled EAI restoring to reduce Collection emuneration instance issues.
+- Mod verification now also takes file size into consideration.
 	</ChangeLog>
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
 	<ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />

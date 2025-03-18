@@ -1,3 +1,8 @@
+# 3.4.1 (2025-03-18) - 8668 subs
+- Recompiled for 1.2.5f1.
+- Disabled EAI restoring to reduce Collection emuneration instance issues.
+- Mod verification now also takes file size into consideration.
+
 # 3.4.0 (2025-02-14) - 6705 subs
 - Sort downloaded mods list.
 - Fix for Verify All Mods not showing accurate result after using Verify Selected Mod.

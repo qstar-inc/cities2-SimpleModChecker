@@ -11,6 +11,7 @@ using System.Linq;
 using System;
 using UnityEngine;
 using SimpleModCheckerPlus;
+using Game.Routes;
 
 namespace SimpleModChecker.Systems
 {
@@ -52,14 +53,16 @@ namespace SimpleModChecker.Systems
 
                 string plural = "mods";
                 if (CanDelete.Count == 1) plural = "mod";
-                string errorText = $"Found {CanDelete.Count} {plural} with missing/invalid CID with no backup:\n{modList}\n{Mod.Name} will handle the deletion of these folders on exit. On next restart, the missing {plural} will be redownloaded automatically. If this persists, contact the author of the {plural} listed above.";
+                
                 if (Mod.Setting.DeleteMissing)
                 {
+                    string errorText = $"Found {CanDelete.Count} {plural} with missing/invalid CID with no backup:\n{modList}\n{Mod.Name} will handle the deletion of these folders on exit. On next restart, the missing {plural} will be redownloaded automatically. If this persists, contact the author of the {plural} listed above.";
                     Exception ex = new("Missing_CID_Exception");
                     Mod.log.Error(ex, errorText);
                 }
                 else
                 {
+                    string errorText = $"Found {CanDelete.Count} {plural} with missing/invalid CID with no backup:\n{modList}\nDelete missing CID option is disabled in {Mod.Name} options, so it will not be deleted.";
                     Mod.log.Info(errorText);
                 }
 
@@ -120,7 +123,18 @@ namespace SimpleModChecker.Systems
                 if (File.Exists(cidFilePath))
                 {
                     hasValidFile = true;
-                    if (!File.Exists(cidBackupFilePath))
+                    if (File.Exists(cidBackupFilePath))
+                    {
+                        string actualCid = File.Exists(cidFilePath) ? File.ReadAllText(cidFilePath) : "";
+                        string backupCid = File.Exists(cidBackupFilePath) ? File.ReadAllText(cidBackupFilePath) : "";
+
+                        if (actualCid != backupCid)
+                        {
+                            hasValidFile = false;
+                            Mod.log.Info($"CID mismatched: {file}");
+                        }
+                    }
+                    else
                     {
                         //Mod.log.Info($"CID backup created: {file}");
                         File.Copy(cidFilePath, cidBackupFilePath);

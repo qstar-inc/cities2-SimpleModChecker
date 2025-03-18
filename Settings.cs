@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using UnityEngine.Device;
+using System.Diagnostics;
 
 namespace SimpleModCheckerPlus
 {
@@ -189,6 +190,9 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(VerifyTab, ModVerifyGroup)]
         [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerifySelected))]
         public bool VerifyModSelected { set { Task.Run(() => ModVerifier.VerifyMods(ModFolderDropdown)); } }
+
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
+        public bool OpenLog { set { Task.Run(() => Process.Start($"{EnvPath.kUserDataPath}/Logs/{Mod.Name.Replace(" ","")}.log")); } }
 
         [SettingsUIHidden]
         [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
