@@ -922,41 +922,46 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(FreeResidentialRequirement_High));
             set => SetValue(nameof(FreeResidentialRequirement_High), value);
         }
-        public float FreeCommercialProportion
-        {
-            get => (float)GetValue(nameof(FreeCommercialProportion));
-            set => SetValue(nameof(FreeCommercialProportion), value);
-        }
-        public float FreeIndustrialProportion
-        {
-            get => (float)GetValue(nameof(FreeIndustrialProportion));
-            set => SetValue(nameof(FreeIndustrialProportion), value);
-        }
-        public float CommercialStorageMinimum
-        {
-            get => (float)GetValue(nameof(CommercialStorageMinimum));
-            set => SetValue(nameof(CommercialStorageMinimum), value);
-        }
-        public float CommercialStorageEffect
-        {
-            get => (float)GetValue(nameof(CommercialStorageEffect));
-            set => SetValue(nameof(CommercialStorageEffect), value);
-        }
+        //public float FreeCommercialProportion
+        //{
+        //    get => (float)GetValue(nameof(FreeCommercialProportion));
+        //    set => SetValue(nameof(FreeCommercialProportion), value);
+        //}
+        //public float FreeIndustrialProportion
+        //{
+        //    get => (float)GetValue(nameof(FreeIndustrialProportion));
+        //    set => SetValue(nameof(FreeIndustrialProportion), value);
+        //}
+        //public float CommercialStorageMinimum
+        //{
+        //    get => (float)GetValue(nameof(CommercialStorageMinimum));
+        //    set => SetValue(nameof(CommercialStorageMinimum), value);
+        //}
+        //public float CommercialStorageEffect
+        //{
+        //    get => (float)GetValue(nameof(CommercialStorageEffect));
+        //    set => SetValue(nameof(CommercialStorageEffect), value);
+        //}
         public float CommercialBaseDemand
         {
             get => (float)GetValue(nameof(CommercialBaseDemand));
             set => SetValue(nameof(CommercialBaseDemand), value);
         }
-        public float IndustrialStorageMinimum
+        public float HotelRoomPercentRequirement
         {
-            get => (float)GetValue(nameof(IndustrialStorageMinimum));
-            set => SetValue(nameof(IndustrialStorageMinimum), value);
+            get => (float)GetValue(nameof(HotelRoomPercentRequirement));
+            set => SetValue(nameof(HotelRoomPercentRequirement), value);
         }
-        public float IndustrialStorageEffect
-        {
-            get => (float)GetValue(nameof(IndustrialStorageEffect));
-            set => SetValue(nameof(IndustrialStorageEffect), value);
-        }
+        //public float IndustrialStorageMinimum
+        //{
+        //    get => (float)GetValue(nameof(IndustrialStorageMinimum));
+        //    set => SetValue(nameof(IndustrialStorageMinimum), value);
+        //}
+        //public float IndustrialStorageEffect
+        //{
+        //    get => (float)GetValue(nameof(IndustrialStorageEffect));
+        //    set => SetValue(nameof(IndustrialStorageEffect), value);
+        //}
         public float IndustrialBaseDemand
         {
             get => (float)GetValue(nameof(IndustrialBaseDemand));
@@ -967,11 +972,11 @@ namespace SimpleModChecker.Systems
             get => (float)GetValue(nameof(ExtractorBaseDemand));
             set => SetValue(nameof(ExtractorBaseDemand), value);
         }
-        public float StorageDemandMultiplier
-        {
-            get => (float)GetValue(nameof(StorageDemandMultiplier));
-            set => SetValue(nameof(StorageDemandMultiplier), value);
-        }
+        //public float StorageDemandMultiplier
+        //{
+        //    get => (float)GetValue(nameof(StorageDemandMultiplier));
+        //    set => SetValue(nameof(StorageDemandMultiplier), value);
+        //}
         public int CommuterWorkerRatioLimit
         {
             get => (int)GetValue(nameof(CommuterWorkerRatioLimit));
@@ -1419,11 +1424,11 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(CompatibilityDropDown));
             set => SetValue(nameof(CompatibilityDropDown), value);
         }
-        public string DatabasePath
-        {
-            get => (string)GetValue(nameof(DatabasePath));
-            set => SetValue(nameof(DatabasePath), value);
-        }
+        //public string DatabasePath
+        //{
+        //    get => (string)GetValue(nameof(DatabasePath));
+        //    set => SetValue(nameof(DatabasePath), value);
+        //}
         public bool DeleteNotLoadedAssets
         {
             get => (bool)GetValue(nameof(DeleteNotLoadedAssets));
@@ -2491,6 +2496,101 @@ namespace SimpleModChecker.Systems
         {
             get => (float)GetValue(nameof(travel_sunday));
             set => SetValue(nameof(travel_sunday), value);
+        }
+        public int avg_time_beverages
+        {
+            get => (int)GetValue(nameof(avg_time_beverages));
+            set => SetValue(nameof(avg_time_beverages), value);
+        }
+        public int avg_time_chemicals
+        {
+            get => (int)GetValue(nameof(avg_time_chemicals));
+            set => SetValue(nameof(avg_time_chemicals), value);
+        }
+        public int avg_time_convenienceFood
+        {
+            get => (int)GetValue(nameof(avg_time_convenienceFood));
+            set => SetValue(nameof(avg_time_convenienceFood), value);
+        }
+        public int avg_time_electronics
+        {
+            get => (int)GetValue(nameof(avg_time_electronics));
+            set => SetValue(nameof(avg_time_electronics), value);
+        }
+        public int avg_time_software
+        {
+            get => (int)GetValue(nameof(avg_time_software));
+            set => SetValue(nameof(avg_time_software), value);
+        }
+        public int avg_time_financial
+        {
+            get => (int)GetValue(nameof(avg_time_financial));
+            set => SetValue(nameof(avg_time_financial), value);
+        }
+        public int avg_time_food
+        {
+            get => (int)GetValue(nameof(avg_time_food));
+            set => SetValue(nameof(avg_time_food), value);
+        }
+        public int avg_time_furniture
+        {
+            get => (int)GetValue(nameof(avg_time_furniture));
+            set => SetValue(nameof(avg_time_furniture), value);
+        }
+        public int avg_time_meals
+        {
+            get => (int)GetValue(nameof(avg_time_meals));
+            set => SetValue(nameof(avg_time_meals), value);
+        }
+        public int avg_time_media
+        {
+            get => (int)GetValue(nameof(avg_time_media));
+            set => SetValue(nameof(avg_time_media), value);
+        }
+        public int avg_time_paper
+        {
+            get => (int)GetValue(nameof(avg_time_paper));
+            set => SetValue(nameof(avg_time_paper), value);
+        }
+        public int avg_time_petrochemicals
+        {
+            get => (int)GetValue(nameof(avg_time_petrochemicals));
+            set => SetValue(nameof(avg_time_petrochemicals), value);
+        }
+        public int avg_time_pharmaceuticals
+        {
+            get => (int)GetValue(nameof(avg_time_pharmaceuticals));
+            set => SetValue(nameof(avg_time_pharmaceuticals), value);
+        }
+        public int avg_time_plastics
+        {
+            get => (int)GetValue(nameof(avg_time_plastics));
+            set => SetValue(nameof(avg_time_plastics), value);
+        }
+        public int avg_time_telecom
+        {
+            get => (int)GetValue(nameof(avg_time_telecom));
+            set => SetValue(nameof(avg_time_telecom), value);
+        }
+        public int avg_time_textiles
+        {
+            get => (int)GetValue(nameof(avg_time_textiles));
+            set => SetValue(nameof(avg_time_textiles), value);
+        }
+        public int avg_time_recreation
+        {
+            get => (int)GetValue(nameof(avg_time_recreation));
+            set => SetValue(nameof(avg_time_recreation), value);
+        }
+        public int avg_time_entertainment
+        {
+            get => (int)GetValue(nameof(avg_time_entertainment));
+            set => SetValue(nameof(avg_time_entertainment), value);
+        }
+        public int avg_time_vehicles
+        {
+            get => (int)GetValue(nameof(avg_time_vehicles));
+            set => SetValue(nameof(avg_time_vehicles), value);
         }
         public bool use_school_vanilla_timeoff
         {
@@ -4257,6 +4357,65 @@ namespace SimpleModChecker.Systems
     //        set => SetValue(nameof(smooth_speed), value);
     //    }
     //}
+
+    public class VehicleControllerSettings : SettingsBackup
+    {
+        public int MotorbikeProbability
+        {
+            get => (int)GetValue(nameof(MotorbikeProbability));
+            set => SetValue(nameof(MotorbikeProbability), value);
+        }
+        public int ScooterProbability
+        {
+            get => (int)GetValue(nameof(ScooterProbability));
+            set => SetValue(nameof(ScooterProbability), value);
+        }
+        public int CityCarProbability
+        {
+            get => (int)GetValue(nameof(CityCarProbability));
+            set => SetValue(nameof(CityCarProbability), value);
+        }
+        public int HatchbackProbability
+        {
+            get => (int)GetValue(nameof(HatchbackProbability));
+            set => SetValue(nameof(HatchbackProbability), value);
+        }
+        public int MinivanProbability
+        {
+            get => (int)GetValue(nameof(MinivanProbability));
+            set => SetValue(nameof(MinivanProbability), value);
+        }
+        public int SedanProbability
+        {
+            get => (int)GetValue(nameof(SedanProbability));
+            set => SetValue(nameof(SedanProbability), value);
+        }
+        public int SportsCarProbability
+        {
+            get => (int)GetValue(nameof(SportsCarProbability));
+            set => SetValue(nameof(SportsCarProbability), value);
+        }
+        public int PickupProbability
+        {
+            get => (int)GetValue(nameof(PickupProbability));
+            set => SetValue(nameof(PickupProbability), value);
+        }
+        public int SUVProbability
+        {
+            get => (int)GetValue(nameof(SUVProbability));
+            set => SetValue(nameof(SUVProbability), value);
+        }
+        public int MuscleCarProbability
+        {
+            get => (int)GetValue(nameof(MuscleCarProbability));
+            set => SetValue(nameof(MuscleCarProbability), value);
+        }
+        public int VanProbability
+        {
+            get => (int)GetValue(nameof(VanProbability));
+            set => SetValue(nameof(VanProbability), value);
+        }
+    }
 
     public class VehicleVariationPacksSettings : SettingsBackup
     {

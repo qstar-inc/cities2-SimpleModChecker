@@ -1,3 +1,10 @@
+# 3.4.2 (2025-03-22) - 8722 subs
+- Added try-catch block to catch long path exception for CID Backup/Restore.
+- Re-enabled EAI backup/restore but removed the 'EAI Database' option.
+- Added "Vehicle Controller".
+- Fixed changes related to 'Demand Master Control'.
+- Added new option to backup for 'Realistic Trips.
+
 # 3.4.1 (2025-03-18) - 8668 subs
 - Recompiled for 1.2.5f1.
 - Disabled EAI restoring to reduce Collection emuneration instance issues.

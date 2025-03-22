@@ -376,7 +376,7 @@ namespace SimpleModChecker.Systems
         {
             if (profile == 1)
             {
-                NotificationSystem.Pop("starq-smc-game-settings-update", delay: 1f);
+                NotificationSystem.Pop("starq-smc-game-settings-update", delay: 1f, text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.Working]"));
             }
             string backupFile = profile switch
             {

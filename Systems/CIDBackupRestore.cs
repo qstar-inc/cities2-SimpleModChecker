@@ -11,7 +11,6 @@ using System.Linq;
 using System;
 using UnityEngine;
 using SimpleModCheckerPlus;
-using Game.Routes;
 
 namespace SimpleModChecker.Systems
 {
@@ -103,62 +102,78 @@ namespace SimpleModChecker.Systems
 
         private static bool LoopThroughModsSubscribed(string directoryPath)
         {
-            string[] validExtensions = [".Prefab", ".cok", ".Texture", ".Geometry", ".Surface"];
-            bool hasValidFile = false;
-
-            var files = Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories)
-                                 .Where(file => validExtensions.Contains(Path.GetExtension(file)));
-
-            if (!files.Any())
+            try
             {
-                return false;
-            }
+                string[] validExtensions = [".Prefab", ".cok", ".Texture", ".Geometry", ".Surface"];
+                bool hasValidFile = false;
 
-            foreach (var file in files)
-            {
-                string cidFilePath = file + ".cid";
-                string cidBakFilePath = file + ".cid.bak";
-                string cidBackupFilePath = file + ".cid.backup";
+                var files = Directory.EnumerateFiles(directoryPath, "*", SearchOption.AllDirectories)
+                                     .Where(file => validExtensions.Contains(Path.GetExtension(file)));
 
-                if (File.Exists(cidFilePath))
+                if (!files.Any())
                 {
-                    hasValidFile = true;
-                    if (File.Exists(cidBackupFilePath))
-                    {
-                        string actualCid = File.Exists(cidFilePath) ? File.ReadAllText(cidFilePath) : "";
-                        string backupCid = File.Exists(cidBackupFilePath) ? File.ReadAllText(cidBackupFilePath) : "";
+                    return false;
+                }
 
-                        if (actualCid != backupCid)
+                foreach (var file in files)
+                {
+                    string cidFilePath = file + ".cid";
+                    string cidBakFilePath = file + ".cid.bak";
+                    string cidBackupFilePath = file + ".cid.backup";
+
+                    if (File.Exists(cidFilePath))
+                    {
+                        try
                         {
-                            hasValidFile = false;
-                            Mod.log.Info($"CID mismatched: {file}");
+                            hasValidFile = true;
+                            if (File.Exists(cidBackupFilePath))
+                            {
+                                string actualCid = File.Exists(cidFilePath) ? File.ReadAllText(@"\\?\" + cidFilePath) : "";
+                                string backupCid = File.Exists(cidBackupFilePath) ? File.ReadAllText(@"\\?\" + cidBackupFilePath) : "";
+
+                                if (actualCid != backupCid)
+                                {
+                                    hasValidFile = false;
+                                    Mod.log.Info($"CID mismatched: {file}");
+                                }
+                            }
+                            else
+                            {
+                                //Mod.log.Info($"CID backup created: {file}");
+                                File.Copy(cidFilePath, cidBackupFilePath);
+                            }
                         }
+                        catch (Exception ex)
+                        {
+                            Mod.log.Info($"Error accessing CID files: {ex.Message}");
+                            hasValidFile = true;
+                        }
+                    }
+                    else if (File.Exists(cidBakFilePath))
+                    {
+                        File.Copy(cidBakFilePath, cidFilePath);
+                        //Mod.log.Info($"CID backup restored: {file}");
+                        hasValidFile = true;
+                    }
+                    else if (File.Exists(cidBackupFilePath))
+                    {
+                        File.Copy(cidBackupFilePath, cidFilePath);
+                        //Mod.log.Info($"CID backup restored: {file}");
+                        hasValidFile = true;
                     }
                     else
                     {
-                        //Mod.log.Info($"CID backup created: {file}");
-                        File.Copy(cidFilePath, cidBackupFilePath);
+                        Mod.log.Info($"CID not found: {file}");
+                        return true;
                     }
                 }
-                else if (File.Exists(cidBakFilePath))
-                {
-                    File.Copy(cidBakFilePath, cidFilePath);
-                    //Mod.log.Info($"CID backup restored: {file}");
-                    hasValidFile = true;
-                }
-                else if (File.Exists(cidBackupFilePath))
-                {
-                    File.Copy(cidBackupFilePath, cidFilePath);
-                    //Mod.log.Info($"CID backup restored: {file}");
-                    hasValidFile = true;
-                }
-                else
-                {
-                    Mod.log.Info($"CID not found: {file}");
-                    return true;
-                }
+                return !hasValidFile;
             }
-            return !hasValidFile;
+            catch (Exception ex)
+            {
+                Mod.log.Info($"Failed checking {directoryPath}: {ex}");
+                return false;
+            }
         }
         protected override void OnUpdate()
         {

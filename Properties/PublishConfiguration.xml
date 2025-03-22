@@ -32,9 +32,6 @@ Check Options in-game for the current list of supported mods for settings backup
 
 Safe to remove anytime.
 
-### Skyve/PDX Mods says less. Why does this mod says more mods than I have?
-The way mods are loaded are a little different. What Skyve/PDX Mods is telling you the number of packages you're loading. However, it's possible one mod have more than one "modification" DLL (Dynamic-link Library), such as Harmony or other stuff. This mod checker (and the in-game Mod Initializer) counts them as separate mods, thus the reported value is more than that on the playset. Although, if a DLL of same name is loaded by two separate mods, only one is counted. (Any DLL with names starting with "Colossal." and "0Harmony" are now ignored.
-
 Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding** Discord.
 
 Feedback / Bug Report: https://discord.com/channels/1024242828114673724/1287440491239047208
@@ -48,13 +45,15 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<Screenshot Value="Properties/Screenshot06.jpg" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="" />
-	<ModVersion Value="3.4.1" />
+	<ModVersion Value="3.4.2" />
 	<GameVersion Value="1.2*" />
 	<Dependency Id="" />
 	<ChangeLog>
-- Recompiled for 1.2.5f1.
-- Disabled EAI restoring to reduce Collection emuneration instance issues.
-- Mod verification now also takes file size into consideration.
+- Added try-catch block to catch long path exception for CID Backup/Restore.
+- Re-enabled EAI backup/restore but removed the 'EAI Database' option.
+- Added "Vehicle Controller".
+- Fixed changes related to 'Demand Master Control'.
+- Added new option to backup for 'Realistic Trips.
 	</ChangeLog>
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
 	<ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />

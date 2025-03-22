@@ -21,7 +21,7 @@ namespace SimpleModCheckerPlus
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "3.4.1";
+        public static string Version = "3.4.2";
         
         public static Setting Setting;
         public CIDBackupRestore CIDBackupRestore;
@@ -84,7 +84,6 @@ namespace SimpleModCheckerPlus
             Setting.VerifiedRecently = false;
             Setting.IsInGameOrEditor = false;
             Setting.ModFolderDropdown = "";
-            MakeBackupOfModsData.MakePrev();
             Setting.UnregisterInOptionsUI();
             log.Info($"Shutting down {Name}");
         }

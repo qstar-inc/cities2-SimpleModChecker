@@ -132,7 +132,7 @@ namespace SimpleModChecker.Systems
         {
             if (profile == 1)
             {
-                NotificationSystem.Pop("starq-smc-mod-settings-update", delay: 1f);
+                NotificationSystem.Pop("starq-smc-mod-settings-update", delay: 1f, text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.Working]"));
             }
             if (!ModDatabase.isModDatabaseLoaded)
             {

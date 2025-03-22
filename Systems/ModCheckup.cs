@@ -15,6 +15,10 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using Unity.Entities;
+using PDX.SDK.Contracts.Service.Profile.Result;
+using PDX.SDK.Contracts;
+using Colossal.PSI.Environment;
+using System.Linq;
 
 namespace SimpleModChecker.Systems
 {
@@ -23,7 +27,7 @@ namespace SimpleModChecker.Systems
         public Mod _mod;
         public static List<string> loadedMods = [];
         public static OptionsUISystem uISystem = new();
-        public static string LoggedInUserName { get; set; } = "";
+        //public static string LoggedInUserName { get; set; } = "";
         public static Dictionary<string, string> localMods = [];
         public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> codeMods = [];
         public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> packageMods = [];
@@ -75,8 +79,6 @@ namespace SimpleModChecker.Systems
 
             try
             {
-                //count = 0;
-
                 foreach (var modInfo in GameManager.instance.modManager)
                 {
                     string modName = modInfo.asset.name;
@@ -112,6 +114,7 @@ namespace SimpleModChecker.Systems
             switch (type)
             {
                 case "CodeMods":
+                    returnText = $"{localMods.Count + codeMods.Count} Code Mods";
                     if (localMods.Count > 0)
                     {
                         SortedDictionary<string, string> sortedDict = new(localMods);
@@ -130,6 +133,7 @@ namespace SimpleModChecker.Systems
                     }
                     break;
                 case "PackageMods":
+                    returnText = $"{packageMods.Count} Package Mods";
                     if (packageMods.Count > 0)
                     {
                         SortedDictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> sortedDict = new(packageMods);
@@ -272,7 +276,7 @@ namespace SimpleModChecker.Systems
 
         public void RemoveNotification()
         {
-            NotificationSystem.Pop("starq-smc-mod-check", delay: 1);
+            NotificationSystem.Pop("starq-smc-mod-check", delay: 1, text: "...");
         }
     }
 }
