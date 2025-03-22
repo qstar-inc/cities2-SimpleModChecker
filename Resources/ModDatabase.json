@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "Version": "3.3.5",
-    "Time": 1738004570
+    "Version": "3.4.2",
+    "Time": 1742606000
   },
   "ModDatabaseInfo": {
     "74286": {
@@ -437,10 +437,10 @@
       "Backupable": true
     },
     "86944": {
-      "AssemblyName": "DemandMaster",
-      "FragmentSource": "DemandMaster.Setting",
+      "AssemblyName": "DemandMasterControl",
+      "FragmentSource": "DemandMasterControl.Setting",
       "ClassType": "DemandMasterSettings",
-      "ModName": "Demand Master Pro [Alpha]",
+      "ModName": "Demand Master Control",
       "Author": "Qoushik",
       "Backupable": true
     },
@@ -514,6 +514,14 @@
       "ClassType": "AssetUIManagerSettings",
       "ModName": "Asset UI Manager",
       "Author": "Qoushik",
+      "Backupable": true
+    },
+    "104781": {
+      "AssemblyName": "VehicleController",
+      "FragmentSource": "VehicleController.Setting",
+      "ClassType": "VehicleControllerSettings",
+      "ModName": "Vehicle Controller",
+      "Author": "Mimonsi",
       "Backupable": true
     }
   }

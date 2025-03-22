@@ -429,7 +429,7 @@ namespace SimpleModChecker.Systems
                 case "79237+FirstPersonCameraContinued.Setting":
                 case "79634+AssetIconLibrary.Setting":
                 case "79794+AdvancedSimulationSpeed.Setting":
-                case "79872+AutoVehicleRenamer.AutoVehicleRenamerSetting":
+                case "79872+AutoVehicleRenamer.Setting":
                 case "80095+Traffic.ModSettings":
                 case "80403+TransitCapacityMultiplier.Setting":
                 case "80529+ExtraAssetsImporter.Setting":
@@ -449,7 +449,7 @@ namespace SimpleModChecker.Systems
                 case "86605+AllAboard.Setting":
                 case "86728+BoundaryLinesModifier.Setting":
                 case "86868+RealLife.Setting":
-                case "86944+DemandMaster.Setting":
+                case "86944+DemandMasterControl.Setting":
                 case "87190+RoadBuilder.Setting":
                 case "87313+RealisticParking.Setting":
                 case "87755+RealisticWorkplacesAndHouseholds.Setting":
@@ -458,6 +458,8 @@ namespace SimpleModChecker.Systems
                 case "91433+InfoLoomTwo.Setting":
                 case "92952+CitizenModelManager.Setting":
                 case "96718+RoadWearAdjuster.Setting":
+                case "98560+AssetUIManager.Setting":
+                case "104781+VehicleController.Setting":
                     return true;
                 default:
                     return false;
@@ -681,7 +683,7 @@ namespace SimpleModChecker.Systems
                 "FirstPersonCameraContinued.Setting+FirstPersonCameraContinued" => "FirstPersonCameraContinuedSettings",
                 "AssetIconLibrary.Setting+AssetIconLibrary" => "AssetIconLibrarySettings",
                 "AdvancedSimulationSpeed.Setting+AdvancedSimulationSpeed" => "AdvancedSimulationSpeedSettings",
-                "AutoVehicleRenamer.AutoVehicleRenamerSetting+AutoVehicleRenamer" => "AutoVehicleRenamerSettings",
+                "AutoVehicleRenamer.Setting+AutoVehicleRenamer" => "AutoVehicleRenamerSettings",
                 "Traffic.ModSettings+Traffic" => "TrafficSettings",
                 "TransitCapacityMultiplier.Setting+TransitCapacityMultiplier" => "TransitCapacityMultiplierSettings",
                 "ExtraAssetsImporter.Setting+ExtraAssetsImporter" => "ExtraAssetsImporterSettings",
@@ -701,7 +703,7 @@ namespace SimpleModChecker.Systems
                 "AllAboard.Setting+AllAboard" => "AllAboardSettings",
                 "BoundaryLinesModifier.Setting+BoundaryLinesModifier" => "BoundaryLinesModifierSettings",
                 "RealLife.Setting+RealLife" => "RealLifeSettings",
-                "DemandMaster.Setting+DemandMaster" => "DemandMasterSettings",
+                "DemandMasterControl.Setting+DemandMasterControl" => "DemandMasterSettings",
                 "RoadBuilder.Setting+RoadBuilder" => "RoadBuilderSettings",
                 "RealisticParking.Setting+RealisticParking" => "RealisticParkingSettings",
                 "RealisticWorkplacesAndHouseholds.Setting+RWH" => "RealisticWorkplacesAndHouseholdsSettings",
@@ -710,6 +712,8 @@ namespace SimpleModChecker.Systems
                 "InfoLoomTwo.Setting+InfoLoomTwo" => "InfoLoomTwoSettings",
                 "CitizenModelManager.Setting+CitizenModelManager" => "CitizenModelManagerSettings",
                 "RoadWearAdjuster.Setting+RoadWearAdjuster" => "RoadWearAdjusterSettings",
+                "AssetUIManager.Setting+AssetUIManager" => "AssetUIManagerSettings",
+                "VehicleController.Setting+VehicleController" => "VehicleControllerSettings",
                 _ => null
             };
         }
