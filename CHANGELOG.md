@@ -1,3 +1,7 @@
+# 3.4.3 (2025-03-24) - 8771 subs
+- Fix mod/package count in Option's list missing line breaks.
+- Fixed changes related to 'Asset Packs Manager'.
+
 # 3.4.2 (2025-03-22) - 8722 subs
 - Added try-catch block to catch long path exception for CID Backup/Restore.
 - Re-enabled EAI backup/restore but removed the 'EAI Database' option.

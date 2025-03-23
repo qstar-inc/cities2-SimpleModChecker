@@ -114,7 +114,7 @@ namespace SimpleModChecker.Systems
             switch (type)
             {
                 case "CodeMods":
-                    returnText = $"{localMods.Count + codeMods.Count} Code Mods";
+                    returnText = $"{localMods.Count + codeMods.Count} Code Mods\r\n";
                     if (localMods.Count > 0)
                     {
                         SortedDictionary<string, string> sortedDict = new(localMods);
@@ -133,7 +133,7 @@ namespace SimpleModChecker.Systems
                     }
                     break;
                 case "PackageMods":
-                    returnText = $"{packageMods.Count} Package Mods";
+                    returnText = $"{packageMods.Count} Package Mods\r\n";
                     if (packageMods.Count > 0)
                     {
                         SortedDictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> sortedDict = new(packageMods);

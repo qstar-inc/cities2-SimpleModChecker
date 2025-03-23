@@ -21,7 +21,7 @@ namespace SimpleModCheckerPlus
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "3.4.2.1";
+        public static string Version = "3.4.3";
         
         public static Setting Setting;
         public CIDBackupRestore CIDBackupRestore;

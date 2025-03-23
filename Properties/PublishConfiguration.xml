@@ -45,15 +45,12 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<Screenshot Value="Properties/Screenshot06.jpg" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="" />
-	<ModVersion Value="3.4.2.1" />
+	<ModVersion Value="3.4.3" />
 	<GameVersion Value="1.2*" />
 	<Dependency Id="" />
 	<ChangeLog>
-- Added try-catch block to catch long path exception for CID Backup/Restore.
-- Re-enabled EAI backup/restore but removed the 'EAI Database' option.
-- Added "Vehicle Controller".
-- Fixed changes related to 'Demand Master Control'.
-- Added new option to backup for 'Realistic Trips.
+- Fix mod/package count in Option's list missing line breaks.
+- Fixed changes related to 'Asset Packs Manager'.
 	</ChangeLog>
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
 	<ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />

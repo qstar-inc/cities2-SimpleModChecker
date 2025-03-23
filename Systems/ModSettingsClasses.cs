@@ -225,31 +225,31 @@ namespace SimpleModChecker.Systems
 
     public class AssetPacksManagerSettings : SettingsBackup
     {
-        public bool EnableLocalAssetPacks
-        {
-            get => (bool)GetValue(nameof(EnableLocalAssetPacks));
-            set => SetValue(nameof(EnableLocalAssetPacks), value);
-        }
-        public bool EnableSubscribedAssetPacks
-        {
-            get => (bool)GetValue(nameof(EnableSubscribedAssetPacks));
-            set => SetValue(nameof(EnableSubscribedAssetPacks), value);
-        }
-        public bool EnableAssetPackLoadingOnStartup
-        {
-            get => (bool)GetValue(nameof(EnableAssetPackLoadingOnStartup));
-            set => SetValue(nameof(EnableAssetPackLoadingOnStartup), value);
-        }
-        public bool AdaptiveAssetLoading
-        {
-            get => (bool)GetValue(nameof(AdaptiveAssetLoading));
-            set => SetValue(nameof(AdaptiveAssetLoading), value);
-        }
-        public bool DisableSettingsWarning
-        {
-            get => (bool)GetValue(nameof(DisableSettingsWarning));
-            set => SetValue(nameof(DisableSettingsWarning), value);
-        }
+        //public bool EnableLocalAssetPacks
+        //{
+        //    get => (bool)GetValue(nameof(EnableLocalAssetPacks));
+        //    set => SetValue(nameof(EnableLocalAssetPacks), value);
+        //}
+        //public bool EnableSubscribedAssetPacks
+        //{
+        //    get => (bool)GetValue(nameof(EnableSubscribedAssetPacks));
+        //    set => SetValue(nameof(EnableSubscribedAssetPacks), value);
+        //}
+        //public bool EnableAssetPackLoadingOnStartup
+        //{
+        //    get => (bool)GetValue(nameof(EnableAssetPackLoadingOnStartup));
+        //    set => SetValue(nameof(EnableAssetPackLoadingOnStartup), value);
+        //}
+        //public bool AdaptiveAssetLoading
+        //{
+        //    get => (bool)GetValue(nameof(AdaptiveAssetLoading));
+        //    set => SetValue(nameof(AdaptiveAssetLoading), value);
+        //}
+        //public bool DisableSettingsWarning
+        //{
+        //    get => (bool)GetValue(nameof(DisableSettingsWarning));
+        //    set => SetValue(nameof(DisableSettingsWarning), value);
+        //}
         public bool DisableTelemetry
         {
             get => (bool)GetValue(nameof(DisableTelemetry));
@@ -259,6 +259,11 @@ namespace SimpleModChecker.Systems
         {
             get => (bool)GetValue(nameof(AutoHideNotifications));
             set => SetValue(nameof(AutoHideNotifications), value);
+        }
+        public bool DisableLoadingNotification
+        {
+            get => (bool)GetValue(nameof(DisableLoadingNotification));
+            set => SetValue(nameof(DisableLoadingNotification), value);
         }
         public bool ShowWarningForLocalAssets
         {
