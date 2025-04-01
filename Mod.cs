@@ -15,16 +15,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 using Unity.Entities;
+using System.Reflection;
 
 namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
         public const string Name = "Simple Mod Checker Plus";
-        public static string Version = "3.4.3";
+        public static string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         
         public static Setting Setting;
-        public CIDBackupRestore CIDBackupRestore;
+        //public CIDBackupRestore CIDBackupRestore;
         public CocCleaner CocCleaner;
 
         public static readonly string logFileName = nameof(SimpleModCheckerPlus);
@@ -50,6 +51,13 @@ namespace SimpleModCheckerPlus
 
             Task.Run(() => GetModDatabase()).Wait();
             Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
+
+#if DEBUG
+            Setting.DeletedBackupCIDs = false;
+#endif
+
+            if (!Setting.DeletedBackupCIDs) 
+                Task.Run(() => ModVerifier.RemoveBackupCID()).Wait();
             GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
             Setting.VerifiedRecently = false;
             Setting.IsInGameOrEditor = false;
@@ -61,7 +69,7 @@ namespace SimpleModCheckerPlus
             //CIDBackupRestore = new CIDBackupRestore(this);
             //CocCleaner = new CocCleaner(this);
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModCheckup>();
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<CIDBackupRestore>();
+            //World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<CIDBackupRestore>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<CocCleaner>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ProfileNameBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<GameSettingsBackup>();
@@ -72,15 +80,13 @@ namespace SimpleModCheckerPlus
         
         public void OnDispose()
         {
-            if (Setting.DeleteMissing && CIDBackupRestore.CanDelete.Count > 0)
-            {
-                CIDBackupRestore.DeleteFolders();
-            }
+            //if (Setting.DeleteMissing && CIDBackupRestore.CanDelete.Count > 0)
+            //{
+            //    CIDBackupRestore.DeleteFolders();
+            //}
 
             if (Setting.DeleteCorrupted && CocCleaner.CanDelete.Count > 0)
-            {
                 CocCleaner.DeleteFolders();
-            }
             Setting.VerifiedRecently = false;
             Setting.IsInGameOrEditor = false;
             Setting.ModFolderDropdown = "";
@@ -103,9 +109,7 @@ namespace SimpleModCheckerPlus
                 string newJsonData = File.ReadAllText(localBackupPath, Encoding.UTF8);
                 newMetadata = JsonConvert.DeserializeObject<ModDatabaseWrapper>(newJsonData).Metadata;
                 if (oldMetadata.Time < newMetadata.Time)
-                {
                     CopyLocalBackup();
-                }
 
             }
             catch (Exception ex)

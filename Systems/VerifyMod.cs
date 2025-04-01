@@ -26,6 +26,10 @@ namespace SimpleModChecker.Systems
         public static int ProcesStatus = 0;
         public static Dictionary<string, string> DownloadedModList = [];
         public static List<string> DupedModList = [];
+        public static int RemovedBackupCIDs = 0;
+        public static int SkippedBackupCIDs = 0;
+        public static Dictionary<string, Dictionary<string, string>> ManifestData = [];
+        public static List<string> backupsToCheck = [];
         public static LocalizedString VerificationResultText => LocalizedString.Id(GetText());
 
         public static string GetText()
@@ -60,6 +64,85 @@ namespace SimpleModChecker.Systems
             }
         }
 
+        public static void RemoveBackupCID()
+        {
+            try {
+                string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
+                if (!Directory.Exists(rootFolder))
+                {
+                    return;
+                }
+
+                foreach (var subfolder in Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+                                       .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0])))
+                {
+                    string modFolder = Path.GetFileName(subfolder);
+                    string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
+
+                    string[] modFolderParts = modFolder.Split('_');
+                    if (modFolderParts.Length != 2)
+                    {
+                        continue;
+                    }
+
+                    if (subfolder != null)
+                    {
+                        try
+                        {
+                            CheckForBackupCID(subfolder);
+                        }
+                        catch (Exception ex)
+                        {
+                            Mod.log.Info($"Error verifying files in '{subfolder}': {ex.Message}");
+                        }
+                    }
+                }
+
+                foreach (var filePath in backupsToCheck)
+                {
+                    string subfolder = $"{EnvPath.kCacheDataPath}/Mods/mods_subscribed/{filePath.Replace(EnvPath.kCacheDataPath, "").Replace("\\", "/").Replace("/Mods/mods_subscribed/", "").Split('/')[0]}";
+
+                    string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
+                    string manifestPath = FindManifestFile(subfolder);
+                    if (string.IsNullOrEmpty(manifestPath))
+                    {
+                        Mod.log.Info($"No manifestPath found for subfolder: {subfolder}");
+                        continue;
+                    }
+
+                    Dictionary<string, string> manifestData;
+
+                    try
+                    {
+                        manifestData = ReadManifestFile(manifestPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Mod.log.Info($"Error reading manifest at '{manifestPath}': {ex.Message}");
+                        continue;
+                    }
+
+                    if (!manifestData.ContainsKey(relativePath))
+                    {
+                        File.Delete(filePath);
+                        RemovedBackupCIDs++;
+                        Mod.log.Info($"Deleted '{relativePath}'.");
+                    }
+                    else
+                    {
+                        SkippedBackupCIDs++;
+                        Mod.log.Info($"Skipped '{relativePath}'.");
+                    }
+                }
+
+                Mod.log.Info($"Backup CIDs: Removed {RemovedBackupCIDs}; Ignored {SkippedBackupCIDs}");
+                Mod.Setting.DeletedBackupCIDs = true;
+            }
+            catch (Exception ex)
+            {
+                Mod.log.Info(ex.ToString());
+            }
+        }
 
         public static async Task VerifyMods(string selected = null)
         {
@@ -79,7 +162,14 @@ namespace SimpleModChecker.Systems
             Header = $"Mod Verification Process is running...";
             ProcesStatus = 1;
             Mod.Setting.VerifiedRecently = true;
-            Mod.log.Info("Starting Mod Verification");
+            if (selected != null)
+            {
+                Mod.log.Info($"Starting Mod Verification for {selected}");
+            }
+            else
+            {
+                Mod.log.Info("Starting Mod Verification (all subscribed mods)");
+            }
             string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
             if (!Directory.Exists(rootFolder))
             {
@@ -186,11 +276,7 @@ namespace SimpleModChecker.Systems
                 }
                 Progress = $"- {i} ({modName}) out of {ModCount} mods processing...";
 
-                string cpatchFolder = Path.Combine(subfolder, ".cpatch");
-                if (!Directory.Exists(cpatchFolder))
-                    continue;
-
-                string manifestPath = FindManifestFile(cpatchFolder);
+                string manifestPath = FindManifestFile(subfolder);
                 if (string.IsNullOrEmpty(manifestPath))
                 {
                     if (!posted)
@@ -270,8 +356,11 @@ namespace SimpleModChecker.Systems
             }
         }
 
-        private static string FindManifestFile(string cpatchFolder)
+        private static string FindManifestFile(string subfolder)
         {
+            string cpatchFolder = Path.Combine(subfolder, ".cpatch");
+            if (!Directory.Exists(cpatchFolder))
+                return null;
             try
             {
                 string folderName = Path.GetFileName(Path.GetDirectoryName(cpatchFolder));
@@ -286,7 +375,6 @@ namespace SimpleModChecker.Systems
                     string manifestPath = Path.Combine(folder, version, "complete", "manifest");
                     if (File.Exists(manifestPath))
                     {
-                        Mod.log.Info($"Found manifest for {folderName}");
                         return manifestPath;
                     }
                 }
@@ -301,25 +389,16 @@ namespace SimpleModChecker.Systems
 
         private static Dictionary<string, string> ReadManifestFile(string manifestPath)
         {
-            //Mod.log.Info($"Reading {manifestPath}");
             var manifestData = new Dictionary<string, string>();
+
+            if (ManifestData.ContainsKey(manifestPath))
+            {
+                return ManifestData[manifestPath];
+            }
 
             try
             {
                 var lines = File.ReadAllLines(manifestPath);
-                //foreach (var line in lines)
-                //{
-                //    if (line.Contains(","))
-                //    {
-                //        var parts = line.Split(',');
-                //        if (parts.Length >= 3)
-                //        {
-                //            string relativePath = parts[0];
-                //            string hash = parts[2];
-                //            manifestData[relativePath] = hash;
-                //        }
-                //    }
-                //}
 
                 var csvPattern = @"(?:^|,)(?:(?:""(?<value>[^""]*)"")|(?<value>[^,""]*))";
 
@@ -345,6 +424,7 @@ namespace SimpleModChecker.Systems
             {
                 throw new IOException($"Failed to read manifest file: {ex.Message}", ex);
             }
+            ManifestData.Add(manifestPath, manifestData);
             return manifestData;
         }
 
@@ -361,7 +441,6 @@ namespace SimpleModChecker.Systems
                 string relativePathForText = relativePath.Replace("\\", "/");
                 try
                 {
-                    //Mod.log.Info(relativePath);
                     if (manifestData.ContainsKey(relativePath) || manifestData.ContainsKey($"\"{relativePath}\""))
                     {
                         string[] manifestParts = manifestData[relativePath].Split([";;"], StringSplitOptions.None);
@@ -446,6 +525,26 @@ namespace SimpleModChecker.Systems
                 }
                 IssueList += $"- '{relativePath.Replace("\\", "/")}' is missing from the mod folder\r\n";
                 Mod.log.Info($"File '{relativePath}' is listed in the manifest but missing from the folder.");
+            }
+        }
+
+        private static void CheckForBackupCID(string subfolder)
+        {
+            if (!Directory.Exists(subfolder))
+                return;
+
+            var files = Directory.GetFiles(subfolder, "*", SearchOption.AllDirectories)
+                                 .Where(file => !file.Contains(".metadata") && !file.Contains(".cpatch") && file.Contains(".cid.backup"));
+            foreach (var filePath in files)
+            {
+                try
+                {
+                    if (filePath.EndsWith(".backup")) backupsToCheck.Add(filePath);
+                }
+                catch (Exception ex)
+                {
+                    Mod.log.Info($"Error processing file '{filePath}': {ex.Message}");
+                }
             }
         }
 

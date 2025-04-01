@@ -64,6 +64,9 @@ namespace SimpleModCheckerPlus
         public const string ModInfo = "About the Mod";
         public const string SupportedMod = "Currently Supported Mods for Mod Settings Backup";
 
+        [SettingsUIHidden]
+        public bool DeletedBackupCIDs { get; set; } = false;
+
         [SettingsUISection(MainTab, OptionsGroup)]
         public bool ShowNotif { get; set; } = true;
 
@@ -291,7 +294,12 @@ namespace SimpleModCheckerPlus
         }
 
         [SettingsUISection(AboutTab, InfoGroup)]
-        public string NameText => Mod.Name;
+        public string NameText =>
+#if DEBUG
+            $"{Mod.Name} - DEBUG";
+#else
+            Mod.Name;
+#endif
 
         [SettingsUISection(AboutTab, InfoGroup)]
         public string VersionText => Mod.Version;

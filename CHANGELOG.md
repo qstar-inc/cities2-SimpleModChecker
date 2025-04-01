@@ -1,3 +1,7 @@
+# 3.4.4 (2025-04-01) - 8923 subs
+- Removed CID backup system as it's no longer necessary and conflicts with the current PDX SDK.
+- Added an one time check to remove all `.cid.backup` files that didn't come from the mod itself.
+
 # 3.4.3 (2025-03-24) - 8771 subs
 - Fix mod/package count in Option's list missing line breaks.
 - Fixed changes related to 'Asset Packs Manager'.
