@@ -1,3 +1,8 @@
+# 3.4.5 (2025-04-02) - 8902 subs
+- NEW: Option to remove the "Resume" button in the launcher.
+- NEW: Option to disable the "Continue Game" button in the main menu.
+- Removed deprecated CID backup options that wasn't removed 3.4.4.
+
 # 3.4.4 (2025-04-01) - 8923 subs
 - Removed CID backup system as it's no longer necessary and conflicts with the current PDX SDK.
 - Added an one time check to remove all `.cid.backup` files that didn't come from the mod itself.

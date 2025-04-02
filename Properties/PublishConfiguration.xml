@@ -18,6 +18,7 @@ If you don't see the notification at all, it means no mods were loaded and you n
 * Backup and Restore Game Settings and selected Mod Settings, and all keybinds (game and mod).
 * Automatically restore settings with values saved to 'Profile 1' on startup.
 * Trigger a mod verification checkup for all/selected downloaded mods (checks weather the files has been tampered, or if there's more than one version of the same mode is on storage). Found on the "" list, which when clicked will launch a set of checks to ensure the integrity of the mods. It will check if you have multiple version of the same mod downloaded and also the integrity of each file in your whole PDX Mods folder. Any files ending with "backup" are ignored. The process will only inform you about the verification result, any other steps to resolve those issues will need to be done manually.
+* Remove the "Resume" button in the launcher and/or the "Continue Game" button in the main menu.
 * `ModsData/ModDatabase.json` is now only used for enabling/disabling what mod to back up. If a mod is causing issue, you can manually edit the `ModDatabase.json` file until I get an update out.
 * [REMOVED] ~~Get notified when .Prefab or .cok files have missing CIDs. (Includes automatic backup, original idea by Konsi/Mimonsi)~~ (Removed as backup CIDs are no longer necessary).
 * [REMOVED] ~~Get notified when any of your locally installed or published mods includes vanilla DLLs.~~ (Removed as its part of the base game since 1.2.0f1).
@@ -45,12 +46,13 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<Screenshot Value="Properties/Screenshot06.jpg" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="" />
-	<ModVersion Value="3.4.4" />
+	<ModVersion Value="3.4.5" />
 	<GameVersion Value="1.2.5" />
 	<Dependency Id="" />
 	<ChangeLog>
-- Removed CID backup system as it's no longer necessary and conflicts with the current PDX SDK.
-- Added an one time check to remove all `.cid.backup` files that didn't come from the mod itself.
+- NEW: Option to remove the "Resume" button in the launcher.
+- NEW: Option to disable the "Continue Game" button in the main menu.
+- Removed deprecated CID backup options that wasn't removed 3.4.4.
 	</ChangeLog>
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
 	<ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />

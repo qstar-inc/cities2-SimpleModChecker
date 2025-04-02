@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System;
 using Unity.Entities;
 using System.Reflection;
+using Game.Settings;
 
 namespace SimpleModCheckerPlus
 {
@@ -63,6 +64,9 @@ namespace SimpleModCheckerPlus
             Setting.IsInGameOrEditor = false;
             Setting.ModFolderDropdown = "";
 
+            if (Setting.DisableContinueInGame)
+                SharedSettings.instance.userState.lastSaveGameMetadata = null;
+
             //RegisterSetting(Setting, nameof(SimpleModCheckerPlus));
 
             ////ModCheckup = new ModCheckup();
@@ -80,6 +84,28 @@ namespace SimpleModCheckerPlus
         
         public void OnDispose()
         {
+            try
+            {
+                if (Setting.DisableContinueInGame)
+                {
+                    if (Setting.EnableVerboseLogging)
+                        log.Info("Setting lastSaveGameMetadata to null");
+                    SharedSettings.instance.userState.lastSaveGameMetadata = null;
+                }
+                
+                if (Setting.DisableContinueOnLauncher)
+                {
+                    if (Setting.EnableVerboseLogging)
+                        log.Info("Deleting continue_game.json"); 
+                    File.Delete($"{EnvPath.kUserDataPath}/continue_game.json");
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Info(ex);
+            }
+            
+
             //if (Setting.DeleteMissing && CIDBackupRestore.CanDelete.Count > 0)
             //{
             //    CIDBackupRestore.DeleteFolders();

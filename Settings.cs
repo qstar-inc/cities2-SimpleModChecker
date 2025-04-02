@@ -73,8 +73,14 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(MainTab, OptionsGroup)]
         public bool PlaySound { get; set; } = true;
 
+        //[SettingsUISection(MainTab, OptionsGroup)]
+        //public bool DeleteMissingCIDs { get; set; } = true;
+
         [SettingsUISection(MainTab, OptionsGroup)]
-        public bool DeleteMissing { get; set; } = true;
+        public bool DisableContinueOnLauncher { get; set; } = true;
+
+        [SettingsUISection(MainTab, OptionsGroup)]
+        public bool DisableContinueInGame { get; set; } = true;
 
         [SettingsUISection(MainTab, OptionsGroup)]
         public bool DeleteCorrupted { get; set; } = true;
@@ -448,7 +454,8 @@ namespace SimpleModCheckerPlus
         {
             ShowNotif = true;
             PlaySound = true;
-            DeleteMissing = true;
+            DisableContinueOnLauncher = true;
+            DisableContinueInGame = true;
             DeleteCorrupted = true;
             AutoRestoreSettingBackupOnStartup = true;
             EnableVerboseLogging = false;
