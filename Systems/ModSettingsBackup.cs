@@ -2,58 +2,68 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal.IO.AssetDatabase;
-using Colossal.PSI.Common;
-using Colossal.PSI.Environment;
-using Game.PSI;
-using Game.UI.Localization;
-using Game;
-using Mod = SimpleModCheckerPlus.Mod;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System;
+using Colossal.IO.AssetDatabase;
+using Colossal.PSI.Common;
+using Colossal.PSI.Environment;
+using Game;
+using Game.PSI;
+using Game.UI.Localization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
     public partial class ModSettingsBackup : GameSystemBase
     {
         public Mod _mod;
         public static ModCheckup SMC = new();
         public static readonly List<string> loadedMods = SMC.GetLoadedMods();
+
         //public static ModManager modManager;
         public static Dictionary<string, ModInfo> ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
-        private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_prev.json";
-        private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_1.json";
-        private readonly string backupFile2 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_2.json";
-        private readonly string backupFile3 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_3.json";
-        private readonly string backupFile4 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_4.json";
-        private readonly string backupFile5 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_5.json";
-        private readonly string backupFile6 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_6.json";
-        private readonly string backupFile7 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_7.json";
-        private readonly string backupFile8 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_8.json";
-        private readonly string backupFile9 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_9.json";
+        private readonly string backupFile0 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_prev.json";
+        private readonly string backupFile1 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_1.json";
+        private readonly string backupFile2 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_2.json";
+        private readonly string backupFile3 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_3.json";
+        private readonly string backupFile4 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_4.json";
+        private readonly string backupFile5 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_5.json";
+        private readonly string backupFile6 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_6.json";
+        private readonly string backupFile7 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_7.json";
+        private readonly string backupFile8 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_8.json";
+        private readonly string backupFile9 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_9.json";
         private static int i = 0;
 
         private bool AutoRestoreDone = false;
- 
+
         protected override void OnCreate()
         {
             base.OnCreate();
-        //}
+            //}
 
-        //protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
-        //{
+            //protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
+            //{
             //base.OnGameLoadingComplete(purpose, mode);
             while (!AutoRestoreDone && Mod.Setting.AutoRestoreSettingBackupOnStartup)
             {
                 Mod.log.Info("Starting ModSettingsBackup process");
                 ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
-                if (!AutoRestoreDone)// && mode == GameMode.MainMenu)
+                if (!AutoRestoreDone) // && mode == GameMode.MainMenu)
                 {
                     if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
                     {
@@ -68,7 +78,13 @@ namespace SimpleModChecker.Systems
                                     JObject jsonObject = JObject.Parse(jsonStringRead);
                                     if (jsonObject != null)
                                     {
-                                        if (!jsonObject.TryGetValue("ModVersion", out JToken BackupModVersion) || BackupModVersion == null)
+                                        if (
+                                            !jsonObject.TryGetValue(
+                                                "ModVersion",
+                                                out JToken BackupModVersion
+                                            )
+                                            || BackupModVersion == null
+                                        )
                                         {
                                             SendModUpdateNotification(currentModVersion, "null");
                                         }
@@ -76,16 +92,24 @@ namespace SimpleModChecker.Systems
                                         {
                                             if (BackupModVersion.ToString() != currentModVersion)
                                             {
-                                                SendModUpdateNotification(currentModVersion, BackupModVersion.ToString());
+                                                SendModUpdateNotification(
+                                                    currentModVersion,
+                                                    BackupModVersion.ToString()
+                                                );
                                             }
                                         }
                                     }
                                 }
-                                catch (Exception ex) { Mod.log.Info(ex); }
+                                catch (Exception ex)
+                                {
+                                    Mod.log.Info(ex);
+                                }
                             }
 
                             CreateBackup(0, false);
-                            if (!File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1)))
+                            if (
+                                !File.ReadAllText(backupFile0).Equals(File.ReadAllText(backupFile1))
+                            )
                             {
                                 RestoreBackup(1, false);
                             }
@@ -108,10 +132,7 @@ namespace SimpleModChecker.Systems
             }
         }
 
-        protected override void OnUpdate()
-        {
-
-        }
+        protected override void OnUpdate() { }
 
         private void SendModUpdateNotification(string current, string prev)
         {
@@ -121,18 +142,30 @@ namespace SimpleModChecker.Systems
             //    return;
             //}
             Mod.log.Info($"Mod version mismatch. Current: {current}, Backup: {prev}");
-            NotificationSystem.Push("starq-smc-mod-settings-update",
-                title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeModBackup]"),
-                text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeModBackup]"),
+            NotificationSystem.Push(
+                "starq-smc-mod-settings-update",
+                title: LocalizedString.Id(
+                    "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeModBackup]"
+                ),
+                text: LocalizedString.Id(
+                    "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeModBackup]"
+                ),
                 progressState: ProgressState.Warning,
-                onClicked: () => CreateBackup(1));
+                onClicked: () => CreateBackup(1)
+            );
         }
 
         public void CreateBackup(int profile, bool log = true)
         {
             if (profile == 1)
             {
-                NotificationSystem.Pop("starq-smc-mod-settings-update", delay: 1f, text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.Working]"));
+                NotificationSystem.Pop(
+                    "starq-smc-mod-settings-update",
+                    delay: 1f,
+                    text: LocalizedString.Id(
+                        "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.Working]"
+                    )
+                );
             }
             if (!ModDatabase.isModDatabaseLoaded)
             {
@@ -164,7 +197,7 @@ namespace SimpleModChecker.Systems
             ModSettings ModSettings = new()
             {
                 ModVersion = Mod.Version,
-                LastUpdated = DateTime.Now.ToLongDateString()
+                LastUpdated = DateTime.Now.ToLongDateString(),
             };
 
             try
@@ -176,19 +209,42 @@ namespace SimpleModChecker.Systems
                     ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
                     if (ModDatabaseInfo == null || !ModDatabaseInfo.Any())
                     {
-                        Mod.log.Error("Failed to initialize ModDatabaseInfo after reloading. Aborting backup.");
+                        Mod.log.Error(
+                            "Failed to initialize ModDatabaseInfo after reloading. Aborting backup."
+                        );
                         return;
                     }
                 }
                 foreach (var entry in ModDatabaseInfo)
                 {
-                    //try { Mod.log.Info(entry.Key); } catch (Exception) { Mod.log.Info($"entry.Key"); }
-                    //try { Mod.log.Info(entry.Value.ToString()); } catch (Exception) { Mod.log.Info($"entry.Value"); }
+                    //try
+                    //{
+                    //    Mod.log.Info(entry.Key);
+                    //}
+                    //catch (Exception)
+                    //{
+                    //    Mod.log.Info($"entry.Key");
+                    //}
+                    //try
+                    //{
+                    //    Mod.log.Info(entry.Value.ModName);
+                    //    Mod.log.Info(entry.Value.Author);
+                    //    Mod.log.Info(entry.Value.PDX_ID);
+                    //    Mod.log.Info(entry.Value.AssemblyName);
+                    //    Mod.log.Info(entry.Value.FragmentSource);
+                    //    Mod.log.Info(entry.Value.ClassType.Name);
+                    //    Mod.log.Info(entry.Value.Backupable);
+                    //}
+                    //catch (Exception)
+                    //{
+                    //    Mod.log.Info($"entry.Value");
+                    //}
                     if (entry.Value.Backupable == false)
                     {
                         continue;
                     }
-                    if (log) Mod.log.Info($"Backing up {entry.Value.ModName}");
+                    if (log)
+                        Mod.log.Info($"Backing up {entry.Value.ModName}");
                     try
                     {
                         string sectionName = entry.Key;
@@ -196,20 +252,33 @@ namespace SimpleModChecker.Systems
                         Type classType = entry.Value.ClassType;
                         string assembly = entry.Value.AssemblyName;
 
-                        //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
+                        //Mod.log.Info(
+                        //    $"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}"
+                        //);
 
-                        if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
-                        if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
-                        //Mod.log.Info($"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}");
+                        if (fragmentSource == "FiveTwentyNineTiles.ModSettings")
+                        {
+                            fragmentSource = "529.";
+                        }
+                        if (fragmentSource == "AutoDistrictNameStations.ModOptions")
+                        {
+                            fragmentSource = "AutoDistrict.";
+                        }
+                        //Mod.log.Info(
+                        //    $"Entry ready for backup: {sectionName}, {fragmentSource}, {classType.Name}, {assembly}"
+                        //);
 
-                        PropertyInfo property = typeof(ModSettings).GetProperty($"{entry.Value.ClassType.Name}");
+                        PropertyInfo property = typeof(ModSettings).GetProperty(
+                            $"{entry.Value.ClassType.Name}"
+                        );
                         //try { Mod.log.Info($"{property.Name} found"); } catch (Exception) { Mod.log.Info($"property found"); }
-                        object sectionSettings;// = Activator.CreateInstance(classType);
+                        object sectionSettings; // = Activator.CreateInstance(classType);
                         sectionSettings = default;
                         //Mod.log.Info(loadedMods.Contains(assembly));
                         if (!loadedMods.Contains(assembly))
                         {
-                            if (log) Mod.log.Info($"{sectionName} is not currently loaded.");
+                            if (log)
+                                Mod.log.Info($"{sectionName} is not currently loaded.");
                             if (File.Exists(backupFile))
                             {
                                 string jsonStringRead = File.ReadAllText(backupFile);
@@ -220,33 +289,46 @@ namespace SimpleModChecker.Systems
                                         JObject jsonObject = JObject.Parse(jsonStringRead);
                                         var settingsJson = jsonObject[classType.Name];
                                         //Mod.log.Info("5");
-                                        if (settingsJson != null && settingsJson.Type != JTokenType.Null)
+                                        if (
+                                            settingsJson != null
+                                            && settingsJson.Type != JTokenType.Null
+                                        )
                                         {
                                             //Mod.log.Info("4");
                                             try
                                             {
                                                 //Mod.log.Info("1");
-                                                ConstructorInfo constructor = classType.GetConstructor(Type.EmptyTypes);
+                                                ConstructorInfo constructor =
+                                                    classType.GetConstructor(Type.EmptyTypes);
                                                 if (constructor != null)
                                                 {
                                                     sectionSettings = constructor.Invoke(null);
                                                 }
                                                 else
                                                 {
-                                                    Mod.log.Info($"No parameterless constructor found for {classType.Name}");
+                                                    Mod.log.Info(
+                                                        $"No parameterless constructor found for {classType.Name}"
+                                                    );
                                                     sectionSettings = null;
                                                 }
                                                 //Mod.log.Info("2");
-                                                foreach (PropertyInfo prop in classType.GetProperties())
+                                                foreach (
+                                                    PropertyInfo prop in classType.GetProperties()
+                                                )
                                                 {
                                                     //Mod.log.Info("3");
                                                     //Mod.log.Info(prop.Name);
                                                     //Mod.log.Info(settingsJson[prop.Name] != null);
                                                     //Mod.log.Info(settingsJson[prop.Name].Type != JTokenType.Null);
-                                                    if (settingsJson[prop.Name] != null && settingsJson[prop.Name].Type != JTokenType.Null)
+                                                    if (
+                                                        settingsJson[prop.Name] != null
+                                                        && settingsJson[prop.Name].Type
+                                                            != JTokenType.Null
+                                                    )
                                                     {
                                                         //Mod.log.Info("X");
-                                                        var value = settingsJson[prop.Name].ToObject(prop.PropertyType);
+                                                        var value = settingsJson[prop.Name]
+                                                            .ToObject(prop.PropertyType);
                                                         prop.SetValue(sectionSettings, value);
                                                         //Mod.log.Info(value);
                                                     }
@@ -258,10 +340,21 @@ namespace SimpleModChecker.Systems
                                                 }
                                                 //Mod.log.Info($"Existing {sectionName}Settings found.");
                                                 //sectionSettings = jsonObject[entry.Value.ClassType.Name].ToObject(classType);
-                                                if (log) Mod.log.Info($"Keeping existing backup for {sectionName}.");
-                                            } catch (Exception ex) { Mod.log.Info("Error: " + ex); }
+                                                if (log)
+                                                    Mod.log.Info(
+                                                        $"Keeping existing backup for {sectionName}."
+                                                    );
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Mod.log.Info("Error: " + ex);
+                                            }
                                         }
-                                    } catch (Exception ex) { Mod.log.Info("Error: " + ex); }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Mod.log.Info("Error: " + ex);
+                                    }
                                 }
                             }
                         }
@@ -269,18 +362,33 @@ namespace SimpleModChecker.Systems
                         {
                             try
                             {
-                                sectionSettings = GetSettingsData(sectionName, fragmentSource, sectionSettings, classType);
-                            } catch (Exception ex ) { Mod.log.Info("ERR: "+ex); }
+                                sectionSettings = GetSettingsData(
+                                    sectionName,
+                                    fragmentSource,
+                                    sectionSettings,
+                                    classType
+                                );
+                            }
+                            catch (Exception ex)
+                            {
+                                Mod.log.Info("ERR: " + ex);
+                            }
                         }
 
                         //string TempForLogging = JsonConvert.SerializeObject(sectionSettings);
                         //Mod.log.Info(TempForLogging);
                         property?.SetValue(ModSettings, sectionSettings);
                     }
-                    catch (Exception ex) { Mod.log.Info(ex); }
+                    catch (Exception ex)
+                    {
+                        Mod.log.Info(ex);
+                    }
                 }
             }
-            catch (Exception ex) { Mod.log.Info(ex); }
+            catch (Exception ex)
+            {
+                Mod.log.Info(ex);
+            }
 
             try
             {
@@ -289,52 +397,88 @@ namespace SimpleModChecker.Systems
                     Formatting = Formatting.Indented,
                     Error = (sender, args) =>
                     {
-                        Mod.log.Info($"Serialization error on property '{args.ErrorContext.Member}': {args.ErrorContext.Error.Message}");
+                        Mod.log.Info(
+                            $"Serialization error on property '{args.ErrorContext.Member}': {args.ErrorContext.Error.Message}"
+                        );
                         args.ErrorContext.Handled = true;
-                    }
+                    },
                 };
-                string jsonString = JsonConvert.SerializeObject(ModSettings, jsonSerializerSettings);
+                string jsonString = JsonConvert.SerializeObject(
+                    ModSettings,
+                    jsonSerializerSettings
+                );
                 File.WriteAllText(backupFile, jsonString);
-                Mod.log.Info($"Mod Settings backup created successfully: {Path.GetFileName(backupFile)}");
+                Mod.log.Info(
+                    $"Mod Settings backup created successfully: {Path.GetFileName(backupFile)}"
+                );
             }
-            catch (Exception ex) { Mod.log.Info(ex); }
+            catch (Exception ex)
+            {
+                Mod.log.Info(ex);
+            }
         }
 
-        public object GetSettingsData(string name, string fragmentSource, object settingsBackup, Type classType)
+        public object GetSettingsData(
+            string name,
+            string fragmentSource,
+            object settingsBackup,
+            Type classType
+        )
         {
             JsonSerializerSettings JsonSerializerSettings = new()
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
             IEnumerable<SettingAsset> settingAssets;
             if (name == "80095")
             {
-                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Traffic General Settings"));
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset =>
+                    asset.name.Contains("Traffic General Settings")
+                );
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
             else if (name == "74286")
             {
-                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("FPSLimiter General Settings") || asset.name.Contains("FPSLimiter") || asset.name.Contains("FPS_Limiter"));
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset =>
+                    asset.name.Contains("FPSLimiter General Settings")
+                    || asset.name.Contains("FPSLimiter")
+                    || asset.name.Contains("FPS_Limiter")
+                );
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
             else if (name == "75613")
             {
-                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Mods_Yenyang_Water_Features") || asset.name.Contains("WaterFeatures") || asset.name.Contains("Water_Feature"));
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset =>
+                    asset.name.Contains("Mods_Yenyang_Water_Features")
+                    || asset.name.Contains("WaterFeatures")
+                    || asset.name.Contains("Water_Feature")
+                );
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
             else if (name == "75250")
             {
-                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Mods_Yenyang_Better_Bulldozer") || asset.name.Contains("BetterBulldozer") || asset.name.Contains("Better_Bulldozer"));
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset =>
+                    asset.name.Contains("Mods_Yenyang_Better_Bulldozer")
+                    || asset.name.Contains("BetterBulldozer")
+                    || asset.name.Contains("Better_Bulldozer")
+                );
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
             else if (name == "75993")
             {
-                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains("Mods_Yenyang_Tree_Controller") || asset.name.Contains("TreeController") || asset.name.Contains("Tree_Controller"));
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset =>
+                    asset.name.Contains("Mods_Yenyang_Tree_Controller")
+                    || asset.name.Contains("TreeController")
+                    || asset.name.Contains("Tree_Controller")
+                );
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
             else
             {
-                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains(fragmentSource.Substring(0, fragmentSource.IndexOf("."))) || asset.name.Contains(name));
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset =>
+                    asset.name.Contains(fragmentSource[..fragmentSource.IndexOf(".")])
+                    || asset.name.Contains(name)
+                );
                 settingAssets = AssetDatabase.global.GetAssets(filter);
             }
             //Mod.log.Info($"Getting settings: {name} ({settingAssets.Count()})");
@@ -358,10 +502,17 @@ namespace SimpleModChecker.Systems
                     //try { Mod.log.Info(fragment.source.GetType().Name); } catch (Exception ex) { Mod.log.Info(ex); }
 
                     //try { Mod.log.Info($"{fragment.name} is {fragment.source.GetType().Name}"); } catch (Exception ex) { Mod.log.Info(ex); }
-                    if (fragment.source.GetType().Name == "UnityLogger" ) { }
-                    else if (fragment.source.ToString().Contains("=====APM Settings=====") && name == "78903")
+                    if (fragment.source.GetType().Name == "UnityLogger") { }
+                    else if (
+                        fragment.source.ToString().Contains("=====APM Settings=====")
+                        && name == "78903"
+                    )
                     {
-                        (ProcessedFragmentSource, settingsBackup) = ProcessFragmentSource(fragment.source, classType, JsonSerializerSettings);
+                        (ProcessedFragmentSource, settingsBackup) = ProcessFragmentSource(
+                            fragment.source,
+                            classType,
+                            JsonSerializerSettings
+                        );
                     }
                     else
                     {
@@ -370,8 +521,16 @@ namespace SimpleModChecker.Systems
                         //Mod.log.Info($"{fragment.source}+{name} is {validity}");
                         if (validity)
                         {
-                            (ProcessedFragmentSource, settingsBackup) = ProcessFragmentSource(fragment.source, classType, JsonSerializerSettings);
-                        } else { continue; }
+                            (ProcessedFragmentSource, settingsBackup) = ProcessFragmentSource(
+                                fragment.source,
+                                classType,
+                                JsonSerializerSettings
+                            );
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                 }
                 if (ProcessedFragmentSource)
@@ -383,7 +542,8 @@ namespace SimpleModChecker.Systems
             {
                 //if (log) Mod.log.Info($"Retrieved valid settings for {name}");
                 return settingsBackup;
-            } else
+            }
+            else
             {
                 return null;
             }
@@ -392,84 +552,91 @@ namespace SimpleModChecker.Systems
         private bool GetSectionValidity(string fragmentSourceType)
         {
             //Mod.log.Info($"Choosing {fragmentSourceType}");
-            switch (fragmentSourceType)
+            return fragmentSourceType switch
             {
                 // fragment.source => class
-                case "74286+FPS_Limiter.FPSLimiterSettings":
-                case "74324+MoveIt.Settings.Settings":
-                case "74328+FiveTwentyNineTiles.ModSettings":
-                case "74535+HistoricalStart.ModSettings":
-                case "74539+ImageOverlay.ModSettings":
-                case "74604+Anarchy.Settings.AnarchyModSettings":
-                case "75190+SchoolCapacityBalancer.Setting":
-                case "75249+BrushSizeUnlimiter.MyOptions":
-                case "75250+Better_Bulldozer.Settings.BetterBulldozerModSettings":
-                case "75426+I18NEverywhere.Setting":
-                case "75613+Water_Features.Settings.WaterFeaturesSettings":
-                case "75684+DepotCapacityChanger.Setting":
-                case "75826+PlopTheGrowables.ModSettings":
-                case "75993+Tree_Controller.Settings.TreeControllerSettings":
-                case "76662+EmploymentTracker.EmploymentTrackerSettings":
-                case "76836+TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions":
-                case "76849+SunGlasses.Setting":
-                case "76908+AutoDistrictNameStations.ModOptions":
-                case "77171+Time2Work.Setting":
-                case "77240+FindIt.FindItSettings":
-                case "77260+WaterVisualTweaksMod.WaterVisualTweaksSettings":
-                case "77463+RoadNameRemover.Setting":
-                case "77923+BetterMoonLight.Setting":
-                case "78131+StationNaming.Setting.StationNamingSettings":
-                case "78188+ExtendedTooltip.ModSettings":
-                case "78601+NoPollution.Setting":
-                case "78622+TransportPolicyAdjuster.Setting":
-                case "78847+AssetVariationChanger.Setting":
-                case "78903+AssetPacksManager.Setting":
-                case "78960+C2VM.TrafficLightsEnhancement.Settings":
-                case "79186+SimpleModCheckerPlus.Setting":
-                case "79237+FirstPersonCameraContinued.Setting":
-                case "79634+AssetIconLibrary.Setting":
-                case "79794+AdvancedSimulationSpeed.Setting":
-                case "79872+AutoVehicleRenamer.Setting":
-                case "80095+Traffic.ModSettings":
-                case "80403+TransitCapacityMultiplier.Setting":
-                case "80529+ExtraAssetsImporter.Setting":
-                case "80826+Whiteness_Toggle.Setting":
-                case "80931+ToggleableOverlays.Setting":
-                case "81012+VehicleVariationPacks.Setting":
-                case "81157+AreaBucket.Setting":
-                case "81407+StifferVehicles.Setting":
-                case "81568+ZoneColorChanger.Setting":
-                case "82374+BetterSaveList.Setting":
-                case "84638+Recolor.Settings.Setting":
-                case "85211+NoTrafficDespawn.TrafficDespawnSettings":
-                case "85284+CityStats.ModSettings":
-                case "86124+TradingCostTweaker.Setting":
-                case "86462+PathfindingCustomizer.Setting":
-                case "86510+NoTeleporting.Setting":
-                case "86605+AllAboard.Setting":
-                case "86728+BoundaryLinesModifier.Setting":
-                case "86868+RealLife.Setting":
-                case "86944+DemandMasterControl.Setting":
-                case "87190+RoadBuilder.Setting":
-                case "87313+RealisticParking.Setting":
-                case "87755+RealisticWorkplacesAndHouseholds.Setting":
-                case "90264+SmartTransportation.Setting":
-                case "90641+HallOfFame.Settings":
-                case "91433+InfoLoomTwo.Setting":
-                case "92952+CitizenModelManager.Setting":
-                case "96718+RoadWearAdjuster.Setting":
-                case "98560+AssetUIManager.Setting":
-                case "104781+VehicleController.Setting":
-                    return true;
-                default:
-                    return false;
+                "74286+FPS_Limiter.FPSLimiterSettings"
+                or "74324+MoveIt.Settings.Settings"
+                or "74328+FiveTwentyNineTiles.ModSettings"
+                or "74535+HistoricalStart.ModSettings"
+                or "74539+ImageOverlay.ModSettings"
+                or "74604+Anarchy.Settings.AnarchyModSettings"
+                or "75190+SchoolCapacityBalancer.Setting"
+                or "75249+BrushSizeUnlimiter.MyOptions"
+                or "75250+Better_Bulldozer.Settings.BetterBulldozerModSettings"
+                or "75426+I18NEverywhere.Setting"
+                or "75613+Water_Features.Settings.WaterFeaturesSettings"
+                or "75684+DepotCapacityChanger.Setting"
+                or "75826+PlopTheGrowables.ModSettings"
+                or "75993+Tree_Controller.Settings.TreeControllerSettings"
+                or "76662+EmploymentTracker.EmploymentTrackerSettings"
+                or "76836+TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions"
+                or "76849+SunGlasses.Setting"
+                or "76908+AutoDistrictNameStations.ModOptions"
+                or "77171+Time2Work.Setting"
+                or "77240+FindIt.FindItSettings"
+                or "77260+WaterVisualTweaksMod.WaterVisualTweaksSettings"
+                or "77463+RoadNameRemover.Setting"
+                or "77923+BetterMoonLight.Setting"
+                or "78131+StationNaming.Setting.StationNamingSettings"
+                or "78188+ExtendedTooltip.ModSettings"
+                or "78601+NoPollution.Setting"
+                or "78622+TransportPolicyAdjuster.Setting"
+                or "78847+AssetVariationChanger.Setting"
+                or "78903+AssetPacksManager.Setting"
+                or "78960+C2VM.TrafficLightsEnhancement.Settings"
+                or "79186+SimpleModCheckerPlus.Setting"
+                or "79237+FirstPersonCameraContinued.Setting"
+                or "79634+AssetIconLibrary.Setting"
+                or "79794+AdvancedSimulationSpeed.Setting"
+                or "79872+AutoVehicleRenamer.Setting"
+                or "80095+Traffic.ModSettings"
+                or "80403+TransitCapacityMultiplier.Setting"
+                or "80529+ExtraAssetsImporter.Setting"
+                or "80826+Whiteness_Toggle.Setting"
+                or "80931+ToggleableOverlays.Setting"
+                or "81012+VehicleVariationPacks.Setting"
+                or "81157+AreaBucket.Setting"
+                or "81407+StifferVehicles.Setting"
+                or "81568+ZoneColorChanger.Setting"
+                or "82374+BetterSaveList.Setting"
+                or "84638+Recolor.Settings.Setting"
+                or "85211+NoTrafficDespawn.TrafficDespawnSettings"
+                or "85284+CityStats.ModSettings"
+                or "86124+TradingCostTweaker.Setting"
+                or "86462+PathfindingCustomizer.Setting"
+                or "86510+NoTeleporting.Setting"
+                or "86605+AllAboard.Setting"
+                or "86728+BoundaryLinesModifier.Setting"
+                or "86868+RealLife.Setting"
+                or "86944+DemandMasterControl.Setting"
+                or "87190+RoadBuilder.Setting"
+                or "87313+RealisticParking.Setting"
+                or "87755+RealisticWorkplacesAndHouseholds.Setting"
+                or "90264+SmartTransportation.Setting"
+                or "90641+HallOfFame.Settings"
+                or "91433+InfoLoomTwo.Setting"
+                or "92952+CitizenModelManager.Setting"
+                or "96718+RoadWearAdjuster.Setting"
+                or "98560+AssetUIManager.Setting"
+                or "104781+VehicleController.Setting"
+                or "107487+SmartUpkeepManager.Setting" => true,
+                _ => false,
             };
+            ;
         }
 
-        private (bool, object) ProcessFragmentSource(object source, Type classType, JsonSerializerSettings jsonSerializerSettings)
+        private (bool, object) ProcessFragmentSource(
+            object source,
+            Type classType,
+            JsonSerializerSettings jsonSerializerSettings
+        )
         {
             object settingsBackup = (ISettingsBackup)Activator.CreateInstance(classType);
-            JObject sourceObj = JObject.FromObject(source, JsonSerializer.Create(jsonSerializerSettings));
+            JObject sourceObj = JObject.FromObject(
+                source,
+                JsonSerializer.Create(jsonSerializerSettings)
+            );
 
             //string TempForLogging = JsonConvert.SerializeObject(sourceObj);
             //Mod.log.Info(TempForLogging);
@@ -532,12 +699,19 @@ namespace SimpleModChecker.Systems
                     //Mod.log.Info($"{sectionName}__{fragmentSource}");
                     //Mod.log.Info($"{assembly}");
                     //Mod.log.Info($"{classType.Name}");
-                    if (fragmentSource == "FiveTwentyNineTiles.ModSettings") { fragmentSource = "529."; }
-                    if (fragmentSource == "AutoDistrictNameStations.ModOptions") { fragmentSource = "AutoDistrict."; }
+                    if (fragmentSource == "FiveTwentyNineTiles.ModSettings")
+                    {
+                        fragmentSource = "529.";
+                    }
+                    if (fragmentSource == "AutoDistrictNameStations.ModOptions")
+                    {
+                        fragmentSource = "AutoDistrict.";
+                    }
 
                     if (!loadedMods.Contains(assembly))
                     {
-                        if (log) Mod.log.Info($"skipping {assembly}...");
+                        if (log)
+                            Mod.log.Info($"skipping {assembly}...");
                     }
                     else
                     {
@@ -545,19 +719,24 @@ namespace SimpleModChecker.Systems
                     }
                 }
 
-                if (i>0)
+                if (i > 0)
                 {
-                    NotificationSystem.Pop("starq-smc-mod-settings-restore",
-                            title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                            text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreMods]"),
-                            delay: 5f);
-                    Mod.log.Info($"Mod Settings Restoration Complete: {Path.GetFileName(backupFile)}... ({i} options restored)");
+                    NotificationSystem.Pop(
+                        "starq-smc-mod-settings-restore",
+                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                        text: LocalizedString.Id(
+                            "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreMods]"
+                        ),
+                        delay: 5f
+                    );
+                    Mod.log.Info(
+                        $"Mod Settings Restoration Complete: {Path.GetFileName(backupFile)}... ({i} options restored)"
+                    );
                 }
                 else
                 {
                     Mod.log.Info("No changes found to restore Mod Settings...");
                 }
-
             }
             catch (Exception ex)
             {
@@ -565,24 +744,33 @@ namespace SimpleModChecker.Systems
             }
         }
 
-        public void SetSettings(string name, string fragmentSource, JObject sourceObj, string className, bool log)
+        public void SetSettings(
+            string name,
+            string fragmentSource,
+            JObject sourceObj,
+            string className,
+            bool log
+        )
         {
-            
             //Mod.log.Info($"Setting Settings for {name} with {fragmentSource} in {className}");
             JsonSerializerSettings JsonSerializerSettings = new()
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             };
             try
             {
-                var filter = SearchFilter<SettingAsset>.ByCondition(asset => asset.name.Contains(fragmentSource.Substring(0, fragmentSource.IndexOf("."))) || asset.name.Contains(name));
+                var filter = SearchFilter<SettingAsset>.ByCondition(asset =>
+                    asset.name.Contains(fragmentSource[..fragmentSource.IndexOf(".")])
+                    || asset.name.Contains(name)
+                );
                 var settingAssets = AssetDatabase.global.GetAssets(filter);
                 //Mod.log.Info($"Setting settings: {name} ({settingAssets.Count()})");
                 foreach (SettingAsset settingAsset in settingAssets)
                 {
                     foreach (var fragment in settingAsset)
                     {
-                        if (fragment.source == null) break;
+                        if (fragment.source == null)
+                            break;
                         string fragmentSourceType = fragment.source.ToString();
                         string sectionKey = GetSectionKey($"{fragmentSourceType}+{name}");
                         //Mod.log.Info(fragmentSourceType);
@@ -592,7 +780,10 @@ namespace SimpleModChecker.Systems
                         if (sectionKey != null && sectionKey == className)
                         {
                             //Mod.log.Info("sectionKey != null && sectionKey == className");
-                            JObject sectionSource = JObject.FromObject(fragment.source, JsonSerializer.Create(JsonSerializerSettings));
+                            JObject sectionSource = JObject.FromObject(
+                                fragment.source,
+                                JsonSerializer.Create(JsonSerializerSettings)
+                            );
 
                             if (sourceObj[sectionKey] is JObject jsonSettingsSection)
                             {
@@ -600,7 +791,13 @@ namespace SimpleModChecker.Systems
                                 foreach (var prop in jsonSettingsSection.Properties())
                                 {
                                     var propInfo = fragment.source.GetType().GetProperty(prop.Name);
-                                    if (propInfo != null && propInfo.CanWrite && !propInfo.ToString().StartsWith("Game.Input.ProxyBinding"))
+                                    if (
+                                        propInfo != null
+                                        && propInfo.CanWrite
+                                        && !propInfo
+                                            .ToString()
+                                            .StartsWith("Game.Input.ProxyBinding")
+                                    )
                                     {
                                         var oldValue = propInfo.GetValue(fragment.source);
                                         var newValue = prop.Value.ToObject(propInfo.PropertyType);
@@ -608,7 +805,9 @@ namespace SimpleModChecker.Systems
                                         {
                                             Mod.log.Info(oldValue.GetType());
                                             Mod.log.Info(newValue.GetType());
-                                            Mod.log.Info($"Restoring '{sectionKey}:{prop.Name}': {oldValue} => {newValue}.");
+                                            Mod.log.Info(
+                                                $"Restoring '{sectionKey}:{prop.Name}': {oldValue} => {newValue}."
+                                            );
                                             if (sectionKey != "SimpleModCheckerSettings")
                                             {
                                                 i++;
@@ -620,8 +819,9 @@ namespace SimpleModChecker.Systems
 
                                 try
                                 {
-                                    Task.Run(() => settingAsset.Save(true)).Wait(); 
-                                    if (log) Mod.log.Info($"{sectionKey} setting saved.");
+                                    Task.Run(() => settingAsset.Save(true)).Wait();
+                                    if (log)
+                                        Mod.log.Info($"{sectionKey} setting saved.");
                                 }
                                 catch (Exception ex)
                                 {
@@ -651,62 +851,84 @@ namespace SimpleModChecker.Systems
                 // fragment.source => class
                 "FPS_Limiter.FPSLimiterSettings+FPS_Limiter" => "FPSLimiterSettings",
                 "MoveIt.Settings.Settings+MoveIt" => "MoveItSettings",
-                "FiveTwentyNineTiles.ModSettings+FiveTwentyNineTiles" => "FiveTwentyNineTilesSettings",
+                "FiveTwentyNineTiles.ModSettings+FiveTwentyNineTiles" =>
+                    "FiveTwentyNineTilesSettings",
                 "HistoricalStart.ModSettings+HistoricalStart" => "HistoricalStartSettings",
                 "ImageOverlay.ModSettings+ImageOverlay" => "ImageOverlaySettings",
                 "Anarchy.Settings.AnarchyModSettings+Anarchy" => "AnarchySettings",
-                "SchoolCapacityBalancer.Setting+SchoolCapacityBalancer" => "SchoolCapacityBalancerSettings",
+                "SchoolCapacityBalancer.Setting+SchoolCapacityBalancer" =>
+                    "SchoolCapacityBalancerSettings",
                 "BrushSizeUnlimiter.MyOptions+BrushSizeUnlimiter" => "BrushSizeUnlimiterSettings",
-                "Better_Bulldozer.Settings.BetterBulldozerModSettings+BetterBulldozer" => "BetterBulldozerSettings",
+                "Better_Bulldozer.Settings.BetterBulldozerModSettings+BetterBulldozer" =>
+                    "BetterBulldozerSettings",
                 "I18NEverywhere.Setting+I18NEverywhere" => "I18NEverywhereSettings",
-                "Water_Features.Settings.WaterFeaturesSettings+Water_Features" => "WaterFeaturesSettings",
-                "DepotCapacityChanger.Setting+DepotCapacityChanger" => "DepotCapacityChangerSettings",
+                "Water_Features.Settings.WaterFeaturesSettings+Water_Features" =>
+                    "WaterFeaturesSettings",
+                "DepotCapacityChanger.Setting+DepotCapacityChanger" =>
+                    "DepotCapacityChangerSettings",
                 "PlopTheGrowables.ModSettings+PlopTheGrowables" => "PlopTheGrowablesSettings",
-                "Tree_Controller.Settings.TreeControllerSettings+Tree_Controller" => "TreeControllerSettings",
-                "EmploymentTracker.EmploymentTrackerSettings+EmploymentTracker" => "CimRouteHighlighterSettings",
-                "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions+TrafficSimulationAdjuster" => "TrafficSimulationAdjusterSettings",
+                "Tree_Controller.Settings.TreeControllerSettings+Tree_Controller" =>
+                    "TreeControllerSettings",
+                "EmploymentTracker.EmploymentTrackerSettings+EmploymentTracker" =>
+                    "CimRouteHighlighterSettings",
+                "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions+TrafficSimulationAdjuster" =>
+                    "TrafficSimulationAdjusterSettings",
                 "SunGlasses.Setting+SunGlasses" => "SunGlassesSettings",
-                "AutoDistrictNameStations.ModOptions+AutoDistrictNameStations" => "AutoDistrictNameStationsSettings",
+                "AutoDistrictNameStations.ModOptions+AutoDistrictNameStations" =>
+                    "AutoDistrictNameStationsSettings",
                 "Time2Work.Setting+Time2Work" => "RealisticTripsSettings",
                 "FindIt.FindItSettings+FindIt" => "FindItSettings",
-                "WaterVisualTweaksMod.WaterVisualTweaksSettings+WaterVisualTweaks" => "WaterVisualTweaksSettings",
+                "WaterVisualTweaksMod.WaterVisualTweaksSettings+WaterVisualTweaks" =>
+                    "WaterVisualTweaksSettings",
                 "RoadNameRemover.Setting+RoadNameRemover" => "RoadNameRemoverSettings",
                 "BetterMoonLight.Setting+BetterMoonLight" => "BetterMoonLightSettings",
-                "StationNaming.Setting.StationNamingSettings+StationNaming" => "StationNamingSettings",
+                "StationNaming.Setting.StationNamingSettings+StationNaming" =>
+                    "StationNamingSettings",
                 "ExtendedTooltip.ModSettings+ExtendedTooltip" => "ExtendedTooltipSettings",
                 "NoPollution.Setting+NoPollution" => "NoPollutionSettings",
-                "TransportPolicyAdjuster.Setting+TransportPolicyAdjuster" => "TransportPolicyAdjusterSettings",
-                "AssetVariationChanger.Setting+AssetVariationChanger" => "AssetVariationChangerSettings",
+                "TransportPolicyAdjuster.Setting+TransportPolicyAdjuster" =>
+                    "TransportPolicyAdjusterSettings",
+                "AssetVariationChanger.Setting+AssetVariationChanger" =>
+                    "AssetVariationChangerSettings",
                 "AssetPacksManager.Setting+AssetPacksManager" => "AssetPacksManagerSettings",
-                "C2VM.TrafficLightsEnhancement.Settings+C2VM.TrafficLightsEnhancement" => "TrafficLightsEnhancementSettings",
+                "C2VM.TrafficLightsEnhancement.Settings+C2VM.TrafficLightsEnhancement" =>
+                    "TrafficLightsEnhancementSettings",
                 "SimpleModCheckerPlus.Setting+SimpleModChecker" => "SimpleModCheckerSettings",
-                "FirstPersonCameraContinued.Setting+FirstPersonCameraContinued" => "FirstPersonCameraContinuedSettings",
+                "FirstPersonCameraContinued.Setting+FirstPersonCameraContinued" =>
+                    "FirstPersonCameraContinuedSettings",
                 "AssetIconLibrary.Setting+AssetIconLibrary" => "AssetIconLibrarySettings",
-                "AdvancedSimulationSpeed.Setting+AdvancedSimulationSpeed" => "AdvancedSimulationSpeedSettings",
+                "AdvancedSimulationSpeed.Setting+AdvancedSimulationSpeed" =>
+                    "AdvancedSimulationSpeedSettings",
                 "AutoVehicleRenamer.Setting+AutoVehicleRenamer" => "AutoVehicleRenamerSettings",
                 "Traffic.ModSettings+Traffic" => "TrafficSettings",
-                "TransitCapacityMultiplier.Setting+TransitCapacityMultiplier" => "TransitCapacityMultiplierSettings",
+                "TransitCapacityMultiplier.Setting+TransitCapacityMultiplier" =>
+                    "TransitCapacityMultiplierSettings",
                 "ExtraAssetsImporter.Setting+ExtraAssetsImporter" => "ExtraAssetsImporterSettings",
                 "Whiteness_Toggle.Setting+Whiteness-Toggle" => "WhitenessToggleSettings",
                 "ToggleableOverlays.Setting+ToggleableOverlays" => "ToggleOverlaysSettings",
-                "VehicleVariationPacks.Setting+VehicleVariationPacks" => "VehicleVariationPacksSettings",
+                "VehicleVariationPacks.Setting+VehicleVariationPacks" =>
+                    "VehicleVariationPacksSettings",
                 "AreaBucket.Setting+AreaBucket" => "AreaBucketSettings",
                 "StifferVehicles.Setting+StifferVehicles" => "StifferVehiclesSettings",
                 "ZoneColorChanger.Setting+ZoneColorChanger" => "ZoneColorChangerSettings",
                 "BetterSaveList.Setting+BetterSaveList" => "BetterSaveListSettings",
                 "Recolor.Settings.Setting+Recolor" => "RecolorSettings",
-                "NoTrafficDespawn.TrafficDespawnSettings+NoTrafficDespawn" => "NoVehicleDespawnSettings",
+                "NoTrafficDespawn.TrafficDespawnSettings+NoTrafficDespawn" =>
+                    "NoVehicleDespawnSettings",
                 "CityStats.ModSettings+CityStats" => "CityStatsSettings",
                 "TradingCostTweaker.Setting+TradingCostTweaker" => "TradingCostTweakerSettings",
-                "PathfindingCustomizer.Setting+PathfindingCustomizer" => "PathfindingCustomizerSettings",
+                "PathfindingCustomizer.Setting+PathfindingCustomizer" =>
+                    "PathfindingCustomizerSettings",
                 "NoTeleporting.Setting+NoTeleporting" => "NoTeleportingSettings",
                 "AllAboard.Setting+AllAboard" => "AllAboardSettings",
-                "BoundaryLinesModifier.Setting+BoundaryLinesModifier" => "BoundaryLinesModifierSettings",
+                "BoundaryLinesModifier.Setting+BoundaryLinesModifier" =>
+                    "BoundaryLinesModifierSettings",
                 "RealLife.Setting+RealLife" => "RealLifeSettings",
                 "DemandMasterControl.Setting+DemandMasterControl" => "DemandMasterSettings",
                 "RoadBuilder.Setting+RoadBuilder" => "RoadBuilderSettings",
                 "RealisticParking.Setting+RealisticParking" => "RealisticParkingSettings",
-                "RealisticWorkplacesAndHouseholds.Setting+RWH" => "RealisticWorkplacesAndHouseholdsSettings",
+                "RealisticWorkplacesAndHouseholds.Setting+RWH" =>
+                    "RealisticWorkplacesAndHouseholdsSettings",
                 "SmartTransportation.Setting+SmartTransportation" => "SmartTransportationSettings",
                 "HallOfFame.Settings+HallOfFame" => "HallOfFameSettings",
                 "InfoLoomTwo.Setting+InfoLoomTwo" => "InfoLoomTwoSettings",
@@ -714,48 +936,49 @@ namespace SimpleModChecker.Systems
                 "RoadWearAdjuster.Setting+RoadWearAdjuster" => "RoadWearAdjusterSettings",
                 "AssetUIManager.Setting+AssetUIManager" => "AssetUIManagerSettings",
                 "VehicleController.Setting+VehicleController" => "VehicleControllerSettings",
-                _ => null
+                "SmartUpkeepManager.Setting+SmartUpkeepManager" => "SmartUpkeepManagerSettings",
+                _ => null,
             };
         }
 
-        public void GetSettingsFiles()
-        {
-            var settingAssets = AssetDatabase.global.GetAssets<SettingAsset>("");
-            Mod.log.Info($"Found: {settingAssets.Count()}");
-            foreach (var settingAsset in settingAssets)
-            {
-                if (settingAsset.name.Contains("Logger"))
-                {
-                    continue;  
-                }
-                Mod.log.Info(settingAsset.name);
-                foreach (var fragment in settingAsset)
-                {
-                    try
-                    {
-                    if (fragment.source == null)
-                    {
-                        continue;
-                    }
-                        string fragmentSourceType = fragment.source.ToString();
-                        Mod.log.Info($"fragment.source = \"{fragmentSourceType}\"");
-                        //try
-                        //{
-                        //    if (fragmentSourceType == "XX")
-                        //    {
-                        //        try { Mod.log.Info(fragment.source.ToJSONString()); } catch (Exception ex) { Mod.log.Info(ex); }
-                        //        try { Mod.log.Info(fragment.source.ToString()); } catch (Exception ex) { Mod.log.Info(ex); }
-                        //    }
-                        //}
-                        //catch (Exception ex)
-                        //{ Mod.log.Info(ex); }
-                    }
-                    catch (Exception ex)
-                    {
-                        Mod.log.Info(ex);
-                    }
-                }
-            }
-        }
+        //public void GetSettingsFiles()
+        //{
+        //    var settingAssets = AssetDatabase.global.GetAssets<SettingAsset>("RealLife");
+        //    Mod.log.Info($"Found: {settingAssets.Count()}");
+        //    foreach (var settingAsset in settingAssets)
+        //    {
+        //        if (settingAsset.name.Contains("Logger"))
+        //        {
+        //            continue;
+        //        }
+        //        Mod.log.Info(settingAsset.name);
+        //        foreach (var fragment in settingAsset)
+        //        {
+        //            try
+        //            {
+        //                if (fragment.source == null)
+        //                {
+        //                    continue;
+        //                }
+        //                string fragmentSourceType = fragment.source.ToString();
+        //                Mod.log.Info($"fragment.source = \"{fragmentSourceType}\"");
+        //                try
+        //                {
+        //                    if (fragmentSourceType == "RealLife.Setting")
+        //                    {
+        //                        //try { Mod.log.Info(fragment.source.ToJSONString()); } catch (Exception ex) { Mod.log.Info(ex); }
+        //                        try { Mod.log.Info(fragment.source.ToString()); } catch (Exception ex) { Mod.log.Info(ex); }
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                { Mod.log.Info(ex); }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Mod.log.Info(ex);
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

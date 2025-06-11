@@ -3,6 +3,8 @@
 // StarQ 2024
 
 using Game.Rendering.Utilities;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using static Colossal.IO.AssetDatabase.AssetDatabase;
 using static Game.Settings.AnimationQualitySettings;
 using static Game.Settings.AntiAliasingQualitySettings;
@@ -10,10 +12,8 @@ using static Game.Settings.GeneralSettings;
 using static Game.Settings.GraphicsSettings;
 using static Game.Settings.InterfaceSettings;
 using static Game.Simulation.SimulationSystem;
-using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.Rendering;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
     public class GameAudioSettings
     {
@@ -30,6 +30,7 @@ namespace SimpleModChecker.Systems
         public float ServiceBuildingsVolume { get; set; }
         public int ClipMemoryBudget { get; set; }
     }
+
     public class GameEditorSettings
     {
         public int AssetPickerColumnCount { get; set; }
@@ -40,13 +41,16 @@ namespace SimpleModChecker.Systems
         public string LastSelectedProjectRootDirectory { get; set; }
         public string LastSelectedImportDirectory { get; set; }
     }
+
     public class GameGameplaySettings
     {
         public bool EdgeScrolling { get; set; }
+        public float EdgeScrollSensivity { get; set; }
         public bool DayNightVisual { get; set; }
         public bool PausedAfterLoading { get; set; }
         public bool ShowTutorials { get; set; }
     }
+
     public class GameGeneralSettings
     {
         public AutoReloadMode AssetDatabaseAutoReloadMode { get; set; }
@@ -55,9 +59,12 @@ namespace SimpleModChecker.Systems
         public bool AutoSave { get; set; }
         public AutoSaveInterval AutoSaveInterval { get; set; }
         public AutoSaveCount AutoSaveCount { get; set; }
+        public bool AllowOptionalTelemetry { get; set; }
     }
+
     public class GameGraphicsSettings
     {
+        public int DisplayIndex { get; set; }
         public bool VSync { get; set; }
         public int MaxFrameLatency { get; set; }
         public CursorMode CursorMode { get; set; }
@@ -67,9 +74,11 @@ namespace SimpleModChecker.Systems
         public float TiltShiftFarStart { get; set; }
         public float TiltShiftFarEnd { get; set; }
         public DlssQuality DlssQuality { get; set; }
+
         //public Fsr2Quality Fsr2Quality { get; set; }
         public GameQualitySettings GameQualitySettings { get; set; }
     }
+
     public class GameQualitySettings
     {
         public GameDynamicResolutionQualitySettings GameDynamicResolutionQualitySettings { get; set; }
@@ -214,6 +223,7 @@ namespace SimpleModChecker.Systems
     public class GameInputSettings
     {
         public bool ElevationDraggingEnabled { get; set; }
+
         //public string Keybinds { get; set; }
         public float MouseScrollSensitivity { get; set; }
         public float KeyboardMoveSensitivity { get; set; }
@@ -240,13 +250,14 @@ namespace SimpleModChecker.Systems
         public float TextScale { get; set; }
         public bool UnlockHighlightsEnabled { get; set; }
         public bool ChirperPopupsEnabled { get; set; }
+        public bool BlockingPopupsEnabled { get; set; }
         public InputHintsType InputHintsType { get; set; }
         public KeyboardLayout KeyboardLayout { get; set; }
         public TimeFormat TimeFormat { get; set; }
         public TemperatureUnit TemperatureUnit { get; set; }
         public UnitSystem UnitSystem { get; set; }
-        public bool BlockingPopupsEnabled { get; set; }
     }
+
     public class GameUserState
     {
         public string LastCloudTarget { get; set; }
@@ -255,19 +266,5 @@ namespace SimpleModChecker.Systems
         public bool UnlockAll { get; set; }
         public bool UnlimitedMoney { get; set; }
         public bool UnlockMapTiles { get; set; }
-    }
-
-    public class GameSettings
-    {
-        public string GameVersion { get; set; }
-        public string LastUpdated { get; set; }
-        public GameAudioSettings GameAudioSettings { get; set; }
-        public GameEditorSettings GameEditorSettings { get; set; }
-        public GameGameplaySettings GameGameplaySettings { get; set; }
-        public GameGeneralSettings GameGeneralSettings { get; set; }
-        public GameGraphicsSettings GameGraphicsSettings { get; set; }
-        public GameInputSettings GameInputSettings { get; set; }
-        public GameInterfaceSettings GameInterfaceSettings { get; set; }
-        public GameUserState GameUserState { get; set; }
     }
 }

@@ -2,19 +2,20 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal.PSI.Environment;
 using System.IO;
+using Colossal.PSI.Environment;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
-    public class MakeBackupOfModsData 
+    public class MakeBackupOfModsData
     {
         public static void MakePrev()
         {
-            string sourcePath = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup";
+            string sourcePath =
+                $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup";
             if (Directory.Exists(sourcePath))
             {
-                string destinationPath = Path.Combine(sourcePath,"_prev");
+                string destinationPath = Path.Combine(sourcePath, "_prev");
                 if (!Directory.Exists(destinationPath))
                 {
                     Directory.CreateDirectory(destinationPath);

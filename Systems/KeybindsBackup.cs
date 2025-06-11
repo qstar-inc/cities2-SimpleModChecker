@@ -2,26 +2,25 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal.PSI.Environment;
-using Game.Input;
-using Game.PSI;
-using Game.UI.Localization;
-using Game;
-using Mod = SimpleModCheckerPlus.Mod;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System;
+using Colossal.PSI.Environment;
+using Game;
+using Game.Input;
+using Game.PSI;
+using Game.UI.Localization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
     public class GameKeybind
     {
         public string ActionName { get; set; }
-        public InputManager.DeviceType Device {  get; set; }
-        public string BindingName {  get; set; }
+        public InputManager.DeviceType Device { get; set; }
+        public string BindingName { get; set; }
         public string Path { get; set; }
         public IReadOnlyList<ProxyModifier> Modifiers { get; set; }
     }
@@ -37,17 +36,27 @@ namespace SimpleModChecker.Systems
     {
         public Mod _mod;
         public static ModCheckup SMC = new();
-        private InputManager inputManager = InputManager.instance;
-        private readonly string backupFile0 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_prev.json";
-        private readonly string backupFile1 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_1.json";
-        private readonly string backupFile2 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_2.json";
-        private readonly string backupFile3 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_3.json";
-        private readonly string backupFile4 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_4.json";
-        private readonly string backupFile5 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_5.json";
-        private readonly string backupFile6 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_6.json";
-        private readonly string backupFile7 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_7.json";
-        private readonly string backupFile8 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_8.json";
-        private readonly string backupFile9 = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_9.json";
+        private readonly InputManager inputManager = InputManager.instance;
+        private readonly string backupFile0 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_prev.json";
+        private readonly string backupFile1 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_1.json";
+        private readonly string backupFile2 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_2.json";
+        private readonly string backupFile3 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_3.json";
+        private readonly string backupFile4 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_4.json";
+        private readonly string backupFile5 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_5.json";
+        private readonly string backupFile6 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_6.json";
+        private readonly string backupFile7 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_7.json";
+        private readonly string backupFile8 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_8.json";
+        private readonly string backupFile9 =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_9.json";
         private static int i = 0;
 
         protected override void OnCreate()
@@ -74,10 +83,7 @@ namespace SimpleModChecker.Systems
             }
         }
 
-        protected override void OnUpdate()
-        {
-
-        }
+        protected override void OnUpdate() { }
 
         public void CreateBackup(int profile, bool log = true)
         {
@@ -99,56 +105,68 @@ namespace SimpleModChecker.Systems
             string directoryPath = Path.GetDirectoryName(backupFile);
             if (!Directory.Exists(directoryPath))
             {
-                if (log) Mod.log.Info("ModsData folder not found, creating...");
+                if (log)
+                    Mod.log.Info("ModsData folder not found, creating...");
                 Directory.CreateDirectory(directoryPath);
             }
 
-            Dictionary<string, List<GameKeybind>> existingKeybinds = [];
+            Dictionary<string, List<GameKeybind>> existingKeybinds = new();
             try
             {
                 if (File.Exists(backupFile))
                 {
                     string existingJson = File.ReadAllText(backupFile);
                     var keybindsGrouped = JsonConvert.DeserializeObject<Keybinds>(existingJson);
-                    existingKeybinds = keybindsGrouped?.GameKeybind ?? [];
+                    existingKeybinds = keybindsGrouped?.GameKeybind ?? new();
                 }
 
                 var GameKeybindsTemp = existingKeybinds
                     .SelectMany(kv => kv.Value.Select(g => new { MapName = kv.Key, Keybind = g }))
                     .ToList();
 
-                List<ProxyBinding> bindings = [.. inputManager.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None)];
+                List<ProxyBinding> bindings = new(
+                    inputManager.GetBindings(
+                        InputManager.PathType.Effective,
+                        InputManager.BindingOptions.None
+                    )
+                );
 
                 foreach (ProxyBinding binding in bindings)
                 {
                     if (binding.isRebindable)
-                    try
-                    {
+                        try
+                        {
                             var existing = GameKeybindsTemp.FirstOrDefault(k =>
-                                k.Keybind.ActionName == binding.actionName &&
-                                k.Keybind.BindingName == binding.name &&
-                                k.MapName == binding.mapName &&
-                                k.Keybind.Device == binding.device);
+                                k.Keybind.ActionName == binding.actionName
+                                && k.Keybind.BindingName == binding.name
+                                && k.MapName == binding.mapName
+                                && k.Keybind.Device == binding.device
+                            );
 
                             if (existing != null)
                             {
                                 GameKeybindsTemp.Remove(existing);
                             }
 
-                            GameKeybindsTemp.Add(new 
-                            {
-                                MapName = binding.mapName,
-                                Keybind = new GameKeybind
+                            GameKeybindsTemp.Add(
+                                new
                                 {
-                                    ActionName = binding.actionName,
-                                    BindingName = binding.name,
-                                    Modifiers = binding.modifiers,
-                                    Device = binding.device,
-                                    Path = binding.path,
+                                    MapName = binding.mapName,
+                                    Keybind = new GameKeybind
+                                    {
+                                        ActionName = binding.actionName,
+                                        BindingName = binding.name,
+                                        Modifiers = binding.modifiers,
+                                        Device = binding.device,
+                                        Path = binding.path,
+                                    },
                                 }
-                            });
-                    }
-                    catch (Exception ex) { Mod.log.Info(ex); }
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            Mod.log.Info(ex);
+                        }
                 }
                 var GameKeybinds = GameKeybindsTemp
                     .GroupBy(k => k.MapName)
@@ -158,15 +176,18 @@ namespace SimpleModChecker.Systems
                 {
                     GameVersion = Game.Version.current.version,
                     LastUpdated = DateTime.Now.ToLongDateString(),
-                    GameKeybind = GameKeybinds
+                    GameKeybind = GameKeybinds,
                 };
 
-                if (log) Mod.log.Info("Collecting Keybinds");
+                if (log)
+                    Mod.log.Info("Collecting Keybinds");
                 try
                 {
                     string jsonString = JsonConvert.SerializeObject(Keybinds, Formatting.Indented);
                     File.WriteAllText(backupFile, jsonString);
-                    Mod.log.Info($"Keybinds backup created successfully: {Path.GetFileName(backupFile)}");
+                    Mod.log.Info(
+                        $"Keybinds backup created successfully: {Path.GetFileName(backupFile)}"
+                    );
                 }
                 catch (Exception ex)
                 {
@@ -207,7 +228,10 @@ namespace SimpleModChecker.Systems
 
             try
             {
-                var bindings = inputManager.GetBindings(InputManager.PathType.Effective, InputManager.BindingOptions.None);
+                var bindings = inputManager.GetBindings(
+                    InputManager.PathType.Effective,
+                    InputManager.BindingOptions.None
+                );
                 JObject jsonObject = JObject.Parse(jsonString);
 
                 if (jsonObject["GameKeybind"] != null)
@@ -222,7 +246,8 @@ namespace SimpleModChecker.Systems
                         {
                             JArray keybindsArray = (JArray)mapEntry.Value;
 
-                            if (log) Mod.log.Info($"Checking {mapName}");
+                            if (log)
+                                Mod.log.Info($"Checking {mapName}");
 
                             foreach (var keybind in keybindsArray)
                             {
@@ -231,27 +256,40 @@ namespace SimpleModChecker.Systems
                                 int deviceString = keybind["Device"].Value<int>();
                                 JArray modifiers = keybind["Modifiers"] as JArray;
                                 string path = keybind["Path"]?.ToString();
-                                InputManager.DeviceType device = (InputManager.DeviceType)deviceString;
+                                InputManager.DeviceType device =
+                                    (InputManager.DeviceType)deviceString;
                                 if (inputManager.TryFindAction(mapName, actionName, out var action))
                                 {
                                     ProxyBinding oldBinding = bindings.FirstOrDefault(b =>
-                                        b.mapName == mapName &&
-                                        b.actionName == actionName &&
-                                        b.name == bindingName &&
-                                        b.device == device);
+                                        b.mapName == mapName
+                                        && b.actionName == actionName
+                                        && b.name == bindingName
+                                        && b.device == device
+                                    );
 
                                     if (oldBinding != null)
                                     {
                                         ProxyBinding newBinding = oldBinding.Copy();
 
-                                        newBinding.modifiers = modifiers != null
-                                            ? modifiers.Select(m => new ProxyModifier
-                                            {
-                                                m_Component = (ActionComponent)Enum.Parse(typeof(ActionComponent), m["m_Component"]?.ToString() ?? "None"),
-                                                m_Name = m["m_Name"]?.ToString(),
-                                                m_Path = m["m_Path"]?.ToString()
-                                            }).ToArray() : [];
-                                        newBinding.path = string.IsNullOrEmpty(path) ? oldBinding.path : path;
+                                        newBinding.modifiers =
+                                            modifiers != null
+                                                ? modifiers
+                                                    .Select(m => new ProxyModifier
+                                                    {
+                                                        m_Component = (ActionComponent)
+                                                            Enum.Parse(
+                                                                typeof(ActionComponent),
+                                                                m["m_Component"]?.ToString()
+                                                                    ?? "None"
+                                                            ),
+                                                        m_Name = m["m_Name"]?.ToString(),
+                                                        m_Path = m["m_Path"]?.ToString(),
+                                                    })
+                                                    .ToArray()
+                                                : Array.Empty<ProxyModifier>();
+                                        newBinding.path = string.IsNullOrEmpty(path)
+                                            ? oldBinding.path
+                                            : path;
 
                                         if (!(newBinding.path == oldBinding.path))
                                         {
@@ -260,8 +298,21 @@ namespace SimpleModChecker.Systems
 
                                             if (log)
                                             {
-                                                string newBindingText = string.IsNullOrEmpty(newBinding.path) ? "Not set" : string.Join(" + ", newBinding.modifiers.Select((ProxyModifier m) => m.m_Path).Append(newBinding.path));
-                                                Mod.log.Info($"Setting {newBinding.title} to {newBindingText}");
+                                                string newBindingText = string.IsNullOrEmpty(
+                                                    newBinding.path
+                                                )
+                                                    ? "Not set"
+                                                    : string.Join(
+                                                        " + ",
+                                                        newBinding
+                                                            .modifiers.Select(
+                                                                (ProxyModifier m) => m.m_Path
+                                                            )
+                                                            .Append(newBinding.path)
+                                                    );
+                                                Mod.log.Info(
+                                                    $"Setting {newBinding.title} to {newBindingText}"
+                                                );
                                             }
                                         }
                                     }
@@ -274,10 +325,14 @@ namespace SimpleModChecker.Systems
                 //Mod.log.Info("Keybinds Restoration Complete...");
                 if (i > 0)
                 {
-                    NotificationSystem.Pop("starq-smc-mod-settings-restore",
-                            title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                            text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreKeybinds]"),
-                            delay: 5f);
+                    NotificationSystem.Pop(
+                        "starq-smc-mod-settings-restore",
+                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
+                        text: LocalizedString.Id(
+                            "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreKeybinds]"
+                        ),
+                        delay: 5f
+                    );
                     Mod.log.Info($"Keybinds Restoration Complete... ({i} options restored)");
                 }
                 else

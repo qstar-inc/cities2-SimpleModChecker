@@ -2,20 +2,19 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal.PSI.Environment;
-using Game.PSI;
-using Game.UI.Localization;
-using Newtonsoft.Json.Linq;
-using SimpleModCheckerPlus;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System;
+using Colossal.PSI.Environment;
+using Game.PSI;
+using Game.UI.Localization;
+using Newtonsoft.Json.Linq;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
     public class ModVerifier
     {
@@ -24,12 +23,12 @@ namespace SimpleModChecker.Systems
         public static int ModCount = 0;
         public static string IssueList = "";
         public static int ProcesStatus = 0;
-        public static Dictionary<string, string> DownloadedModList = [];
-        public static List<string> DupedModList = [];
+        public static Dictionary<string, string> DownloadedModList = new();
+        public static List<string> DupedModList = new();
         public static int RemovedBackupCIDs = 0;
         public static int SkippedBackupCIDs = 0;
-        public static Dictionary<string, Dictionary<string, string>> ManifestData = [];
-        public static List<string> backupsToCheck = [];
+        public static Dictionary<string, Dictionary<string, string>> ManifestData = new();
+        public static List<string> backupsToCheck = new();
         public static LocalizedString VerificationResultText => LocalizedString.Id(GetText());
 
         public static string GetText()
@@ -66,15 +65,19 @@ namespace SimpleModChecker.Systems
 
         public static void RemoveBackupCID()
         {
-            try {
+            try
+            {
                 string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
                 if (!Directory.Exists(rootFolder))
                 {
                     return;
                 }
 
-                foreach (var subfolder in Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
-                                       .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0])))
+                foreach (
+                    var subfolder in Directory
+                        .GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+                        .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
+                )
                 {
                     string modFolder = Path.GetFileName(subfolder);
                     string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
@@ -100,7 +103,8 @@ namespace SimpleModChecker.Systems
 
                 foreach (var filePath in backupsToCheck)
                 {
-                    string subfolder = $"{EnvPath.kCacheDataPath}/Mods/mods_subscribed/{filePath.Replace(EnvPath.kCacheDataPath, "").Replace("\\", "/").Replace("/Mods/mods_subscribed/", "").Split('/')[0]}";
+                    string subfolder =
+                        $"{EnvPath.kCacheDataPath}/Mods/mods_subscribed/{filePath.Replace(EnvPath.kCacheDataPath, "").Replace("\\", "/").Replace("/Mods/mods_subscribed/", "").Split('/')[0]}";
 
                     string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
                     string manifestPath = FindManifestFile(subfolder);
@@ -131,11 +135,13 @@ namespace SimpleModChecker.Systems
                     else
                     {
                         SkippedBackupCIDs++;
-                        Mod.log.Info($"Skipped '{relativePath}'.");
+                        //Mod.log.Info($"Skipped '{relativePath}'.");
                     }
                 }
 
-                Mod.log.Info($"Backup CIDs: Removed {RemovedBackupCIDs}; Ignored {SkippedBackupCIDs}");
+                Mod.log.Info(
+                    $"Backup CIDs: Removed {RemovedBackupCIDs}; Ignored {SkippedBackupCIDs}"
+                );
                 Mod.Setting.DeletedBackupCIDs = true;
             }
             catch (Exception ex)
@@ -150,14 +156,20 @@ namespace SimpleModChecker.Systems
             DupedModList.Clear();
             IssueList = "";
 
-            NotificationSystem.Push("starq-smc-verify-mod",
+            NotificationSystem.Push(
+                "starq-smc-verify-mod",
                 titleId: "SimpleModCheckerPlus",
                 textId: "SimpleModCheckerPlus.VerifyStart",
                 progressState: Colossal.PSI.Common.ProgressState.Indeterminate,
-                onClicked: () => {
-                    ModCheckup.uISystem.OpenPage("SimpleModChecker.SimpleModCheckerPlus.Mod", "Setting.ModListTab", false);
-                });
-
+                onClicked: () =>
+                {
+                    ModCheckup.uISystem.OpenPage(
+                        "SimpleModChecker.SimpleModCheckerPlus.Mod",
+                        "Setting.ModListTab",
+                        false
+                    );
+                }
+            );
 
             Header = $"Mod Verification Process is running...";
             ProcesStatus = 1;
@@ -173,12 +185,18 @@ namespace SimpleModChecker.Systems
             string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
             if (!Directory.Exists(rootFolder))
             {
-                NotificationSystem.Push("starq-smc-verify-mod",
+                NotificationSystem.Push(
+                    "starq-smc-verify-mod",
                     titleId: "SimpleModCheckerPlus",
                     textId: "SimpleModCheckerPlus.VerifyFailed",
                     progressState: Colossal.PSI.Common.ProgressState.Failed,
-                    onClicked: () => {
-                        ModCheckup.uISystem.OpenPage("SimpleModChecker.SimpleModCheckerPlus.Mod", "Setting.ModListTab", false); 
+                    onClicked: () =>
+                    {
+                        ModCheckup.uISystem.OpenPage(
+                            "SimpleModChecker.SimpleModCheckerPlus.Mod",
+                            "Setting.ModListTab",
+                            false
+                        );
                         NotificationSystem.Pop("starq-smc-verify-mod");
                     }
                 );
@@ -191,18 +209,26 @@ namespace SimpleModChecker.Systems
 
             string selectedModName = "";
             string selectedModFolder = "";
-            ModCount = selected != null ? 1 : Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly).Length;
+            ModCount =
+                selected != null
+                    ? 1
+                    : Directory
+                        .GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+                        .Length;
             int i = 0;
 
-            foreach (var subfolder in Directory.GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
-                                   .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0])))
+            foreach (
+                var subfolder in Directory
+                    .GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+                    .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
+            )
             {
                 if (selected != null && subfolder != selected)
                 {
                     continue;
                 }
                 i++;
-                float percent = (i/ (float)ModCount) * 100;
+                float percent = i / (float)ModCount * 100;
                 bool posted = false;
 
                 string modFolder = Path.GetFileName(subfolder);
@@ -237,18 +263,22 @@ namespace SimpleModChecker.Systems
                         Mod.log.Info("Error: " + ex.Message);
                     }
 
-                    NotificationSystem.Push("starq-smc-verify-mod",
+                    NotificationSystem.Push(
+                        "starq-smc-verify-mod",
                         titleId: "SimpleModCheckerPlus",
-                        text: new LocalizedString("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.VerifyingMods]", null,
+                        text: new LocalizedString(
+                            "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.VerifyingMods]",
+                            null,
                             new Dictionary<string, ILocElement>
                             {
-                                {"modCount", LocalizedString.Value(i.ToString())},
-                                {"total", LocalizedString.Value(ModCount.ToString())},
-                                {"modName", LocalizedString.Value(modName.ToString())},
-                            }),
+                                { "modCount", LocalizedString.Value(i.ToString()) },
+                                { "total", LocalizedString.Value(ModCount.ToString()) },
+                                { "modName", LocalizedString.Value(modName.ToString()) },
+                            }
+                        ),
                         progressState: Colossal.PSI.Common.ProgressState.Progressing,
                         progress: (int)Math.Round(percent)
-                        );
+                    );
 
                     if (DownloadedModList.ContainsKey(modId) && !DupedModList.Contains(modId))
                     {
@@ -263,7 +293,6 @@ namespace SimpleModChecker.Systems
                             Mod.log.Info($"{multiText}: {modId}");
                             DupedModList.Add(modId);
                         }
-                        
                     }
                     else
                     {
@@ -341,13 +370,19 @@ namespace SimpleModChecker.Systems
                     IssueList += $" for {selectedModName} ({selectedModFolder})";
                 }
             }
-            NotificationSystem.Push("starq-smc-verify-mod",
+            NotificationSystem.Push(
+                "starq-smc-verify-mod",
                 titleId: "SimpleModCheckerPlus",
                 textId: "SimpleModCheckerPlus.VerifyEnd",
                 progressState: hasIssue,
-                onClicked: () => {
+                onClicked: () =>
+                {
                     NotificationSystem.Pop("starq-smc-verify-mod");
-                    ModCheckup.uISystem.OpenPage("SimpleModChecker.SimpleModCheckerPlus.Mod", "Setting.ModListTab", false);
+                    ModCheckup.uISystem.OpenPage(
+                        "SimpleModChecker.SimpleModCheckerPlus.Mod",
+                        "Setting.ModListTab",
+                        false
+                    );
                 }
             );
             if (selected != null)
@@ -364,11 +399,16 @@ namespace SimpleModChecker.Systems
             try
             {
                 string folderName = Path.GetFileName(Path.GetDirectoryName(cpatchFolder));
-                if (folderName == null || !folderName.Contains("_")) return null;
+                if (folderName == null || !folderName.Contains("_"))
+                    return null;
 
                 string version = folderName.Split('_')[1];
 
-                var randomFolders = Directory.GetDirectories(cpatchFolder, "*", SearchOption.TopDirectoryOnly);
+                var randomFolders = Directory.GetDirectories(
+                    cpatchFolder,
+                    "*",
+                    SearchOption.TopDirectoryOnly
+                );
 
                 foreach (var folder in randomFolders)
                 {
@@ -405,10 +445,7 @@ namespace SimpleModChecker.Systems
                 foreach (var line in lines)
                 {
                     var matches = Regex.Matches(line, csvPattern);
-                    var parts = matches
-                        .Cast<Match>()
-                        .Select(m => m.Groups["value"].Value)
-                        .ToList();
+                    var parts = matches.Cast<Match>().Select(m => m.Groups["value"].Value).ToList();
 
                     if (parts.Count >= 4)
                     {
@@ -418,7 +455,6 @@ namespace SimpleModChecker.Systems
                         manifestData[relativePath] = $"{size};;{hash}";
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -428,22 +464,33 @@ namespace SimpleModChecker.Systems
             return manifestData;
         }
 
-        private static async Task VerifyFolderFiles(string subfolder, Dictionary<string, string> manifestData, string modId, string modName, bool posted)
+        private static async Task VerifyFolderFiles(
+            string subfolder,
+            Dictionary<string, string> manifestData,
+            string modId,
+            string modName,
+            bool posted
+        )
         {
             if (!Directory.Exists(subfolder))
                 return;
 
-            var files = Directory.GetFiles(subfolder, "*", SearchOption.AllDirectories)
-                                 .Where(file => !file.Contains(".metadata") && !file.Contains(".cpatch"));
+            var files = Directory
+                .GetFiles(subfolder, "*", SearchOption.AllDirectories)
+                .Where(file => !file.Contains(".metadata") && !file.Contains(".cpatch"));
             foreach (var filePath in files)
             {
                 string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
                 string relativePathForText = relativePath.Replace("\\", "/");
                 try
                 {
-                    if (manifestData.ContainsKey(relativePath) || manifestData.ContainsKey($"\"{relativePath}\""))
+                    if (
+                        manifestData.ContainsKey(relativePath)
+                        || manifestData.ContainsKey($"\"{relativePath}\"")
+                    )
                     {
-                        string[] manifestParts = manifestData[relativePath].Split([";;"], StringSplitOptions.None);
+                        string[] manifestParts = manifestData[relativePath]
+                            .Split(new string[] { ";;" }, StringSplitOptions.None);
                         string expectedSize = manifestParts[0];
                         string expectedHash = manifestParts[1];
 
@@ -458,7 +505,9 @@ namespace SimpleModChecker.Systems
                                 posted = true;
                             }
                             IssueList += $"- '{relativePathForText}' is dirty/modified\r\n";
-                            Mod.log.Info($"File '{relativePath}' is dirty/modified. Expected: {expectedHash} ({expectedSize} bytes), Found: {actualHash} ({actualSize} bytes)");
+                            Mod.log.Info(
+                                $"File '{relativePath}' is dirty/modified. Expected: {expectedHash} ({expectedSize} bytes), Found: {actualHash} ({actualSize} bytes)"
+                            );
                         }
                         manifestData.Remove(relativePath);
                     }
@@ -474,11 +523,14 @@ namespace SimpleModChecker.Systems
                     }
                     else if (filePath.EndsWith(".backup"))
                     {
-                        string realFilePath = filePath.Substring(0, filePath.Length - 7);
+                        string realFilePath = filePath[..^7];
                         relativePath = GetRelativePath(subfolder, realFilePath).Replace("/", "\\");
                         relativePathForText = relativePath.Replace("\\", "/");
 
-                        string actualCid = File.Exists(realFilePath) ? File.ReadAllText(realFilePath) : ""; ;
+                        string actualCid = File.Exists(realFilePath)
+                            ? File.ReadAllText(realFilePath)
+                            : "";
+                        ;
                         string backupCid = File.Exists(filePath) ? File.ReadAllText(filePath) : "";
 
                         if (actualCid != backupCid)
@@ -488,8 +540,11 @@ namespace SimpleModChecker.Systems
                                 IssueTextHeader(modId, modName);
                                 posted = true;
                             }
-                            IssueList += $"- '{relativePathForText}' does not match with the backup\r\n";
-                            Mod.log.Info($"Value of '{relativePath}' does not match with the backup.");
+                            IssueList +=
+                                $"- '{relativePathForText}' does not match with the backup\r\n";
+                            Mod.log.Info(
+                                $"Value of '{relativePath}' does not match with the backup."
+                            );
                         }
                     }
                 }
@@ -523,8 +578,11 @@ namespace SimpleModChecker.Systems
                     IssueTextHeader(modId, modName);
                     posted = true;
                 }
-                IssueList += $"- '{relativePath.Replace("\\", "/")}' is missing from the mod folder\r\n";
-                Mod.log.Info($"File '{relativePath}' is listed in the manifest but missing from the folder.");
+                IssueList +=
+                    $"- '{relativePath.Replace("\\", "/")}' is missing from the mod folder\r\n";
+                Mod.log.Info(
+                    $"File '{relativePath}' is listed in the manifest but missing from the folder."
+                );
             }
         }
 
@@ -533,13 +591,19 @@ namespace SimpleModChecker.Systems
             if (!Directory.Exists(subfolder))
                 return;
 
-            var files = Directory.GetFiles(subfolder, "*", SearchOption.AllDirectories)
-                                 .Where(file => !file.Contains(".metadata") && !file.Contains(".cpatch") && file.Contains(".cid.backup"));
+            var files = Directory
+                .GetFiles(subfolder, "*", SearchOption.AllDirectories)
+                .Where(file =>
+                    !file.Contains(".metadata")
+                    && !file.Contains(".cpatch")
+                    && file.Contains(".cid.backup")
+                );
             foreach (var filePath in files)
             {
                 try
                 {
-                    if (filePath.EndsWith(".backup")) backupsToCheck.Add(filePath);
+                    if (filePath.EndsWith(".backup"))
+                        backupsToCheck.Add(filePath);
                 }
                 catch (Exception ex)
                 {
@@ -554,7 +618,14 @@ namespace SimpleModChecker.Systems
             {
                 filePath = AddLongPathPrefix(filePath);
                 using var sha256 = SHA256.Create();
-                using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 8192, useAsync: true);
+                using var stream = new FileStream(
+                    filePath,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.Read,
+                    bufferSize: 8192,
+                    useAsync: true
+                );
                 byte[] buffer = new byte[8192];
                 int bytesRead;
 
@@ -563,7 +634,7 @@ namespace SimpleModChecker.Systems
                     sha256.TransformBlock(buffer, 0, bytesRead, buffer, 0);
                 }
 
-                sha256.TransformFinalBlock([], 0, 0);
+                sha256.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
 
                 return Convert.ToBase64String(sha256.Hash!).Replace("/", "_").Replace("+", "-");
             }
@@ -573,13 +644,17 @@ namespace SimpleModChecker.Systems
             }
             catch (IOException ex)
             {
-                throw new IOException($"Error computing SHA256 for file '{filePath}': {ex.Message}", ex);
+                throw new IOException(
+                    $"Error computing SHA256 for file '{filePath}': {ex.Message}",
+                    ex
+                );
             }
         }
 
         private static string AddLongPathPrefix(string path)
         {
-            if (path.StartsWith(@"\\?\")) return path;
+            if (path.StartsWith(@"\\?\"))
+                return path;
             return @"\\?\" + Path.GetFullPath(path);
         }
 
@@ -587,13 +662,23 @@ namespace SimpleModChecker.Systems
         {
             try
             {
-                Uri baseUri = new(basePath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar);
+                Uri baseUri = new(
+                    basePath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar
+                );
                 Uri fullUri = new(fullPath);
-                return Uri.UnescapeDataString(baseUri.MakeRelativeUri(fullUri).ToString().Replace('/', Path.DirectorySeparatorChar));
+                return Uri.UnescapeDataString(
+                    baseUri
+                        .MakeRelativeUri(fullUri)
+                        .ToString()
+                        .Replace('/', Path.DirectorySeparatorChar)
+                );
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Failed to compute relative path for '{fullPath}': {ex.Message}", ex);
+                throw new InvalidOperationException(
+                    $"Failed to compute relative path for '{fullPath}': {ex.Message}",
+                    ex
+                );
             }
         }
     }

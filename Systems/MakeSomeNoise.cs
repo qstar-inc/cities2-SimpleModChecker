@@ -2,15 +2,14 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
+using System;
+using Game;
 using Game.Audio;
 using Game.Prefabs;
 using Game.SceneFlow;
-using Game;
-using Mod = SimpleModCheckerPlus.Mod;
-using System;
 using Unity.Entities;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
     public partial class MakeSomeNoise : GameSystemBase
     {
@@ -24,17 +23,21 @@ namespace SimpleModChecker.Systems
 
         private bool PlaySound()
         {
-            if (!GameManager.instance.modManager.isInitialized ||
-                GameManager.instance.gameMode != GameMode.MainMenu ||
-                GameManager.instance.state == GameManager.State.Loading ||
-                GameManager.instance.state == GameManager.State.Booting
-            ) return false;
+            if (
+                !GameManager.instance.modManager.isInitialized
+                || GameManager.instance.gameMode != GameMode.MainMenu
+                || GameManager.instance.state == GameManager.State.Loading
+                || GameManager.instance.state == GameManager.State.Booting
+            )
+                return false;
 
             try
             {
                 m_SoundQuery = GetEntityQuery(ComponentType.ReadOnly<ToolUXSoundSettingsData>());
                 AudioManager m_AudioManager = AudioManager.instance;
-                m_AudioManager.PlayUISound(m_SoundQuery.GetSingleton<ToolUXSoundSettingsData>().m_SelectEntitySound);
+                m_AudioManager.PlayUISound(
+                    m_SoundQuery.GetSingleton<ToolUXSoundSettingsData>().m_SelectEntitySound
+                );
             }
             catch (Exception e)
             {

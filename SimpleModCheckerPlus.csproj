@@ -1,18 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>Library</OutputType>
-		<TargetFramework>net472</TargetFramework>
 		<Configurations>Debug;Release</Configurations>
-		<LangVersion>12</LangVersion>
 		
-		<AssemblyName>SimpleModChecker</AssemblyName>
+		<AssemblyName>SimpleModCheckerPlus</AssemblyName>
 		<AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
 		<Authors>StarQ</Authors>
-		<Version>3.4.5</Version>
-		
-		<!--The folder where Game.dll is located. Set it only if the game is not installed in the default location, otherwise keep it empty-->
-		<CustomManagedPath></CustomManagedPath>
+		<Version>3.5.0</Version>
 		
 		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
 		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
@@ -96,7 +90,7 @@
 		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
 	</ItemGroup>
 
-	<Target Name="GetCustomAssetsFiles" AfterTargets="DeployWIP">
+	<Target Name="GetAdditionalFiles" AfterTargets="DeployWIP">
 		<ItemGroup>
 			<AdditionalFilesToDeploy Include="Resources\**\*.*" />
 		</ItemGroup>

@@ -2,10 +2,11 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Game.Settings;
 using System.Collections.Generic;
+using Game.Settings;
+using static Game.Rendering.Utilities.State;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
     public interface ISettingsBackup
     {
@@ -15,7 +16,7 @@ namespace SimpleModChecker.Systems
 
     public class SettingsBackup : ISettingsBackup
     {
-        private Dictionary<string, object> SettingsItems = [];
+        private readonly Dictionary<string, object> SettingsItems = new();
 
         public void SetValue(string property, object value)
         {
@@ -27,6 +28,7 @@ namespace SimpleModChecker.Systems
             return SettingsItems.ContainsKey(property) ? SettingsItems[property] : null;
         }
     }
+
     //public class KeybindsModifier
     //{
     //    public string Name { get; set; }
@@ -335,6 +337,7 @@ namespace SimpleModChecker.Systems
         }
     }
 
+#pragma warning disable IDE1006 // Naming Styles
     public class AutoDistrictNameStationsSettings : SettingsBackup
     {
         public string stationFormat
@@ -463,6 +466,7 @@ namespace SimpleModChecker.Systems
             set => SetValue(nameof(parkingApplyTo), value);
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
 
     public class AutoVehicleRenamerSettings : SettingsBackup
     {
@@ -658,6 +662,7 @@ namespace SimpleModChecker.Systems
         }
     }
 
+#pragma warning disable IDE1006 // Naming Styles
     public class CimRouteHighlighterSettings : SettingsBackup
     {
         public bool highlightWorkplaces
@@ -741,6 +746,7 @@ namespace SimpleModChecker.Systems
             set => SetValue(nameof(showCountsOnInfoPanel), value);
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
 
     public class CitizenModelManagerSettings : SettingsBackup
     {
@@ -892,10 +898,20 @@ namespace SimpleModChecker.Systems
             get => (float)GetValue(nameof(NeutralAvailableWorkplacePercentage));
             set => SetValue(nameof(NeutralAvailableWorkplacePercentage), value);
         }
-        public float TaxEffect
+        public float TaxEffect_x
         {
-            get => (float)GetValue(nameof(TaxEffect));
-            set => SetValue(nameof(TaxEffect), value);
+            get => (float)GetValue(nameof(TaxEffect_x));
+            set => SetValue(nameof(TaxEffect_x), value);
+        }
+        public float TaxEffect_y
+        {
+            get => (float)GetValue(nameof(TaxEffect_y));
+            set => SetValue(nameof(TaxEffect_y), value);
+        }
+        public float TaxEffect_z
+        {
+            get => (float)GetValue(nameof(TaxEffect_z));
+            set => SetValue(nameof(TaxEffect_z), value);
         }
         public float StudentEffect
         {
@@ -927,6 +943,7 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(FreeResidentialRequirement_High));
             set => SetValue(nameof(FreeResidentialRequirement_High), value);
         }
+
         //public float FreeCommercialProportion
         //{
         //    get => (float)GetValue(nameof(FreeCommercialProportion));
@@ -957,6 +974,7 @@ namespace SimpleModChecker.Systems
             get => (float)GetValue(nameof(HotelRoomPercentRequirement));
             set => SetValue(nameof(HotelRoomPercentRequirement), value);
         }
+
         //public float IndustrialStorageMinimum
         //{
         //    get => (float)GetValue(nameof(IndustrialStorageMinimum));
@@ -977,6 +995,7 @@ namespace SimpleModChecker.Systems
             get => (float)GetValue(nameof(ExtractorBaseDemand));
             set => SetValue(nameof(ExtractorBaseDemand), value);
         }
+
         //public float StorageDemandMultiplier
         //{
         //    get => (float)GetValue(nameof(StorageDemandMultiplier));
@@ -1429,6 +1448,7 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(CompatibilityDropDown));
             set => SetValue(nameof(CompatibilityDropDown), value);
         }
+
         //public string DatabasePath
         //{
         //    get => (string)GetValue(nameof(DatabasePath));
@@ -1787,11 +1807,6 @@ namespace SimpleModChecker.Systems
             get => (string)GetValue(nameof(LocaleType));
             set => SetValue(nameof(LocaleType), value);
         }
-        public string SelectedModDropDown
-        {
-            get => (string)GetValue(nameof(SelectedModDropDown));
-            set => SetValue(nameof(SelectedModDropDown), value);
-        }
     }
 
     public class ImageOverlaySettings : SettingsBackup
@@ -1840,10 +1855,95 @@ namespace SimpleModChecker.Systems
 
     public class InfoLoomTwoSettings : SettingsBackup
     {
-        public float TaxRateEffect
+        public int CommercialIndexSorting
         {
-            get => (float)GetValue(nameof(TaxRateEffect));
-            set => SetValue(nameof(TaxRateEffect), value);
+            get => (int)GetValue(nameof(CommercialIndexSorting));
+            set => SetValue(nameof(CommercialIndexSorting), value);
+        }
+        public int CommercialNameSorting
+        {
+            get => (int)GetValue(nameof(CommercialNameSorting));
+            set => SetValue(nameof(CommercialNameSorting), value);
+        }
+        public int CommercialServiceUsageSorting
+        {
+            get => (int)GetValue(nameof(CommercialServiceUsageSorting));
+            set => SetValue(nameof(CommercialServiceUsageSorting), value);
+        }
+        public int CommercialEmployeesSorting
+        {
+            get => (int)GetValue(nameof(CommercialEmployeesSorting));
+            set => SetValue(nameof(CommercialEmployeesSorting), value);
+        }
+        public int CommercialEfficiencySorting
+        {
+            get => (int)GetValue(nameof(CommercialEfficiencySorting));
+            set => SetValue(nameof(CommercialEfficiencySorting), value);
+        }
+        public int CommercialProfitabilitySorting
+        {
+            get => (int)GetValue(nameof(CommercialProfitabilitySorting));
+            set => SetValue(nameof(CommercialProfitabilitySorting), value);
+        }
+        public int IndustrialIndexSorting
+        {
+            get => (int)GetValue(nameof(IndustrialIndexSorting));
+            set => SetValue(nameof(IndustrialIndexSorting), value);
+        }
+        public int IndustrialNameSorting
+        {
+            get => (int)GetValue(nameof(IndustrialNameSorting));
+            set => SetValue(nameof(IndustrialNameSorting), value);
+        }
+        public int IndustrialEmployeesSorting
+        {
+            get => (int)GetValue(nameof(IndustrialEmployeesSorting));
+            set => SetValue(nameof(IndustrialEmployeesSorting), value);
+        }
+        public int IndustrialEfficiencySorting
+        {
+            get => (int)GetValue(nameof(IndustrialEfficiencySorting));
+            set => SetValue(nameof(IndustrialEfficiencySorting), value);
+        }
+        public int IndustrialProfitabilitySorting
+        {
+            get => (int)GetValue(nameof(IndustrialProfitabilitySorting));
+            set => SetValue(nameof(IndustrialProfitabilitySorting), value);
+        }
+        public int ResourceName
+        {
+            get => (int)GetValue(nameof(ResourceName));
+            set => SetValue(nameof(ResourceName), value);
+        }
+        public int BuyCost
+        {
+            get => (int)GetValue(nameof(BuyCost));
+            set => SetValue(nameof(BuyCost), value);
+        }
+        public int SellCost
+        {
+            get => (int)GetValue(nameof(SellCost));
+            set => SetValue(nameof(SellCost), value);
+        }
+        public int Profit
+        {
+            get => (int)GetValue(nameof(Profit));
+            set => SetValue(nameof(Profit), value);
+        }
+        public int ProfitMargin
+        {
+            get => (int)GetValue(nameof(ProfitMargin));
+            set => SetValue(nameof(ProfitMargin), value);
+        }
+        public int ImportAmount
+        {
+            get => (int)GetValue(nameof(ImportAmount));
+            set => SetValue(nameof(ImportAmount), value);
+        }
+        public int ExportAmount
+        {
+            get => (int)GetValue(nameof(ExportAmount));
+            set => SetValue(nameof(ExportAmount), value);
         }
     }
 
@@ -2113,6 +2213,7 @@ namespace SimpleModChecker.Systems
         }
     }
 
+#pragma warning disable IDE1006 // Naming Styles
     public class NoVehicleDespawnSettings : SettingsBackup
     {
         public int despawnBehavior
@@ -2181,6 +2282,7 @@ namespace SimpleModChecker.Systems
             set => SetValue(nameof(despawnTaxis), value);
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
 
     public class PathfindingCustomizerSettings : SettingsBackup
     {
@@ -2263,7 +2365,6 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(DisableLevelling));
             set => SetValue(nameof(DisableLevelling), value);
         }
-
     }
 
     public class RealisticParkingSettings : SettingsBackup
@@ -2315,6 +2416,7 @@ namespace SimpleModChecker.Systems
         }
     }
 
+#pragma warning disable IDE1006 // Naming Styles
     public class RealisticTripsSettings : SettingsBackup
     {
         public int settings_choice
@@ -2883,7 +2985,9 @@ namespace SimpleModChecker.Systems
             set => SetValue(nameof(max_event_weekend), value);
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
 
+#pragma warning disable IDE1006 // Naming Styles
     public class RealisticWorkplacesAndHouseholdsSettings : SettingsBackup
     {
         public bool single_household_low_density
@@ -2966,6 +3070,11 @@ namespace SimpleModChecker.Systems
             get => (float)GetValue(nameof(industry_avg_floor_height));
             set => SetValue(nameof(industry_avg_floor_height), value);
         }
+        public int industry_area_base
+        {
+            get => (int)GetValue(nameof(industry_area_base));
+            set => SetValue(nameof(industry_area_base), value);
+        }
         public int commercial_sqm_per_worker
         {
             get => (int)GetValue(nameof(commercial_sqm_per_worker));
@@ -2995,6 +3104,11 @@ namespace SimpleModChecker.Systems
         {
             get => (int)GetValue(nameof(office_elevators_per_sqm));
             set => SetValue(nameof(office_elevators_per_sqm), value);
+        }
+        public int office_height_base
+        {
+            get => (int)GetValue(nameof(office_height_base));
+            set => SetValue(nameof(office_height_base), value);
         }
         public bool disable_hospital
         {
@@ -3191,6 +3305,11 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(water_consumption_reduction));
             set => SetValue(nameof(water_consumption_reduction), value);
         }
+        public int noise_factor
+        {
+            get => (int)GetValue(nameof(noise_factor));
+            set => SetValue(nameof(noise_factor), value);
+        }
         public int rent_discount
         {
             get => (int)GetValue(nameof(rent_discount));
@@ -3206,18 +3325,10 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(evicted_reset_type));
             set => SetValue(nameof(evicted_reset_type), value);
         }
-        public int find_property_limit_factor
-        {
-            get => (int)GetValue(nameof(find_property_limit_factor));
-            set => SetValue(nameof(find_property_limit_factor), value);
-        }
-        public bool find_property_night
-        {
-            get => (bool)GetValue(nameof(find_property_night));
-            set => SetValue(nameof(find_property_night), value);
-        }
     }
+#pragma warning restore IDE1006 // Naming Styles
 
+#pragma warning disable IDE1006 // Naming Styles
     public class RealLifeSettings : SettingsBackup
     {
         public int child_school_start_age
@@ -3235,10 +3346,15 @@ namespace SimpleModChecker.Systems
             get => (int)GetValue(nameof(teen_age_limit));
             set => SetValue(nameof(teen_age_limit), value);
         }
-        public int adult_age_limit
+        public int male_adult_age_limit
         {
-            get => (int)GetValue(nameof(adult_age_limit));
-            set => SetValue(nameof(adult_age_limit), value);
+            get => (int)GetValue(nameof(male_adult_age_limit));
+            set => SetValue(nameof(male_adult_age_limit), value);
+        }
+        public int female_adult_age_limit
+        {
+            get => (int)GetValue(nameof(female_adult_age_limit));
+            set => SetValue(nameof(female_adult_age_limit), value);
         }
         public int female_life_expectancy
         {
@@ -3331,6 +3447,7 @@ namespace SimpleModChecker.Systems
             set => SetValue(nameof(look_for_partner_rate_adjuster), value);
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
 
     public class RecolorSettings : SettingsBackup
     {
@@ -3494,10 +3611,15 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(PlaySound));
             set => SetValue(nameof(PlaySound), value);
         }
-        public bool DeleteMissing
+        public bool DisableContinueOnLauncher
         {
-            get => (bool)GetValue(nameof(DeleteMissing));
-            set => SetValue(nameof(DeleteMissing), value);
+            get => (bool)GetValue(nameof(DisableContinueOnLauncher));
+            set => SetValue(nameof(DisableContinueOnLauncher), value);
+        }
+        public bool DisableContinueInGame
+        {
+            get => (bool)GetValue(nameof(DisableContinueInGame));
+            set => SetValue(nameof(DisableContinueInGame), value);
         }
         public bool DeleteCorrupted
         {
@@ -3511,6 +3633,7 @@ namespace SimpleModChecker.Systems
         }
     }
 
+#pragma warning disable IDE1006 // Naming Styles
     public class SmartTransportationSettings : SettingsBackup
     {
         public bool disable_bus
@@ -3674,6 +3797,541 @@ namespace SimpleModChecker.Systems
             set => SetValue(nameof(debug), value);
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
+
+    public class SmartUpkeepManagerSettings : SettingsBackup
+    {
+        public bool Disable
+        {
+            get => (bool)GetValue(nameof(Disable));
+            set => SetValue(nameof(Disable), value);
+        }
+        public int RoadMaintenance
+        {
+            get => (int)GetValue(nameof(RoadMaintenance));
+            set => SetValue(nameof(RoadMaintenance), value);
+        }
+        public int SnowPloughing
+        {
+            get => (int)GetValue(nameof(SnowPloughing));
+            set => SetValue(nameof(SnowPloughing), value);
+        }
+        public int Towing
+        {
+            get => (int)GetValue(nameof(Towing));
+            set => SetValue(nameof(Towing), value);
+        }
+        public int RoadMaintenanceVehicle
+        {
+            get => (int)GetValue(nameof(RoadMaintenanceVehicle));
+            set => SetValue(nameof(RoadMaintenanceVehicle), value);
+        }
+        public int SolarPowered
+        {
+            get => (int)GetValue(nameof(SolarPowered));
+            set => SetValue(nameof(SolarPowered), value);
+        }
+        public int GroundWaterPowered
+        {
+            get => (int)GetValue(nameof(GroundWaterPowered));
+            set => SetValue(nameof(GroundWaterPowered), value);
+        }
+        public int WaterPowered
+        {
+            get => (int)GetValue(nameof(WaterPowered));
+            set => SetValue(nameof(WaterPowered), value);
+        }
+        public int WindPowered
+        {
+            get => (int)GetValue(nameof(WindPowered));
+            set => SetValue(nameof(WindPowered), value);
+        }
+        public int GarbagePowered
+        {
+            get => (int)GetValue(nameof(GarbagePowered));
+            set => SetValue(nameof(GarbagePowered), value);
+        }
+        public int ElectricityProduction
+        {
+            get => (int)GetValue(nameof(ElectricityProduction));
+            set => SetValue(nameof(ElectricityProduction), value);
+        }
+        public int BatteryOut
+        {
+            get => (int)GetValue(nameof(BatteryOut));
+            set => SetValue(nameof(BatteryOut), value);
+        }
+        public int BatteryCap
+        {
+            get => (int)GetValue(nameof(BatteryCap));
+            set => SetValue(nameof(BatteryCap), value);
+        }
+        public int Transformer
+        {
+            get => (int)GetValue(nameof(Transformer));
+            set => SetValue(nameof(Transformer), value);
+        }
+        public int WaterPumpCap
+        {
+            get => (int)GetValue(nameof(WaterPumpCap));
+            set => SetValue(nameof(WaterPumpCap), value);
+        }
+        public int SewageOutCap
+        {
+            get => (int)GetValue(nameof(SewageOutCap));
+            set => SetValue(nameof(SewageOutCap), value);
+        }
+        public int Purification
+        {
+            get => (int)GetValue(nameof(Purification));
+            set => SetValue(nameof(Purification), value);
+        }
+        public int Ambulance
+        {
+            get => (int)GetValue(nameof(Ambulance));
+            set => SetValue(nameof(Ambulance), value);
+        }
+        public int MedicalHelicopter
+        {
+            get => (int)GetValue(nameof(MedicalHelicopter));
+            set => SetValue(nameof(MedicalHelicopter), value);
+        }
+        public int Patient
+        {
+            get => (int)GetValue(nameof(Patient));
+            set => SetValue(nameof(Patient), value);
+        }
+        public int HealthBonus
+        {
+            get => (int)GetValue(nameof(HealthBonus));
+            set => SetValue(nameof(HealthBonus), value);
+        }
+        public int HealthRange
+        {
+            get => (int)GetValue(nameof(HealthRange));
+            set => SetValue(nameof(HealthRange), value);
+        }
+        public int Treatment
+        {
+            get => (int)GetValue(nameof(Treatment));
+            set => SetValue(nameof(Treatment), value);
+        }
+        public int Hearse
+        {
+            get => (int)GetValue(nameof(Hearse));
+            set => SetValue(nameof(Hearse), value);
+        }
+        public int BodyStorage
+        {
+            get => (int)GetValue(nameof(BodyStorage));
+            set => SetValue(nameof(BodyStorage), value);
+        }
+        public int BodyProcessing
+        {
+            get => (int)GetValue(nameof(BodyProcessing));
+            set => SetValue(nameof(BodyProcessing), value);
+        }
+        public int GarbageCap
+        {
+            get => (int)GetValue(nameof(GarbageCap));
+            set => SetValue(nameof(GarbageCap), value);
+        }
+        public int GarbageTruck
+        {
+            get => (int)GetValue(nameof(GarbageTruck));
+            set => SetValue(nameof(GarbageTruck), value);
+        }
+        public int DumpTruck
+        {
+            get => (int)GetValue(nameof(DumpTruck));
+            set => SetValue(nameof(DumpTruck), value);
+        }
+        public int GarbageProcessing
+        {
+            get => (int)GetValue(nameof(GarbageProcessing));
+            set => SetValue(nameof(GarbageProcessing), value);
+        }
+        public int Student
+        {
+            get => (int)GetValue(nameof(Student));
+            set => SetValue(nameof(Student), value);
+        }
+        public int StudentGraduation
+        {
+            get => (int)GetValue(nameof(StudentGraduation));
+            set => SetValue(nameof(StudentGraduation), value);
+        }
+        public int StudentWellbeing
+        {
+            get => (int)GetValue(nameof(StudentWellbeing));
+            set => SetValue(nameof(StudentWellbeing), value);
+        }
+        public int StudentHealth
+        {
+            get => (int)GetValue(nameof(StudentHealth));
+            set => SetValue(nameof(StudentHealth), value);
+        }
+        public int ResearchFacility
+        {
+            get => (int)GetValue(nameof(ResearchFacility));
+            set => SetValue(nameof(ResearchFacility), value);
+        }
+        public int FireTruck
+        {
+            get => (int)GetValue(nameof(FireTruck));
+            set => SetValue(nameof(FireTruck), value);
+        }
+        public int FireHelicopter
+        {
+            get => (int)GetValue(nameof(FireHelicopter));
+            set => SetValue(nameof(FireHelicopter), value);
+        }
+        public int FireDisasterCap
+        {
+            get => (int)GetValue(nameof(FireDisasterCap));
+            set => SetValue(nameof(FireDisasterCap), value);
+        }
+        public int FireVehicleEffi
+        {
+            get => (int)GetValue(nameof(FireVehicleEffi));
+            set => SetValue(nameof(FireVehicleEffi), value);
+        }
+        public int Firewatch
+        {
+            get => (int)GetValue(nameof(Firewatch));
+            set => SetValue(nameof(Firewatch), value);
+        }
+        public int EarlyDisasterWarningSystem
+        {
+            get => (int)GetValue(nameof(EarlyDisasterWarningSystem));
+            set => SetValue(nameof(EarlyDisasterWarningSystem), value);
+        }
+        public int DisasterFacility
+        {
+            get => (int)GetValue(nameof(DisasterFacility));
+            set => SetValue(nameof(DisasterFacility), value);
+        }
+        public int ShelterCap
+        {
+            get => (int)GetValue(nameof(ShelterCap));
+            set => SetValue(nameof(ShelterCap), value);
+        }
+        public int EvacuationBus
+        {
+            get => (int)GetValue(nameof(EvacuationBus));
+            set => SetValue(nameof(EvacuationBus), value);
+        }
+        public int EmergencyGenerator
+        {
+            get => (int)GetValue(nameof(EmergencyGenerator));
+            set => SetValue(nameof(EmergencyGenerator), value);
+        }
+        public int PatrolCar
+        {
+            get => (int)GetValue(nameof(PatrolCar));
+            set => SetValue(nameof(PatrolCar), value);
+        }
+        public int PoliceHelicopter
+        {
+            get => (int)GetValue(nameof(PoliceHelicopter));
+            set => SetValue(nameof(PoliceHelicopter), value);
+        }
+        public int LocalJail
+        {
+            get => (int)GetValue(nameof(LocalJail));
+            set => SetValue(nameof(LocalJail), value);
+        }
+        public int Patrol
+        {
+            get => (int)GetValue(nameof(Patrol));
+            set => SetValue(nameof(Patrol), value);
+        }
+        public int EmergencyPolice
+        {
+            get => (int)GetValue(nameof(EmergencyPolice));
+            set => SetValue(nameof(EmergencyPolice), value);
+        }
+        public int Intelligence
+        {
+            get => (int)GetValue(nameof(Intelligence));
+            set => SetValue(nameof(Intelligence), value);
+        }
+        public int PrisonVan
+        {
+            get => (int)GetValue(nameof(PrisonVan));
+            set => SetValue(nameof(PrisonVan), value);
+        }
+        public int PrisonerCap
+        {
+            get => (int)GetValue(nameof(PrisonerCap));
+            set => SetValue(nameof(PrisonerCap), value);
+        }
+        public int PrisonerWellbeing
+        {
+            get => (int)GetValue(nameof(PrisonerWellbeing));
+            set => SetValue(nameof(PrisonerWellbeing), value);
+        }
+        public int PrisonerHealth
+        {
+            get => (int)GetValue(nameof(PrisonerHealth));
+            set => SetValue(nameof(PrisonerHealth), value);
+        }
+        public int WelfareOffice
+        {
+            get => (int)GetValue(nameof(WelfareOffice));
+            set => SetValue(nameof(WelfareOffice), value);
+        }
+        public int AdminBuilding
+        {
+            get => (int)GetValue(nameof(AdminBuilding));
+            set => SetValue(nameof(AdminBuilding), value);
+        }
+        public int PlatformMaintenance
+        {
+            get => (int)GetValue(nameof(PlatformMaintenance));
+            set => SetValue(nameof(PlatformMaintenance), value);
+        }
+        public int Bus
+        {
+            get => (int)GetValue(nameof(Bus));
+            set => SetValue(nameof(Bus), value);
+        }
+        public int Train
+        {
+            get => (int)GetValue(nameof(Train));
+            set => SetValue(nameof(Train), value);
+        }
+        public int Taxi
+        {
+            get => (int)GetValue(nameof(Taxi));
+            set => SetValue(nameof(Taxi), value);
+        }
+        public int Tram
+        {
+            get => (int)GetValue(nameof(Tram));
+            set => SetValue(nameof(Tram), value);
+        }
+        public int Ship
+        {
+            get => (int)GetValue(nameof(Ship));
+            set => SetValue(nameof(Ship), value);
+        }
+        public int Airplane
+        {
+            get => (int)GetValue(nameof(Airplane));
+            set => SetValue(nameof(Airplane), value);
+        }
+        public int Subway
+        {
+            get => (int)GetValue(nameof(Subway));
+            set => SetValue(nameof(Subway), value);
+        }
+        public int Rocket
+        {
+            get => (int)GetValue(nameof(Rocket));
+            set => SetValue(nameof(Rocket), value);
+        }
+        public int EnergyFuel
+        {
+            get => (int)GetValue(nameof(EnergyFuel));
+            set => SetValue(nameof(EnergyFuel), value);
+        }
+        public int EnergyElectricity
+        {
+            get => (int)GetValue(nameof(EnergyElectricity));
+            set => SetValue(nameof(EnergyElectricity), value);
+        }
+        public int MaintenanceBoost
+        {
+            get => (int)GetValue(nameof(MaintenanceBoost));
+            set => SetValue(nameof(MaintenanceBoost), value);
+        }
+        public int DispatchCenter
+        {
+            get => (int)GetValue(nameof(DispatchCenter));
+            set => SetValue(nameof(DispatchCenter), value);
+        }
+        public int TradedResource
+        {
+            get => (int)GetValue(nameof(TradedResource));
+            set => SetValue(nameof(TradedResource), value);
+        }
+        public int DeliveryTruck
+        {
+            get => (int)GetValue(nameof(DeliveryTruck));
+            set => SetValue(nameof(DeliveryTruck), value);
+        }
+        public int ComfortFactor
+        {
+            get => (int)GetValue(nameof(ComfortFactor));
+            set => SetValue(nameof(ComfortFactor), value);
+        }
+        public int ParkMaintenance
+        {
+            get => (int)GetValue(nameof(ParkMaintenance));
+            set => SetValue(nameof(ParkMaintenance), value);
+        }
+        public int ParkMaintenanceVehicle
+        {
+            get => (int)GetValue(nameof(ParkMaintenanceVehicle));
+            set => SetValue(nameof(ParkMaintenanceVehicle), value);
+        }
+        public int LeisureEfficieny
+        {
+            get => (int)GetValue(nameof(LeisureEfficieny));
+            set => SetValue(nameof(LeisureEfficieny), value);
+        }
+        public int LeisureMeals
+        {
+            get => (int)GetValue(nameof(LeisureMeals));
+            set => SetValue(nameof(LeisureMeals), value);
+        }
+        public int LeisureEntertainment
+        {
+            get => (int)GetValue(nameof(LeisureEntertainment));
+            set => SetValue(nameof(LeisureEntertainment), value);
+        }
+        public int LeisureCommercial
+        {
+            get => (int)GetValue(nameof(LeisureCommercial));
+            set => SetValue(nameof(LeisureCommercial), value);
+        }
+        public int LeisureCityIndoors
+        {
+            get => (int)GetValue(nameof(LeisureCityIndoors));
+            set => SetValue(nameof(LeisureCityIndoors), value);
+        }
+        public int LeisureTravel
+        {
+            get => (int)GetValue(nameof(LeisureTravel));
+            set => SetValue(nameof(LeisureTravel), value);
+        }
+        public int LeisureCityPark
+        {
+            get => (int)GetValue(nameof(LeisureCityPark));
+            set => SetValue(nameof(LeisureCityPark), value);
+        }
+        public int LeisureCityBeach
+        {
+            get => (int)GetValue(nameof(LeisureCityBeach));
+            set => SetValue(nameof(LeisureCityBeach), value);
+        }
+        public int LeisureAttractions
+        {
+            get => (int)GetValue(nameof(LeisureAttractions));
+            set => SetValue(nameof(LeisureAttractions), value);
+        }
+        public int LeisureRelaxation
+        {
+            get => (int)GetValue(nameof(LeisureRelaxation));
+            set => SetValue(nameof(LeisureRelaxation), value);
+        }
+        public int LeisureSightseeing
+        {
+            get => (int)GetValue(nameof(LeisureSightseeing));
+            set => SetValue(nameof(LeisureSightseeing), value);
+        }
+        public int Attraction
+        {
+            get => (int)GetValue(nameof(Attraction));
+            set => SetValue(nameof(Attraction), value);
+        }
+        public int PostVan
+        {
+            get => (int)GetValue(nameof(PostVan));
+            set => SetValue(nameof(PostVan), value);
+        }
+        public int PostTruck
+        {
+            get => (int)GetValue(nameof(PostTruck));
+            set => SetValue(nameof(PostTruck), value);
+        }
+        public int MailCap
+        {
+            get => (int)GetValue(nameof(MailCap));
+            set => SetValue(nameof(MailCap), value);
+        }
+        public int PostSortingRate
+        {
+            get => (int)GetValue(nameof(PostSortingRate));
+            set => SetValue(nameof(PostSortingRate), value);
+        }
+        public int TelecomRange
+        {
+            get => (int)GetValue(nameof(TelecomRange));
+            set => SetValue(nameof(TelecomRange), value);
+        }
+        public int NetworkCap
+        {
+            get => (int)GetValue(nameof(NetworkCap));
+            set => SetValue(nameof(NetworkCap), value);
+        }
+        public int Wireless
+        {
+            get => (int)GetValue(nameof(Wireless));
+            set => SetValue(nameof(Wireless), value);
+        }
+        public int Fibre
+        {
+            get => (int)GetValue(nameof(Fibre));
+            set => SetValue(nameof(Fibre), value);
+        }
+        public bool ServiceBudgetMultiplier
+        {
+            get => (bool)GetValue(nameof(ServiceBudgetMultiplier));
+            set => SetValue(nameof(ServiceBudgetMultiplier), value);
+        }
+        public bool CityBonusMultiplier
+        {
+            get => (bool)GetValue(nameof(CityBonusMultiplier));
+            set => SetValue(nameof(CityBonusMultiplier), value);
+        }
+        public int ServiceCoverageMultiplier
+        {
+            get => (int)GetValue(nameof(ServiceCoverageMultiplier));
+            set => SetValue(nameof(ServiceCoverageMultiplier), value);
+        }
+        public int PlotPrice
+        {
+            get => (int)GetValue(nameof(PlotPrice));
+            set => SetValue(nameof(PlotPrice), value);
+        }
+        public int ParkingSpots
+        {
+            get => (int)GetValue(nameof(ParkingSpots));
+            set => SetValue(nameof(ParkingSpots), value);
+        }
+        public int GroundPollution
+        {
+            get => (int)GetValue(nameof(GroundPollution));
+            set => SetValue(nameof(GroundPollution), value);
+        }
+        public int AirPollution
+        {
+            get => (int)GetValue(nameof(AirPollution));
+            set => SetValue(nameof(AirPollution), value);
+        }
+        public int NoisePollution
+        {
+            get => (int)GetValue(nameof(NoisePollution));
+            set => SetValue(nameof(NoisePollution), value);
+        }
+        public int EmployeeUpkeep
+        {
+            get => (int)GetValue(nameof(EmployeeUpkeep));
+            set => SetValue(nameof(EmployeeUpkeep), value);
+        }
+        public int StorageUpkeep
+        {
+            get => (int)GetValue(nameof(StorageUpkeep));
+            set => SetValue(nameof(StorageUpkeep), value);
+        }
+        public int Uniqueness
+        {
+            get => (int)GetValue(nameof(Uniqueness));
+            set => SetValue(nameof(Uniqueness), value);
+        }
+    }
 
     public class StationNamingSettings : SettingsBackup
     {
@@ -3687,6 +4345,7 @@ namespace SimpleModChecker.Systems
             get => (string)GetValue(nameof(NamingSeparator));
             set => SetValue(nameof(NamingSeparator), value);
         }
+
         //public string RoadFormat
         //{
         //    get => (string)GetValue(nameof(RoadFormat));
@@ -3747,6 +4406,7 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(EnableDistrictPrefix));
             set => SetValue(nameof(EnableDistrictPrefix), value);
         }
+
         //public string DistrictFormat
         //{
         //    get => (string)GetValue(nameof(DistrictFormat));
@@ -4109,6 +4769,7 @@ namespace SimpleModChecker.Systems
         }
     }
 
+#pragma warning disable IDE1006 // Naming Styles
     public class TrafficLightsEnhancementSettings : SettingsBackup
     {
         public string m_LocaleOption
@@ -4142,6 +4803,7 @@ namespace SimpleModChecker.Systems
             set => SetValue(nameof(m_HasReadLdtRetirementNotice), value);
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
 
     public class TrafficSimulationAdjusterSettings : SettingsBackup
     {
@@ -4700,76 +5362,5 @@ namespace SimpleModChecker.Systems
             get => (bool)GetValue(nameof(GroupThemes));
             set => SetValue(nameof(GroupThemes), value);
         }
-    }
-
-    public class ModSettings
-    {
-        public string ModVersion { get; set; }
-        public string LastUpdated { get; set; }
-        public AdvancedSimulationSpeedSettings AdvancedSimulationSpeedSettings { get; set; }
-        public AllAboardSettings AllAboardSettings { get; set; }
-        public AnarchySettings AnarchySettings { get; set; }
-        public AreaBucketSettings AreaBucketSettings { get; set; }
-        public AssetIconLibrarySettings AssetIconLibrarySettings { get; set; }
-        public AssetPacksManagerSettings AssetPacksManagerSettings { get; set; }
-        public AssetUIManagerSettings AssetUIManagerSettings { get; set; }
-        public AssetVariationChangerSettings AssetVariationChangerSettings { get; set; }
-        public AutoDistrictNameStationsSettings AutoDistrictNameStationsSettings { get; set; }
-        public AutoVehicleRenamerSettings AutoVehicleRenamerSettings { get; set; }
-        public BetterBulldozerSettings BetterBulldozerSettings { get; set; }
-        public BetterMoonLightSettings BetterMoonLightSettings { get; set; }
-        public BetterSaveListSettings BetterSaveListSettings { get; set; }
-        public BoundaryLinesModifierSettings BoundaryLinesModifierSettings { get; set; }
-        public BrushSizeUnlimiterSettings BrushSizeUnlimiterSettings { get; set; }
-        public CimRouteHighlighterSettings CimRouteHighlighterSettings { get; set; }
-        public CitizenModelManagerSettings CitizenModelManagerSettings { get; set; }
-        public CityStatsSettings CityStatsSettings { get; set; }
-        public DemandMasterSettings DemandMasterSettings { get; set; }
-        public DepotCapacityChangerSettings DepotCapacityChangerSettings { get; set; }
-        public ExtendedTooltipSettings ExtendedTooltipSettings { get; set; }
-        public ExtraAssetsImporterSettings ExtraAssetsImporterSettings { get; set; }
-        public FindItSettings FindItSettings { get; set; }
-        public FirstPersonCameraContinuedSettings FirstPersonCameraContinuedSettings { get; set; }
-        public FiveTwentyNineTilesSettings FiveTwentyNineTilesSettings { get; set; }
-        public FPSLimiterSettings FPSLimiterSettings { get; set; }
-        public HallOfFameSettings HallOfFameSettings { get; set; }
-        public HistoricalStartSettings HistoricalStartSettings { get; set; }
-        public I18NEverywhereSettings I18NEverywhereSettings { get; set; }
-        public ImageOverlaySettings ImageOverlaySettings { get; set; }
-        public InfoLoomTwoSettings InfoLoomTwoSettings { get; set; }
-        public MoveItSettings MoveItSettings { get; set; }
-        public NoPollutionSettings NoPollutionSettings { get; set; }
-        public NoTeleportingSettings NoTeleportingSettings { get; set; }
-        public NoVehicleDespawnSettings NoVehicleDespawnSettings { get; set; }
-        public PathfindingCustomizerSettings PathfindingCustomizerSettings { get; set; }
-        public PlopTheGrowablesSettings PlopTheGrowablesSettings { get; set; }
-        public RealisticParkingSettings RealisticParkingSettings { get; set; }
-        public RealisticTripsSettings RealisticTripsSettings { get; set; }
-        public RealisticWorkplacesAndHouseholdsSettings RealisticWorkplacesAndHouseholdsSettings { get; set; }
-        public RealLifeSettings RealLifeSettings { get; set; }
-        public RecolorSettings RecolorSettings { get; set; }
-        public RoadBuilderSettings RoadBuilderSettings { get; set; }
-        public RoadNameRemoverSettings RoadNameRemoverSettings { get; set; }
-        public RoadWearAdjusterSettings RoadWearAdjusterSettings { get; set; }
-        public SchoolCapacityBalancerSettings SchoolCapacityBalancerSettings { get; set; }
-        public SimpleModCheckerSettings SimpleModCheckerSettings { get; set; }
-        public SmartTransportationSettings SmartTransportationSettings { get; set; }
-        public StationNamingSettings StationNamingSettings { get; set; }
-        public StifferVehiclesSettings StifferVehiclesSettings { get; set; }
-        public SunGlassesSettings SunGlassesSettings { get; set; }
-        public ToggleOverlaysSettings ToggleOverlaysSettings { get; set; }
-        public TradingCostTweakerSettings TradingCostTweakerSettings { get; set; }
-        public TrafficLightsEnhancementSettings TrafficLightsEnhancementSettings { get; set; }
-        public TrafficSettings TrafficSettings { get; set; }
-        public TrafficSimulationAdjusterSettings TrafficSimulationAdjusterSettings { get; set; }
-        public TransitCapacityMultiplierSettings TransitCapacityMultiplierSettings { get; set; }
-        public TransportPolicyAdjusterSettings TransportPolicyAdjusterSettings { get; set; }
-        public TreeControllerSettings TreeControllerSettings { get; set; }
-        //public TripsDataSettings TripsDataSettings { get; set; }
-        public VehicleVariationPacksSettings VehicleVariationPacksSettings { get; set; }
-        public WaterFeaturesSettings WaterFeaturesSettings { get; set; }
-        public WaterVisualTweaksSettings WaterVisualTweaksSettings { get; set; }
-        public WhitenessToggleSettings WhitenessToggleSettings { get; set; }
-        public ZoneColorChangerSettings ZoneColorChangerSettings { get; set; }
     }
 }

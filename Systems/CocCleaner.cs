@@ -2,23 +2,22 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
-using Colossal.PSI.Environment;
-using Game.PSI;
-using Game.UI.Localization;
-using Game;
-using Mod = SimpleModCheckerPlus.Mod;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System;
+using Colossal.PSI.Environment;
+using Game;
+using Game.PSI;
+using Game.UI.Localization;
 using UnityEngine;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
     public partial class CocCleaner : GameSystemBase
     {
         public Mod _mod;
-        public static List<string> CanDelete = [];
+        public static List<string> CanDelete = new();
 
         protected override void OnCreate()
         {
@@ -34,20 +33,26 @@ namespace SimpleModChecker.Systems
 
             if (CanDelete.Count > 0)
             {
-                NotificationSystem.Push("starq-smc-coc-check",
-                        title: new LocalizedString("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]", null,
-                            new Dictionary<string, ILocElement>
-                            {
-                                {"fileCount", LocalizedString.Value(CanDelete.Count.ToString())}
-                            }),
-                        text: LocalizedString.Id("Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]"),
-                        onClicked: () =>
+                NotificationSystem.Push(
+                    "starq-smc-coc-check",
+                    title: new LocalizedString(
+                        "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]",
+                        null,
+                        new Dictionary<string, ILocElement>
                         {
-                            DeleteFolders("Click");
-                            NotificationSystem.Pop("starq-smc-coc-check");
-                        });
+                            { "fileCount", LocalizedString.Value(CanDelete.Count.ToString()) },
+                        }
+                    ),
+                    text: LocalizedString.Id(
+                        "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]"
+                    ),
+                    onClicked: () =>
+                    {
+                        DeleteFolders("Click");
+                        NotificationSystem.Pop("starq-smc-coc-check");
+                    }
+                );
             }
-
         }
 
         public static void DeleteFolders(string Method = null)
@@ -88,7 +93,12 @@ namespace SimpleModChecker.Systems
                     {
                         try
                         {
-                            using FileStream fs = new(file, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            using FileStream fs = new(
+                                file,
+                                FileMode.Open,
+                                FileAccess.Read,
+                                FileShare.Read
+                            );
                             using StreamReader reader = new(fs, Encoding.UTF8);
 
                             string firstLine = null;
@@ -115,7 +125,11 @@ namespace SimpleModChecker.Systems
                                 }
                             }
 
-                            if (string.IsNullOrEmpty(firstLine) && string.IsNullOrEmpty(secondLine) && string.IsNullOrEmpty(lastLine))
+                            if (
+                                string.IsNullOrEmpty(firstLine)
+                                && string.IsNullOrEmpty(secondLine)
+                                && string.IsNullOrEmpty(lastLine)
+                            )
                             {
                                 Mod.log.Info($"{file} looks empty");
                                 deleteables.Add(file);
@@ -161,7 +175,12 @@ namespace SimpleModChecker.Systems
         {
             try
             {
-                using FileStream fs = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None);
+                using FileStream fs = File.Open(
+                    filePath,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.None
+                );
                 fs.Close();
             }
             catch (IOException)
@@ -172,8 +191,6 @@ namespace SimpleModChecker.Systems
             return false;
         }
 
-        protected override void OnUpdate()
-        {
-        }
+        protected override void OnUpdate() { }
     }
 }

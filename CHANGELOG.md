@@ -1,3 +1,11 @@
+# 3.5.0 (2025-06-11) - 13722 subs
+- Compatibility update for 1.3.3f1.
+- NEW: Clean up all playsets for old mod versions.
+- Completely moved to LangVersion 9.
+- Fix assembly namespace issues.
+- Fixed changes related to 'Demand Master Control', 'I18N Everywhere', 'InfoLoom', 'Realistic Workplace and Households', 'Real Life', 'Simple Mod Checker Plus'.
+- Added "Smart Upkeep Manager".
+
 # 3.4.5 (2025-04-02) - 8902 subs
 - NEW: Option to remove the "Resume" button in the launcher.
 - NEW: Option to disable the "Continue Game" button in the main menu.
@@ -16,7 +24,7 @@
 - Re-enabled EAI backup/restore but removed the 'EAI Database' option.
 - Added "Vehicle Controller".
 - Fixed changes related to 'Demand Master Control'.
-- Added new option to backup for 'Realistic Trips.
+- Added new option to backup for 'Realistic Trips'.
 
 # 3.4.1 (2025-03-18) - 8668 subs
 - Recompiled for 1.2.5f1.

@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "Version": "3.4.2",
-    "Time": 1742606000
+    "Version": "3.5.0",
+    "Time": 1749125781
   },
   "ModDatabaseInfo": {
     "74286": {
@@ -522,6 +522,14 @@
       "ClassType": "VehicleControllerSettings",
       "ModName": "Vehicle Controller",
       "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "107487": {
+      "AssemblyName": "SmartUpkeepManager",
+      "FragmentSource": "SmartUpkeepManager.Setting",
+      "ClassType": "SmartUpkeepManagerSettings",
+      "ModName": "Smart Upkeep Manager",
+      "Author": "Qoushik",
       "Backupable": true
     }
   }

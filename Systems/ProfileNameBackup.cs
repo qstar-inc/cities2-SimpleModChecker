@@ -2,15 +2,15 @@
 // https://github.com/qstar-inc/cities2-SimpleModChecker
 // StarQ 2024
 
+using System;
+using System.IO;
 using Colossal.PSI.Environment;
 using Game;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SimpleModCheckerPlus;
-using System.IO;
-using System;
 
-namespace SimpleModChecker.Systems
+namespace SimpleModCheckerPlus.Systems
 {
     public class ProfileNames
     {
@@ -24,12 +24,12 @@ namespace SimpleModChecker.Systems
         public string Profile8 { get; set; }
         public string Profile9 { get; set; }
     }
-    
+
     public partial class ProfileNameBackup : GameSystemBase
     {
         public Mod _mod;
-        private readonly string backupFile = $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ProfileNameBackup.json";
-
+        private readonly string backupFile =
+            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ProfileNameBackup.json";
 
         protected override void OnCreate()
         {
@@ -39,7 +39,7 @@ namespace SimpleModChecker.Systems
             }
         }
 
-        protected override void OnUpdate() {}
+        protected override void OnUpdate() { }
 
         public void CreateBackup()
         {
@@ -60,13 +60,16 @@ namespace SimpleModChecker.Systems
                     Profile6 = Mod.Setting.ProfileName6,
                     Profile7 = Mod.Setting.ProfileName7,
                     Profile8 = Mod.Setting.ProfileName8,
-                    Profile9 = Mod.Setting.ProfileName9
+                    Profile9 = Mod.Setting.ProfileName9,
                 };
 
                 string jsonString = JsonConvert.SerializeObject(ProfileNames, Formatting.Indented);
                 File.WriteAllText(backupFile, jsonString);
             }
-            catch (Exception ex) { Mod.log.Info(ex); }
+            catch (Exception ex)
+            {
+                Mod.log.Info(ex);
+            }
         }
 
         public void RestoreBackup()
@@ -86,19 +89,30 @@ namespace SimpleModChecker.Systems
                 {
                     ProfileNames ProfileNames = jsonObject.ToObject<ProfileNames>();
                     //Mod.log.Info(ProfileNames.Profile1);
-                    if (Mod.Setting.ProfileName1 != ProfileNames.Profile1) Mod.Setting.ProfileName1 = ProfileNames.Profile1;
-                    if (Mod.Setting.ProfileName2 != ProfileNames.Profile2) Mod.Setting.ProfileName2 = ProfileNames.Profile2;
-                    if (Mod.Setting.ProfileName3 != ProfileNames.Profile3) Mod.Setting.ProfileName3 = ProfileNames.Profile3;
-                    if (Mod.Setting.ProfileName4 != ProfileNames.Profile4) Mod.Setting.ProfileName4 = ProfileNames.Profile4;
-                    if (Mod.Setting.ProfileName5 != ProfileNames.Profile5) Mod.Setting.ProfileName5 = ProfileNames.Profile5;
-                    if (Mod.Setting.ProfileName6 != ProfileNames.Profile6) Mod.Setting.ProfileName6 = ProfileNames.Profile6;
-                    if (Mod.Setting.ProfileName7 != ProfileNames.Profile7) Mod.Setting.ProfileName7 = ProfileNames.Profile7;
-                    if (Mod.Setting.ProfileName8 != ProfileNames.Profile8) Mod.Setting.ProfileName8 = ProfileNames.Profile8;
-                    if (Mod.Setting.ProfileName9 != ProfileNames.Profile9) Mod.Setting.ProfileName9 = ProfileNames.Profile9;
+                    if (Mod.Setting.ProfileName1 != ProfileNames.Profile1)
+                        Mod.Setting.ProfileName1 = ProfileNames.Profile1;
+                    if (Mod.Setting.ProfileName2 != ProfileNames.Profile2)
+                        Mod.Setting.ProfileName2 = ProfileNames.Profile2;
+                    if (Mod.Setting.ProfileName3 != ProfileNames.Profile3)
+                        Mod.Setting.ProfileName3 = ProfileNames.Profile3;
+                    if (Mod.Setting.ProfileName4 != ProfileNames.Profile4)
+                        Mod.Setting.ProfileName4 = ProfileNames.Profile4;
+                    if (Mod.Setting.ProfileName5 != ProfileNames.Profile5)
+                        Mod.Setting.ProfileName5 = ProfileNames.Profile5;
+                    if (Mod.Setting.ProfileName6 != ProfileNames.Profile6)
+                        Mod.Setting.ProfileName6 = ProfileNames.Profile6;
+                    if (Mod.Setting.ProfileName7 != ProfileNames.Profile7)
+                        Mod.Setting.ProfileName7 = ProfileNames.Profile7;
+                    if (Mod.Setting.ProfileName8 != ProfileNames.Profile8)
+                        Mod.Setting.ProfileName8 = ProfileNames.Profile8;
+                    if (Mod.Setting.ProfileName9 != ProfileNames.Profile9)
+                        Mod.Setting.ProfileName9 = ProfileNames.Profile9;
                 }
-                
             }
-            catch (Exception ex) { Mod.log.Info(ex); }
+            catch (Exception ex)
+            {
+                Mod.log.Info(ex);
+            }
             ++Mod.Setting.ProfileListVersion;
         }
     }
