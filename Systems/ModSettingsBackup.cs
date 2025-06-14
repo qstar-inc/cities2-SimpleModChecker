@@ -12,6 +12,7 @@ using Colossal.IO.AssetDatabase;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Game;
+using Game.Economy;
 using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json;
@@ -428,6 +429,14 @@ namespace SimpleModCheckerPlus.Systems
             JsonSerializerSettings JsonSerializerSettings = new()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Error = (sender, args) =>
+                {
+                    Mod.log.Info(
+                        $"Serialization error on property '{args.ErrorContext.Member}': {args.ErrorContext.Error.Message}"
+                    );
+                    args.ErrorContext.Handled = true;
+                },
+                MaxDepth = 5,
             };
             IEnumerable<SettingAsset> settingAssets;
             if (name == "80095")
@@ -632,9 +641,29 @@ namespace SimpleModCheckerPlus.Systems
             JsonSerializerSettings jsonSerializerSettings
         )
         {
+            var props = source
+                .GetType()
+                .GetProperties()
+                .Where(p => p.CanRead && p.GetIndexParameters().Length == 0)
+                .ToDictionary(
+                    p => p.Name,
+                    p =>
+                    {
+                        try
+                        {
+                            return p.GetValue(source);
+                        }
+                        catch (Exception ex)
+                        {
+                            Mod.log.Info($"❌ {p.Name}: {ex.Message}");
+                            return null;
+                        }
+                    }
+                );
+
             object settingsBackup = (ISettingsBackup)Activator.CreateInstance(classType);
             JObject sourceObj = JObject.FromObject(
-                source,
+                props,
                 JsonSerializer.Create(jsonSerializerSettings)
             );
 
@@ -756,6 +785,14 @@ namespace SimpleModCheckerPlus.Systems
             JsonSerializerSettings JsonSerializerSettings = new()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Error = (sender, args) =>
+                {
+                    Mod.log.Info(
+                        $"Serialization error on property '{args.ErrorContext.Member}': {args.ErrorContext.Error.Message}"
+                    );
+                    args.ErrorContext.Handled = true;
+                },
+                MaxDepth = 5,
             };
             try
             {
@@ -779,9 +816,29 @@ namespace SimpleModCheckerPlus.Systems
                         //Mod.log.Info($"{sectionKey != null}");
                         if (sectionKey != null && sectionKey == className)
                         {
+                            var props = fragment
+                                .source.GetType()
+                                .GetProperties()
+                                .Where(p => p.CanRead && p.GetIndexParameters().Length == 0)
+                                .ToDictionary(
+                                    p => p.Name,
+                                    p =>
+                                    {
+                                        try
+                                        {
+                                            return p.GetValue(fragment.source);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Mod.log.Info($"❌ {p.Name}: {ex.Message}");
+                                            return null;
+                                        }
+                                    }
+                                );
+
                             //Mod.log.Info("sectionKey != null && sectionKey == className");
                             JObject sectionSource = JObject.FromObject(
-                                fragment.source,
+                                props,
                                 JsonSerializer.Create(JsonSerializerSettings)
                             );
 
@@ -803,8 +860,6 @@ namespace SimpleModCheckerPlus.Systems
                                         var newValue = prop.Value.ToObject(propInfo.PropertyType);
                                         if (!oldValue.Equals(newValue))
                                         {
-                                            Mod.log.Info(oldValue.GetType());
-                                            Mod.log.Info(newValue.GetType());
                                             Mod.log.Info(
                                                 $"Restoring '{sectionKey}:{prop.Name}': {oldValue} => {newValue}."
                                             );

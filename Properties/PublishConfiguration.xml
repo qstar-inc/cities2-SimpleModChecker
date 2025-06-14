@@ -47,16 +47,11 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
 	<Screenshot Value="Properties/Screenshot06.jpg" />
 	<Tag Value="Code Mod" />
 	<ForumLink Value="" />
-	<ModVersion Value="3.5.0" />
-	<GameVersion Value="1.3.3f" />
+	<ModVersion Value="3.5.1" />
+	<GameVersion Value="1.3.3*" />
 	<Dependency Id="" />
 	<ChangeLog>
-- Compatibility update for 1.3.3f1.
-- NEW: Clean up all playsets for old mod versions.
-- Completely moved to LangVersion 9.
-- Fix assembly namespace issues.
-- Fixed changes related to 'Demand Master Control', 'I18N Everywhere', 'InfoLoom', 'Realistic Workplace and Households', 'Real Life', 'Simple Mod Checker Plus'.
-- Added "Smart Upkeep Manager".
+- Compatibility update for updated mods after 1.3.3f1.
 	</ChangeLog>
 	<ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
 	<ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />

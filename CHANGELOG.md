@@ -1,3 +1,6 @@
+# 3.5.1 (2025-06-14) - 14298 subs
+- Compatibility update for updated mods after 1.3.3f1.
+
 # 3.5.0 (2025-06-11) - 13722 subs
 - Compatibility update for 1.3.3f1.
 - NEW: Clean up all playsets for old mod versions.
