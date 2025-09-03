@@ -1,16 +1,9 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using Colossal.IO.AssetDatabase.Internal;
-using Colossal.Json;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Colossal.PSI.PdxSdk;
@@ -20,10 +13,10 @@ using Game.PSI;
 using Game.SceneFlow;
 using Game.UI.Localization;
 using Game.UI.Menu;
-using Game.UI.Widgets;
 using Newtonsoft.Json.Linq;
 using PDX.SDK.Contracts;
 using PDX.SDK.Contracts.Service.Mods.Models;
+using StarQ.Shared.Extensions;
 using Unity.Entities;
 
 namespace SimpleModCheckerPlus.Systems
@@ -36,9 +29,8 @@ namespace SimpleModCheckerPlus.Systems
 
         //public static string LoggedInUserName { get; set; } = "";
         public static Dictionary<string, string> localMods = new();
-        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> codeMods =
-            new();
-        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> packageMods =
+        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> codes = new();
+        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> packages =
             new();
         public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> allMods = new();
 
@@ -57,15 +49,15 @@ namespace SimpleModCheckerPlus.Systems
             }
             else if (ProcesStatus == 1)
             {
-                return $"{Header}\r\n{Progress}\r\n{IssueList}";
+                return $"{Header}\n{Progress}\n{IssueList}";
             }
             else if (ProcesStatus == 2)
             {
-                return $"{Header}\r\n{IssueList}";
+                return $"{Header}\n{IssueList}";
             }
             else
             {
-                return $"{Header}\r\n{IssueList}";
+                return $"{Header}\n{IssueList}";
             }
         }
 
@@ -79,12 +71,14 @@ namespace SimpleModCheckerPlus.Systems
             base.OnCreate();
             CheckMod();
             CheckModNew();
-            if (Mod.Setting.ShowNotif)
-            {
-                SendNotification(codeMods.Count + localMods.Count, packageMods.Count);
-            }
-            Mod.log.Info($"\r\nCods mods loaded:\r\n{LoadedList("CodeMods").Trim()}\r\n");
-            Mod.log.Info($"\r\nPackage mods loaded:\r\n{LoadedList("PackageMods").Trim()}\r\n");
+            SendNotification(packages.Count > 0);
+
+            LogHelper.SendLog(
+                $"\nCods mods loaded:\n{LoadedList("CodeMods", forLog: true).Trim()}\n"
+            );
+            LogHelper.SendLog(
+                $"\nPackage mods loaded:\n{LoadedList("PackageMods", forLog: true).Trim()}\n"
+            );
         }
 
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
@@ -98,10 +92,7 @@ namespace SimpleModCheckerPlus.Systems
             else
             {
                 Mod.Setting.IsInGameOrEditor = false;
-                if (Mod.Setting.ShowNotif)
-                {
-                    SendNotification(codeMods.Count + localMods.Count, packageMods.Count);
-                }
+                SendNotification(packages.Count > 0);
             }
         }
 
@@ -135,7 +126,7 @@ namespace SimpleModCheckerPlus.Systems
                         && !modName.StartsWith("Newtonsoft.Json")
                     )
                     {
-                        //Mod.log.Info($"Found local mod {modInfo.asset.name} in {modInfo.asset.path}");
+                        //LogHelper.SendLog($"Found local mod {modInfo.asset.name} in {modInfo.asset.path}");
                         localMods.Add(modName, modInfo.asset.path);
                     }
                     if (badDllList.Contains(modName))
@@ -154,57 +145,154 @@ namespace SimpleModCheckerPlus.Systems
                             }
                         );
                         Exception ex = new("Bad_DLL_Exception");
-                        Mod.log.Error(
-                            ex,
-                            $"Known malwares are being loaded: {modName}. Close the game and contact Cities: Skylines Discord/Reddit or PDX Forum immediately."
+                        LogHelper.SendLog(
+                            $"{ex} Known malwares are being loaded: {modName}. Close the game and contact Cities: Skylines Discord/Reddit or PDX Forum immediately.",
+                            LogLevel.Error
                         );
                     }
                 }
             }
             catch (Exception ex)
             {
-                Mod.log.Info(ex);
+                LogHelper.SendLog(ex);
             }
         }
 
-        public static string LoadedList(string type)
+        public enum SortOptions
         {
+            Name,
+            Size,
+            Author,
+        }
+
+        public static string LoadedList(
+            string type,
+            SortOptions sort = SortOptions.Name,
+            bool forLog = false
+        )
+        {
+            bool isAsc = Mod.Setting.TextSortAscending;
+
             string returnText = "";
             switch (type)
             {
                 case "CodeMods":
-                    returnText = $"{localMods.Count + codeMods.Count} Code Mods\r\n";
+                    int count1 = localMods.Count + codes.Count;
+                    string key1 = count1 > 1 ? "CodePlural" : "CodeSingular";
+                    returnText = $"{count1} {LocaleHelper.Translate($"{Mod.Id}.{key1}")}\n";
                     if (localMods.Count > 0)
                     {
                         SortedDictionary<string, string> sortedDict = new(localMods);
                         foreach (var mod in sortedDict)
                         {
-                            returnText += $"• {mod.Key}\r\n";
+                            returnText += $"• {mod.Key}\n";
                         }
                     }
-                    if (codeMods.Count > 0)
+                    if (codes.Count > 0)
                     {
-                        SortedDictionary<
-                            string,
-                            PDX.SDK.Contracts.Service.Mods.Models.Mod
-                        > sortedDict = new(codeMods);
+                        IEnumerable<
+                            KeyValuePair<string, PDX.SDK.Contracts.Service.Mods.Models.Mod>
+                        > sortedDict;
+                        if (sort == SortOptions.Size)
+                        {
+                            if (isAsc)
+                            {
+                                sortedDict = codes.OrderBy(kv => kv.Value.Size);
+                            }
+                            else
+                            {
+                                sortedDict = codes.OrderByDescending(kv => kv.Value.Size);
+                            }
+                        }
+                        else if (sort == SortOptions.Author)
+                        {
+                            if (isAsc)
+                            {
+                                sortedDict = codes
+                                    .OrderBy(kv => kv.Value.Author)
+                                    .ThenBy(kv => kv.Value.DisplayName);
+                            }
+                            else
+                            {
+                                sortedDict = codes
+                                    .OrderByDescending(kv => kv.Value.Author)
+                                    .ThenByDescending(kv => kv.Value.DisplayName);
+                            }
+                        }
+                        else
+                        {
+                            if (isAsc)
+                            {
+                                sortedDict = new SortedDictionary<
+                                    string,
+                                    PDX.SDK.Contracts.Service.Mods.Models.Mod
+                                >(codes);
+                            }
+                            else
+                            {
+                                sortedDict = codes.OrderByDescending(kv => kv.Key);
+                            }
+                        }
+
                         foreach (var mod in sortedDict)
                         {
-                            returnText += ReturnText(mod.Value);
+                            returnText += ReturnText(mod.Value, forLog);
                         }
                     }
                     break;
                 case "PackageMods":
-                    returnText = $"{packageMods.Count} Package Mods\r\n";
-                    if (packageMods.Count > 0)
+                    int count2 = packages.Count;
+                    string key2 = count2 > 1 ? "PackagePlural" : "PackageSingular";
+                    returnText = $"{count2} {LocaleHelper.Translate($"{Mod.Id}.{key2}")}\n";
+                    if (packages.Count > 0)
                     {
-                        SortedDictionary<
-                            string,
-                            PDX.SDK.Contracts.Service.Mods.Models.Mod
-                        > sortedDict = new(packageMods);
+                        IEnumerable<
+                            KeyValuePair<string, PDX.SDK.Contracts.Service.Mods.Models.Mod>
+                        > sortedDict;
+                        if (sort == SortOptions.Size)
+                        {
+                            if (isAsc)
+                            {
+                                sortedDict = packages.OrderBy(kv => kv.Value.Size);
+                            }
+                            else
+                            {
+                                sortedDict = packages.OrderByDescending(kv => kv.Value.Size);
+                            }
+                        }
+                        else if (sort == SortOptions.Author)
+                        {
+                            if (isAsc)
+                            {
+                                sortedDict = packages
+                                    .OrderBy(kv => kv.Value.Author)
+                                    .ThenBy(kv => kv.Value.DisplayName);
+                            }
+                            else
+                            {
+                                sortedDict = packages
+                                    .OrderByDescending(kv => kv.Value.Author)
+                                    .ThenByDescending(kv => kv.Value.DisplayName);
+                            }
+                        }
+                        else
+                        {
+                            if (isAsc)
+                            {
+                                sortedDict = new SortedDictionary<
+                                    string,
+                                    PDX.SDK.Contracts.Service.Mods.Models.Mod
+                                >(packages);
+                            }
+                            else
+                            {
+                                sortedDict = packages.OrderByDescending(kv => kv.Key);
+                            }
+                        }
+
                         foreach (var mod in sortedDict)
                         {
-                            returnText += ReturnText(mod.Value);
+                            returnText += ReturnText(mod.Value, forLog);
                         }
                     }
                     break;
@@ -214,12 +302,40 @@ namespace SimpleModCheckerPlus.Systems
             return returnText;
         }
 
-        static string ReturnText(PDX.SDK.Contracts.Service.Mods.Models.Mod mod)
+        static string FormatSize(ulong bytes)
         {
+            double sizeInMB = bytes / 1024.0 / 1024.0;
+
+            if (sizeInMB >= 1024)
+            {
+                double sizeInGB = sizeInMB / 1024.0;
+                return $"{sizeInGB:0.##} GB";
+            }
+
+            return $"{sizeInMB:0.##} MB";
+        }
+
+        static string ReturnText(PDX.SDK.Contracts.Service.Mods.Models.Mod mod, bool forLog = false)
+        {
+            if (mod == null)
+            {
+                return string.Empty;
+            }
+            string prefix = string.Empty;
+            string suffix = string.Empty;
+            string sizeText = string.Empty;
+
+            if (!forLog)
+            {
+                prefix = "<";
+                suffix = ">";
+                sizeText = $" — {FormatSize(mod.Size)}" ?? "";
+            }
+
             string outDatedText = "";
             if (mod.LatestVersion != mod.Version)
             {
-                outDatedText = " <[OUTDATED]>";
+                outDatedText = $" {prefix}[OUTDATED]{suffix}";
             }
 
             string version;
@@ -239,12 +355,15 @@ namespace SimpleModCheckerPlus.Systems
                 version = $" v{mod.UserModVersion}";
             }
 
-            return $"• [{mod.Id}] <{mod.DisplayName.Replace("<", "(").Replace(">", ")")}>{version} — <{mod.Author}>{outDatedText}\r\n";
+            string displayName = Regex.Replace(mod.DisplayName, @"\s*[\(\[\<].*?[\)\]\>]\s*$", "");
+
+            return $"• [{mod.Id}] {prefix}{displayName}{suffix}{version} — {prefix}{mod.Author}{suffix}{sizeText}{outDatedText}\n";
         }
 
-        public static LocalizedString CodeModsText => LocalizedString.Id(LoadedList("CodeMods"));
+        public static LocalizedString CodeModsText =>
+            LocalizedString.Id(LoadedList("CodeMods", Mod.Setting.TextSort));
         public static LocalizedString PackageModsText =>
-            LocalizedString.Id(LoadedList("PackageMods"));
+            LocalizedString.Id(LoadedList("PackageMods", Mod.Setting.TextSort));
 
         public void CheckModNew()
         {
@@ -282,7 +401,7 @@ namespace SimpleModCheckerPlus.Systems
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    Mod.log.Info($"Access denied to {folderPath}");
+                    LogHelper.SendLog($"Access denied to {folderPath}");
                 }
             }
 
@@ -299,12 +418,12 @@ namespace SimpleModCheckerPlus.Systems
                     || extensionCounts.ContainsKey(".bundle") && extensionCounts[".bundle"] > 0
                 )
                 {
-                    codeMods.Add(mod.DisplayName, mod);
+                    ModCheckup.codes.Add(mod.DisplayName, mod);
                     allMods.Add(mod.DisplayName, mod);
                 }
                 else
                 {
-                    packageMods.Add(mod.DisplayName, mod);
+                    packages.Add(mod.DisplayName, mod);
                     allMods.Add(mod.DisplayName, mod);
                 }
             }
@@ -348,64 +467,69 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     catch (Exception exception)
                     {
-                        Mod.log.Info(exception);
+                        LogHelper.SendLog(exception);
                     }
                 }
-                Mod.log.Info(mods.Count + " subbed mods");
+                LogHelper.SendLog(mods.Count + " subbed mods");
+                LocaleHelper.OnActiveDictionaryChanged();
             }
             else
             {
-                Mod.log.Info("No playset active");
+                LogHelper.SendLog("No playset active");
             }
         }
 
-        public void SendNotification(int code, int package)
+        public void SendNotification(bool hasPackage)
         {
-            uISystem = World.GetOrCreateSystemManaged<OptionsUISystem>();
-
-            string modMessageKey = "";
-            Dictionary<string, ILocElement> dict = new()
+            if (Mod.Setting.ShowNotif)
             {
-                { "codeCount", LocalizedString.Value(code.ToString()) },
-                { "packageCount", LocalizedString.Value(package.ToString()) },
-            };
-
-            if (package == 0)
-            {
-                modMessageKey =
-                    code > 1
-                        ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]"
-                        : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]";
-                dict.Remove("packageCount");
-            }
-            else if (package == 1)
-            {
-                modMessageKey =
-                    code > 1
-                        ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModsAndPackage]"
-                        : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModAndPackage]";
-            }
-            else
-            {
-                modMessageKey =
-                    code > 1
-                        ? "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModsAndPackages]"
-                        : "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModAndPackages]";
-            }
-
-            NotificationSystem.Push(
-                "starq-smc-mod-check",
-                titleId: "SimpleModCheckerPlus",
-                text: new LocalizedString(modMessageKey, null, dict),
-                onClicked: () =>
+                try
                 {
-                    uISystem.OpenPage(
-                        "SimpleModChecker.SimpleModCheckerPlus.Mod",
-                        "Setting.ModListTab",
-                        false
+                    uISystem =
+                        World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<OptionsUISystem>();
+
+                    string modMessageKey = "LoadedMod";
+
+                    if (hasPackage)
+                        modMessageKey = "LoadedModAndPackage";
+
+                    NotificationSystem.Push(
+                        "starq-smc-mod-check",
+                        title: Mod.Name,
+                        text: new LocalizedString(
+                            $"{Mod.Id}.{modMessageKey}",
+                            null,
+                            new Dictionary<string, ILocElement>()
+                            {
+                                {
+                                    "CodeCount",
+                                    new LocalizedNumber<int>(codes.Count + localMods.Count)
+                                },
+                                { "PackageCount", new LocalizedNumber<int>(packages.Count) },
+                            }
+                        ),
+                        onClicked: () =>
+                        {
+                            uISystem.OpenPage(
+                                $"{Mod.Id}.{Mod.Id}.Mod",
+                                "Setting.ModListTab",
+                                false
+                            );
+                        }
                     );
                 }
-            );
+                catch (Exception exception)
+                {
+                    NotificationSystem.Push(
+                        "starq-smc-mod-check-failed",
+                        title: Mod.Name,
+                        text: LocalizedString.Id($"SMC Failed to load. Click here to retry..."),
+                        progressState: ProgressState.Failed,
+                        onClicked: () => SendNotification(hasPackage)
+                    );
+                    LogHelper.SendLog(exception);
+                }
+            }
         }
 
         public void RemoveNotification()
@@ -464,9 +588,9 @@ namespace SimpleModCheckerPlus.Systems
                                 if (!modVersionToPlaysets.TryGetValue(key, out var playsets))
                                     modVersionToPlaysets[key] = playsets = new HashSet<int>();
                                 playsets.Add(playset.PlaysetId);
-                                Mod.log.Info($"{playset.PlaysetId}, {id}_{ver}");
+                                LogHelper.SendLog($"{playset.PlaysetId}, {id}_{ver}");
                             }
-                            Progress += ".. Done";
+                            Progress += ".. **Done**";
                         }
                     }
                 }
@@ -502,7 +626,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             string text =
                                 $"[{match.Id}_{match.Version}] {match.DisplayName} is outdated in playsets: {string.Join(", ", playsets)} (latest: {latest})";
-                            Mod.log.Info(text);
+                            LogHelper.SendLog(text);
                             Progress += $"\n{text}";
                             foreach (var playset in playsets)
                             {
@@ -510,14 +634,20 @@ namespace SimpleModCheckerPlus.Systems
                                     .Mods.Subscribe(match.Id, playset, $"{latest}")
                                     .Result;
 
-                                Mod.log.Info(subscribeResult.Success);
                                 if (subscribeResult.Success)
                                 {
-                                    Mod.log.Info(
-                                        subscribeResult.ModsSubscribedStatus[0].Mod.Version
+                                    LogHelper.SendLog(
+                                        $"Resub successful: {match.Id} ({subscribeResult.ModsSubscribedStatus[0].Mod.Version})"
                                     );
-                                    Progress += "... Fixed!";
+                                    Progress += "... **Fixed!**";
                                     hasSubbed = true;
+                                }
+                                else
+                                {
+                                    LogHelper.SendLog(
+                                        $"Resub failed: {match.Id} ({subscribeResult.ModsSubscribedStatus[0].Mod.Version})"
+                                    );
+                                    Progress += "... **Failed!**";
                                 }
                             }
                         }
@@ -528,15 +658,15 @@ namespace SimpleModCheckerPlus.Systems
                 {
                     string text =
                         $"[{mod.Id}_{mod.Version}] {mod.DisplayName} is not present in any playsets.";
-                    Mod.log.Info(text);
+                    LogHelper.SendLog(text);
                     Progress += $"\n{text}";
                 }
 
                 Header = "Mod Cleanup Process has ended!";
                 if (hasSubbed)
                 {
-                    Header += " Restart Required...";
-                    Progress += "\nRestart Required...";
+                    Header += " **Restart Required...**";
+                    Progress += "\n**Restart Required...**";
                     context.Mods.Sync(PDX.SDK.Contracts.Service.Mods.Enums.SyncDirection.Upstream);
                 }
                 Progress += "\nDone";

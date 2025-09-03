@@ -1,17 +1,16 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-namespace SimpleModCheckerPlus.Systems
+﻿namespace SimpleModCheckerPlus.Systems
 {
     public class ModSettings
     {
         public string ModVersion { get; set; }
         public string LastUpdated { get; set; }
+        public AdvancedRoadToolsSettings AdvancedRoadToolsSettings { get; set; }
         public AdvancedSimulationSpeedSettings AdvancedSimulationSpeedSettings { get; set; }
+        public AirplaneParameterModSettings AirplaneParameterModSettings { get; set; }
         public AllAboardSettings AllAboardSettings { get; set; }
         public AnarchySettings AnarchySettings { get; set; }
         public AreaBucketSettings AreaBucketSettings { get; set; }
+        public AssetIconCreatorSettings AssetIconCreatorSettings { get; set; }
         public AssetIconLibrarySettings AssetIconLibrarySettings { get; set; }
         public AssetPacksManagerSettings AssetPacksManagerSettings { get; set; }
         public AssetUIManagerSettings AssetUIManagerSettings { get; set; }
@@ -23,11 +22,22 @@ namespace SimpleModCheckerPlus.Systems
         public BetterSaveListSettings BetterSaveListSettings { get; set; }
         public BoundaryLinesModifierSettings BoundaryLinesModifierSettings { get; set; }
         public BrushSizeUnlimiterSettings BrushSizeUnlimiterSettings { get; set; }
+        public BuildingUsageTrackerSettings BuildingUsageTrackerSettings { get; set; }
+        public BuildingUseSettings BuildingUseSettings { get; set; }
+        public CameraDragSettings CameraDragSettings { get; set; }
+        public CameraFieldOfViewSettings CameraFieldOfViewSettings { get; set; }
+        public CartoSettings CartoSettings { get; set; }
+        public ChangeCompanySettings ChangeCompanySettings { get; set; }
         public CimRouteHighlighterSettings CimRouteHighlighterSettings { get; set; }
         public CitizenModelManagerSettings CitizenModelManagerSettings { get; set; }
+        public CityControllerSettings CityControllerSettings { get; set; }
         public CityStatsSettings CityStatsSettings { get; set; }
-        public DemandMasterSettings DemandMasterSettings { get; set; }
+        public CrowdedStationSettings CrowdedStationSettings { get; set; }
+        public DetailedDescriptionsSettings DetailedDescriptionsSettings { get; set; }
+        public DemandMasterControlSettings DemandMasterControlSettings { get; set; }
         public DepotCapacityChangerSettings DepotCapacityChangerSettings { get; set; }
+        public DisableAccidentsSettings DisableAccidentsSettings { get; set; }
+        public EventsControllerSettings EventsControllerSettings { get; set; }
         public ExtendedTooltipSettings ExtendedTooltipSettings { get; set; }
         public ExtraAssetsImporterSettings ExtraAssetsImporterSettings { get; set; }
         public FindItSettings FindItSettings { get; set; }
@@ -35,33 +45,56 @@ namespace SimpleModCheckerPlus.Systems
         public FiveTwentyNineTilesSettings FiveTwentyNineTilesSettings { get; set; }
         public FPSLimiterSettings FPSLimiterSettings { get; set; }
         public HallOfFameSettings HallOfFameSettings { get; set; }
+        public HardModeSettings HardModeSettings { get; set; }
+        public HideBuildingsNotificationSettings HideBuildingsNotificationSettings { get; set; }
         public HistoricalStartSettings HistoricalStartSettings { get; set; }
+        public HomeOfHomelessSettings HomeOfHomelessSettings { get; set; }
         public I18NEverywhereSettings I18NEverywhereSettings { get; set; }
         public ImageOverlaySettings ImageOverlaySettings { get; set; }
-        public InfoLoomTwoSettings InfoLoomTwoSettings { get; set; }
+        public IndustriesExtendedSettings IndustriesExtendedSettings { get; set; }
+        public IndustryAutoTaxAdjusterSettings IndustryAutoTaxAdjusterSettings { get; set; }
+
+        //public InfoLoomTwoSettings InfoLoomTwoSettings { get; set; }
+        public LazyPedestriansSettings LazyPedestriansSettings { get; set; }
+
+        //public LuminaSettings LuminaSettings { get; set; }
+        public MapExtSettings MapExtSettings { get; set; }
         public MoveItSettings MoveItSettings { get; set; }
+        public NavigationViewSettings NavigationViewSettings { get; set; }
+        public NoDeadTreesSettings NoDeadTreesSettings { get; set; }
         public NoPollutionSettings NoPollutionSettings { get; set; }
         public NoTeleportingSettings NoTeleportingSettings { get; set; }
         public NoVehicleDespawnSettings NoVehicleDespawnSettings { get; set; }
+        public NoWaterElectricitySettings NoWaterElectricitySettings { get; set; }
+        public OSMExportSettings OSMExportSettings { get; set; }
         public PathfindingCustomizerSettings PathfindingCustomizerSettings { get; set; }
+        public ParkingMonitorSettings ParkingMonitorSettings { get; set; }
+        public ParkingPricingSettings ParkingPricingSettings { get; set; }
         public PlopTheGrowablesSettings PlopTheGrowablesSettings { get; set; }
+        public PrefabAssetFixesSettings PrefabAssetFixesSettings { get; set; }
         public RealisticParkingSettings RealisticParkingSettings { get; set; }
         public RealisticTripsSettings RealisticTripsSettings { get; set; }
         public RealisticWorkplacesAndHouseholdsSettings RealisticWorkplacesAndHouseholdsSettings { get; set; }
         public RealLifeSettings RealLifeSettings { get; set; }
         public RecolorSettings RecolorSettings { get; set; }
+        public RegionFlagIconsSettings RegionFlagIconsSettings { get; set; }
+        public ResourceLocatorSettings ResourceLocatorSettings { get; set; }
+        public RentMattersAgainSettings RentMattersAgainSettings { get; set; }
         public RoadBuilderSettings RoadBuilderSettings { get; set; }
         public RoadNameRemoverSettings RoadNameRemoverSettings { get; set; }
         public RoadWearAdjusterSettings RoadWearAdjusterSettings { get; set; }
         public SchoolCapacityBalancerSettings SchoolCapacityBalancerSettings { get; set; }
+        public ShowMoreHappinessSettings ShowMoreHappinessSettings { get; set; }
         public SimpleModCheckerSettings SimpleModCheckerSettings { get; set; }
         public SmartTransportationSettings SmartTransportationSettings { get; set; }
         public SmartUpkeepManagerSettings SmartUpkeepManagerSettings { get; set; }
         public StationNamingSettings StationNamingSettings { get; set; }
         public StifferVehiclesSettings StifferVehiclesSettings { get; set; }
         public SunGlassesSettings SunGlassesSettings { get; set; }
+        public TerraformHardeningSettings TerraformHardeningSettings { get; set; }
         public ToggleOverlaysSettings ToggleOverlaysSettings { get; set; }
         public TradingCostTweakerSettings TradingCostTweakerSettings { get; set; }
+        public TrafficJamMonitorSettings TrafficJamMonitorSettings { get; set; }
         public TrafficLightsEnhancementSettings TrafficLightsEnhancementSettings { get; set; }
         public TrafficSettings TrafficSettings { get; set; }
         public TrafficSimulationAdjusterSettings TrafficSimulationAdjusterSettings { get; set; }
@@ -70,10 +103,12 @@ namespace SimpleModCheckerPlus.Systems
         public TreeControllerSettings TreeControllerSettings { get; set; }
 
         //public TripsDataSettings TripsDataSettings { get; set; }
+        public UrbanInequalitySettings UrbanInequalitySettings { get; set; }
         public VehicleVariationPacksSettings VehicleVariationPacksSettings { get; set; }
         public WaterFeaturesSettings WaterFeaturesSettings { get; set; }
         public WaterVisualTweaksSettings WaterVisualTweaksSettings { get; set; }
         public WhitenessToggleSettings WhitenessToggleSettings { get; set; }
+        public WriteEverywhereSettings WriteEverywhereSettings { get; set; }
         public ZoneColorChangerSettings ZoneColorChangerSettings { get; set; }
     }
 }

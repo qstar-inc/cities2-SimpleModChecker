@@ -1,8 +1,4 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System.IO;
+﻿using System.IO;
 using Colossal.PSI.Environment;
 
 namespace SimpleModCheckerPlus.Systems

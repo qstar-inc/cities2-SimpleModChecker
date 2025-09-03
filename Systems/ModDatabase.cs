@@ -1,13 +1,11 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Colossal.PSI.Environment;
 using Newtonsoft.Json;
+using StarQ.Shared.Extensions;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -50,7 +48,6 @@ namespace SimpleModCheckerPlus.Systems
         public Mod _mod;
         public static Dictionary<string, ModInfo> ModDatabaseInfo { get; private set; }
 
-        //public static event Action OnDatabaseLoaded;
         public static ModDatabaseMetadata Metadata { get; private set; }
         public static string ModDatabaseTime;
         private static readonly string modDatabaseJson =
@@ -64,7 +61,7 @@ namespace SimpleModCheckerPlus.Systems
             {
                 if (!File.Exists(modDatabaseJson))
                 {
-                    Mod.log.Info("Mod database file not found");
+                    LogHelper.SendLog("Mod database file not found");
                     return;
                 }
 
@@ -84,8 +81,7 @@ namespace SimpleModCheckerPlus.Systems
                     .FromUnixTimeSeconds(metaData.Time)
                     .ToLocalTime()
                     .ToString("dd MMMM yyyy hh:mm:ss tt zzz");
-                //Mod.Setting.ModsLoadedVersion++;
-                Mod.log.Info($"ModDatabase.json is {readableAge} ({ModDatabaseTime})...");
+                LogHelper.SendLog($"ModDatabase.json is {readableAge} ({ModDatabaseTime})...");
 
                 ModDatabaseInfo = new();
                 foreach (var entry in rawModData)
@@ -108,10 +104,57 @@ namespace SimpleModCheckerPlus.Systems
                     };
                     ModDatabaseInfo.Add(entry.Key, modInfo);
                 }
-                Mod.log.Info($"Found {ModDatabaseInfo.Count} mods in the database");
+                LogHelper.SendLog($"Found {ModDatabaseInfo.Count} mods in the database");
                 isModDatabaseLoaded = true;
             }
-            //OnDatabaseLoaded?.Invoke();
+        }
+
+        public static void GetModDatabase()
+        {
+            string modDatabaseJson = Mod.modDatabaseJson;
+            try
+            {
+                if (!File.Exists(modDatabaseJson))
+                {
+                    LogHelper.SendLog("ModDatabase not found. Attempting to copy...");
+                    CopyLocalBackup();
+                }
+
+                string oldJsonData = File.ReadAllText(modDatabaseJson, Encoding.UTF8);
+                Mod.oldMetadata = JsonConvert
+                    .DeserializeObject<ModDatabaseWrapper>(oldJsonData)
+                    .Metadata;
+                string newJsonData = File.ReadAllText(Mod.localBackupPath, Encoding.UTF8);
+                Mod.newMetadata = JsonConvert
+                    .DeserializeObject<ModDatabaseWrapper>(newJsonData)
+                    .Metadata;
+                if (Mod.oldMetadata.Time < Mod.newMetadata.Time)
+                    CopyLocalBackup();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.SendLog("An error occurred: " + ex.Message);
+            }
+        }
+
+        private static void CopyLocalBackup()
+        {
+            try
+            {
+                if (File.Exists(Mod.localBackupPath))
+                {
+                    File.Copy(Mod.localBackupPath, Mod.modDatabaseJson, true);
+                    LogHelper.SendLog("Local backup copied to ModDatabase.json.");
+                }
+                else
+                {
+                    LogHelper.SendLog("Local backup not found. Unable to copy.");
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.SendLog("Error copying local backup: " + ex.Message);
+            }
         }
     }
 

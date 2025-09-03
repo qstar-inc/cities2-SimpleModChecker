@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleModCheckerPlus", "SimpleModCheckerPlus.csproj", "{E60FB876-D414-4C48-BF1D-AC755F49D198}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StarQ.Shared", "..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.shproj", "{01189E6E-61CB-4C5D-ACF7-1BA0A2C819AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,5 +23,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {78E46351-035E-4008-8F33-01DDBEAA18D4}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.projitems*{01189e6e-61cb-4c5d-acf7-1ba0a2c819ab}*SharedItemsImports = 13
+		..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.projitems*{e60fb876-d414-4c48-bf1d-ac755f49d198}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

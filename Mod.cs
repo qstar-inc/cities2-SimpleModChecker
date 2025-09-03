@@ -1,8 +1,5 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -14,14 +11,15 @@ using Game;
 using Game.Modding;
 using Game.SceneFlow;
 using Game.Settings;
-using Newtonsoft.Json;
 using SimpleModCheckerPlus.Systems;
+using StarQ.Shared.Extensions;
 using Unity.Entities;
 
 namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
+        public static string Id = nameof(SimpleModCheckerPlus);
         public const string Name = "Simple Mod Checker Plus";
         public static string Version = Assembly
             .GetExecutingAssembly()
@@ -36,7 +34,7 @@ namespace SimpleModCheckerPlus
             .GetLogger(nameof(SimpleModCheckerPlus))
             .SetShowsErrorsInUI(true);
         public static ModManager modManager = GameManager.instance.modManager;
-        private static readonly string modDatabaseJson =
+        public static readonly string modDatabaseJson =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ModDatabase.json";
         public static string localBackupPath;
         public static ModDatabaseMetadata oldMetadata;
@@ -44,9 +42,20 @@ namespace SimpleModCheckerPlus
 
         public void OnLoad(UpdateSystem updateSystem)
         {
-            log.Info($"Starting up {Name} {Version}");
+            LogHelper.Init(Id, log);
+            LocaleHelper.Init(Id, GetReplacements);
+
+            foreach (var item in new LocaleHelper($"{Id}.Locale.json").GetAvailableLanguages())
+            {
+                GameManager.instance.localizationManager.AddSource(item.LocaleId, item);
+            }
+
+            GameManager.instance.localizationManager.onActiveDictionaryChanged +=
+                LocaleHelper.OnActiveDictionaryChanged;
+
+            //LogHelper.SendLog($"Starting up {Name} {Version}");
             GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset);
-            log.Info($"Loading from \"{asset.path}\"");
+            //LogHelper.SendLog($"Loading from \"{asset.path}\"");
             localBackupPath = $"{Directory.GetParent(asset.path).FullName}\\ModDatabase.json";
             Setting = new Setting(this);
             Setting.RegisterInOptionsUI();
@@ -59,16 +68,17 @@ namespace SimpleModCheckerPlus
 
             Task.Run(() => MigrateFiles(Directory.GetParent(modDatabaseJson).FullName)).Wait();
 
-            Task.Run(() => GetModDatabase()).Wait();
+            Task.Run(() => ModDatabase.GetModDatabase()).Wait();
             Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
 
 #if DEBUG
             Setting.DeletedBackupCIDs = false;
+            Setting.EnableVerboseLogging = true;
 #endif
 
             if (!Setting.DeletedBackupCIDs)
                 Task.Run(() => ModVerifier.RemoveBackupCID()).Wait();
-            GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
+            //GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
             Setting.VerifiedRecently = false;
             Setting.IsInGameOrEditor = false;
             Setting.ModFolderDropdown = "";
@@ -92,20 +102,20 @@ namespace SimpleModCheckerPlus
                 if (Setting.DisableContinueInGame)
                 {
                     if (Setting.EnableVerboseLogging)
-                        log.Info("Setting lastSaveGameMetadata to null");
+                        LogHelper.SendLog("Setting lastSaveGameMetadata to null");
                     SharedSettings.instance.userState.lastSaveGameMetadata = null;
                 }
 
                 if (Setting.DisableContinueOnLauncher)
                 {
                     if (Setting.EnableVerboseLogging)
-                        log.Info("Deleting continue_game.json");
+                        LogHelper.SendLog("Deleting continue_game.json");
                     File.Delete($"{EnvPath.kUserDataPath}/continue_game.json");
                 }
             }
             catch (Exception ex)
             {
-                log.Info(ex);
+                LogHelper.SendLog(ex);
             }
 
             //if (Setting.DeleteMissing && CIDBackupRestore.CanDelete.Count > 0)
@@ -119,54 +129,47 @@ namespace SimpleModCheckerPlus
             Setting.IsInGameOrEditor = false;
             Setting.ModFolderDropdown = "";
             Setting.UnregisterInOptionsUI();
-            log.Info($"Shutting down {Name}");
+            LogHelper.SendLog($"Shutting down {Name}");
         }
 
-        public static void GetModDatabase()
+        public static Dictionary<string, string> GetReplacements()
         {
-            try
+            return new()
             {
-                if (!File.Exists(modDatabaseJson))
+                { "SupportedMods", GetListOfSupportedMods() },
                 {
-                    log.Info("ModDatabase not found. Attempting to copy...");
-                    CopyLocalBackup();
-                }
-
-                string oldJsonData = File.ReadAllText(modDatabaseJson, Encoding.UTF8);
-                oldMetadata = JsonConvert
-                    .DeserializeObject<ModDatabaseWrapper>(oldJsonData)
-                    .Metadata;
-                string newJsonData = File.ReadAllText(localBackupPath, Encoding.UTF8);
-                newMetadata = JsonConvert
-                    .DeserializeObject<ModDatabaseWrapper>(newJsonData)
-                    .Metadata;
-                if (oldMetadata.Time < newMetadata.Time)
-                    CopyLocalBackup();
-            }
-            catch (Exception ex)
-            {
-                log.Info("An error occurred: " + ex.Message);
-            }
+                    "CodeCountSuffix",
+                    ModCheckup.codes.Count > 1 ? $"{{{Id}.CodePlural}}" : $"{{{Id}.CodeSingular}}"
+                },
+                {
+                    "PackageCountSuffix",
+                    ModCheckup.packages.Count > 1
+                        ? $"{{{Id}.PackagePlural}}"
+                        : $"{{{Id}.PackageSingular}}"
+                },
+                {
+                    "SortDetails",
+                    $"{Setting.TextSort} - {(Setting.TextSortAscending ? "Ascending" : "Descending")}"
+                },
+            };
         }
 
-        private static void CopyLocalBackup()
+        public static string GetListOfSupportedMods()
         {
-            try
+            string finalLine = "";
+            List<ModInfo> sortedMods = ModInfoProcessor.SortByAuthor_Mod_ID();
+            foreach (var entry in sortedMods)
             {
-                if (File.Exists(localBackupPath))
-                {
-                    File.Copy(localBackupPath, modDatabaseJson, true);
-                    log.Info("Local backup copied to ModDatabase.json.");
-                }
-                else
-                {
-                    log.Info("Local backup not found. Unable to copy.");
-                }
+                if (entry.Backupable != true)
+                    continue;
+                string name = entry.ModName;
+                string id = entry.PDX_ID;
+                string author = entry.Author;
+
+                string line = $"- {author} — {id}: <{name}>";
+                finalLine = string.Join("\n", finalLine, line);
             }
-            catch (Exception ex)
-            {
-                log.Info("Error copying local backup: " + ex.Message);
-            }
+            return finalLine;
         }
 
         public static async Task MigrateFiles(string folder)
@@ -176,7 +179,7 @@ namespace SimpleModCheckerPlus
             if (!Directory.Exists(backupFolder))
             {
                 Directory.CreateDirectory(backupFolder);
-                log.Info($"Created backup folder: {backupFolder}");
+                LogHelper.SendLog($"Created backup folder: {backupFolder}");
             }
 
             string[] filePatterns = new string[]
@@ -194,7 +197,7 @@ namespace SimpleModCheckerPlus
                     string fileName = Path.GetFileName(file);
                     string destinationPath = Path.Combine(backupFolder, fileName);
                     await Task.Run(() => File.Move(file, destinationPath));
-                    log.Info($"Moved file: {file} to {destinationPath}");
+                    LogHelper.SendLog($"Moved file: {file} to {destinationPath}");
                 }
             }
 
@@ -211,14 +214,14 @@ namespace SimpleModCheckerPlus
             if (!Directory.Exists(destinationDir))
             {
                 Directory.CreateDirectory(destinationDir);
-                log.Info($"Created backup folder: {destinationDir}");
+                LogHelper.SendLog($"Created backup folder: {destinationDir}");
             }
             foreach (var file in Directory.GetFiles(sourceDir))
             {
                 string fileName = Path.GetFileName(file);
                 string destFile = Path.Combine(destinationDir, fileName);
                 File.Move(file, destFile);
-                log.Info($"Moved file: {file} to {destFile}");
+                LogHelper.SendLog($"Moved file: {file} to {destFile}");
             }
             foreach (var dir in Directory.GetDirectories(sourceDir))
             {
@@ -227,15 +230,7 @@ namespace SimpleModCheckerPlus
                 MoveDirectory(dir, destDir);
             }
             Directory.Delete(sourceDir);
-            Mod.log.Info($"Deleted source directory: {sourceDir}");
+            LogHelper.SendLog($"Deleted source directory: {sourceDir}");
         }
-
-        //private static void RegisterSetting(Setting setting, string id, bool addPrefix = false)
-        //{
-        //    Game.UI.Menu.OptionsUISystem.Page page = setting.GetPageData(id, addPrefix).BuildPage();
-        //    Mod.log.Info(page.ToString() );
-        //    page.UpdateVisibility(false);
-        //    page.UpdateNameAndDescription(false);
-        //}
     }
 }

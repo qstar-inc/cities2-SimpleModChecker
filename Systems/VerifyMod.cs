@@ -1,18 +1,16 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json.Linq;
+using StarQ.Shared.Extensions;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -29,9 +27,10 @@ namespace SimpleModCheckerPlus.Systems
         public static int SkippedBackupCIDs = 0;
         public static Dictionary<string, Dictionary<string, string>> ManifestData = new();
         public static List<string> backupsToCheck = new();
-        public static LocalizedString VerificationResultText => LocalizedString.Id(GetText());
+        public static string translateKey = $"{Mod.Id}.Verify";
+        public static LocalizedString VerificationResultText => GetText();
 
-        public static string GetText()
+        public static LocalizedString GetText()
         {
             if (ProcesStatus == 0)
             {
@@ -39,15 +38,15 @@ namespace SimpleModCheckerPlus.Systems
             }
             else if (ProcesStatus == 1)
             {
-                return $"{Header}\r\n{Progress}\r\n{IssueList}";
+                return $"{Header}\n{Progress}\n{IssueList}";
             }
             else if (ProcesStatus == 2)
             {
-                return $"{Header}\r\n{IssueList}";
+                return $"{Header}\n{IssueList}";
             }
             else
             {
-                return $"{Header}\r\n{IssueList}";
+                return $"{Header}\n{IssueList}";
             }
         }
 
@@ -55,11 +54,11 @@ namespace SimpleModCheckerPlus.Systems
         {
             if (modId == modName)
             {
-                IssueList += $"<{modId}>:\r\n";
+                IssueList += $"<{modId}>:\n";
             }
             else
             {
-                IssueList += $"<{modId}> {modName}:\r\n";
+                IssueList += $"<{modId}> {modName}:\n";
             }
         }
 
@@ -96,7 +95,9 @@ namespace SimpleModCheckerPlus.Systems
                         }
                         catch (Exception ex)
                         {
-                            Mod.log.Info($"Error verifying files in '{subfolder}': {ex.Message}");
+                            LogHelper.SendLog(
+                                $"Error verifying files in '{subfolder}': {ex.Message}"
+                            );
                         }
                     }
                 }
@@ -110,7 +111,7 @@ namespace SimpleModCheckerPlus.Systems
                     string manifestPath = FindManifestFile(subfolder);
                     if (string.IsNullOrEmpty(manifestPath))
                     {
-                        Mod.log.Info($"No manifestPath found for subfolder: {subfolder}");
+                        LogHelper.SendLog($"No manifestPath found for subfolder: {subfolder}");
                         continue;
                     }
 
@@ -122,7 +123,9 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     catch (Exception ex)
                     {
-                        Mod.log.Info($"Error reading manifest at '{manifestPath}': {ex.Message}");
+                        LogHelper.SendLog(
+                            $"Error reading manifest at '{manifestPath}': {ex.Message}"
+                        );
                         continue;
                     }
 
@@ -130,7 +133,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         File.Delete(filePath);
                         RemovedBackupCIDs++;
-                        Mod.log.Info($"Deleted '{relativePath}'.");
+                        LogHelper.SendLog($"Deleted '{relativePath}'.");
                     }
                     else
                     {
@@ -139,71 +142,68 @@ namespace SimpleModCheckerPlus.Systems
                     }
                 }
 
-                Mod.log.Info(
+                LogHelper.SendLog(
                     $"Backup CIDs: Removed {RemovedBackupCIDs}; Ignored {SkippedBackupCIDs}"
                 );
                 Mod.Setting.DeletedBackupCIDs = true;
             }
             catch (Exception ex)
             {
-                Mod.log.Info(ex.ToString());
+                LogHelper.SendLog(ex.ToString());
             }
         }
 
         public static async Task VerifyMods(string selected = null)
         {
+            ManifestData.Clear();
             DownloadedModList.Clear();
             DupedModList.Clear();
             IssueList = "";
 
             NotificationSystem.Push(
                 "starq-smc-verify-mod",
-                titleId: "SimpleModCheckerPlus",
-                textId: "SimpleModCheckerPlus.VerifyStart",
-                progressState: Colossal.PSI.Common.ProgressState.Indeterminate,
+                title: Mod.Name,
+                text: LocaleHelper.Translate($"{translateKey}.Starting"),
+                progressState: ProgressState.Indeterminate,
                 onClicked: () =>
                 {
-                    ModCheckup.uISystem.OpenPage(
-                        "SimpleModChecker.SimpleModCheckerPlus.Mod",
-                        "Setting.ModListTab",
-                        false
-                    );
+                    ModCheckup.uISystem.OpenPage($"{Mod.Id}.{Mod.Id}.Mod", "VerifyTab", false);
                 }
             );
 
-            Header = $"Mod Verification Process is running...";
+            Header = LocaleHelper.Translate($"{translateKey}.Header.Running");
             ProcesStatus = 1;
             Mod.Setting.VerifiedRecently = true;
             if (selected != null)
             {
-                Mod.log.Info($"Starting Mod Verification for {selected}");
+                LogHelper.SendLog($"Starting Mod Verification for {selected}");
             }
             else
             {
-                Mod.log.Info("Starting Mod Verification (all subscribed mods)");
+                LogHelper.SendLog("Starting Mod Verification (all subscribed mods)");
             }
             string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
             if (!Directory.Exists(rootFolder))
             {
                 NotificationSystem.Push(
                     "starq-smc-verify-mod",
-                    titleId: "SimpleModCheckerPlus",
-                    textId: "SimpleModCheckerPlus.VerifyFailed",
-                    progressState: Colossal.PSI.Common.ProgressState.Failed,
+                    title: Mod.Name,
+                    text: LocaleHelper.Translate($"{translateKey}.Failed"),
+                    progressState: ProgressState.Failed,
                     onClicked: () =>
                     {
                         ModCheckup.uISystem.OpenPage(
-                            "SimpleModChecker.SimpleModCheckerPlus.Mod",
-                            "Setting.ModListTab",
+                            $"{Mod.Id}.{Mod.Id}.Mod",
+                            "Setting.VerifyTab",
                             false
                         );
                         NotificationSystem.Pop("starq-smc-verify-mod");
                     }
                 );
-                Header = $"Mod Verification Process failed!";
-                IssueList = "\'mods_subscribed\' does not exist";
+                Header = LocaleHelper.Translate($"{translateKey}.Header.Failed");
+                IssueList = LocaleHelper.Translate($"{translateKey}.Issue.NoModsSubscribed");
                 ProcesStatus = 3;
-                Mod.log.Info(Header);
+                LogHelper.SendLog("Mod Verification Process failed, no `mods_subscribed'");
                 return;
             }
 
@@ -235,7 +235,7 @@ namespace SimpleModCheckerPlus.Systems
 
                 string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
 
-                string multiText = "Multiple versions of the same mod downloaded";
+                string multiText = LocaleHelper.Translate($"{translateKey}.Issue.MultiText");
 
                 string[] modFolderParts = modFolder.Split('_');
                 string modId = "";
@@ -260,23 +260,23 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     catch (Exception ex)
                     {
-                        Mod.log.Info("Error: " + ex.Message);
+                        LogHelper.SendLog("Error: " + ex.Message);
                     }
 
                     NotificationSystem.Push(
                         "starq-smc-verify-mod",
-                        titleId: "SimpleModCheckerPlus",
+                        title: Mod.Name,
                         text: new LocalizedString(
-                            "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.VerifyingMods]",
+                            $"{translateKey}.Running",
                             null,
                             new Dictionary<string, ILocElement>
                             {
-                                { "modCount", LocalizedString.Value(i.ToString()) },
-                                { "total", LocalizedString.Value(ModCount.ToString()) },
-                                { "modName", LocalizedString.Value(modName.ToString()) },
+                                { "I", new LocalizedNumber<int>(i) },
+                                { "ModCount", new LocalizedNumber<int>(ModCount) },
+                                { "ModName", LocalizedString.Value(modName.ToString()) },
                             }
                         ),
-                        progressState: Colossal.PSI.Common.ProgressState.Progressing,
+                        progressState: ProgressState.Progressing,
                         progress: (int)Math.Round(percent)
                     );
 
@@ -287,10 +287,10 @@ namespace SimpleModCheckerPlus.Systems
                             IssueTextHeader(modId, modName);
                             posted = true;
                         }
-                        IssueList += $"- {multiText}\r\n";
+                        IssueList += multiText;
                         if (!DupedModList.Contains(modId))
                         {
-                            Mod.log.Info($"{multiText}: {modId}");
+                            LogHelper.SendLog($"{multiText.Replace("\n", "")}: {modId}");
                             DupedModList.Add(modId);
                         }
                     }
@@ -303,7 +303,10 @@ namespace SimpleModCheckerPlus.Systems
                 {
                     continue;
                 }
-                Progress = $"- {i} ({modName}) out of {ModCount} mods processing...";
+                Progress = (LocaleHelper.Translate($"{translateKey}.Progress.Processing"))
+                    .Replace("{I}", $"{new LocalizedNumber<int>(i).value}")
+                    .Replace("{ModName}", modName)
+                    .Replace("{ModCount}", $"{new LocalizedNumber<int>(ModCount).value}");
 
                 string manifestPath = FindManifestFile(subfolder);
                 if (string.IsNullOrEmpty(manifestPath))
@@ -313,8 +316,8 @@ namespace SimpleModCheckerPlus.Systems
                         IssueTextHeader(modId, modName);
                         posted = true;
                     }
-                    IssueList += $"- No manifest found\r\n";
-                    Mod.log.Info($"No manifest found for subfolder: {subfolder}");
+                    IssueList += LocaleHelper.Translate($"{translateKey}.Issue.NoManifest");
+                    LogHelper.SendLog($"No manifest found for subfolder: {subfolder}");
                     continue;
                 }
 
@@ -335,8 +338,8 @@ namespace SimpleModCheckerPlus.Systems
                         IssueTextHeader(modId, modName);
                         posted = true;
                     }
-                    IssueList += $"- Error reading manifest\r\n";
-                    Mod.log.Info($"Error reading manifest at '{manifestPath}': {ex.Message}");
+                    IssueList += LocaleHelper.Translate($"{translateKey}.Issue.ErrorManifest");
+                    LogHelper.SendLog($"Error reading manifest at '{manifestPath}': {ex.Message}");
                     continue;
                 }
 
@@ -349,37 +352,37 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     catch (Exception ex)
                     {
-                        Mod.log.Info($"Error verifying files in '{subfolder}': {ex.Message}");
+                        LogHelper.SendLog($"Error verifying files in '{subfolder}': {ex.Message}");
                     }
                 }
             }
             ProcesStatus = 2;
-            Header = "Mod Verification Process is complete";
-            Mod.log.Info("Completed Mod Verification");
+            Header = LocaleHelper.Translate($"{translateKey}.Header.End");
+            LogHelper.SendLog("Completed Mod Verification");
             //Mod.log.Info(IssueList);
-            Colossal.PSI.Common.ProgressState hasIssue = Colossal.PSI.Common.ProgressState.Complete;
+            ProgressState hasIssue = ProgressState.Complete;
             if (IssueList != "")
             {
-                hasIssue = Colossal.PSI.Common.ProgressState.Warning;
+                hasIssue = ProgressState.Warning;
             }
             else
             {
-                IssueList = "No issues found";
+                IssueList = LocaleHelper.Translate($"{translateKey}.Issue.NoIssue");
                 if (selected != null)
                 {
-                    IssueList += $" for {selectedModName} ({selectedModFolder})";
+                    IssueList += $"\n{selectedModName} ({selectedModFolder})";
                 }
             }
             NotificationSystem.Push(
                 "starq-smc-verify-mod",
-                titleId: "SimpleModCheckerPlus",
-                textId: "SimpleModCheckerPlus.VerifyEnd",
+                title: Mod.Name,
+                text: LocaleHelper.Translate($"{translateKey}.End"),
                 progressState: hasIssue,
                 onClicked: () =>
                 {
                     NotificationSystem.Pop("starq-smc-verify-mod");
                     ModCheckup.uISystem.OpenPage(
-                        "SimpleModChecker.SimpleModCheckerPlus.Mod",
+                        $"{Mod.Id}.{Mod.Id}.Mod",
                         "Setting.ModListTab",
                         false
                     );
@@ -421,7 +424,7 @@ namespace SimpleModCheckerPlus.Systems
             }
             catch (Exception ex)
             {
-                Mod.log.Info($"Error searching for manifest in '.cpatch': {ex.Message}");
+                LogHelper.SendLog($"Error searching for manifest in '.cpatch': {ex.Message}");
             }
 
             return null;
@@ -458,7 +461,7 @@ namespace SimpleModCheckerPlus.Systems
             }
             catch (Exception ex)
             {
-                throw new IOException($"Failed to read manifest file: {ex.Message}", ex);
+                LogHelper.SendLog($"Failed to read manifest file: {ex}", LogLevel.Error);
             }
             ManifestData.Add(manifestPath, manifestData);
             return manifestData;
@@ -481,7 +484,7 @@ namespace SimpleModCheckerPlus.Systems
             foreach (var filePath in files)
             {
                 string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
-                string relativePathForText = relativePath.Replace("\\", "/");
+                string relativePathForText = $"**{relativePath.Replace("\\", "/")}**";
                 try
                 {
                     if (
@@ -504,8 +507,10 @@ namespace SimpleModCheckerPlus.Systems
                                 IssueTextHeader(modId, modName);
                                 posted = true;
                             }
-                            IssueList += $"- '{relativePathForText}' is dirty/modified\r\n";
-                            Mod.log.Info(
+                            IssueList += LocaleHelper
+                                .Translate($"{translateKey}.Issue.Dirty")
+                                .Replace("{RelativePath}", relativePathForText);
+                            LogHelper.SendLog(
                                 $"File '{relativePath}' is dirty/modified. Expected: {expectedHash} ({expectedSize} bytes), Found: {actualHash} ({actualSize} bytes)"
                             );
                         }
@@ -518,8 +523,10 @@ namespace SimpleModCheckerPlus.Systems
                             IssueTextHeader(modId, modName);
                             posted = true;
                         }
-                        IssueList += $"- '{relativePathForText}' is not from the mod\r\n";
-                        Mod.log.Info($"File '{relativePath}' is not listed in the manifest.");
+                        IssueList += LocaleHelper
+                            .Translate($"{translateKey}.Issue.Foreign")
+                            .Replace("{RelativePath}", relativePathForText);
+                        LogHelper.SendLog($"File '{relativePath}' is not listed in the manifest.");
                     }
                     else if (filePath.EndsWith(".backup"))
                     {
@@ -540,9 +547,10 @@ namespace SimpleModCheckerPlus.Systems
                                 IssueTextHeader(modId, modName);
                                 posted = true;
                             }
-                            IssueList +=
-                                $"- '{relativePathForText}' does not match with the backup\r\n";
-                            Mod.log.Info(
+                            IssueList += LocaleHelper
+                                .Translate($"{translateKey}.Issue.CIDMismatch")
+                                .Replace("{RelativePath}", relativePathForText);
+                            LogHelper.SendLog(
                                 $"Value of '{relativePath}' does not match with the backup."
                             );
                         }
@@ -555,8 +563,10 @@ namespace SimpleModCheckerPlus.Systems
                         IssueTextHeader(modId, modName);
                         posted = true;
                     }
-                    IssueList += $"- Access denied to file '{relativePathForText}'\r\n";
-                    Mod.log.Info($"Access denied to file '{filePath}'. Skipping.");
+                    IssueList += LocaleHelper
+                        .Translate($"{translateKey}.Issue.AccessDenied")
+                        .Replace("{RelativePath}", relativePathForText);
+                    LogHelper.SendLog($"Access denied to file '{filePath}'. Skipping.");
                 }
                 catch (Exception ex)
                 {
@@ -565,8 +575,10 @@ namespace SimpleModCheckerPlus.Systems
                         IssueTextHeader(modId, modName);
                         posted = true;
                     }
-                    IssueList += $"- Error processing file '{relativePathForText}'\r\n";
-                    Mod.log.Info($"Error processing file '{filePath}': {ex.Message}");
+                    IssueList += LocaleHelper
+                        .Translate($"{translateKey}.Issue.UnknownError")
+                        .Replace("{RelativePath}", relativePathForText);
+                    LogHelper.SendLog($"Error processing file '{filePath}': {ex.Message}");
                 }
             }
 
@@ -578,9 +590,10 @@ namespace SimpleModCheckerPlus.Systems
                     IssueTextHeader(modId, modName);
                     posted = true;
                 }
-                IssueList +=
-                    $"- '{relativePath.Replace("\\", "/")}' is missing from the mod folder\r\n";
-                Mod.log.Info(
+                IssueList += LocaleHelper
+                    .Translate($"{translateKey}.Issue.Missing")
+                    .Replace("{RelativePath}", $"**{relativePath.Replace("\\", "/")}**");
+                LogHelper.SendLog(
                     $"File '{relativePath}' is listed in the manifest but missing from the folder."
                 );
             }
@@ -607,7 +620,7 @@ namespace SimpleModCheckerPlus.Systems
                 }
                 catch (Exception ex)
                 {
-                    Mod.log.Info($"Error processing file '{filePath}': {ex.Message}");
+                    LogHelper.SendLog($"Error processing file '{filePath}': {ex.Message}");
                 }
             }
         }

@@ -1,8 +1,4 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using Game.Rendering.Utilities;
+﻿using Game.Rendering.Utilities;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using static Colossal.IO.AssetDatabase.AssetDatabase;

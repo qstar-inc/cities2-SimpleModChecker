@@ -1,12 +1,9 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
 using Game;
 using Game.Audio;
 using Game.Prefabs;
 using Game.SceneFlow;
+using StarQ.Shared.Extensions;
 using Unity.Entities;
 
 namespace SimpleModCheckerPlus.Systems
@@ -41,7 +38,7 @@ namespace SimpleModCheckerPlus.Systems
             }
             catch (Exception e)
             {
-                Mod.log.Info("Failed to play audio: " + e.Message);
+                LogHelper.SendLog("Failed to play audio: " + e.Message);
             }
             return true;
         }

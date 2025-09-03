@@ -1,14 +1,10 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
 using System.IO;
 using Colossal.PSI.Environment;
 using Game;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SimpleModCheckerPlus;
+using StarQ.Shared.Extensions;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -68,18 +64,18 @@ namespace SimpleModCheckerPlus.Systems
             }
             catch (Exception ex)
             {
-                Mod.log.Info(ex);
+                LogHelper.SendLog(ex);
             }
         }
 
         public void RestoreBackup()
         {
-            Mod.log.Info($"Restore backup {backupFile}");
+            LogHelper.SendLog($"Restore backup {backupFile}");
             try
             {
                 if (!File.Exists(backupFile))
                 {
-                    Mod.log.Info($"{backupFile} doesn't exist");
+                    LogHelper.SendLog($"{backupFile} doesn't exist");
                     return;
                 }
                 string jsonString = File.ReadAllText(backupFile);
@@ -88,7 +84,7 @@ namespace SimpleModCheckerPlus.Systems
                 if (jsonObject != null)
                 {
                     ProfileNames ProfileNames = jsonObject.ToObject<ProfileNames>();
-                    //Mod.log.Info(ProfileNames.Profile1);
+                    //LogHelper.SendLog(ProfileNames.Profile1);
                     if (Mod.Setting.ProfileName1 != ProfileNames.Profile1)
                         Mod.Setting.ProfileName1 = ProfileNames.Profile1;
                     if (Mod.Setting.ProfileName2 != ProfileNames.Profile2)
@@ -111,7 +107,7 @@ namespace SimpleModCheckerPlus.Systems
             }
             catch (Exception ex)
             {
-                Mod.log.Info(ex);
+                LogHelper.SendLog(ex);
             }
             ++Mod.Setting.ProfileListVersion;
         }

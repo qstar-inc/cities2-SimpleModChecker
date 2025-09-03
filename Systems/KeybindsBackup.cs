@@ -1,8 +1,4 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +9,7 @@ using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using StarQ.Shared.Extensions;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -74,12 +71,12 @@ namespace SimpleModCheckerPlus.Systems
                 }
                 else
                 {
-                    Mod.log.Info("Auto Keybind Restore failed, no Backup was found.");
+                    LogHelper.SendLog("Auto Keybind Restore failed, no Backup was found.");
                 }
             }
             else
             {
-                Mod.log.Info("Auto Restore is disabled...");
+                LogHelper.SendLog("Auto Restore is disabled...");
             }
         }
 
@@ -101,12 +98,12 @@ namespace SimpleModCheckerPlus.Systems
                 9 => backupFile9,
                 _ => backupFile1,
             };
-            Mod.log.Info($"Creating Keybinds Backup: {Path.GetFileName(backupFile)}");
+            LogHelper.SendLog($"Creating Keybinds Backup: {Path.GetFileName(backupFile)}");
             string directoryPath = Path.GetDirectoryName(backupFile);
             if (!Directory.Exists(directoryPath))
             {
                 if (log)
-                    Mod.log.Info("ModsData folder not found, creating...");
+                    LogHelper.SendLog("ModsData folder not found, creating...");
                 Directory.CreateDirectory(directoryPath);
             }
 
@@ -165,7 +162,7 @@ namespace SimpleModCheckerPlus.Systems
                         }
                         catch (Exception ex)
                         {
-                            Mod.log.Info(ex);
+                            LogHelper.SendLog(ex);
                         }
                 }
                 var GameKeybinds = GameKeybindsTemp
@@ -180,23 +177,23 @@ namespace SimpleModCheckerPlus.Systems
                 };
 
                 if (log)
-                    Mod.log.Info("Collecting Keybinds");
+                    LogHelper.SendLog("Collecting Keybinds");
                 try
                 {
                     string jsonString = JsonConvert.SerializeObject(Keybinds, Formatting.Indented);
                     File.WriteAllText(backupFile, jsonString);
-                    Mod.log.Info(
+                    LogHelper.SendLog(
                         $"Keybinds backup created successfully: {Path.GetFileName(backupFile)}"
                     );
                 }
                 catch (Exception ex)
                 {
-                    Mod.log.Info(ex);
+                    LogHelper.SendLog(ex);
                 }
             }
             catch (Exception ex)
             {
-                Mod.log.Info(ex);
+                LogHelper.SendLog(ex);
             }
         }
 
@@ -219,11 +216,14 @@ namespace SimpleModCheckerPlus.Systems
             };
             if (!File.Exists(backupFile))
             {
-                Mod.log.Error("Trying to Restore Backup, when Backup file is not found.");
+                LogHelper.SendLog(
+                    "Trying to Restore Backup, when Backup file is not found.",
+                    LogLevel.Error
+                );
                 return;
             }
 
-            Mod.log.Info($"Restoring Backup {Path.GetFileName(backupFile)}");
+            LogHelper.SendLog($"Restoring Backup {Path.GetFileName(backupFile)}");
             string jsonString = File.ReadAllText(backupFile);
 
             try
@@ -247,7 +247,7 @@ namespace SimpleModCheckerPlus.Systems
                             JArray keybindsArray = (JArray)mapEntry.Value;
 
                             if (log)
-                                Mod.log.Info($"Checking {mapName}");
+                                LogHelper.SendLog($"Checking {mapName}");
 
                             foreach (var keybind in keybindsArray)
                             {
@@ -310,7 +310,7 @@ namespace SimpleModCheckerPlus.Systems
                                                             )
                                                             .Append(newBinding.path)
                                                     );
-                                                Mod.log.Info(
+                                                LogHelper.SendLog(
                                                     $"Setting {newBinding.title} to {newBindingText}"
                                                 );
                                             }
@@ -321,28 +321,32 @@ namespace SimpleModCheckerPlus.Systems
                         }
                     }
                 }
-                //SharedSettings.instance.Apply();
-                //Mod.log.Info("Keybinds Restoration Complete...");
+
                 if (i > 0)
                 {
                     NotificationSystem.Pop(
                         "starq-smc-mod-settings-restore",
-                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                        text: LocalizedString.Id(
-                            "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreKeybinds]"
+                        title: Mod.Name,
+                        text: new LocalizedString(
+                            $"{Mod.Id}.RestoreKeybinds",
+                            null,
+                            new Dictionary<string, ILocElement>
+                            {
+                                { "Count", new LocalizedNumber<int>(i) },
+                            }
                         ),
                         delay: 5f
                     );
-                    Mod.log.Info($"Keybinds Restoration Complete... ({i} options restored)");
+                    LogHelper.SendLog($"Keybinds Restoration Complete... ({i} options restored)");
                 }
                 else
                 {
-                    Mod.log.Info("No changes found to restore Keybinds...");
+                    LogHelper.SendLog("No changes found to restore Keybinds...");
                 }
             }
             catch (Exception ex)
             {
-                Mod.log.Info($"Keybinds Restoration Failed: {ex}");
+                LogHelper.SendLog($"Keybinds Restoration Failed: {ex}");
             }
         }
     }

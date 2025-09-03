@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "Version": "3.5.0",
-    "Time": 1749125781
+    "Version": "3.6.0",
+    "Time": 1756753260
   },
   "ModDatabaseInfo": {
     "74286": {
@@ -17,7 +17,7 @@
       "FragmentSource": "MoveIt.Settings.Settings",
       "ClassType": "MoveItSettings",
       "ModName": "Move It",
-      "Author": "Quboid",
+      "Author": "yenyang",
       "Backupable": true
     },
     "74328": {
@@ -146,6 +146,14 @@
       "ClassType": "AutoDistrictNameStationsSettings",
       "ModName": "AutoDistrictNameStations",
       "Author": "Guo",
+      "Backupable": true
+    },
+    "76922": {
+      "AssemblyName": "TerraformHardening",
+      "FragmentSource": "TerraformHardening.Settings",
+      "ClassType": "TerraformHardeningSettings",
+      "ModName": "Terraform Hardening",
+      "Author": "Ciantic",
       "Backupable": true
     },
     "77171": {
@@ -290,6 +298,14 @@
       "ClassType": "TrafficSettings",
       "ModName": "Traffic",
       "Author": "krzychu124",
+      "Backupable": true
+    },
+    "80205": {
+      "AssemblyName": "HardMode",
+      "FragmentSource": "HardMode.Settings.HardModeSettings",
+      "ClassType": "HardModeSettings",
+      "ModName": "Hard Mode",
+      "Author": "TDW",
       "Backupable": true
     },
     "80403": {
@@ -439,7 +455,7 @@
     "86944": {
       "AssemblyName": "DemandMasterControl",
       "FragmentSource": "DemandMasterControl.Setting",
-      "ClassType": "DemandMasterSettings",
+      "ClassType": "DemandMasterControlSettings",
       "ModName": "Demand Master Control",
       "Author": "Qoushik",
       "Backupable": true
@@ -460,12 +476,52 @@
       "Author": "DaancingBanana",
       "Backupable": true
     },
+    "87422": {
+      "AssemblyName": "OSMExport",
+      "FragmentSource": "OSMExport.Setting",
+      "ClassType": "OSMExportSettings",
+      "ModName": "OSM Export",
+      "Author": "fergusq",
+      "Backupable": true
+    },
+    "87428": {
+      "AssemblyName": "Carto",
+      "FragmentSource": "Carto.Settings",
+      "ClassType": "CartoSettings",
+      "ModName": "Carto",
+      "Author": "Taipei Native",
+      "Backupable": true
+    },
     "87755": {
       "AssemblyName": "RWH",
       "FragmentSource": "RealisticWorkplacesAndHouseholds.Setting",
       "ClassType": "RealisticWorkplacesAndHouseholdsSettings",
       "ModName": "Realistic Workplaces And Households",
       "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "88266": {
+      "AssemblyName": "LazyPedestrians",
+      "FragmentSource": "LazyPedestrians.Settings",
+      "ClassType": "LazyPedestriansSettings",
+      "ModName": "Lazy Pedestrians",
+      "Author": "applesthepi",
+      "Backupable": true
+    },
+    "88500": {
+      "AssemblyName": "NoDeadTrees",
+      "FragmentSource": "NoDeadTrees.NoDeadTreesSetting",
+      "ClassType": "NoDeadTreesSettings",
+      "ModName": "No Dead Trees",
+      "Author": "rodrigmatrix",
+      "Backupable": true
+    },
+    "89495": {
+      "AssemblyName": "CityController",
+      "FragmentSource": "CityController.Settings.Setting",
+      "ClassType": "CityControllerSettings",
+      "ModName": "City Controller",
+      "Author": "Mbyron26",
       "Backupable": true
     },
     "90264": {
@@ -490,6 +546,22 @@
       "ClassType": "InfoLoomTwoSettings",
       "ModName": "InfoLoom",
       "Author": "Bruceyboy24804",
+      "Backupable": false
+    },
+    "92499": {
+      "AssemblyName": "IndustriesExtended",
+      "FragmentSource": "IndustriesExtended.ModSettings",
+      "ClassType": "IndustriesExtendedSettings",
+      "ModName": "Industries Extended ",
+      "Author": "Javapower",
+      "Backupable": true
+    },
+    "92908": {
+      "AssemblyName": "BelzontWE",
+      "FragmentSource": "BelzontWE.WEModData",
+      "ClassType": "WriteEverywhereSettings",
+      "ModName": "Write Everywhere",
+      "Author": "klyte45",
       "Backupable": true
     },
     "92952": {
@@ -500,12 +572,68 @@
       "Author": "Qoushik",
       "Backupable": true
     },
+    "93523": {
+      "AssemblyName": "NavigationView",
+      "FragmentSource": "NavigationView.Setting",
+      "ClassType": "NavigationViewSettings",
+      "ModName": "NavigationView (Updated for 1.3.3f1)",
+      "Author": "lpaladin",
+      "Backupable": true
+    },
+    "94762": {
+      "AssemblyName": "BuildingUse",
+      "FragmentSource": "BuildingUse.ModSettings",
+      "ClassType": "BuildingUseSettings",
+      "ModName": "Building Use",
+      "Author": "rcav8tr",
+      "Backupable": true
+    },
+    "95437": {
+      "AssemblyName": "RegionFlagIcons",
+      "FragmentSource": "RegionFlagIcons.Setting",
+      "ClassType": "RegionFlagIconsSettings",
+      "ModName": "Region Flag Icons",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "95872": {
+      "AssemblyName": "CameraFieldOfView",
+      "FragmentSource": "CameraFieldOfView.Setting",
+      "ClassType": "CameraFieldOfViewSettings",
+      "ModName": "Camera Field of View",
+      "Author": "TDW",
+      "Backupable": true
+    },
+    "96267": {
+      "AssemblyName": "NoWaterElectricity",
+      "FragmentSource": "NoWaterElectricity.Setting",
+      "ClassType": "NoWaterElectricitySettings",
+      "ModName": "NoWaterElectricity",
+      "Author": "Clmb17",
+      "Backupable": true
+    },
+    "96645": {
+      "AssemblyName": "HideBuildingNotification",
+      "FragmentSource": "HideBuildingNotification.Setting",
+      "ClassType": "HideBuildingsNotificationSettings",
+      "ModName": "HideBuildingsNotification",
+      "Author": "Clmb17",
+      "Backupable": true
+    },
     "96718": {
       "AssemblyName": "RoadWearAdjuster",
       "FragmentSource": "RoadWearAdjuster.Setting",
       "ClassType": "RoadWearAdjusterSettings",
       "ModName": "Road Wear Adjuster",
       "Author": "HX2003",
+      "Backupable": true
+    },
+    "97195": {
+      "AssemblyName": "ParkingMonitor",
+      "FragmentSource": "ParkingMonitor.Setting",
+      "ClassType": "ParkingMonitorSettings",
+      "ModName": "Parking Monitor (Beta)",
+      "Author": "mattswarthout",
       "Backupable": true
     },
     "98560": {
@@ -516,6 +644,62 @@
       "Author": "Qoushik",
       "Backupable": true
     },
+    "99048": {
+      "AssemblyName": "ResourceLocator",
+      "FragmentSource": "ResourceLocator.ModSettings",
+      "ClassType": "ResourceLocatorSettings",
+      "ModName": "Resource Locator",
+      "Author": "rcav8tr",
+      "Backupable": true
+    },
+    "102080": {
+      "AssemblyName": "CrowdedStation",
+      "FragmentSource": "CrowdedStation.ModSettings",
+      "ClassType": "CrowdedStationSettings",
+      "ModName": "Crowded Stops",
+      "Author": "Murcielagome",
+      "Backupable": true
+    },
+    "102147": {
+      "AssemblyName": "AdvancedRoadTools",
+      "FragmentSource": "AdvancedRoadTools.Setting",
+      "ClassType": "AdvancedRoadToolsSettings",
+      "ModName": "Advanced Road Tools",
+      "Author": "Kemorno",
+      "Backupable": true
+    },
+    "102892": {
+      "AssemblyName": "CameraDrag",
+      "FragmentSource": "CameraDrag.Setting",
+      "ClassType": "CameraDragSettings",
+      "ModName": "Camera Drag",
+      "Author": "pi_does_code",
+      "Backupable": true
+    },
+    "103515": {
+      "AssemblyName": "TrafficJamMaker",
+      "FragmentSource": "TrafficJamMaker.ModSettings",
+      "ClassType": "TrafficJamMonitorSettings",
+      "ModName": "Traffic Jam Monitor",
+      "Author": "Murcielagome",
+      "Backupable": true
+    },
+    "103983": {
+      "AssemblyName": "ShowMoreHappiness",
+      "FragmentSource": "ShowMoreHappiness.ModSettings",
+      "ClassType": "ShowMoreHappinessSettings",
+      "ModName": "Show More Happiness",
+      "Author": "rcav8tr",
+      "Backupable": true
+    },
+    "104707": {
+      "AssemblyName": "DetailedDescriptions",
+      "FragmentSource": "DetailedDescriptions.Setting",
+      "ClassType": "DetailedDescriptionsSettings",
+      "ModName": "Detailed Descriptions (Zone Lot Size Display)",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
     "104781": {
       "AssemblyName": "VehicleController",
       "FragmentSource": "VehicleController.Setting",
@@ -524,12 +708,116 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
+    "104818": {
+      "AssemblyName": "HomeOfHomeless",
+      "FragmentSource": "HomeOfHomeless.ModSettings",
+      "ClassType": "HomeOfHomelessSettings",
+      "ModName": "HomeOfHomeless",
+      "Author": "Murcielagome",
+      "Backupable": true
+    },
+    "105288": {
+      "AssemblyName": "AssetIconCreator",
+      "FragmentSource": "AssetIconCreator.Setting",
+      "ClassType": "AssetIconCreatorSettings",
+      "ModName": "Asset Icon Creator",
+      "Author": "TDW",
+      "Backupable": true
+    },
+    "105715": {
+      "AssemblyName": "DisableAccidents",
+      "FragmentSource": "DisableAccidents.ModSettings.Setting",
+      "ClassType": "DisableAccidentsSettings",
+      "ModName": "Disable Accidents",
+      "Author": "Azsaidi",
+      "Backupable": true
+    },
+    "105800": {
+      "AssemblyName": "EventsController",
+      "FragmentSource": "EventsController.Settings.Setting",
+      "ClassType": "EventsControllerSettings",
+      "ModName": "Events Controller",
+      "Author": "Bruceyboy24804",
+      "Backupable": true
+    },
+    "106609": {
+      "AssemblyName": "IndustryAutoTaxAdjuster",
+      "FragmentSource": "IndustryAutoTaxAdjuster.Setting",
+      "ClassType": "IndustryAutoTaxAdjusterSettings",
+      "ModName": "Industry Auto Tax Adjuster",
+      "Author": "Levengothon",
+      "Backupable": true
+    },
+    "106957": {
+      "AssemblyName": "RentMod2",
+      "FragmentSource": "RentMod2.RentModSettings",
+      "ClassType": "RentMattersAgainSettings",
+      "ModName": "Rent Matters Again",
+      "Author": "SereneLobotomy",
+      "Backupable": true
+    },
     "107487": {
       "AssemblyName": "SmartUpkeepManager",
       "FragmentSource": "SmartUpkeepManager.Setting",
       "ClassType": "SmartUpkeepManagerSettings",
       "ModName": "Smart Upkeep Manager",
       "Author": "Qoushik",
+      "Backupable": true
+    },
+    "107939": {
+      "AssemblyName": "MapExt2",
+      "FragmentSource": "MapExtPDX.ModSettings",
+      "ClassType": "MapExtSettings",
+      "ModName": "MapExt",
+      "Author": "Noel2",
+      "Backupable": true
+    },
+    "109086": {
+      "AssemblyName": "AirplaneParameterMod",
+      "FragmentSource": "AirplaneParameterMod.Setting",
+      "ClassType": "AirplaneParameterModSettings",
+      "ModName": "Airplane Parameter Mod",
+      "Author": "FireKill213",
+      "Backupable": true
+    },
+    "110245": {
+      "AssemblyName": "UrbanInequality",
+      "FragmentSource": "UrbanInequality.Setting",
+      "ClassType": "UrbanInequalitySettings",
+      "ModName": "UrbanInequality",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "112452": {
+      "AssemblyName": "ParkingPricing",
+      "FragmentSource": "ParkingPricing.ModSettings",
+      "ClassType": "ParkingPricingSettings",
+      "ModName": "Parking Pricing",
+      "Author": "ExpedientFalcon",
+      "Backupable": true
+    },
+    "113193": {
+      "AssemblyName": "BuildingUsageTracker",
+      "FragmentSource": "BuildingUsageTracker.Setting",
+      "ClassType": "BuildingUsageTrackerSettings",
+      "ModName": "En-route / Occupancy Counts",
+      "Author": "mattswarthout",
+      "Backupable": true
+    },
+    "113708": {
+      "AssemblyName": "PrefabAssetFixes",
+      "FragmentSource": "PrefabAssetFixes.Setting",
+      "ClassType": "PrefabAssetFixesSettings",
+      "ModName": "Prefab Asset Fixes",
+      "Author": "Qoushik",
+      "Backupable": true
+    },
+    "114101": {
+      "AssemblyName": "ChangeCompany",
+      "FragmentSource": "ChangeCompany.ModSettings",
+      "ClassType": "ChangeCompanySettings",
+      "ModName": "Change Company",
+      "Author": "rcav8tr",
       "Backupable": true
     }
   }

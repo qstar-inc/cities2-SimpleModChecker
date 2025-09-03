@@ -1,0 +1,23 @@
+{
+  "Options.OPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.ModsLoaded]": "",
+  "Options.OPTION_DESCRIPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.ModsLoaded]": "",
+  "Options.OPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.CodeMods]": "",
+  "Options.OPTION_DESCRIPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.CodeMods]": "",
+  "Options.OPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.PackageMods]": "",
+  "Options.OPTION_DESCRIPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.PackageMods]": "",
+  "Options.OPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.VerificationResult]": "",
+  "Options.OPTION_DESCRIPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.VerificationResult]": "",
+  "Options.OPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.ModsWithIssueLoaded]": "",
+  "Options.OPTION_DESCRIPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.ModsWithIssueLoaded]": "List of mods with issues loaded in this session.",
+  "Options.OPTION[SimpleModCheckerPlus.SimpleModCheckerPlus.Mod.Setting.AboutTheMod]": "This mod offers utility features for managing mods and various settings in Cities: Skylines II:\nFeautures\n- Mod Loaded Notification: Get a main menu notifications on startup which shows how many mod is loaded in this session. A list of assemblies can be found on the Mod List tab.\n- Auto Delete Mods with Missing CIDs: Automatically remove asset/map packages with missing Content IDs.\n- Auto Delete Corrupted Settings: In an event when the game crashes without improper disposing, the settings files for various mods or the game itself can get corrupted. Automatically delete those corrupted settings files.\n- Backup/Restore Settings: Manually backup and restore vanilla game settings and mod settings separately in 9 profiles.\n- Auto Restore Settings on Startup (Profile 1): Automatically restore vanilla game settings and supported mod settings from Profile 1 on startup after accidental resets.\n- [NEW] Backup/restore keybinds from vanilla game or any mods!\n- [NEW] Mod verification.",
+  "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]": "{SimpleModCheckerPlus.Replacement.ModName}",
+  "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMod]": "Loaded {SimpleModCheckerPlus.Replacement.CodeCount} mod.",
+  "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedMods]": "Loaded {SimpleModCheckerPlus.Replacement.CodeCount} mods.",
+  "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModAndPackage]": "Loaded {SimpleModCheckerPlus.Replacement.CodeCount} mod and {packageCount} package.",
+  "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModsAndPackage]": "Loaded {SimpleModCheckerPlus.Replacement.CodeCount} mods and {packageCount} package.",
+  "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModAndPackages]": "Loaded {SimpleModCheckerPlus.Replacement.CodeCount} mod and {packageCount} packages.",
+  "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.LoadedModsAndPackages]": "Loaded {SimpleModCheckerPlus.Replacement.CodeCount} mods and {packageCount} packages.",
+  "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.DeleteMods]": "SMC+: Found {modCount} mod(s) with missing CIDs",
+  "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.DeleteMods]": "Click here to delete and restart to prevent errors...",
+  "Menu.ERROR[SimpleModCheckerPlus.Missing_CID_Exception]": "Found {modCount} mods with missing CID with no backup:\n{modList}\nSMC+ will handle the deletion of these folders on exit. On next restart: the missing mods will be redownloaded automatically."
+}

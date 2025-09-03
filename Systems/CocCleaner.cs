@@ -1,8 +1,4 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,6 +6,7 @@ using Colossal.PSI.Environment;
 using Game;
 using Game.PSI;
 using Game.UI.Localization;
+using StarQ.Shared.Extensions;
 using UnityEngine;
 
 namespace SimpleModCheckerPlus.Systems
@@ -33,19 +30,18 @@ namespace SimpleModCheckerPlus.Systems
 
             if (CanDelete.Count > 0)
             {
+                string notifPrefix = $"{Mod.Id}.CocCleaner";
                 NotificationSystem.Push(
                     "starq-smc-coc-check",
                     title: new LocalizedString(
-                        "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.CocChecker]",
+                        $"{notifPrefix}.Title",
                         null,
                         new Dictionary<string, ILocElement>
                         {
-                            { "fileCount", LocalizedString.Value(CanDelete.Count.ToString()) },
+                            { "FileCount", LocalizedString.Value(CanDelete.Count.ToString()) },
                         }
                     ),
-                    text: LocalizedString.Id(
-                        "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.CocChecker]"
-                    ),
+                    text: LocalizedString.Id($"{notifPrefix}.Desc"),
                     onClicked: () =>
                     {
                         DeleteFolders("Click");
@@ -60,7 +56,7 @@ namespace SimpleModCheckerPlus.Systems
             for (int i = CanDelete.Count - 1; i >= 0; i--)
             {
                 File.Delete(CanDelete[i]);
-                Mod.log.Info($"Deleted {CanDelete[i]}");
+                LogHelper.SendLog($"Deleted {CanDelete[i]}");
                 CanDelete.RemoveAt(i);
             }
 
@@ -131,28 +127,28 @@ namespace SimpleModCheckerPlus.Systems
                                 && string.IsNullOrEmpty(lastLine)
                             )
                             {
-                                Mod.log.Info($"{file} looks empty");
+                                LogHelper.SendLog($"{file} looks empty");
                                 deleteables.Add(file);
                             }
                             else if (firstLine == null || secondLine != "{" || lastLine != "}")
                             {
-                                Mod.log.Info($"{file} doesn't look right");
+                                LogHelper.SendLog($"{file} doesn't look right");
                                 deleteables.Add(file);
                             }
                             else if (!IsLegibleText(firstLine + secondLine + lastLine))
                             {
-                                Mod.log.Info($"{file} is eligible");
+                                LogHelper.SendLog($"{file} is eligible");
                                 deleteables.Add(file);
                             }
                         }
                         catch (Exception ex)
                         {
-                            Mod.log.Info($"Error processing file {file}: {ex.Message}");
+                            LogHelper.SendLog($"Error processing file {file}: {ex.Message}");
                         }
                     }
                     else
                     {
-                        Mod.log.Info($"File inaccessible: {file}");
+                        LogHelper.SendLog($"File inaccessible: {file}");
                     }
                 }
 
@@ -163,11 +159,11 @@ namespace SimpleModCheckerPlus.Systems
             }
             catch (UnauthorizedAccessException e)
             {
-                Mod.log.Error($"Access denied to {currentPath}: {e.Message}");
+                LogHelper.SendLog($"Access denied to {currentPath}: {e.Message}", LogLevel.Error);
             }
             catch (Exception e)
             {
-                Mod.log.Error($"Error processing {currentPath}: {e.Message}");
+                LogHelper.SendLog($"Error processing {currentPath}: {e.Message}", LogLevel.Error);
             }
         }
 

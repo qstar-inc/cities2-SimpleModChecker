@@ -1,3 +1,11 @@
+# 3.6.1 ()
+- Removed deprecated options from "Asset Packs Manager", "Find It", "Realistic Trips", "Water Features".
+
+# 3.6.0 (2025-09-02) - 17810 subs
+- Added "Terraform Hardening", "Hard Mode", "OSM Export", "Carto", "Lazy Pedestrians", "No Dead Trees", "City Controller", "Industries Extended ", "Write Everywhere", "NavigationView", "Building Use", "Region Flag Icons", "Camera Field of View", "NoWaterElectricity", "HideBuildingsNotification", "Parking Monitor", "Resource Locator", "Crowded Stops", "Advanced Road Tools", "Camera Drag", "Traffic Jam Monitor", "Show More Happiness", "Detailed Descriptions", "HomeOfHomeless", "Asset Icon Creator", "Disable Accidents", "Events Controller", "Industry Auto Tax Adjuster", "Rent Matters Again", "MapExt", "Airplane Parameter Mod", "UrbanInequality", "Parking Pricing", "En-route / Occupancy Counts", "Prefab Asset Fixes", "Change Company".
+- Disabled "InfoLoomTwo".
+- Added buttons to re-sort loaded list.
+
 # 3.5.1 (2025-06-14) - 14298 subs
 - Compatibility update for updated mods after 1.3.3f1.
 

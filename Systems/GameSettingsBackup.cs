@@ -1,8 +1,4 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using Colossal.PSI.Common;
@@ -13,6 +9,7 @@ using Game.Settings;
 using Game.UI.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using StarQ.Shared.Extensions;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -83,7 +80,7 @@ namespace SimpleModCheckerPlus.Systems
                         }
                         catch (Exception ex)
                         {
-                            Mod.log.Info(ex);
+                            LogHelper.SendLog(ex);
                         }
                     }
                     CreateBackup(0, false);
@@ -93,17 +90,17 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     else
                     {
-                        Mod.log.Info("Nothing to restore");
+                        LogHelper.SendLog("Nothing to restore");
                     }
                 }
                 else
                 {
-                    Mod.log.Info("Auto Restore failed, no Backup was found.");
+                    LogHelper.SendLog("Auto Restore failed, no Backup was found.");
                 }
             }
             else
             {
-                Mod.log.Info("Auto Restore is disabled...");
+                LogHelper.SendLog("Auto Restore is disabled...");
             }
         }
 
@@ -111,20 +108,11 @@ namespace SimpleModCheckerPlus.Systems
 
         private void SendGameUpdateNotification(string current, string prev)
         {
-            //var validVersions = new HashSet<string> { "2.2.4", "2.2.5", "2.2.6", "2.2.7" };
-            //if (validVersions.Contains(current) && (prev == "2.2.3" || validVersions.Contains(prev)))
-            //{
-            //    return;
-            //}
-            Mod.log.Info($"Game version mismatch. Current: {current}, Backup: {prev}");
+            LogHelper.SendLog($"Game version mismatch. Current: {current}, Backup: {prev}");
             NotificationSystem.Push(
                 "starq-smc-game-settings-update",
-                title: LocalizedString.Id(
-                    "Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus.MakeGameBackup]"
-                ),
-                text: LocalizedString.Id(
-                    "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.MakeGameBackup]"
-                ),
+                title: LocalizedString.Id("SimpleModCheckerPlus.MakeGameBackup.Title"),
+                text: LocalizedString.Id("SimpleModCheckerPlus.MakeGameBackup.Desc"),
                 progressState: ProgressState.Warning,
                 onClicked: () => CreateBackup(1)
             );
@@ -137,9 +125,7 @@ namespace SimpleModCheckerPlus.Systems
                 NotificationSystem.Pop(
                     "starq-smc-game-settings-update",
                     delay: 1f,
-                    text: LocalizedString.Id(
-                        "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.Working]"
-                    )
+                    text: LocalizedString.Id("SimpleModCheckerPlus.Working")
                 );
             }
             string backupFile = profile switch
@@ -156,12 +142,12 @@ namespace SimpleModCheckerPlus.Systems
                 9 => backupFile9,
                 _ => backupFile1,
             };
-            Mod.log.Info($"Creating Game Settings Backup: {Path.GetFileName(backupFile)}");
+            LogHelper.SendLog($"Creating Game Settings Backup: {Path.GetFileName(backupFile)}");
             string directoryPath = Path.GetDirectoryName(backupFile);
             if (!Directory.Exists(directoryPath))
             {
                 if (log)
-                    Mod.log.Info("ModsData folder not found, creating...");
+                    LogHelper.SendLog("ModsData folder not found, creating...");
                 Directory.CreateDirectory(directoryPath);
             }
             var GameAudioSettings = new GameAudioSettings
@@ -180,7 +166,7 @@ namespace SimpleModCheckerPlus.Systems
                 ClipMemoryBudget = SharedSettings.instance.audio.clipMemoryBudget,
             };
             if (log)
-                Mod.log.Info("Collecting GameAudioSettings");
+                LogHelper.SendLog("Collecting GameAudioSettings");
             var GameEditorSettings = new GameEditorSettings
             {
                 AssetPickerColumnCount = SharedSettings.instance.editor.assetPickerColumnCount,
@@ -201,7 +187,7 @@ namespace SimpleModCheckerPlus.Systems
                     .lastSelectedImportDirectory,
             };
             if (log)
-                Mod.log.Info("Collecting GameEditorSettings");
+                LogHelper.SendLog("Collecting GameEditorSettings");
             var GameGameplaySettings = new GameGameplaySettings
             {
                 EdgeScrolling = SharedSettings.instance.gameplay.edgeScrolling,
@@ -211,7 +197,7 @@ namespace SimpleModCheckerPlus.Systems
                 ShowTutorials = SharedSettings.instance.gameplay.showTutorials,
             };
             if (log)
-                Mod.log.Info("Collecting GameGameplaySettings");
+                LogHelper.SendLog("Collecting GameGameplaySettings");
             var GameGeneralSettings = new GameGeneralSettings
             {
                 AssetDatabaseAutoReloadMode = SharedSettings
@@ -226,7 +212,7 @@ namespace SimpleModCheckerPlus.Systems
                 AllowOptionalTelemetry = SharedSettings.instance.general.allowOptionalTelemetry,
             };
             if (log)
-                Mod.log.Info("Collecting GameGeneralSettings");
+                LogHelper.SendLog("Collecting GameGeneralSettings");
             var GameDynamicResolutionQualitySettings = new GameDynamicResolutionQualitySettings
             {
                 Enabled = SharedSettings
@@ -243,7 +229,7 @@ namespace SimpleModCheckerPlus.Systems
                     .minScale,
             };
             if (log)
-                Mod.log.Info("Collecting GameDynamicResolutionQualitySettings");
+                LogHelper.SendLog("Collecting GameDynamicResolutionQualitySettings");
             var GameAntiAliasingQualitySettings = new GameAntiAliasingQualitySettings
             {
                 AntiAliasingMethod = SharedSettings
@@ -257,7 +243,7 @@ namespace SimpleModCheckerPlus.Systems
                     .outlinesMSAA,
             };
             if (log)
-                Mod.log.Info("Collecting GameAntiAliasingQualitySettings");
+                LogHelper.SendLog("Collecting GameAntiAliasingQualitySettings");
             var GameCloudsQualitySettings = new GameCloudsQualitySettings
             {
                 VolumetricCloudsEnabled = SharedSettings
@@ -274,7 +260,7 @@ namespace SimpleModCheckerPlus.Systems
                     .distanceCloudsShadows,
             };
             if (log)
-                Mod.log.Info("Collecting GameCloudsQualitySettings");
+                LogHelper.SendLog("Collecting GameCloudsQualitySettings");
             var GameFogQualitySettings = new GameFogQualitySettings
             {
                 Enabled = SharedSettings
@@ -282,7 +268,7 @@ namespace SimpleModCheckerPlus.Systems
                     .enabled,
             };
             if (log)
-                Mod.log.Info("Collecting GameFogQualitySettings");
+                LogHelper.SendLog("Collecting GameFogQualitySettings");
             var GameVolumetricsQualitySettings = new GameVolumetricsQualitySettings
             {
                 Enabled = SharedSettings
@@ -296,7 +282,7 @@ namespace SimpleModCheckerPlus.Systems
                     .resolutionDepthRatio,
             };
             if (log)
-                Mod.log.Info("Collecting GameVolumetricsQualitySettings");
+                LogHelper.SendLog("Collecting GameVolumetricsQualitySettings");
             var GameAmbientOcclustionQualitySettings = new GameAmbientOcclustionQualitySettings
             {
                 Enabled = SharedSettings
@@ -313,7 +299,7 @@ namespace SimpleModCheckerPlus.Systems
                     .stepCount,
             };
             if (log)
-                Mod.log.Info("Collecting GameAmbientOcclustionQualitySettings");
+                LogHelper.SendLog("Collecting GameAmbientOcclustionQualitySettings");
             var GameIlluminationQualitySettings = new GameIlluminationQualitySettings
             {
                 Enabled = SharedSettings
@@ -339,7 +325,7 @@ namespace SimpleModCheckerPlus.Systems
                     .depthBufferThickness,
             };
             if (log)
-                Mod.log.Info("Collecting GameIlluminationQualitySettings");
+                LogHelper.SendLog("Collecting GameIlluminationQualitySettings");
             var GameReflectionQualitySettings = new GameReflectionQualitySettings
             {
                 Enabled = SharedSettings
@@ -353,7 +339,7 @@ namespace SimpleModCheckerPlus.Systems
                     .maxRaySteps,
             };
             if (log)
-                Mod.log.Info("Collecting GameReflectionQualitySettings");
+                LogHelper.SendLog("Collecting GameReflectionQualitySettings");
             var GameDepthOfFieldQualitySettings = new GameDepthOfFieldQualitySettings
             {
                 Enabled = SharedSettings
@@ -379,7 +365,7 @@ namespace SimpleModCheckerPlus.Systems
                     .highQualityFiltering,
             };
             if (log)
-                Mod.log.Info("Collecting GameDepthOfFieldQualitySettings");
+                LogHelper.SendLog("Collecting GameDepthOfFieldQualitySettings");
             var GameMotionBlurQualitySettings = new GameMotionBlurQualitySettings
             {
                 Enabled = SharedSettings
@@ -390,7 +376,7 @@ namespace SimpleModCheckerPlus.Systems
                     .sampleCount,
             };
             if (log)
-                Mod.log.Info("Collecting GameMotionBlurQualitySettings");
+                LogHelper.SendLog("Collecting GameMotionBlurQualitySettings");
             var GameShadowsQualitySettings = new GameShadowsQualitySettings
             {
                 Enabled = SharedSettings
@@ -410,7 +396,7 @@ namespace SimpleModCheckerPlus.Systems
                     .shadowCullingThresholdVolume,
             };
             if (log)
-                Mod.log.Info("Collecting GameShadowsQualitySettings");
+                LogHelper.SendLog("Collecting GameShadowsQualitySettings");
             var GameTerrainQualitySettings = new GameTerrainQualitySettings
             {
                 FinalTessellation = SharedSettings
@@ -421,7 +407,7 @@ namespace SimpleModCheckerPlus.Systems
                     .targetPatchSize,
             };
             if (log)
-                Mod.log.Info("Collecting GameTerrainQualitySettings");
+                LogHelper.SendLog("Collecting GameTerrainQualitySettings");
             var GameWaterQualitySettings = new GameWaterQualitySettings
             {
                 Waterflow = SharedSettings
@@ -438,7 +424,7 @@ namespace SimpleModCheckerPlus.Systems
                     .tessellationFactorFadeRange,
             };
             if (log)
-                Mod.log.Info("Collecting GameWaterQualitySettings");
+                LogHelper.SendLog("Collecting GameWaterQualitySettings");
             var GameLevelOfDetailQualitySettings = new GameLevelOfDetailQualitySettings
             {
                 LevelOfDetail = SharedSettings
@@ -458,7 +444,7 @@ namespace SimpleModCheckerPlus.Systems
                     .strictMeshMemory,
             };
             if (log)
-                Mod.log.Info("Collecting GameLevelOfDetailQualitySettings");
+                LogHelper.SendLog("Collecting GameLevelOfDetailQualitySettings");
             var GameAnimationQualitySetting = new GameAnimationQualitySetting
             {
                 MaxBoneInfuence = SharedSettings
@@ -466,7 +452,7 @@ namespace SimpleModCheckerPlus.Systems
                     .maxBoneInfuence,
             };
             if (log)
-                Mod.log.Info("Collecting GameAnimationQualitySetting");
+                LogHelper.SendLog("Collecting GameAnimationQualitySetting");
             var GameTextureQualitySettings = new GameTextureQualitySettings
             {
                 Mipbias = SharedSettings
@@ -477,7 +463,7 @@ namespace SimpleModCheckerPlus.Systems
                     .filterMode,
             };
             if (log)
-                Mod.log.Info("Collecting GameTextureQualitySettings");
+                LogHelper.SendLog("Collecting GameTextureQualitySettings");
             var GameQualitySettings = new GameQualitySettings()
             {
                 GameDynamicResolutionQualitySettings = GameDynamicResolutionQualitySettings,
@@ -498,7 +484,7 @@ namespace SimpleModCheckerPlus.Systems
                 GameTextureQualitySettings = GameTextureQualitySettings,
             };
             if (log)
-                Mod.log.Info("Collecting GameQualitySettings");
+                LogHelper.SendLog("Collecting GameQualitySettings");
             var GameGraphicsSettings = new GameGraphicsSettings()
             {
                 DisplayIndex = SharedSettings.instance.graphics.displayIndex,
@@ -515,7 +501,7 @@ namespace SimpleModCheckerPlus.Systems
                 GameQualitySettings = GameQualitySettings,
             };
             if (log)
-                Mod.log.Info("Collecting GameGraphicsSettings");
+                LogHelper.SendLog("Collecting GameGraphicsSettings");
             var GameInputSettings = new GameInputSettings
             {
                 ElevationDraggingEnabled = SharedSettings.instance.input.elevationDraggingEnabled,
@@ -535,7 +521,7 @@ namespace SimpleModCheckerPlus.Systems
                 GamepadInvertY = SharedSettings.instance.input.gamepadInvertY,
             };
             if (log)
-                Mod.log.Info("Collecting GameInputSettings");
+                LogHelper.SendLog("Collecting GameInputSettings");
             var GameInterfaceSettings = new GameInterfaceSettings
             {
                 CurrentLocale = SharedSettings.instance.userInterface.currentLocale,
@@ -556,7 +542,7 @@ namespace SimpleModCheckerPlus.Systems
                 BlockingPopupsEnabled = SharedSettings.instance.userInterface.blockingPopupsEnabled,
             };
             if (log)
-                Mod.log.Info("Collecting GameInterfaceSettings");
+                LogHelper.SendLog("Collecting GameInterfaceSettings");
             var GameUserState = new GameUserState
             {
                 LastCloudTarget = SharedSettings.instance.userState.lastCloudTarget,
@@ -567,7 +553,7 @@ namespace SimpleModCheckerPlus.Systems
                 UnlockMapTiles = SharedSettings.instance.userState.unlockMapTiles,
             };
             if (log)
-                Mod.log.Info("Collecting GameUserState");
+                LogHelper.SendLog("Collecting GameUserState");
             var GameSettings = new GameSettings
             {
                 GameVersion = Game.Version.current.version,
@@ -582,18 +568,18 @@ namespace SimpleModCheckerPlus.Systems
                 GameUserState = GameUserState,
             };
             if (log)
-                Mod.log.Info("Collecting GameSettings");
+                LogHelper.SendLog("Collecting GameSettings");
             try
             {
                 string jsonString = JsonConvert.SerializeObject(GameSettings, Formatting.Indented);
                 File.WriteAllText(backupFile, jsonString);
-                Mod.log.Info(
+                LogHelper.SendLog(
                     $"Game Settings backup created successfully: {Path.GetFileName(backupFile)}"
                 );
             }
             catch (Exception ex)
             {
-                Mod.log.Info(ex);
+                LogHelper.SendLog(ex);
             }
         }
 
@@ -616,11 +602,14 @@ namespace SimpleModCheckerPlus.Systems
             };
             if (!File.Exists(backupFile))
             {
-                Mod.log.Error("Trying to Restore Backup, when Backup file is not found.");
+                LogHelper.SendLog(
+                    "Trying to Restore Backup, when Backup file is not found.",
+                    LogLevel.Error
+                );
                 return;
             }
 
-            Mod.log.Info($"Restoring Backup {Path.GetFileName(backupFile)}");
+            LogHelper.SendLog($"Restoring Backup {Path.GetFileName(backupFile)}");
             string jsonString = File.ReadAllText(backupFile);
 
             try
@@ -639,7 +628,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.masterVolume'=> '{GameAudioSettings.MasterVolume}'"
                             );
                         SharedSettings.instance.audio.masterVolume = GameAudioSettings.MasterVolume;
@@ -651,7 +640,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.uiVolume'=> '{GameAudioSettings.UiVolume}'"
                             );
                         SharedSettings.instance.audio.uiVolume = GameAudioSettings.UiVolume;
@@ -663,7 +652,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.menuVolume'=> '{GameAudioSettings.MenuVolume}'"
                             );
                         SharedSettings.instance.audio.menuVolume = GameAudioSettings.MenuVolume;
@@ -676,7 +665,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.ingameVolume'=> '{GameAudioSettings.IngameVolume}'"
                             );
                         SharedSettings.instance.audio.ingameVolume = GameAudioSettings.IngameVolume;
@@ -689,7 +678,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.radioActive'=> '{GameAudioSettings.RadioActive}'"
                             );
                         SharedSettings.instance.audio.radioActive = GameAudioSettings.RadioActive;
@@ -702,7 +691,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.radioVolume'=> '{GameAudioSettings.RadioVolume}'"
                             );
                         SharedSettings.instance.audio.radioVolume = GameAudioSettings.RadioVolume;
@@ -715,7 +704,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.ambienceVolume'=> '{GameAudioSettings.AmbienceVolume}'"
                             );
                         SharedSettings.instance.audio.ambienceVolume =
@@ -729,7 +718,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.disastersVolume'=> '{GameAudioSettings.DisastersVolume}'"
                             );
                         SharedSettings.instance.audio.disastersVolume =
@@ -743,7 +732,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.worldVolume'=> '{GameAudioSettings.WorldVolume}'"
                             );
                         SharedSettings.instance.audio.worldVolume = GameAudioSettings.WorldVolume;
@@ -756,7 +745,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.audioGroupsVolume'=> '{GameAudioSettings.AudioGroupsVolume}'"
                             );
                         SharedSettings.instance.audio.audioGroupsVolume =
@@ -770,7 +759,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.serviceBuildingsVolume'=> '{GameAudioSettings.ServiceBuildingsVolume}'"
                             );
                         SharedSettings.instance.audio.serviceBuildingsVolume =
@@ -784,7 +773,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'audio.clipMemoryBudget'=> '{GameAudioSettings.ClipMemoryBudget}'"
                             );
                         SharedSettings.instance.audio.clipMemoryBudget =
@@ -804,7 +793,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'editor.assetPickerColumnCount'=> '{GameEditorSettings.AssetPickerColumnCount}'"
                             );
                         SharedSettings.instance.editor.assetPickerColumnCount =
@@ -818,7 +807,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'editor.inspectorWidth'=> '{GameEditorSettings.InspectorWidth}'"
                             );
                         SharedSettings.instance.editor.inspectorWidth =
@@ -832,7 +821,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'editor.hierarchyWidth'=> '{GameEditorSettings.HierarchyWidth}'"
                             );
                         SharedSettings.instance.editor.hierarchyWidth =
@@ -846,7 +835,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'editor.useParallelImport'=> '{GameEditorSettings.UseParallelImport}'"
                             );
                         SharedSettings.instance.editor.useParallelImport =
@@ -860,7 +849,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'editor.lowQualityTextureCompression'=> '{GameEditorSettings.LowQualityTextureCompression}'"
                             );
                         SharedSettings.instance.editor.lowQualityTextureCompression =
@@ -874,7 +863,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'editor.lastSelectedProjectRootDirectory'=> '{GameEditorSettings.LastSelectedProjectRootDirectory}'"
                             );
                         SharedSettings.instance.editor.lastSelectedProjectRootDirectory =
@@ -888,7 +877,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'editor.lastSelectedImportDirectory'=> '{GameEditorSettings.LastSelectedImportDirectory}'"
                             );
                         SharedSettings.instance.editor.lastSelectedImportDirectory =
@@ -908,7 +897,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'gameplay.edgeScrolling'=> '{GameGameplaySettings.EdgeScrolling}'"
                             );
                         SharedSettings.instance.gameplay.edgeScrolling =
@@ -922,7 +911,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'gameplay.edgeScrollingSensitivity'=> '{GameGameplaySettings.EdgeScrollSensivity}'"
                             );
                         SharedSettings.instance.gameplay.edgeScrollingSensitivity =
@@ -936,7 +925,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'gameplay.dayNightVisual'=> '{GameGameplaySettings.DayNightVisual}'"
                             );
                         SharedSettings.instance.gameplay.dayNightVisual =
@@ -950,7 +939,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'gameplay.pausedAfterLoading'=> '{GameGameplaySettings.PausedAfterLoading}'"
                             );
                         SharedSettings.instance.gameplay.pausedAfterLoading =
@@ -964,7 +953,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'gameplay.showTutorials'=> '{GameGameplaySettings.ShowTutorials}'"
                             );
                         SharedSettings.instance.gameplay.showTutorials =
@@ -984,7 +973,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'general.assetDatabaseAutoReloadMode'=> '{GameGeneralSettings.AssetDatabaseAutoReloadMode}'"
                             );
                         SharedSettings.instance.general.assetDatabaseAutoReloadMode =
@@ -998,7 +987,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'general.performancePreference'=> '{GameGeneralSettings.PerformancePreference}'"
                             );
                         SharedSettings.instance.general.performancePreference =
@@ -1011,7 +1000,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'general.fpsMode'=> '{GameGeneralSettings.FpsMode}'"
                             );
                         SharedSettings.instance.general.fpsMode = GameGeneralSettings.FpsMode;
@@ -1023,7 +1012,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'general.autoSave'=> '{GameGeneralSettings.AutoSave}'"
                             );
                         SharedSettings.instance.general.autoSave = GameGeneralSettings.AutoSave;
@@ -1036,7 +1025,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'general.autoSaveInterval'=> '{GameGeneralSettings.AutoSaveInterval}'"
                             );
                         SharedSettings.instance.general.autoSaveInterval =
@@ -1050,7 +1039,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'general.autoSaveCount'=> '{GameGeneralSettings.AutoSaveCount}'"
                             );
                         SharedSettings.instance.general.autoSaveCount =
@@ -1064,7 +1053,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'general.allowOptionalTelemetry'=> '{GameGeneralSettings.AllowOptionalTelemetry}'"
                             );
                         SharedSettings.instance.general.allowOptionalTelemetry =
@@ -1084,7 +1073,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.displayIndex'=> '{GameGraphicsSettings.DisplayIndex}'"
                             );
                         SharedSettings.instance.graphics.displayIndex =
@@ -1097,7 +1086,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.vSync'=> '{GameGraphicsSettings.VSync}'"
                             );
                         SharedSettings.instance.graphics.vSync = GameGraphicsSettings.VSync;
@@ -1110,7 +1099,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.maxFrameLatency'=> '{GameGraphicsSettings.MaxFrameLatency}'"
                             );
                         SharedSettings.instance.graphics.maxFrameLatency =
@@ -1124,7 +1113,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.cursorMode'=> '{GameGraphicsSettings.CursorMode}'"
                             );
                         SharedSettings.instance.graphics.cursorMode =
@@ -1138,7 +1127,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.depthOfFieldMode'=> '{GameGraphicsSettings.DepthOfFieldMode}'"
                             );
                         SharedSettings.instance.graphics.depthOfFieldMode =
@@ -1152,7 +1141,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.tiltShiftNearStart'=> '{GameGraphicsSettings.TiltShiftNearStart}'"
                             );
                         SharedSettings.instance.graphics.tiltShiftNearStart =
@@ -1166,7 +1155,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.tiltShiftNearEnd'=> '{GameGraphicsSettings.TiltShiftNearEnd}'"
                             );
                         SharedSettings.instance.graphics.tiltShiftNearEnd =
@@ -1180,7 +1169,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.tiltShiftFarStart'=> '{GameGraphicsSettings.TiltShiftFarStart}'"
                             );
                         SharedSettings.instance.graphics.tiltShiftFarStart =
@@ -1194,7 +1183,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.tiltShiftFarEnd'=> '{GameGraphicsSettings.TiltShiftFarEnd}'"
                             );
                         SharedSettings.instance.graphics.tiltShiftFarEnd =
@@ -1208,7 +1197,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'graphics.dlssQuality'=> '{GameGraphicsSettings.DlssQuality}'"
                             );
                         SharedSettings.instance.graphics.dlssQuality =
@@ -1216,7 +1205,7 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     //if (jsonObject["GameGraphicsSettings"]["Fsr2Quality"] != null)
                     //{
-                    //    if (log) Mod.log.Info($"Restoring 'graphics.fsr2Quality'=> '{GameGraphicsSettings.Fsr2Quality}'");
+                    //    if (log) LogHelper.SendLog($"Restoring 'graphics.fsr2Quality'=> '{GameGraphicsSettings.Fsr2Quality}'");
                     //    SharedSettings.instance.graphics.fsr2Quality = GameGraphicsSettings.Fsr2Quality;
                     //}
                     if (jsonObject["GameGraphicsSettings"]["GameQualitySettings"] != null)
@@ -1307,7 +1296,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DynamicResolutionScaleSettings>().enabled'=> '{GameDynamicResolutionQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -1325,7 +1314,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DynamicResolutionScaleSettings>().isAdaptive'=> '{GameDynamicResolutionQualitySettings.IsAdaptive}'"
                                 );
                             SharedSettings
@@ -1343,7 +1332,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DynamicResolutionScaleSettings>().upscaleFilter'=> '{GameDynamicResolutionQualitySettings.UpscaleFilter}'"
                                 );
                             SharedSettings
@@ -1361,7 +1350,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DynamicResolutionScaleSettings>().minScale'=> '{GameDynamicResolutionQualitySettings.MinScale}'"
                                 );
                             SharedSettings
@@ -1380,7 +1369,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<AntiAliasingQualitySettings>().antiAliasingMethod'=> '{GameAntiAliasingQualitySettings.AntiAliasingMethod}'"
                                 );
                             SharedSettings
@@ -1399,7 +1388,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<AntiAliasingQualitySettings>().smaaQuality'=> '{GameAntiAliasingQualitySettings.SmaaQuality}'"
                                 );
                             SharedSettings
@@ -1417,7 +1406,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<AntiAliasingQualitySettings>().outlinesMSAA'=> '{GameAntiAliasingQualitySettings.OutlinesMSAA}'"
                                 );
                             SharedSettings
@@ -1436,7 +1425,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<CloudsQualitySettings>().volumetricCloudsEnabled'=> '{GameCloudsQualitySettings.VolumetricCloudsEnabled}'"
                                 );
                             SharedSettings
@@ -1456,7 +1445,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<CloudsQualitySettings>().distanceCloudsEnabled'=> '{GameCloudsQualitySettings.DistanceCloudsEnabled}'"
                                 );
                             SharedSettings
@@ -1476,7 +1465,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<CloudsQualitySettings>().volumetricCloudsShadows'=> '{GameCloudsQualitySettings.VolumetricCloudsShadows}'"
                                 );
                             SharedSettings
@@ -1496,7 +1485,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<CloudsQualitySettings>().distanceCloudsShadows'=> '{GameCloudsQualitySettings.DistanceCloudsShadows}'"
                                 );
                             SharedSettings
@@ -1515,7 +1504,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<FogQualitySettings>().enabled'=> '{GameFogQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -1533,7 +1522,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<VolumetricsQualitySettings>().enabled'=> '{GameVolumetricsQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -1551,7 +1540,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<VolumetricsQualitySettings>().budget'=> '{GameVolumetricsQualitySettings.Budget}'"
                                 );
                             SharedSettings
@@ -1570,7 +1559,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<VolumetricsQualitySettings>().resolutionDepthRatio'=> '{GameVolumetricsQualitySettings.ResolutionDepthRatio}'"
                                 );
                             SharedSettings
@@ -1589,7 +1578,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSAOQualitySettings>().enabled'=> '{GameAmbientOcclustionQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -1608,7 +1597,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSAOQualitySettings>().maxPixelRadius'=> '{GameAmbientOcclustionQualitySettings.MaxPixelRadius}'"
                                 );
                             SharedSettings
@@ -1627,7 +1616,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSAOQualitySettings>().fullscreen'=> '{GameAmbientOcclustionQualitySettings.Fullscreen}'"
                                 );
                             SharedSettings
@@ -1645,7 +1634,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSAOQualitySettings>().stepCount'=> '{GameAmbientOcclustionQualitySettings.StepCount}'"
                                 );
                             SharedSettings
@@ -1663,7 +1652,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().enabled'=> '{GameIlluminationQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -1681,7 +1670,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().fullscreen'=> '{GameIlluminationQualitySettings.Fullscreen}'"
                                 );
                             SharedSettings
@@ -1699,7 +1688,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().raySteps'=> '{GameIlluminationQualitySettings.RaySteps}'"
                                 );
                             SharedSettings
@@ -1717,7 +1706,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().denoiserRadius'=> '{GameIlluminationQualitySettings.DenoiserRadius}'"
                                 );
                             SharedSettings
@@ -1736,7 +1725,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().halfResolutionPass'=> '{GameIlluminationQualitySettings.HalfResolutionPass}'"
                                 );
                             SharedSettings
@@ -1756,7 +1745,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().secondDenoiserPass'=> '{GameIlluminationQualitySettings.SecondDenoiserPass}'"
                                 );
                             SharedSettings
@@ -1776,7 +1765,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSGIQualitySettings>().depthBufferThickness'=> '{GameIlluminationQualitySettings.DepthBufferThickness}'"
                                 );
                             SharedSettings
@@ -1795,7 +1784,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSRQualitySettings>().enabled'=> '{GameReflectionQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -1814,7 +1803,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSRQualitySettings>().enabledTransparent'=> '{GameReflectionQualitySettings.EnabledTransparent}'"
                                 );
                             SharedSettings
@@ -1833,7 +1822,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<SSRQualitySettings>().maxRaySteps'=> '{GameReflectionQualitySettings.MaxRaySteps}'"
                                 );
                             SharedSettings
@@ -1851,7 +1840,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().enabled'=> '{GameDepthOfFieldQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -1869,7 +1858,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().nearSampleCount'=> '{GameDepthOfFieldQualitySettings.NearSampleCount}'"
                                 );
                             SharedSettings
@@ -1887,7 +1876,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().nearMaxRadius'=> '{GameDepthOfFieldQualitySettings.NearMaxRadius}'"
                                 );
                             SharedSettings
@@ -1905,7 +1894,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().farSampleCount'=> '{GameDepthOfFieldQualitySettings.FarSampleCount}'"
                                 );
                             SharedSettings
@@ -1923,7 +1912,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().farMaxRadius'=> '{GameDepthOfFieldQualitySettings.FarMaxRadius}'"
                                 );
                             SharedSettings
@@ -1941,7 +1930,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().resolution'=> '{GameDepthOfFieldQualitySettings.Resolution}'"
                                 );
                             SharedSettings
@@ -1960,7 +1949,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<DepthOfFieldQualitySettings>().highQualityFiltering'=> '{GameDepthOfFieldQualitySettings.HighQualityFiltering}'"
                                 );
                             SharedSettings
@@ -1979,7 +1968,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<MotionBlurQualitySettings>().enabled'=> '{GameMotionBlurQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -1997,7 +1986,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<MotionBlurQualitySettings>().sampleCount'=> '{GameMotionBlurQualitySettings.SampleCount}'"
                                 );
                             SharedSettings
@@ -2015,7 +2004,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().enabled'=> '{GameShadowsQualitySettings.Enabled}'"
                                 );
                             SharedSettings
@@ -2033,7 +2022,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().terrainCastShadows'=> '{GameShadowsQualitySettings.TerrainCastShadows}'"
                                 );
                             SharedSettings
@@ -2052,7 +2041,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().directionalShadowResolution'=> '{GameShadowsQualitySettings.DirectionalShadowResolution}'"
                                 );
                             SharedSettings
@@ -2072,7 +2061,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().shadowCullingThresholdHeight'=> '{GameShadowsQualitySettings.ShadowCullingThresholdHeight}'"
                                 );
                             SharedSettings
@@ -2092,7 +2081,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<ShadowsQualitySettings>().shadowCullingThresholdVolume'=> '{GameShadowsQualitySettings.ShadowCullingThresholdVolume}'"
                                 );
                             SharedSettings
@@ -2111,7 +2100,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<TerrainQualitySettings>().finalTessellation'=> '{GameTerrainQualitySettings.FinalTessellation}'"
                                 );
                             SharedSettings
@@ -2129,7 +2118,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<TerrainQualitySettings>().targetPatchSize'=> '{GameTerrainQualitySettings.TargetPatchSize}'"
                                 );
                             SharedSettings
@@ -2147,7 +2136,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<WaterQualitySettings>().waterflow'=> '{GameWaterQualitySettings.Waterflow}'"
                                 );
                             SharedSettings
@@ -2166,7 +2155,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<WaterQualitySettings>().maxTessellationFactor'=> '{GameWaterQualitySettings.MaxTessellationFactor}'"
                                 );
                             SharedSettings
@@ -2186,7 +2175,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<WaterQualitySettings>().tessellationFactorFadeStart'=> '{GameWaterQualitySettings.TessellationFactorFadeStart}'"
                                 );
                             SharedSettings
@@ -2206,7 +2195,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<WaterQualitySettings>().tessellationFactorFadeRange'=> '{GameWaterQualitySettings.TessellationFactorFadeRange}'"
                                 );
                             SharedSettings
@@ -2225,7 +2214,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().levelOfDetail'=> '{GameLevelOfDetailQualitySettings.LevelOfDetail}'"
                                 );
                             SharedSettings
@@ -2243,7 +2232,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().lodCrossFade'=> '{GameLevelOfDetailQualitySettings.LodCrossFade}'"
                                 );
                             SharedSettings
@@ -2261,7 +2250,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().maxLightCount'=> '{GameLevelOfDetailQualitySettings.MaxLightCount}'"
                                 );
                             SharedSettings
@@ -2280,7 +2269,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().meshMemoryBudget'=> '{GameLevelOfDetailQualitySettings.MeshMemoryBudget}'"
                                 );
                             SharedSettings
@@ -2300,7 +2289,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<LevelOfDetailQualitySettings>().strictMeshMemory'=> '{GameLevelOfDetailQualitySettings.StrictMeshMemory}'"
                                 );
                             SharedSettings
@@ -2319,7 +2308,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<AnimationQualitySettings>().maxBoneInfuence'=> '{GameAnimationQualitySetting.MaxBoneInfuence}'"
                                 );
                             SharedSettings
@@ -2337,7 +2326,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<TextureQualitySettings>().mipbias'=> '{GameTextureQualitySettings.Mipbias}'"
                                 );
                             SharedSettings
@@ -2355,7 +2344,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'graphics.GetQualitySetting<TextureQualitySettings>().filterMode'=> '{GameTextureQualitySettings.FilterMode}'"
                                 );
                             SharedSettings
@@ -2378,7 +2367,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.elevationDraggingEnabled'=> '{GameInputSettings.ElevationDraggingEnabled}'"
                             );
                         SharedSettings.instance.input.elevationDraggingEnabled =
@@ -2392,7 +2381,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.mouseScrollSensitivity'=> '{GameInputSettings.MouseScrollSensitivity}'"
                             );
                         SharedSettings.instance.input.mouseScrollSensitivity =
@@ -2406,7 +2395,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.keyboardMoveSensitivity'=> '{GameInputSettings.KeyboardMoveSensitivity}'"
                             );
                         SharedSettings.instance.input.keyboardMoveSensitivity =
@@ -2420,7 +2409,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.keyboardRotateSensitivity'=> '{GameInputSettings.KeyboardRotateSensitivity}'"
                             );
                         SharedSettings.instance.input.keyboardRotateSensitivity =
@@ -2434,7 +2423,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.keyboardZoomSensitivity'=> '{GameInputSettings.KeyboardZoomSensitivity}'"
                             );
                         SharedSettings.instance.input.keyboardZoomSensitivity =
@@ -2448,7 +2437,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.mouseMoveSensitivity'=> '{GameInputSettings.MouseMoveSensitivity}'"
                             );
                         SharedSettings.instance.input.mouseMoveSensitivity =
@@ -2462,7 +2451,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.mouseRotateSensitivity'=> '{GameInputSettings.MouseRotateSensitivity}'"
                             );
                         SharedSettings.instance.input.mouseRotateSensitivity =
@@ -2476,7 +2465,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.mouseZoomSensitivity'=> '{GameInputSettings.MouseZoomSensitivity}'"
                             );
                         SharedSettings.instance.input.mouseZoomSensitivity =
@@ -2490,7 +2479,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.mouseInvertX'=> '{GameInputSettings.MouseInvertX}'"
                             );
                         SharedSettings.instance.input.mouseInvertX = GameInputSettings.MouseInvertX;
@@ -2503,7 +2492,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.mouseInvertY'=> '{GameInputSettings.MouseInvertY}'"
                             );
                         SharedSettings.instance.input.mouseInvertY = GameInputSettings.MouseInvertY;
@@ -2516,7 +2505,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.gamepadMoveSensitivity'=> '{GameInputSettings.GamepadMoveSensitivity}'"
                             );
                         SharedSettings.instance.input.gamepadMoveSensitivity =
@@ -2530,7 +2519,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.gamepadRotateSensitivity'=> '{GameInputSettings.GamepadRotateSensitivity}'"
                             );
                         SharedSettings.instance.input.gamepadRotateSensitivity =
@@ -2544,7 +2533,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.gamepadZoomSensitivity'=> '{GameInputSettings.GamepadZoomSensitivity}'"
                             );
                         SharedSettings.instance.input.gamepadZoomSensitivity =
@@ -2558,7 +2547,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.gamepadInvertX'=> '{GameInputSettings.GamepadInvertX}'"
                             );
                         SharedSettings.instance.input.gamepadInvertX =
@@ -2572,7 +2561,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'input.gamepadInvertY'=> '{GameInputSettings.GamepadInvertY}'"
                             );
                         SharedSettings.instance.input.gamepadInvertY =
@@ -2595,7 +2584,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.currentLocale'=> '{GameInterfaceSettings.CurrentLocale}'"
                             );
                         SharedSettings.instance.userInterface.currentLocale =
@@ -2611,7 +2600,7 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             i++;
                             if (log)
-                                Mod.log.Info(
+                                LogHelper.SendLog(
                                     $"Restoring 'userInterface.interfaceStyle'=> '{GameInterfaceSettings.InterfaceStyle}'"
                                 );
                             SharedSettings.instance.userInterface.interfaceStyle =
@@ -2620,7 +2609,9 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     else
                     {
-                        Mod.log.Info("InterfaceStyle ignored because ExtraUIScreen is present.");
+                        LogHelper.SendLog(
+                            "InterfaceStyle ignored because ExtraUIScreen is present."
+                        );
                     }
                     if (
                         jsonObject["GameInterfaceSettings"]["InterfaceTransparency"] != null
@@ -2630,7 +2621,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.interfaceTransparency'=> '{GameInterfaceSettings.InterfaceTransparency}'"
                             );
                         SharedSettings.instance.userInterface.interfaceTransparency =
@@ -2644,7 +2635,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.interfaceScaling'=> '{GameInterfaceSettings.InterfaceScaling}'"
                             );
                         SharedSettings.instance.userInterface.interfaceScaling =
@@ -2658,7 +2649,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.textScale'=> '{GameInterfaceSettings.TextScale}'"
                             );
                         SharedSettings.instance.userInterface.textScale =
@@ -2672,7 +2663,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.unlockHighlightsEnabled'=> '{GameInterfaceSettings.UnlockHighlightsEnabled}'"
                             );
                         SharedSettings.instance.userInterface.unlockHighlightsEnabled =
@@ -2686,7 +2677,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.chirperPopupsEnabled'=> '{GameInterfaceSettings.ChirperPopupsEnabled}'"
                             );
                         SharedSettings.instance.userInterface.chirperPopupsEnabled =
@@ -2700,7 +2691,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.inputHintsType'=> '{GameInterfaceSettings.InputHintsType}'"
                             );
                         SharedSettings.instance.userInterface.inputHintsType =
@@ -2714,7 +2705,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.keyboardLayout'=> '{GameInterfaceSettings.KeyboardLayout}'"
                             );
                         SharedSettings.instance.userInterface.keyboardLayout =
@@ -2728,7 +2719,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.timeFormat'=> '{GameInterfaceSettings.TimeFormat}'"
                             );
                         SharedSettings.instance.userInterface.timeFormat =
@@ -2742,7 +2733,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.temperatureUnit'=> '{GameInterfaceSettings.TemperatureUnit}'"
                             );
                         SharedSettings.instance.userInterface.temperatureUnit =
@@ -2756,7 +2747,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.unitSystem'=> '{GameInterfaceSettings.UnitSystem}'"
                             );
                         SharedSettings.instance.userInterface.unitSystem =
@@ -2770,7 +2761,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userInterface.blockingPopupsEnabled'=> '{GameInterfaceSettings.BlockingPopupsEnabled}'"
                             );
                         SharedSettings.instance.userInterface.blockingPopupsEnabled =
@@ -2791,7 +2782,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userState.lastCloudTarget'=> '{GameUserState.LastCloudTarget}'"
                             );
                         SharedSettings.instance.userState.lastCloudTarget =
@@ -2805,7 +2796,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userState.leftHandTraffic'=> '{GameUserState.LeftHandTraffic}'"
                             );
                         SharedSettings.instance.userState.leftHandTraffic =
@@ -2819,7 +2810,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userState.naturalDisasters'=> '{GameUserState.NaturalDisasters}'"
                             );
                         SharedSettings.instance.userState.naturalDisasters =
@@ -2832,7 +2823,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userState.unlockAll'=> '{GameUserState.UnlockAll}'"
                             );
                         SharedSettings.instance.userState.unlockAll = GameUserState.UnlockAll;
@@ -2845,7 +2836,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userState.unlimitedMoney'=> '{GameUserState.UnlimitedMoney}'"
                             );
                         SharedSettings.instance.userState.unlimitedMoney =
@@ -2859,7 +2850,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         i++;
                         if (log)
-                            Mod.log.Info(
+                            LogHelper.SendLog(
                                 $"Restoring 'userState.unlockMapTiles'=> '{GameUserState.UnlockMapTiles}'"
                             );
                         SharedSettings.instance.userState.unlockMapTiles =
@@ -2869,14 +2860,19 @@ namespace SimpleModCheckerPlus.Systems
                 if (i > 0)
                 {
                     SharedSettings.instance.Apply();
-                    Mod.log.Info(
+                    LogHelper.SendLog(
                         $"Game Settings Restoration Complete: {Path.GetFileName(backupFile)}... {i} options restored."
                     );
                     NotificationSystem.Pop(
                         "starq-smc-game-settings-restore",
-                        title: LocalizedString.Id("Menu.NOTIFICATION_TITLE[SimpleModCheckerPlus]"),
-                        text: LocalizedString.Id(
-                            "Menu.NOTIFICATION_DESCRIPTION[SimpleModCheckerPlus.RestoreGame]"
+                        title: Mod.Name,
+                        text: new LocalizedString(
+                            $"{Mod.Id}.RestoreGameSettings]",
+                            null,
+                            new Dictionary<string, ILocElement>
+                            {
+                                { "Count", new LocalizedNumber<int>(i) },
+                            }
                         ),
                         delay: 5f
                     );
@@ -2884,12 +2880,12 @@ namespace SimpleModCheckerPlus.Systems
                 }
                 else
                 {
-                    Mod.log.Info("No changes found to restore Game Settings...");
+                    LogHelper.SendLog("No changes found to restore Game Settings...");
                 }
             }
             catch (Exception ex)
             {
-                Mod.log.Info($"Game Settings Restoration Failed: {ex}");
+                LogHelper.SendLog($"Game Settings Restoration Failed: {ex}");
             }
         }
     }

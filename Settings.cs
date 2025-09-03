@@ -9,25 +9,27 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Colossal.IO.AssetDatabase;
+using Colossal.Json;
 using Colossal.PSI.Environment;
 using Game.Modding;
 using Game.Settings;
 using Game.UI.Widgets;
 using Newtonsoft.Json.Linq;
 using SimpleModCheckerPlus.Systems;
+using StarQ.Shared.Extensions;
 using UnityEngine.Device;
 
 namespace SimpleModCheckerPlus
 {
     [FileLocation("ModsSettings\\StarQ\\" + nameof(SimpleModCheckerPlus))]
-    [SettingsUITabOrder(ModListTab, VerifyTab, MainTab, ProfileNameTab, AboutTab)]
+    [SettingsUITabOrder(ModListTab, VerifyTab, MainTab, ProfileNameTab, AboutTab, LogTab)]
     [SettingsUIGroupOrder(
+        ModsListSortGroup,
         CodeModsGroup,
         PackageModsGroup,
         ModVerifyGroup,
         BackupGroup,
         OptionsGroup,
-        ProfileNameGroup,
         InfoGroup,
         ModInfo,
         SupportedMod
@@ -37,6 +39,8 @@ namespace SimpleModCheckerPlus
         PackageModsGroup,
         BackupGroup,
         OptionsGroup,
+        ModVerifyGroup,
+        ModCleanupGroup,
         ModInfo,
         SupportedMod
     )]
@@ -47,7 +51,6 @@ namespace SimpleModCheckerPlus
     {
         public static Setting Instance;
 
-        private readonly ModDatabase ModDatabase = new();
         private readonly GameSettingsBackup GameSettingsBackup = new();
         private readonly ModSettingsBackup ModSettingsBackup = new();
         private readonly KeybindsBackup KeybindsBackup = new();
@@ -60,30 +63,31 @@ namespace SimpleModCheckerPlus
             SetDefaults();
         }
 
-        public const string MainTab = "Options & Backup";
+        public const string MainTab = "MainTab";
 
-        public const string OptionsGroup = "Options";
-        public const string BackupGroup = "Settings Backup";
+        public const string OptionsGroup = "OptionsGroup";
+        public const string BackupGroup = "BackupGroup";
 
-        public const string ModListTab = "Mods";
-        public const string VerifyTab = "Verify";
+        public const string ModListTab = "ModListTab";
+        public const string VerifyTab = "VerifyTab";
 
         //public const string ModListGroup = "Loaded Mods";
-        public const string CodeModsGroup = "Code Mods Loaded";
-        public const string PackageModsGroup = "Package Mods Loaded";
-        public const string ModVerifyGroup = "Mod Verification";
-        public const string ModCleanupGroup = "Mod Cleanup";
+        public const string ModsListSortGroup = "ModsListSortGroup";
+        public const string CodeModsGroup = "CodeModsGroup";
+        public const string PackageModsGroup = "PackageModsGroup";
+        public const string ModVerifyGroup = "ModVerifyGroup";
+        public const string ModCleanupGroup = "ModCleanupGroup";
 
         //public const string ModWithIssueListTab = "Mods with Issues";
         //public const string ModWithIssueListGroup = "Loaded Mods with Issues";
 
-        public const string ProfileNameTab = "Profile Names";
-        public const string ProfileNameGroup = ProfileNameTab;
+        public const string ProfileNameTab = "ProfileNameTab";
 
-        public const string AboutTab = "About";
-        public const string InfoGroup = "Info";
-        public const string ModInfo = "About the Mod";
-        public const string SupportedMod = "Currently Supported Mods for Mod Settings Backup";
+        public const string AboutTab = "AboutTab";
+        public const string InfoGroup = "InfoGroup";
+        public const string LogTab = "LogTab";
+        public const string ModInfo = "ModInfo";
+        public const string SupportedMod = "SupportedMod";
 
         [SettingsUIHidden]
         public bool DeletedBackupCIDs { get; set; } = false;
@@ -168,10 +172,15 @@ namespace SimpleModCheckerPlus
             set { KeybindsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); }
         }
 
+#if DEBUG
         //[SettingsUIAdvanced]
-        //[SettingsUIDeveloper]
-        //[SettingsUISection(MainTab, BackupGroup)]
-        //public bool GetSettingsFiles { set { ModSettingsBackup.GetSettingsFiles(); } }
+        [SettingsUIDeveloper]
+        [SettingsUISection(MainTab, BackupGroup)]
+        public bool GetSettingsFiles
+        {
+            set { ModSettingsBackup.GetSettingsFiles(); }
+        }
+#endif
 
         //[SettingsUIHidden]
         //public int ModsLoadedVersion { get; set; }
@@ -206,6 +215,73 @@ namespace SimpleModCheckerPlus
         //[SettingsUISection(ModWithIssueListTab, ModWithIssueListGroup)]
         //[SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListWithIssueLocalized))]
         //public string ModsWithIssueLoaded => "";
+
+        [Exclude]
+        [SettingsUIHidden]
+        public ModCheckup.SortOptions TextSort = ModCheckup.SortOptions.Name;
+
+        [Exclude]
+        [SettingsUIHidden]
+        public bool TextSortAscending = true;
+
+        [Exclude]
+        [SettingsUIHidden]
+        public bool DisableSortByName => TextSort == ModCheckup.SortOptions.Name;
+
+        [Exclude]
+        [SettingsUIHidden]
+        public bool DisableSortBySize => TextSort == ModCheckup.SortOptions.Size;
+
+        [Exclude]
+        [SettingsUIHidden]
+        public bool DisableSortByAuthor => TextSort == ModCheckup.SortOptions.Author;
+
+        [SettingsUIButton]
+        [SettingsUIButtonGroup("ModsListG1")]
+        [SettingsUISection(ModListTab, ModsListSortGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(DisableSortByName))]
+        public bool ModListSortByName
+        {
+            set
+            {
+                TextSort = ModCheckup.SortOptions.Name;
+                LocaleHelper.OnActiveDictionaryChanged();
+            }
+        }
+
+        //[SettingsUIButton]
+        //[SettingsUIButtonGroup("ModsListG1")]
+        //[SettingsUISection(ModListTab, ModsListSortGroup)]
+        //[SettingsUIDisableByCondition(typeof(Setting), nameof(DisableSortBySize))]
+        //public bool ModListSortBySize
+        //{
+        //    set { TextSort = ModCheckup.SortOptions.Size;LocaleHelper.OnActiveDictionaryChanged(); }
+        //}
+
+        [SettingsUIButton]
+        [SettingsUIButtonGroup("ModsListG1")]
+        [SettingsUISection(ModListTab, ModsListSortGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(DisableSortByAuthor))]
+        public bool ModListSortByAuthor
+        {
+            set
+            {
+                TextSort = ModCheckup.SortOptions.Author;
+                LocaleHelper.OnActiveDictionaryChanged();
+            }
+        }
+
+        [SettingsUIButton]
+        [SettingsUIButtonGroup("ModsListG2")]
+        [SettingsUISection(ModListTab, ModsListSortGroup)]
+        public bool ModListSortDirection
+        {
+            set
+            {
+                TextSortAscending = !TextSortAscending;
+                LocaleHelper.OnActiveDictionaryChanged();
+            }
+        }
 
         [SettingsUIMultilineText]
         [SettingsUISection(ModListTab, CodeModsGroup)]
@@ -251,20 +327,6 @@ namespace SimpleModCheckerPlus
             set { Task.Run(() => ModVerifier.VerifyMods(ModFolderDropdown)); }
         }
 
-        [SettingsUISection(VerifyTab, ModVerifyGroup)]
-        public bool OpenLog
-        {
-            set
-            {
-                Task.Run(
-                    () =>
-                        Process.Start(
-                            $"{EnvPath.kUserDataPath}/Logs/{Mod.Name.Replace(" ", "")}.log"
-                        )
-                );
-            }
-        }
-
         [SettingsUISection(VerifyTab, ModCleanupGroup)]
         public bool CleanUpOldVersions
         {
@@ -277,12 +339,12 @@ namespace SimpleModCheckerPlus
         public string CleanUpResult => "";
 
         [SettingsUIHidden]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         public string ProfileName0 { get; set; } = "Profile Auto";
 
         private string profileName1 = "Profile 1";
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName1
         {
@@ -292,7 +354,7 @@ namespace SimpleModCheckerPlus
 
         private string profileName2 = "Profile 2";
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName2
         {
@@ -302,7 +364,7 @@ namespace SimpleModCheckerPlus
 
         private string profileName3 = "Profile 3";
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName3
         {
@@ -313,7 +375,7 @@ namespace SimpleModCheckerPlus
         private string profileName4 = "Profile 4";
 
         //[SettingsUIAdvanced]
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName4
         {
@@ -323,7 +385,7 @@ namespace SimpleModCheckerPlus
 
         private string profileName5 = "Profile 5";
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName5
         {
@@ -333,7 +395,7 @@ namespace SimpleModCheckerPlus
 
         private string profileName6 = "Profile 6";
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName6
         {
@@ -343,7 +405,7 @@ namespace SimpleModCheckerPlus
 
         private string profileName7 = "Profile 7";
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName7
         {
@@ -353,7 +415,7 @@ namespace SimpleModCheckerPlus
 
         private string profileName8 = "Profile 8";
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName8
         {
@@ -363,7 +425,7 @@ namespace SimpleModCheckerPlus
 
         private string profileName9 = "Profile 9";
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName9
         {
@@ -371,7 +433,7 @@ namespace SimpleModCheckerPlus
             set => profileName9 = value;
         }
 
-        [SettingsUISection(ProfileNameTab, ProfileNameGroup)]
+        [SettingsUISection(ProfileNameTab, "")]
         [SettingsUIButton]
         public bool SaveProfileName
         {
@@ -383,15 +445,15 @@ namespace SimpleModCheckerPlus
         }
 
         [SettingsUISection(AboutTab, InfoGroup)]
-        public string NameText =>
-#if DEBUG
-            $"{Mod.Name} - DEBUG";
-#else
-            Mod.Name;
-#endif
+        public string NameText => Mod.Name;
 
         [SettingsUISection(AboutTab, InfoGroup)]
-        public string VersionText => Mod.Version;
+        public string VersionText =>
+#if DEBUG
+            $"{Mod.Version} - DEBUG";
+#else
+            Mod.Version;
+# endif
 
         [SettingsUISection(AboutTab, InfoGroup)]
         public string AuthorText => "StarQ";
@@ -409,7 +471,7 @@ namespace SimpleModCheckerPlus
                 }
                 catch (Exception e)
                 {
-                    Mod.log.Info(e);
+                    LogHelper.SendLog(e);
                 }
             }
         }
@@ -429,18 +491,36 @@ namespace SimpleModCheckerPlus
                 }
                 catch (Exception e)
                 {
-                    Mod.log.Info(e);
+                    LogHelper.SendLog(e);
                 }
             }
         }
 
-        [SettingsUIMultilineText]
-        [SettingsUISection(AboutTab, ModInfo)]
-        public string AboutTheMod => string.Empty;
+        //[SettingsUIMultilineText]
+        //[SettingsUISection(AboutTab, ModInfo)]
+        //public string AboutTheMod => string.Empty;
 
         [SettingsUIMultilineText]
         [SettingsUISection(AboutTab, SupportedMod)]
         public string SupportedModText => string.Empty;
+
+        [SettingsUIMultilineText]
+        [SettingsUIDisplayName(typeof(LogHelper), nameof(LogHelper.LogText))]
+        [SettingsUISection(LogTab, "")]
+        public string LogText => string.Empty;
+
+        [SettingsUISection(LogTab, "")]
+        public bool OpenLog
+        {
+            set
+            {
+                Task.Run(() =>
+                    Process.Start(
+                        $"{EnvPath.kUserDataPath}/Logs/{nameof(SimpleModCheckerPlus)}.log"
+                    )
+                );
+            }
+        }
 
         public DropdownItem<int>[] GetProfileNames()
         {
@@ -506,56 +586,6 @@ namespace SimpleModCheckerPlus
 
             return x.ToArray();
         }
-
-        //public override AutomaticSettings.SettingPageData GetPageData(string id, bool addPrefix)
-        //{
-        //    AutomaticSettings.SettingPageData pageData = base.GetPageData(id, addPrefix);
-        //    if (ModDatabase.ModDatabaseInfo == null)
-        //    {
-        //        ModDatabase.OnDatabaseLoaded += () => GetPageSection(pageData);
-        //        //return;
-        //    }
-        //    //GetPageSection(pageData);
-        //    return pageData;
-        //}
-
-        //private void GetPageSection(AutomaticSettings.SettingPageData pageData)
-        //{
-        //    //if (ModDatabase.ModDatabaseInfo == null) {
-        //    //    ModDatabase.OnDatabaseLoaded += () => GetPageSection(pageData);
-        //    //    return;
-        //    //}
-
-        //    foreach (var kvp in ModDatabase.ModDatabaseInfo)
-        //    {
-        //        string modName = kvp.Key;
-        //        ModInfo modInfo = kvp.Value;
-
-        //        Mod.log.Info($"{modName}");
-
-        //        AutomaticSettings.ManualProperty property = new AutomaticSettings.ManualProperty(typeof(Setting), typeof(bool), modName)
-        //        {
-        //            canRead = true,
-        //            canWrite = true,
-        //            //attributes =
-        //            //{
-        //            //    (Attribute)new SettingsUIPathAttribute($"Mods.{modName}"),
-        //            //    (Attribute)new SettingsUIDisplayNameAttribute(modName)
-        //            //},
-        //            getter = (_) => modInfo.Backupable,
-        //            setter = (_, obj) => modInfo.Backupable = (bool)obj
-        //        };
-
-        //        AutomaticSettings.SettingItemData item = new AutomaticSettings.SettingItemData(AutomaticSettings.WidgetType.BoolToggle, this, property, pageData.prefix)
-        //        {
-        //            simpleGroup = "BackupGroup"
-        //        };
-
-        //        pageData["B&R"].AddItem(item);
-        //        pageData.AddGroup("B&R");
-        //        pageData.AddGroupToShowName("B&R");
-        //    }
-        //}
 
         public override void SetDefaults()
         {

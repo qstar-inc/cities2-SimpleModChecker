@@ -1,8 +1,4 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
-namespace SimpleModCheckerPlus.Systems
+﻿namespace SimpleModCheckerPlus.Systems
 {
     public class GameSettings
     {
