@@ -14,4 +14,4 @@ Now available on [PDX Mods](https://mods.paradoxplaza.com/mods/79186/Windows)
 - [StarQ](https://www.github.com/qstar-inc)
 
 ## License
-[Apache 2.0](#Apache-2.0-1-ov-file)
+[AGPL-3.0](#AGPL-3.0-1-ov-file)
