@@ -12,6 +12,7 @@ using Game.UI.Localization;
 using Newtonsoft.Json.Linq;
 using StarQ.Shared.Extensions;
 
+
 namespace SimpleModCheckerPlus.Systems
 {
     public class ModVerifier
@@ -29,6 +30,10 @@ namespace SimpleModCheckerPlus.Systems
         public static List<string> backupsToCheck = new();
         public static string translateKey = $"{Mod.Id}.Verify";
         public static LocalizedString VerificationResultText => GetText();
+
+        private static readonly Regex CsvRegex =
+            new(@"(?:^|,)(?:(?:""(?<value>[^""]*)"")|(?<value>[^,""]*))",
+                RegexOptions.Compiled);
 
         public static LocalizedString GetText()
         {
@@ -159,6 +164,10 @@ namespace SimpleModCheckerPlus.Systems
             DownloadedModList.Clear();
             DupedModList.Clear();
             IssueList = "";
+
+            // mark when Verify run starts (UTC), log time elapsed at the end
+            var verifyStartUtc = DateTime.UtcNow;
+            LogHelper.SendLog($"[Verify] START {verifyStartUtc:O}  selected={(selected ?? "ALL")}");
 
             NotificationSystem.Push(
                 "starq-smc-verify-mod",
@@ -357,8 +366,17 @@ namespace SimpleModCheckerPlus.Systems
                 }
             }
             ProcesStatus = 2;
-            Header = LocaleHelper.Translate($"{translateKey}.Header.End");
             LogHelper.SendLog("Completed Mod Verification");
+
+            // Compute + log elapsed time for the whole Verify run (real time)
+            var verifyEndUtc = DateTime.UtcNow;
+            var verifyElapsed = verifyEndUtc - verifyStartUtc;
+            LogHelper.SendLog($"[Verify] END   {verifyEndUtc:O}  elapsed={verifyElapsed}");
+
+            // UI line shows time elapsed for Verify to complete
+            Header = $"{LocaleHelper.Translate($"{translateKey}.Header.End")} — Elapsed: {verifyElapsed:mm\\:ss\\.f}";
+
+
             //Mod.log.Info(IssueList);
             ProgressState hasIssue = ProgressState.Complete;
             if (IssueList != "")
@@ -432,27 +450,25 @@ namespace SimpleModCheckerPlus.Systems
 
         private static Dictionary<string, string> ReadManifestFile(string manifestPath)
         {
-            var manifestData = new Dictionary<string, string>();
 
             if (ManifestData.ContainsKey(manifestPath))
             {
                 return ManifestData[manifestPath];
             }
 
+            var manifestData = new Dictionary<string, string>(StringComparer.Ordinal);
+
             try
             {
-                var lines = File.ReadAllLines(manifestPath);
-
-                var csvPattern = @"(?:^|,)(?:(?:""(?<value>[^""]*)"")|(?<value>[^,""]*))";
-
-                foreach (var line in lines)
+                // Stream lines to keep memory flat; parse with compiled regex; normalize keys once
+                foreach (var line in File.ReadLines(manifestPath))
                 {
-                    var matches = Regex.Matches(line, csvPattern);
+                    var matches = CsvRegex.Matches(line);
                     var parts = matches.Cast<Match>().Select(m => m.Groups["value"].Value).ToList();
 
                     if (parts.Count >= 4)
                     {
-                        string relativePath = parts[0];
+                        string relativePath = parts[0].Trim('"').Replace("/", "\\"); // normalize slashes/quotes
                         string size = parts[1];
                         string hash = parts[2];
                         manifestData[relativePath] = $"{size};;{hash}";
@@ -463,7 +479,8 @@ namespace SimpleModCheckerPlus.Systems
             {
                 LogHelper.SendLog($"Failed to read manifest file: {ex}", LogLevel.Error);
             }
-            ManifestData.Add(manifestPath, manifestData);
+
+            ManifestData[manifestPath] = manifestData;
             return manifestData;
         }
 
@@ -478,29 +495,28 @@ namespace SimpleModCheckerPlus.Systems
             if (!Directory.Exists(subfolder))
                 return;
 
-            var files = Directory
-                .GetFiles(subfolder, "*", SearchOption.AllDirectories)
+
+            var files = Directory.EnumerateFiles(subfolder, "*", SearchOption.AllDirectories)
                 .Where(file => !file.Contains(".metadata") && !file.Contains(".cpatch"));
+
             foreach (var filePath in files)
             {
                 string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
                 string relativePathForText = $"**{relativePath.Replace("\\", "/")}**";
                 try
                 {
-                    if (
-                        manifestData.ContainsKey(relativePath)
-                        || manifestData.ContainsKey($"\"{relativePath}\"")
-                    )
+                    // fetch manifest entry if present (keys are normalized already)
+                    if (manifestData.TryGetValue(relativePath, out var entry))
                     {
-                        string[] manifestParts = manifestData[relativePath]
-                            .Split(new string[] { ";;" }, StringSplitOptions.None);
+
+                        string[] manifestParts = entry.Split(new string[] { ";;" }, StringSplitOptions.None);
                         string expectedSize = manifestParts[0];
                         string expectedHash = manifestParts[1];
 
                         long actualSize = new FileInfo(filePath).Length;
-                        string actualHash = await ComputeSHA256Hash(filePath);
 
-                        if (expectedHash != actualHash || expectedSize != actualSize.ToString())
+                        // EARLY OUT: size mismatch => mark dirty, do NOT hash
+                        if (!string.Equals(expectedSize, actualSize.ToString(), StringComparison.Ordinal))
                         {
                             if (!posted)
                             {
@@ -511,9 +527,29 @@ namespace SimpleModCheckerPlus.Systems
                                 .Translate($"{translateKey}.Issue.Dirty")
                                 .Replace("{RelativePath}", relativePathForText);
                             LogHelper.SendLog(
-                                $"File '{relativePath}' is dirty/modified. Expected: {expectedHash} ({expectedSize} bytes), Found: {actualHash} ({actualSize} bytes)"
-                            );
+                                $"File '{relativePath}' size mismatch. Expected: {expectedSize} bytes, Found: {actualSize} bytes");
+
+                            manifestData.Remove(relativePath);
+                            continue;
                         }
+
+                        // Size matched => compute hash one pass
+                        string actualHash = await ComputeSHA256Hash(filePath);
+
+                        if (!string.Equals(expectedHash, actualHash, StringComparison.Ordinal))
+                        {
+                            if (!posted)
+                            {
+                                IssueTextHeader(modId, modName);
+                                posted = true;
+                            }
+                            IssueList += LocaleHelper
+                                .Translate($"{translateKey}.Issue.Dirty")
+                                .Replace("{RelativePath}", relativePathForText);
+                            LogHelper.SendLog(
+                                $"File '{relativePath}' hash mismatch. Expected: {expectedHash}, Found: {actualHash} ({actualSize} bytes)");
+                        }
+
                         manifestData.Remove(relativePath);
                     }
                     else if (!filePath.EndsWith(".backup"))
@@ -537,7 +573,7 @@ namespace SimpleModCheckerPlus.Systems
                         string actualCid = File.Exists(realFilePath)
                             ? File.ReadAllText(realFilePath)
                             : "";
-                        ;
+
                         string backupCid = File.Exists(filePath) ? File.ReadAllText(filePath) : "";
 
                         if (actualCid != backupCid)
@@ -565,7 +601,7 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     IssueList += LocaleHelper
                         .Translate($"{translateKey}.Issue.AccessDenied")
-                        .Replace("{RelativePath}", relativePathForText);
+                                    .Replace("{RelativePath}", relativePathForText);
                     LogHelper.SendLog($"Access denied to file '{filePath}'. Skipping.");
                 }
                 catch (Exception ex)
@@ -592,10 +628,10 @@ namespace SimpleModCheckerPlus.Systems
                 }
                 IssueList += LocaleHelper
                     .Translate($"{translateKey}.Issue.Missing")
-                    .Replace("{RelativePath}", $"**{relativePath.Replace("\\", "/")}**");
+                                .Replace("{RelativePath}", $"**{relativePath.Replace("\\", "/")}**");
                 LogHelper.SendLog(
-                    $"File '{relativePath}' is listed in the manifest but missing from the folder."
-                );
+                                $"File '{relativePath}' is listed in the manifest but missing from the folder."
+                            );
             }
         }
 
@@ -611,6 +647,7 @@ namespace SimpleModCheckerPlus.Systems
                     && !file.Contains(".cpatch")
                     && file.Contains(".cid.backup")
                 );
+
             foreach (var filePath in files)
             {
                 try
@@ -631,15 +668,18 @@ namespace SimpleModCheckerPlus.Systems
             {
                 filePath = AddLongPathPrefix(filePath);
                 using var sha256 = SHA256.Create();
+
+                const int BufferSize = 1 << 20; // larger 1 MiB reads: fewer I/O calls
                 using var stream = new FileStream(
                     filePath,
                     FileMode.Open,
                     FileAccess.Read,
                     FileShare.Read,
-                    bufferSize: 8192,
-                    useAsync: true
+                    BufferSize,
+                    FileOptions.Asynchronous | FileOptions.SequentialScan   // sequential to prefetch efficiently
                 );
-                byte[] buffer = new byte[8192];
+
+                byte[] buffer = new byte[BufferSize];
                 int bytesRead;
 
                 while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
@@ -655,6 +695,7 @@ namespace SimpleModCheckerPlus.Systems
             {
                 throw new UnauthorizedAccessException($"Access to file '{filePath}' is denied.");
             }
+
             catch (IOException ex)
             {
                 throw new IOException(
