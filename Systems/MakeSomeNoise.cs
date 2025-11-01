@@ -20,6 +20,7 @@ namespace SimpleModCheckerPlus.Systems
 
         private bool PlaySound()
         {
+            Enabled = false;
             if (
                 !GameManager.instance.modManager.isInitialized
                 || GameManager.instance.gameMode != GameMode.MainMenu
@@ -43,9 +44,6 @@ namespace SimpleModCheckerPlus.Systems
             return true;
         }
 
-        protected override void OnUpdate()
-        {
-            Enabled = false;
-        }
+        protected override void OnUpdate() { }
     }
 }

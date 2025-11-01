@@ -1,15 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using Colossal.Json;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Game;
 using Game.PSI;
 using Game.Settings;
 using Game.UI.Localization;
+using Game.UI.Menu;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StarQ.Shared.Extensions;
+using TinyJson;
+using Unity.Entities;
+using static Game.Rendering.Debug.RenderPrefabRenderer;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -18,32 +24,32 @@ namespace SimpleModCheckerPlus.Systems
         public Mod _mod;
         public static ModCheckup SMC = new();
         private readonly List<string> loadedMods = SMC.GetLoadedMods();
-        private readonly string backupFile0 =
+        private static readonly string backupFile0 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_prev.json";
-        private readonly string backupFile1 =
+        private static readonly string backupFile1 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_1.json";
-        private readonly string backupFile2 =
+        private static readonly string backupFile2 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_2.json";
-        private readonly string backupFile3 =
+        private static readonly string backupFile3 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_3.json";
-        private readonly string backupFile4 =
+        private static readonly string backupFile4 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_4.json";
-        private readonly string backupFile5 =
+        private static readonly string backupFile5 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_5.json";
-        private readonly string backupFile6 =
+        private static readonly string backupFile6 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_6.json";
-        private readonly string backupFile7 =
+        private static readonly string backupFile7 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_7.json";
-        private readonly string backupFile8 =
+        private static readonly string backupFile8 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_8.json";
-        private readonly string backupFile9 =
+        private static readonly string backupFile9 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_9.json";
         private static int i = 0;
 
         protected override void OnCreate()
         {
             base.OnCreate();
-            if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
+            if (Mod.m_Setting.AutoRestoreSettingBackupOnStartup)
             {
                 if (File.Exists(backupFile1))
                 {
@@ -114,18 +120,27 @@ namespace SimpleModCheckerPlus.Systems
                 title: LocalizedString.Id("SimpleModCheckerPlus.MakeGameBackup.Title"),
                 text: LocalizedString.Id("SimpleModCheckerPlus.MakeGameBackup.Desc"),
                 progressState: ProgressState.Warning,
-                onClicked: () => CreateBackup(1)
+                onClicked: () =>
+                {
+                    CreateBackup(1);
+                    ModSettingsBackup.CreateBackup(1);
+                }
             );
         }
 
-        public void CreateBackup(int profile, bool log = true)
+        public static void CreateBackup(int profile, bool log = true)
         {
             if (profile == 1)
             {
                 NotificationSystem.Pop(
                     "starq-smc-game-settings-update",
                     delay: 1f,
-                    text: LocalizedString.Id("SimpleModCheckerPlus.Working")
+                    text: LocalizedString.Id($"{Mod.Id}.Working")
+                );
+                NotificationSystem.Pop(
+                    "starq-smc-mod-settings-update",
+                    delay: 1f,
+                    text: LocalizedString.Id($"{Mod.Id}.Working")
                 );
             }
             string backupFile = profile switch
@@ -150,317 +165,231 @@ namespace SimpleModCheckerPlus.Systems
                     LogHelper.SendLog("ModsData folder not found, creating...");
                 Directory.CreateDirectory(directoryPath);
             }
+            SharedSettings sharedSettings = SharedSettings.instance;
+            var AudioSettings = sharedSettings.audio;
             var GameAudioSettings = new GameAudioSettings
             {
-                MasterVolume = SharedSettings.instance.audio.masterVolume,
-                UiVolume = SharedSettings.instance.audio.uiVolume,
-                MenuVolume = SharedSettings.instance.audio.menuVolume,
-                IngameVolume = SharedSettings.instance.audio.ingameVolume,
-                RadioActive = SharedSettings.instance.audio.radioActive,
-                RadioVolume = SharedSettings.instance.audio.radioVolume,
-                AmbienceVolume = SharedSettings.instance.audio.ambienceVolume,
-                DisastersVolume = SharedSettings.instance.audio.disastersVolume,
-                WorldVolume = SharedSettings.instance.audio.worldVolume,
-                AudioGroupsVolume = SharedSettings.instance.audio.audioGroupsVolume,
-                ServiceBuildingsVolume = SharedSettings.instance.audio.serviceBuildingsVolume,
-                ClipMemoryBudget = SharedSettings.instance.audio.clipMemoryBudget,
+                MasterVolume = AudioSettings.masterVolume,
+                UiVolume = AudioSettings.uiVolume,
+                MenuVolume = AudioSettings.menuVolume,
+                IngameVolume = AudioSettings.ingameVolume,
+                RadioActive = AudioSettings.radioActive,
+                RadioVolume = AudioSettings.radioVolume,
+                AmbienceVolume = AudioSettings.ambienceVolume,
+                DisastersVolume = AudioSettings.disastersVolume,
+                WorldVolume = AudioSettings.worldVolume,
+                AudioGroupsVolume = AudioSettings.audioGroupsVolume,
+                ServiceBuildingsVolume = AudioSettings.serviceBuildingsVolume,
+                ClipMemoryBudget = AudioSettings.clipMemoryBudget,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameAudioSettings");
+            var EditorSettings = sharedSettings.editor;
             var GameEditorSettings = new GameEditorSettings
             {
-                AssetPickerColumnCount = SharedSettings.instance.editor.assetPickerColumnCount,
-                InspectorWidth = SharedSettings.instance.editor.inspectorWidth,
-                HierarchyWidth = SharedSettings.instance.editor.hierarchyWidth,
-                UseParallelImport = SharedSettings.instance.editor.useParallelImport,
-                LowQualityTextureCompression = SharedSettings
-                    .instance
-                    .editor
-                    .lowQualityTextureCompression,
-                LastSelectedProjectRootDirectory = SharedSettings
-                    .instance
-                    .editor
-                    .lastSelectedProjectRootDirectory,
-                LastSelectedImportDirectory = SharedSettings
-                    .instance
-                    .editor
-                    .lastSelectedImportDirectory,
+                PrefabPickerColumnCount = EditorSettings.prefabPickerColumnCount,
+                PrefabPickerFavorites = EditorSettings.prefabPickerFavorites,
+                AssetPickerColumnCount = EditorSettings.assetPickerColumnCount,
+                AssetPickerFavorites = EditorSettings.assetPickerFavorites,
+                InspectorWidth = EditorSettings.inspectorWidth,
+                HierarchyWidth = EditorSettings.hierarchyWidth,
+                UseParallelImport = EditorSettings.useParallelImport,
+                LowQualityTextureCompression = EditorSettings.lowQualityTextureCompression,
+                LastSelectedProjectRootDirectory = EditorSettings.lastSelectedProjectRootDirectory,
+                LastSelectedImportDirectory = EditorSettings.lastSelectedImportDirectory,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameEditorSettings");
+            var GameplaySettings = sharedSettings.gameplay;
             var GameGameplaySettings = new GameGameplaySettings
             {
-                EdgeScrolling = SharedSettings.instance.gameplay.edgeScrolling,
-                EdgeScrollSensivity = SharedSettings.instance.gameplay.edgeScrollingSensitivity,
-                DayNightVisual = SharedSettings.instance.gameplay.dayNightVisual,
-                PausedAfterLoading = SharedSettings.instance.gameplay.pausedAfterLoading,
-                ShowTutorials = SharedSettings.instance.gameplay.showTutorials,
+                EdgeScrolling = GameplaySettings.edgeScrolling,
+                EdgeScrollSensivity = GameplaySettings.edgeScrollingSensitivity,
+                DayNightVisual = GameplaySettings.dayNightVisual,
+                PausedAfterLoading = GameplaySettings.pausedAfterLoading,
+                ShowTutorials = GameplaySettings.showTutorials,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameGameplaySettings");
+            var GeneralSettings = sharedSettings.general;
             var GameGeneralSettings = new GameGeneralSettings
             {
-                AssetDatabaseAutoReloadMode = SharedSettings
-                    .instance
-                    .general
-                    .assetDatabaseAutoReloadMode,
-                PerformancePreference = SharedSettings.instance.general.performancePreference,
-                FpsMode = SharedSettings.instance.general.fpsMode,
-                AutoSave = SharedSettings.instance.general.autoSave,
-                AutoSaveInterval = SharedSettings.instance.general.autoSaveInterval,
-                AutoSaveCount = SharedSettings.instance.general.autoSaveCount,
-                AllowOptionalTelemetry = SharedSettings.instance.general.allowOptionalTelemetry,
+                AssetDatabaseAutoReloadMode = GeneralSettings.assetDatabaseAutoReloadMode,
+                PerformancePreference = GeneralSettings.performancePreference,
+                FpsMode = GeneralSettings.fpsMode,
+                AutoSave = GeneralSettings.autoSave,
+                AutoSaveInterval = GeneralSettings.autoSaveInterval,
+                AutoSaveCount = GeneralSettings.autoSaveCount,
+                AllowOptionalTelemetry = GeneralSettings.allowOptionalTelemetry,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameGeneralSettings");
+            var DynamicResolutionQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<DynamicResolutionScaleSettings>();
             var GameDynamicResolutionQualitySettings = new GameDynamicResolutionQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>()
-                    .enabled,
-                IsAdaptive = SharedSettings
-                    .instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>()
-                    .isAdaptive,
-                UpscaleFilter = SharedSettings
-                    .instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>()
-                    .upscaleFilter,
-                MinScale = SharedSettings
-                    .instance.graphics.GetQualitySetting<DynamicResolutionScaleSettings>()
-                    .minScale,
+                Enabled = DynamicResolutionQualitySettings.enabled,
+                IsAdaptive = DynamicResolutionQualitySettings.isAdaptive,
+                UpscaleFilter = DynamicResolutionQualitySettings.upscaleFilter,
+                MinScale = DynamicResolutionQualitySettings.minScale,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameDynamicResolutionQualitySettings");
+            var AntiAliasingQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<AntiAliasingQualitySettings>();
             var GameAntiAliasingQualitySettings = new GameAntiAliasingQualitySettings
             {
-                AntiAliasingMethod = SharedSettings
-                    .instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>()
-                    .antiAliasingMethod,
-                SmaaQuality = SharedSettings
-                    .instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>()
-                    .smaaQuality,
-                OutlinesMSAA = SharedSettings
-                    .instance.graphics.GetQualitySetting<AntiAliasingQualitySettings>()
-                    .outlinesMSAA,
+                AntiAliasingMethod = AntiAliasingQualitySettings.antiAliasingMethod,
+                SmaaQuality = AntiAliasingQualitySettings.smaaQuality,
+                OutlinesMSAA = AntiAliasingQualitySettings.outlinesMSAA,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameAntiAliasingQualitySettings");
+            var CloudsQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<CloudsQualitySettings>();
             var GameCloudsQualitySettings = new GameCloudsQualitySettings
             {
-                VolumetricCloudsEnabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<CloudsQualitySettings>()
-                    .volumetricCloudsEnabled,
-                DistanceCloudsEnabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<CloudsQualitySettings>()
-                    .distanceCloudsEnabled,
-                VolumetricCloudsShadows = SharedSettings
-                    .instance.graphics.GetQualitySetting<CloudsQualitySettings>()
-                    .volumetricCloudsShadows,
-                DistanceCloudsShadows = SharedSettings
-                    .instance.graphics.GetQualitySetting<CloudsQualitySettings>()
-                    .distanceCloudsShadows,
+                VolumetricCloudsEnabled = CloudsQualitySettings.volumetricCloudsEnabled,
+                DistanceCloudsEnabled = CloudsQualitySettings.distanceCloudsEnabled,
+                VolumetricCloudsShadows = CloudsQualitySettings.volumetricCloudsShadows,
+                DistanceCloudsShadows = CloudsQualitySettings.distanceCloudsShadows,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameCloudsQualitySettings");
+            var FogQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<FogQualitySettings>();
             var GameFogQualitySettings = new GameFogQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<FogQualitySettings>()
-                    .enabled,
+                Enabled = FogQualitySettings.enabled,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameFogQualitySettings");
+            var VolumetricsQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<VolumetricsQualitySettings>();
             var GameVolumetricsQualitySettings = new GameVolumetricsQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<VolumetricsQualitySettings>()
-                    .enabled,
-                Budget = SharedSettings
-                    .instance.graphics.GetQualitySetting<VolumetricsQualitySettings>()
-                    .budget,
-                ResolutionDepthRatio = SharedSettings
-                    .instance.graphics.GetQualitySetting<VolumetricsQualitySettings>()
-                    .resolutionDepthRatio,
+                Enabled = VolumetricsQualitySettings.enabled,
+                Budget = VolumetricsQualitySettings.budget,
+                ResolutionDepthRatio = VolumetricsQualitySettings.resolutionDepthRatio,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameVolumetricsQualitySettings");
+            var SSAOQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<SSAOQualitySettings>();
             var GameAmbientOcclustionQualitySettings = new GameAmbientOcclustionQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSAOQualitySettings>()
-                    .enabled,
-                MaxPixelRadius = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSAOQualitySettings>()
-                    .maxPixelRadius,
-                Fullscreen = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSAOQualitySettings>()
-                    .fullscreen,
-                StepCount = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSAOQualitySettings>()
-                    .stepCount,
+                Enabled = SSAOQualitySettings.enabled,
+                MaxPixelRadius = SSAOQualitySettings.maxPixelRadius,
+                Fullscreen = SSAOQualitySettings.fullscreen,
+                StepCount = SSAOQualitySettings.stepCount,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameAmbientOcclustionQualitySettings");
+            var SSGIQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<SSGIQualitySettings>();
             var GameIlluminationQualitySettings = new GameIlluminationQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSGIQualitySettings>()
-                    .enabled,
-                Fullscreen = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSGIQualitySettings>()
-                    .fullscreen,
-                RaySteps = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSGIQualitySettings>()
-                    .raySteps,
-                DenoiserRadius = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSGIQualitySettings>()
-                    .denoiserRadius,
-                HalfResolutionPass = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSGIQualitySettings>()
-                    .halfResolutionPass,
-                SecondDenoiserPass = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSGIQualitySettings>()
-                    .secondDenoiserPass,
-                DepthBufferThickness = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSGIQualitySettings>()
-                    .depthBufferThickness,
+                Enabled = SSGIQualitySettings.enabled,
+                Fullscreen = SSGIQualitySettings.fullscreen,
+                RaySteps = SSGIQualitySettings.raySteps,
+                DenoiserRadius = SSGIQualitySettings.denoiserRadius,
+                HalfResolutionPass = SSGIQualitySettings.halfResolutionPass,
+                SecondDenoiserPass = SSGIQualitySettings.secondDenoiserPass,
+                DepthBufferThickness = SSGIQualitySettings.depthBufferThickness,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameIlluminationQualitySettings");
+            var SSRQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<SSRQualitySettings>();
             var GameReflectionQualitySettings = new GameReflectionQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSRQualitySettings>()
-                    .enabled,
-                EnabledTransparent = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSRQualitySettings>()
-                    .enabledTransparent,
-                MaxRaySteps = SharedSettings
-                    .instance.graphics.GetQualitySetting<SSRQualitySettings>()
-                    .maxRaySteps,
+                Enabled = SSRQualitySettings.enabled,
+                EnabledTransparent = SSRQualitySettings.enabledTransparent,
+                MaxRaySteps = SSRQualitySettings.maxRaySteps,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameReflectionQualitySettings");
+            var DepthOfFieldQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<DepthOfFieldQualitySettings>();
             var GameDepthOfFieldQualitySettings = new GameDepthOfFieldQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>()
-                    .enabled,
-                NearSampleCount = SharedSettings
-                    .instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>()
-                    .nearSampleCount,
-                NearMaxRadius = SharedSettings
-                    .instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>()
-                    .nearMaxRadius,
-                FarSampleCount = SharedSettings
-                    .instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>()
-                    .farSampleCount,
-                FarMaxRadius = SharedSettings
-                    .instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>()
-                    .farMaxRadius,
-                Resolution = SharedSettings
-                    .instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>()
-                    .resolution,
-                HighQualityFiltering = SharedSettings
-                    .instance.graphics.GetQualitySetting<DepthOfFieldQualitySettings>()
-                    .highQualityFiltering,
+                Enabled = DepthOfFieldQualitySettings.enabled,
+                NearSampleCount = DepthOfFieldQualitySettings.nearSampleCount,
+                NearMaxRadius = DepthOfFieldQualitySettings.nearMaxRadius,
+                FarSampleCount = DepthOfFieldQualitySettings.farSampleCount,
+                FarMaxRadius = DepthOfFieldQualitySettings.farMaxRadius,
+                Resolution = DepthOfFieldQualitySettings.resolution,
+                HighQualityFiltering = DepthOfFieldQualitySettings.highQualityFiltering,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameDepthOfFieldQualitySettings");
+            var MotionBlurQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<MotionBlurQualitySettings>();
             var GameMotionBlurQualitySettings = new GameMotionBlurQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<MotionBlurQualitySettings>()
-                    .enabled,
-                SampleCount = SharedSettings
-                    .instance.graphics.GetQualitySetting<MotionBlurQualitySettings>()
-                    .sampleCount,
+                Enabled = MotionBlurQualitySettings.enabled,
+                SampleCount = MotionBlurQualitySettings.sampleCount,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameMotionBlurQualitySettings");
+            var ShadowsQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<ShadowsQualitySettings>();
             var GameShadowsQualitySettings = new GameShadowsQualitySettings
             {
-                Enabled = SharedSettings
-                    .instance.graphics.GetQualitySetting<ShadowsQualitySettings>()
-                    .enabled,
-                TerrainCastShadows = SharedSettings
-                    .instance.graphics.GetQualitySetting<ShadowsQualitySettings>()
-                    .terrainCastShadows,
-                DirectionalShadowResolution = SharedSettings
-                    .instance.graphics.GetQualitySetting<ShadowsQualitySettings>()
-                    .directionalShadowResolution,
-                ShadowCullingThresholdHeight = SharedSettings
-                    .instance.graphics.GetQualitySetting<ShadowsQualitySettings>()
-                    .shadowCullingThresholdHeight,
-                ShadowCullingThresholdVolume = SharedSettings
-                    .instance.graphics.GetQualitySetting<ShadowsQualitySettings>()
-                    .shadowCullingThresholdVolume,
+                Enabled = ShadowsQualitySettings.enabled,
+                TerrainCastShadows = ShadowsQualitySettings.terrainCastShadows,
+                DirectionalShadowResolution = ShadowsQualitySettings.directionalShadowResolution,
+                ShadowCullingThresholdHeight = ShadowsQualitySettings.shadowCullingThresholdHeight,
+                ShadowCullingThresholdVolume = ShadowsQualitySettings.shadowCullingThresholdVolume,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameShadowsQualitySettings");
+            var TerrainQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<TerrainQualitySettings>();
             var GameTerrainQualitySettings = new GameTerrainQualitySettings
             {
-                FinalTessellation = SharedSettings
-                    .instance.graphics.GetQualitySetting<TerrainQualitySettings>()
-                    .finalTessellation,
-                TargetPatchSize = SharedSettings
-                    .instance.graphics.GetQualitySetting<TerrainQualitySettings>()
-                    .targetPatchSize,
+                FinalTessellation = TerrainQualitySettings.finalTessellation,
+                TargetPatchSize = TerrainQualitySettings.targetPatchSize,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameTerrainQualitySettings");
+            var WaterQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<WaterQualitySettings>();
             var GameWaterQualitySettings = new GameWaterQualitySettings
             {
-                Waterflow = SharedSettings
-                    .instance.graphics.GetQualitySetting<WaterQualitySettings>()
-                    .waterflow,
-                MaxTessellationFactor = SharedSettings
-                    .instance.graphics.GetQualitySetting<WaterQualitySettings>()
-                    .maxTessellationFactor,
-                TessellationFactorFadeStart = SharedSettings
-                    .instance.graphics.GetQualitySetting<WaterQualitySettings>()
-                    .tessellationFactorFadeStart,
-                TessellationFactorFadeRange = SharedSettings
-                    .instance.graphics.GetQualitySetting<WaterQualitySettings>()
-                    .tessellationFactorFadeRange,
+                Waterflow = WaterQualitySettings.waterflow,
+                MaxTessellationFactor = WaterQualitySettings.maxTessellationFactor,
+                TessellationFactorFadeStart = WaterQualitySettings.tessellationFactorFadeStart,
+                TessellationFactorFadeRange = WaterQualitySettings.tessellationFactorFadeRange,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameWaterQualitySettings");
+            var LevelOfDetailQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<LevelOfDetailQualitySettings>();
             var GameLevelOfDetailQualitySettings = new GameLevelOfDetailQualitySettings
             {
-                LevelOfDetail = SharedSettings
-                    .instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>()
-                    .levelOfDetail,
-                LodCrossFade = SharedSettings
-                    .instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>()
-                    .lodCrossFade,
-                MaxLightCount = SharedSettings
-                    .instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>()
-                    .maxLightCount,
-                MeshMemoryBudget = SharedSettings
-                    .instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>()
-                    .meshMemoryBudget,
-                StrictMeshMemory = SharedSettings
-                    .instance.graphics.GetQualitySetting<LevelOfDetailQualitySettings>()
-                    .strictMeshMemory,
+                LevelOfDetail = LevelOfDetailQualitySettings.levelOfDetail,
+                LodCrossFade = LevelOfDetailQualitySettings.lodCrossFade,
+                MaxLightCount = LevelOfDetailQualitySettings.maxLightCount,
+                MeshMemoryBudget = LevelOfDetailQualitySettings.meshMemoryBudget,
+                StrictMeshMemory = LevelOfDetailQualitySettings.strictMeshMemory,
             };
-            if (log)
-                LogHelper.SendLog("Collecting GameLevelOfDetailQualitySettings");
-            var GameAnimationQualitySetting = new GameAnimationQualitySetting
-            {
-                MaxBoneInfuence = SharedSettings
-                    .instance.graphics.GetQualitySetting<AnimationQualitySettings>()
-                    .maxBoneInfuence,
-            };
+            //if (log)
+            //    LogHelper.SendLog("Collecting GameLevelOfDetailQualitySettings");
+            //var GameAnimationQualitySetting = new GameAnimationQualitySetting
+            //{
+            //    MaxBoneInfuence = SharedSettings
+            //        .instance.graphics.GetQualitySetting<AnimationQualitySettings>()
+            //        .maxBoneInfuence,
+            //};
             if (log)
                 LogHelper.SendLog("Collecting GameAnimationQualitySetting");
+            var TextureQualitySettings =
+                sharedSettings.graphics.GetQualitySetting<TextureQualitySettings>();
             var GameTextureQualitySettings = new GameTextureQualitySettings
             {
-                Mipbias = SharedSettings
-                    .instance.graphics.GetQualitySetting<TextureQualitySettings>()
-                    .mipbias,
-                FilterMode = SharedSettings
-                    .instance.graphics.GetQualitySetting<TextureQualitySettings>()
-                    .filterMode,
+                Mipbias = TextureQualitySettings.mipbias,
+                FilterMode = TextureQualitySettings.filterMode,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameTextureQualitySettings");
@@ -480,77 +409,79 @@ namespace SimpleModCheckerPlus.Systems
                 GameTerrainQualitySettings = GameTerrainQualitySettings,
                 GameWaterQualitySettings = GameWaterQualitySettings,
                 GameLevelOfDetailQualitySettings = GameLevelOfDetailQualitySettings,
-                GameAnimationQualitySetting = GameAnimationQualitySetting,
+                //GameAnimationQualitySetting = GameAnimationQualitySetting,
                 GameTextureQualitySettings = GameTextureQualitySettings,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameQualitySettings");
+            var GraphicsSettings = sharedSettings.graphics;
             var GameGraphicsSettings = new GameGraphicsSettings()
             {
-                DisplayIndex = SharedSettings.instance.graphics.displayIndex,
-                VSync = SharedSettings.instance.graphics.vSync,
-                MaxFrameLatency = SharedSettings.instance.graphics.maxFrameLatency,
-                CursorMode = SharedSettings.instance.graphics.cursorMode,
-                DepthOfFieldMode = SharedSettings.instance.graphics.depthOfFieldMode,
-                TiltShiftNearStart = SharedSettings.instance.graphics.tiltShiftNearStart,
-                TiltShiftNearEnd = SharedSettings.instance.graphics.tiltShiftNearEnd,
-                TiltShiftFarStart = SharedSettings.instance.graphics.tiltShiftFarStart,
-                TiltShiftFarEnd = SharedSettings.instance.graphics.tiltShiftFarEnd,
-                DlssQuality = SharedSettings.instance.graphics.dlssQuality,
-                //Fsr2Quality = SharedSettings.instance.graphics.fsr2Quality,
+                DisplayIndex = GraphicsSettings.displayIndex,
+                VSync = GraphicsSettings.vSync,
+                MaxFrameLatency = GraphicsSettings.maxFrameLatency,
+                CursorMode = GraphicsSettings.cursorMode,
+                DepthOfFieldMode = GraphicsSettings.depthOfFieldMode,
+                TiltShiftNearStart = GraphicsSettings.tiltShiftNearStart,
+                TiltShiftNearEnd = GraphicsSettings.tiltShiftNearEnd,
+                TiltShiftFarStart = GraphicsSettings.tiltShiftFarStart,
+                TiltShiftFarEnd = GraphicsSettings.tiltShiftFarEnd,
+                DlssQuality = GraphicsSettings.dlssQuality,
+                //Fsr2Quality = GraphicsSettings.fsr2Quality,
                 GameQualitySettings = GameQualitySettings,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameGraphicsSettings");
+            var InputSettings = sharedSettings.input;
             var GameInputSettings = new GameInputSettings
             {
-                ElevationDraggingEnabled = SharedSettings.instance.input.elevationDraggingEnabled,
-                MouseScrollSensitivity = SharedSettings.instance.input.mouseScrollSensitivity,
-                KeyboardMoveSensitivity = SharedSettings.instance.input.keyboardMoveSensitivity,
-                KeyboardRotateSensitivity = SharedSettings.instance.input.keyboardRotateSensitivity,
-                KeyboardZoomSensitivity = SharedSettings.instance.input.keyboardZoomSensitivity,
-                MouseMoveSensitivity = SharedSettings.instance.input.mouseMoveSensitivity,
-                MouseRotateSensitivity = SharedSettings.instance.input.mouseRotateSensitivity,
-                MouseZoomSensitivity = SharedSettings.instance.input.mouseZoomSensitivity,
-                MouseInvertX = SharedSettings.instance.input.mouseInvertX,
-                MouseInvertY = SharedSettings.instance.input.mouseInvertY,
-                GamepadMoveSensitivity = SharedSettings.instance.input.gamepadMoveSensitivity,
-                GamepadRotateSensitivity = SharedSettings.instance.input.gamepadRotateSensitivity,
-                GamepadZoomSensitivity = SharedSettings.instance.input.gamepadZoomSensitivity,
-                GamepadInvertX = SharedSettings.instance.input.gamepadInvertX,
-                GamepadInvertY = SharedSettings.instance.input.gamepadInvertY,
+                ElevationDraggingEnabled = InputSettings.elevationDraggingEnabled,
+                MouseScrollSensitivity = InputSettings.mouseScrollSensitivity,
+                KeyboardMoveSensitivity = InputSettings.keyboardMoveSensitivity,
+                KeyboardRotateSensitivity = InputSettings.keyboardRotateSensitivity,
+                KeyboardZoomSensitivity = InputSettings.keyboardZoomSensitivity,
+                MouseMoveSensitivity = InputSettings.mouseMoveSensitivity,
+                MouseRotateSensitivity = InputSettings.mouseRotateSensitivity,
+                MouseZoomSensitivity = InputSettings.mouseZoomSensitivity,
+                MouseInvertX = InputSettings.mouseInvertX,
+                MouseInvertY = InputSettings.mouseInvertY,
+                GamepadMoveSensitivity = InputSettings.gamepadMoveSensitivity,
+                GamepadRotateSensitivity = InputSettings.gamepadRotateSensitivity,
+                GamepadZoomSensitivity = InputSettings.gamepadZoomSensitivity,
+                GamepadInvertX = InputSettings.gamepadInvertX,
+                GamepadInvertY = InputSettings.gamepadInvertY,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameInputSettings");
+            var InterfaceSettings = sharedSettings.userInterface;
             var GameInterfaceSettings = new GameInterfaceSettings
             {
-                CurrentLocale = SharedSettings.instance.userInterface.currentLocale,
-                InterfaceStyle = SharedSettings.instance.userInterface.interfaceStyle,
-                InterfaceTransparency = SharedSettings.instance.userInterface.interfaceTransparency,
-                InterfaceScaling = SharedSettings.instance.userInterface.interfaceScaling,
-                TextScale = SharedSettings.instance.userInterface.textScale,
-                UnlockHighlightsEnabled = SharedSettings
-                    .instance
-                    .userInterface
-                    .unlockHighlightsEnabled,
-                ChirperPopupsEnabled = SharedSettings.instance.userInterface.chirperPopupsEnabled,
-                InputHintsType = SharedSettings.instance.userInterface.inputHintsType,
-                KeyboardLayout = SharedSettings.instance.userInterface.keyboardLayout,
-                TimeFormat = SharedSettings.instance.userInterface.timeFormat,
-                TemperatureUnit = SharedSettings.instance.userInterface.temperatureUnit,
-                UnitSystem = SharedSettings.instance.userInterface.unitSystem,
-                BlockingPopupsEnabled = SharedSettings.instance.userInterface.blockingPopupsEnabled,
+                CurrentLocale = InterfaceSettings.currentLocale,
+                InterfaceStyle = InterfaceSettings.interfaceStyle,
+                InterfaceTransparency = InterfaceSettings.interfaceTransparency,
+                InterfaceScaling = InterfaceSettings.interfaceScaling,
+                TextScale = InterfaceSettings.textScale,
+                UnlockHighlightsEnabled = InterfaceSettings.unlockHighlightsEnabled,
+                ChirperPopupsEnabled = InterfaceSettings.chirperPopupsEnabled,
+                InputHintsType = InterfaceSettings.inputHintsType,
+                KeyboardLayout = InterfaceSettings.keyboardLayout,
+                TimeFormat = InterfaceSettings.timeFormat,
+                TemperatureUnit = InterfaceSettings.temperatureUnit,
+                UnitSystem = InterfaceSettings.unitSystem,
+                BlockingPopupsEnabled = InterfaceSettings.blockingPopupsEnabled,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameInterfaceSettings");
+            var UserState = sharedSettings.userState;
             var GameUserState = new GameUserState
             {
-                LastCloudTarget = SharedSettings.instance.userState.lastCloudTarget,
-                LeftHandTraffic = SharedSettings.instance.userState.leftHandTraffic,
-                NaturalDisasters = SharedSettings.instance.userState.naturalDisasters,
-                UnlockAll = SharedSettings.instance.userState.unlockAll,
-                UnlimitedMoney = SharedSettings.instance.userState.unlimitedMoney,
-                UnlockMapTiles = SharedSettings.instance.userState.unlockMapTiles,
+                LastCloudTarget = UserState.lastCloudTarget,
+                LeftHandTraffic = UserState.leftHandTraffic,
+                NaturalDisasters = UserState.naturalDisasters,
+                UnlockAll = UserState.unlockAll,
+                UnlimitedMoney = UserState.unlimitedMoney,
+                UnlockMapTiles = UserState.unlockMapTiles,
+                SeenWhatsNew = UserState.seenWhatsNew,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameUserState");
@@ -786,6 +717,34 @@ namespace SimpleModCheckerPlus.Systems
                     GameEditorSettings GameEditorSettings = jsonObject["GameEditorSettings"]
                         .ToObject<GameEditorSettings>();
                     if (
+                        jsonObject["GameEditorSettings"]["PrefabPickerColumnCount"] != null
+                        && SharedSettings.instance.editor.prefabPickerColumnCount
+                            != GameEditorSettings.PrefabPickerColumnCount
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'editor.assetPickerColumnCount'=> '{GameEditorSettings.PrefabPickerColumnCount}'"
+                            );
+                        SharedSettings.instance.editor.prefabPickerColumnCount =
+                            GameEditorSettings.PrefabPickerColumnCount;
+                    }
+                    if (
+                        jsonObject["GameEditorSettings"]["PrefabPickerFavorites"] != null
+                        && SharedSettings.instance.editor.prefabPickerFavorites
+                            != GameEditorSettings.PrefabPickerFavorites
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'editor.prefabPickerFavorites'=> '{GameEditorSettings.PrefabPickerFavorites}'"
+                            );
+                        SharedSettings.instance.editor.prefabPickerFavorites =
+                            GameEditorSettings.PrefabPickerFavorites;
+                    }
+                    if (
                         jsonObject["GameEditorSettings"]["AssetPickerColumnCount"] != null
                         && SharedSettings.instance.editor.assetPickerColumnCount
                             != GameEditorSettings.AssetPickerColumnCount
@@ -798,6 +757,20 @@ namespace SimpleModCheckerPlus.Systems
                             );
                         SharedSettings.instance.editor.assetPickerColumnCount =
                             GameEditorSettings.AssetPickerColumnCount;
+                    }
+                    if (
+                        jsonObject["GameEditorSettings"]["AssetPickerFavorites"] != null
+                        && SharedSettings.instance.editor.assetPickerFavorites
+                            != GameEditorSettings.AssetPickerFavorites
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'editor.assetPickerFavorites'=> '{GameEditorSettings.AssetPickerFavorites}'"
+                            );
+                        SharedSettings.instance.editor.assetPickerFavorites =
+                            GameEditorSettings.AssetPickerFavorites;
                     }
                     if (
                         jsonObject["GameEditorSettings"]["InspectorWidth"] != null
@@ -1274,11 +1247,11 @@ namespace SimpleModCheckerPlus.Systems
                             jsonObject["GameGraphicsSettings"]
                                 ["GameQualitySettings"]["GameLevelOfDetailQualitySettings"]
                                 .ToObject<GameLevelOfDetailQualitySettings>();
-                        GameAnimationQualitySetting GameAnimationQualitySetting = jsonObject[
-                            "GameGraphicsSettings"
-                        ]
-                            ["GameQualitySettings"]["GameAnimationQualitySetting"]
-                            .ToObject<GameAnimationQualitySetting>();
+                        //GameAnimationQualitySetting GameAnimationQualitySetting = jsonObject[
+                        //    "GameGraphicsSettings"
+                        //]
+                        //    ["GameQualitySettings"]["GameAnimationQualitySetting"]
+                        //    .ToObject<GameAnimationQualitySetting>();
                         GameTextureQualitySettings GameTextureQualitySettings = jsonObject[
                             "GameGraphicsSettings"
                         ]
@@ -2297,24 +2270,24 @@ namespace SimpleModCheckerPlus.Systems
                                 .strictMeshMemory =
                                 GameLevelOfDetailQualitySettings.StrictMeshMemory;
                         }
-                        if (
-                            jsonObject["GameGraphicsSettings"]["GameQualitySettings"][
-                                "GameAnimationQualitySetting"
-                            ]["MaxBoneInfuence"] != null
-                            && SharedSettings
-                                .instance.graphics.GetQualitySetting<AnimationQualitySettings>()
-                                .maxBoneInfuence != GameAnimationQualitySetting.MaxBoneInfuence
-                        )
-                        {
-                            i++;
-                            if (log)
-                                LogHelper.SendLog(
-                                    $"Restoring 'graphics.GetQualitySetting<AnimationQualitySettings>().maxBoneInfuence'=> '{GameAnimationQualitySetting.MaxBoneInfuence}'"
-                                );
-                            SharedSettings
-                                .instance.graphics.GetQualitySetting<AnimationQualitySettings>()
-                                .maxBoneInfuence = GameAnimationQualitySetting.MaxBoneInfuence;
-                        }
+                        //if (
+                        //    jsonObject["GameGraphicsSettings"]["GameQualitySettings"][
+                        //        "GameAnimationQualitySetting"
+                        //    ]["MaxBoneInfuence"] != null
+                        //    && SharedSettings
+                        //        .instance.graphics.GetQualitySetting<AnimationQualitySettings>()
+                        //        .maxBoneInfuence != GameAnimationQualitySetting.MaxBoneInfuence
+                        //)
+                        //{
+                        //    i++;
+                        //    if (log)
+                        //        LogHelper.SendLog(
+                        //            $"Restoring 'graphics.GetQualitySetting<AnimationQualitySettings>().maxBoneInfuence'=> '{GameAnimationQualitySetting.MaxBoneInfuence}'"
+                        //        );
+                        //    SharedSettings
+                        //        .instance.graphics.GetQualitySetting<AnimationQualitySettings>()
+                        //        .maxBoneInfuence = GameAnimationQualitySetting.MaxBoneInfuence;
+                        //}
                         if (
                             jsonObject["GameGraphicsSettings"]["GameQualitySettings"][
                                 "GameTextureQualitySettings"
@@ -2769,7 +2742,7 @@ namespace SimpleModCheckerPlus.Systems
                     }
                 }
 
-                if (jsonObject["GameInputSettings"] != null)
+                if (jsonObject["GameUserState"] != null)
                 {
                     GameUserState GameUserState = jsonObject["GameUserState"]
                         .ToObject<GameUserState>();
@@ -2856,6 +2829,38 @@ namespace SimpleModCheckerPlus.Systems
                         SharedSettings.instance.userState.unlockMapTiles =
                             GameUserState.UnlockMapTiles;
                     }
+                    if (
+                        jsonObject["GameUserState"]["seenWhatsNew"] != null
+                        && SharedSettings.instance.userState.seenWhatsNew
+                            != GameUserState.SeenWhatsNew
+                    )
+                    {
+                        //    i++;
+                        //    if (log)
+                        //        LogHelper.SendLog(
+                        //            $"Restoring 'userState.seenWhatsNew'=> '{GameUserState.SeenWhatsNew.ToJSONString()}'"
+                        //        );
+                        //    SharedSettings.instance.userState.seenWhatsNew = GameUserState.SeenWhatsNew;
+
+                        try
+                        {
+                            var sys =
+                                World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<WhatsNewPanelUISystem>();
+                            var mi = typeof(WhatsNewPanelUISystem).GetMethod(
+                                "OnClose",
+                                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
+                            );
+
+                            mi.Invoke(sys, new object[] { true });
+                        }
+                        catch (Exception ex)
+                        {
+                            LogHelper.SendLog($"Failed to close WhatsNewPanel: {ex}");
+                        }
+                    }
+                    //LogHelper.SendLog(
+                    //    $"Restored 'userState.seenWhatsNew'=> '{GameUserState.SeenWhatsNew.ToJSONString()}'"
+                    //);
                 }
                 if (i > 0)
                 {
@@ -2867,7 +2872,7 @@ namespace SimpleModCheckerPlus.Systems
                         "starq-smc-game-settings-restore",
                         title: Mod.Name,
                         text: new LocalizedString(
-                            $"{Mod.Id}.RestoreGameSettings]",
+                            $"{Mod.Id}.RestoreGameSettings",
                             null,
                             new Dictionary<string, ILocElement>
                             {
@@ -2888,5 +2893,10 @@ namespace SimpleModCheckerPlus.Systems
                 LogHelper.SendLog($"Game Settings Restoration Failed: {ex}");
             }
         }
+
+        //public static void SetErrorMuteCooldown(int value)
+        //{
+        //    SharedSettings.instance.userInterface.errorMuteCooldownSeconds = value;
+        //}
     }
 }

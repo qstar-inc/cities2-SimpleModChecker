@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Colossal.PSI.Environment;
 using Game;
@@ -48,15 +48,15 @@ namespace SimpleModCheckerPlus.Systems
                 }
                 var ProfileNames = new ProfileNames
                 {
-                    Profile1 = Mod.Setting.ProfileName1,
-                    Profile2 = Mod.Setting.ProfileName2,
-                    Profile3 = Mod.Setting.ProfileName3,
-                    Profile4 = Mod.Setting.ProfileName4,
-                    Profile5 = Mod.Setting.ProfileName5,
-                    Profile6 = Mod.Setting.ProfileName6,
-                    Profile7 = Mod.Setting.ProfileName7,
-                    Profile8 = Mod.Setting.ProfileName8,
-                    Profile9 = Mod.Setting.ProfileName9,
+                    Profile1 = Mod.m_Setting.ProfileName1,
+                    Profile2 = Mod.m_Setting.ProfileName2,
+                    Profile3 = Mod.m_Setting.ProfileName3,
+                    Profile4 = Mod.m_Setting.ProfileName4,
+                    Profile5 = Mod.m_Setting.ProfileName5,
+                    Profile6 = Mod.m_Setting.ProfileName6,
+                    Profile7 = Mod.m_Setting.ProfileName7,
+                    Profile8 = Mod.m_Setting.ProfileName8,
+                    Profile9 = Mod.m_Setting.ProfileName9,
                 };
 
                 string jsonString = JsonConvert.SerializeObject(ProfileNames, Formatting.Indented);
@@ -85,31 +85,31 @@ namespace SimpleModCheckerPlus.Systems
                 {
                     ProfileNames ProfileNames = jsonObject.ToObject<ProfileNames>();
                     //LogHelper.SendLog(ProfileNames.Profile1);
-                    if (Mod.Setting.ProfileName1 != ProfileNames.Profile1)
-                        Mod.Setting.ProfileName1 = ProfileNames.Profile1;
-                    if (Mod.Setting.ProfileName2 != ProfileNames.Profile2)
-                        Mod.Setting.ProfileName2 = ProfileNames.Profile2;
-                    if (Mod.Setting.ProfileName3 != ProfileNames.Profile3)
-                        Mod.Setting.ProfileName3 = ProfileNames.Profile3;
-                    if (Mod.Setting.ProfileName4 != ProfileNames.Profile4)
-                        Mod.Setting.ProfileName4 = ProfileNames.Profile4;
-                    if (Mod.Setting.ProfileName5 != ProfileNames.Profile5)
-                        Mod.Setting.ProfileName5 = ProfileNames.Profile5;
-                    if (Mod.Setting.ProfileName6 != ProfileNames.Profile6)
-                        Mod.Setting.ProfileName6 = ProfileNames.Profile6;
-                    if (Mod.Setting.ProfileName7 != ProfileNames.Profile7)
-                        Mod.Setting.ProfileName7 = ProfileNames.Profile7;
-                    if (Mod.Setting.ProfileName8 != ProfileNames.Profile8)
-                        Mod.Setting.ProfileName8 = ProfileNames.Profile8;
-                    if (Mod.Setting.ProfileName9 != ProfileNames.Profile9)
-                        Mod.Setting.ProfileName9 = ProfileNames.Profile9;
+                    if (Mod.m_Setting.ProfileName1 != ProfileNames.Profile1)
+                        Mod.m_Setting.ProfileName1 = ProfileNames.Profile1;
+                    if (Mod.m_Setting.ProfileName2 != ProfileNames.Profile2)
+                        Mod.m_Setting.ProfileName2 = ProfileNames.Profile2;
+                    if (Mod.m_Setting.ProfileName3 != ProfileNames.Profile3)
+                        Mod.m_Setting.ProfileName3 = ProfileNames.Profile3;
+                    if (Mod.m_Setting.ProfileName4 != ProfileNames.Profile4)
+                        Mod.m_Setting.ProfileName4 = ProfileNames.Profile4;
+                    if (Mod.m_Setting.ProfileName5 != ProfileNames.Profile5)
+                        Mod.m_Setting.ProfileName5 = ProfileNames.Profile5;
+                    if (Mod.m_Setting.ProfileName6 != ProfileNames.Profile6)
+                        Mod.m_Setting.ProfileName6 = ProfileNames.Profile6;
+                    if (Mod.m_Setting.ProfileName7 != ProfileNames.Profile7)
+                        Mod.m_Setting.ProfileName7 = ProfileNames.Profile7;
+                    if (Mod.m_Setting.ProfileName8 != ProfileNames.Profile8)
+                        Mod.m_Setting.ProfileName8 = ProfileNames.Profile8;
+                    if (Mod.m_Setting.ProfileName9 != ProfileNames.Profile9)
+                        Mod.m_Setting.ProfileName9 = ProfileNames.Profile9;
                 }
             }
             catch (Exception ex)
             {
                 LogHelper.SendLog(ex);
             }
-            ++Mod.Setting.ProfileListVersion;
+            ++Mod.m_Setting.ProfileListVersion;
         }
     }
 }

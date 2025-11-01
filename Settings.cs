@@ -1,10 +1,5 @@
-﻿// Simple Mod Checker Plus
-// https://github.com/qstar-inc/cities2-SimpleModChecker
-// StarQ 2024
-
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,19 +12,26 @@ using Game.UI.Widgets;
 using Newtonsoft.Json.Linq;
 using SimpleModCheckerPlus.Systems;
 using StarQ.Shared.Extensions;
-using UnityEngine.Device;
 
 namespace SimpleModCheckerPlus
 {
     [FileLocation("ModsSettings\\StarQ\\" + nameof(SimpleModCheckerPlus))]
-    [SettingsUITabOrder(ModListTab, VerifyTab, MainTab, ProfileNameTab, AboutTab, LogTab)]
+    [SettingsUITabOrder(
+        ModListTab,
+        VerifyTab,
+        BackupTab,
+        GeneralTab,
+        ProfileNameTab,
+        AboutTab,
+        LogTab
+    )]
     [SettingsUIGroupOrder(
         ModsListSortGroup,
         CodeModsGroup,
         PackageModsGroup,
         ModVerifyGroup,
         BackupGroup,
-        OptionsGroup,
+        GeneralGroup,
         InfoGroup,
         ModInfo,
         SupportedMod
@@ -37,8 +39,6 @@ namespace SimpleModCheckerPlus
     [SettingsUIShowGroupName(
         CodeModsGroup,
         PackageModsGroup,
-        BackupGroup,
-        OptionsGroup,
         ModVerifyGroup,
         ModCleanupGroup,
         ModInfo,
@@ -55,26 +55,22 @@ namespace SimpleModCheckerPlus
         private readonly ModSettingsBackup ModSettingsBackup = new();
         private readonly KeybindsBackup KeybindsBackup = new();
         private readonly ProfileNameBackup ProfileNameBackup = new();
-        private readonly string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
 
         public Setting(IMod mod)
-            : base(mod)
-        {
-            SetDefaults();
-        }
+            : base(mod) => SetDefaults();
 
-        public const string MainTab = "MainTab";
+        public const string GeneralTab = "GeneralTab";
+        public const string GeneralGroup = "GeneralGroup";
 
-        public const string OptionsGroup = "OptionsGroup";
+        public const string BackupTab = "BackupTab";
         public const string BackupGroup = "BackupGroup";
 
         public const string ModListTab = "ModListTab";
-        public const string VerifyTab = "VerifyTab";
-
-        //public const string ModListGroup = "Loaded Mods";
         public const string ModsListSortGroup = "ModsListSortGroup";
         public const string CodeModsGroup = "CodeModsGroup";
         public const string PackageModsGroup = "PackageModsGroup";
+
+        public const string VerifyTab = "VerifyTab";
         public const string ModVerifyGroup = "ModVerifyGroup";
         public const string ModCleanupGroup = "ModCleanupGroup";
 
@@ -85,40 +81,57 @@ namespace SimpleModCheckerPlus
 
         public const string AboutTab = "AboutTab";
         public const string InfoGroup = "InfoGroup";
-        public const string LogTab = "LogTab";
         public const string ModInfo = "ModInfo";
         public const string SupportedMod = "SupportedMod";
+
+        public const string LogTab = "LogTab";
 
         [SettingsUIHidden]
         public bool DeletedBackupCIDs { get; set; } = false;
 
-        [SettingsUISection(MainTab, OptionsGroup)]
+        //[SettingsUISlider(min = 10, max = 120)]
+        //[SettingsUISection(MainTab, OptionsGroup)]
+        //public int ErrorMuteCooldownSeconds
+        //{
+        //    get => ErrorMuteCooldownSeconds;
+        //    set => GameSettingsBackup.SetErrorMuteCooldown(value);
+        //}
+
+        [Exclude]
+        [SettingsUIHidden]
+        public bool IsCustomChirpsOn { get; set; } = false;
+
+        [SettingsUISection(GeneralTab, GeneralGroup)]
         public bool ShowNotif { get; set; } = true;
 
-        [SettingsUISection(MainTab, OptionsGroup)]
+        [SettingsUISection(GeneralTab, GeneralGroup)]
         public bool PlaySound { get; set; } = true;
+
+        [SettingsUISection(GeneralTab, GeneralGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(IsCustomChirpsOn), true)]
+        public bool AutoSaveOffChirp { get; set; } = true;
 
         //[SettingsUISection(MainTab, OptionsGroup)]
         //public bool DeleteMissingCIDs { get; set; } = true;
 
-        [SettingsUISection(MainTab, OptionsGroup)]
+        [SettingsUISection(GeneralTab, GeneralGroup)]
         public bool DisableContinueOnLauncher { get; set; } = true;
 
-        [SettingsUISection(MainTab, OptionsGroup)]
+        [SettingsUISection(GeneralTab, GeneralGroup)]
         public bool DisableContinueInGame { get; set; } = true;
 
-        [SettingsUISection(MainTab, OptionsGroup)]
+        [SettingsUISection(GeneralTab, GeneralGroup)]
         public bool DeleteCorrupted { get; set; } = true;
 
-        [SettingsUISection(MainTab, OptionsGroup)]
+        [SettingsUISection(GeneralTab, GeneralGroup)]
         public bool EnableVerboseLogging { get; set; } = false; // SET TO FALSE //
 
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public bool AutoRestoreSettingBackupOnStartup { get; set; } = true;
 
         [SettingsUIDropdown(typeof(Setting), nameof(GetProfileNames))]
         [SettingsUIValueVersion(typeof(Setting), nameof(ProfileListVersion))]
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public int ProfileDropdown { get; set; } = 1;
 
         [SettingsUIHidden]
@@ -126,7 +139,7 @@ namespace SimpleModCheckerPlus
 
         [SettingsUIButtonGroup("GameBackup")]
         [SettingsUIButton]
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public bool CreateGameBackup
         {
             set { GameSettingsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging); }
@@ -134,7 +147,7 @@ namespace SimpleModCheckerPlus
 
         [SettingsUIButtonGroup("GameBackup")]
         [SettingsUIButton]
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public bool RestoreGameBackup
         {
             set { GameSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); }
@@ -142,7 +155,7 @@ namespace SimpleModCheckerPlus
 
         [SettingsUIButtonGroup("ModBackup")]
         [SettingsUIButton]
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public bool CreateModBackup
         {
             set { ModSettingsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging); }
@@ -150,7 +163,7 @@ namespace SimpleModCheckerPlus
 
         [SettingsUIButtonGroup("ModBackup")]
         [SettingsUIButton]
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public bool RestoreModBackup
         {
             set { ModSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); }
@@ -158,63 +171,49 @@ namespace SimpleModCheckerPlus
 
         [SettingsUIButtonGroup("KeybindsBackup")]
         [SettingsUIButton]
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public bool CreateKeybindsBackup
         {
-            set { KeybindsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging); }
+            set => KeybindsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging);
         }
 
         [SettingsUIButtonGroup("KeybindsBackup")]
         [SettingsUIButton]
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public bool RestoreKeybindsBackup
         {
-            set { KeybindsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); }
+            set => KeybindsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging);
         }
 
 #if DEBUG
         //[SettingsUIAdvanced]
         [SettingsUIDeveloper]
-        [SettingsUISection(MainTab, BackupGroup)]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public bool GetSettingsFiles
         {
             set { ModSettingsBackup.GetSettingsFiles(); }
         }
 #endif
 
-        //[SettingsUIHidden]
-        //public int ModsLoadedVersion { get; set; }
-
+        [Exclude]
         [SettingsUIHidden]
         public int ModDatabaseTimeVersion { get; set; }
 
-        [SettingsUISection(MainTab, BackupGroup)]
+        [Exclude]
+        [SettingsUISection(BackupTab, BackupGroup)]
         public string ModDatabaseTime => ModDatabase.ModDatabaseTime;
 
+        [Exclude]
         [SettingsUIHidden]
-        public bool VerifiedRecently { get; set; } = false;
+        public bool VerifyRunning { get; set; } = false;
 
+        [Exclude]
         [SettingsUIHidden]
         public bool IsInGameOrEditor { get; set; } = false;
 
+        [Exclude]
         [SettingsUIHidden]
-        public bool ReadyForVerify => !(!VerifiedRecently && !IsInGameOrEditor);
-
-        //[SettingsUIHidden]
-        //public long LastDownloaded { get; set; } = (long)0;
-        //[SettingsUIHidden]
-        //public long LastChecked { get; set; } = (long)0;
-
-        //[SettingsUIMultilineText]
-        //[SettingsUISection(ModListTab, ModListGroup)]
-        //[SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListLocalized))]
-        //public string ModsLoaded => "";
-
-        //[SettingsUIAdvanced]
-        //[SettingsUIMultilineText]
-        //[SettingsUISection(ModWithIssueListTab, ModWithIssueListGroup)]
-        //[SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.LoadedModsListWithIssueLocalized))]
-        //public string ModsWithIssueLoaded => "";
+        public bool ReadyForVerify => !(!VerifyRunning && !IsInGameOrEditor);
 
         [Exclude]
         [SettingsUIHidden]
@@ -249,14 +248,18 @@ namespace SimpleModCheckerPlus
             }
         }
 
-        //[SettingsUIButton]
-        //[SettingsUIButtonGroup("ModsListG1")]
-        //[SettingsUISection(ModListTab, ModsListSortGroup)]
-        //[SettingsUIDisableByCondition(typeof(Setting), nameof(DisableSortBySize))]
-        //public bool ModListSortBySize
-        //{
-        //    set { TextSort = ModCheckup.SortOptions.Size;LocaleHelper.OnActiveDictionaryChanged(); }
-        //}
+        [SettingsUIButton]
+        [SettingsUIButtonGroup("ModsListG1")]
+        [SettingsUISection(ModListTab, ModsListSortGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(DisableSortBySize))]
+        public bool ModListSortBySize
+        {
+            set
+            {
+                TextSort = ModCheckup.SortOptions.Size;
+                LocaleHelper.OnActiveDictionaryChanged();
+            }
+        }
 
         [SettingsUIButton]
         [SettingsUIButtonGroup("ModsListG1")]
@@ -293,14 +296,11 @@ namespace SimpleModCheckerPlus
         [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.PackageModsText))]
         public string PackageMods => "";
 
-        [SettingsUIMultilineText]
-        [SettingsUISection(VerifyTab, ModVerifyGroup)]
-        [SettingsUIDisplayName(typeof(ModVerifier), nameof(ModVerifier.VerificationResultText))]
-        public string VerificationResult => "";
-
+        [Exclude]
         [SettingsUIHidden]
         public int ModFolderListVersion { get; set; }
 
+        [Exclude]
         [SettingsUIDropdown(typeof(Setting), nameof(GetModFolderList))]
         [SettingsUIValueVersion(typeof(Setting), nameof(ModFolderListVersion))]
         [SettingsUISection(VerifyTab, ModVerifyGroup)]
@@ -316,7 +316,7 @@ namespace SimpleModCheckerPlus
         [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
         public bool VerifyMods
         {
-            set { Task.Run(() => ModVerifier.VerifyMods()); }
+            set { Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.All)); }
         }
 
         [SettingsUIButtonGroup("VerifyMod")]
@@ -324,19 +324,59 @@ namespace SimpleModCheckerPlus
         [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerifySelected))]
         public bool VerifyModSelected
         {
-            set { Task.Run(() => ModVerifier.VerifyMods(ModFolderDropdown)); }
+            set
+            {
+                Task.Run(() =>
+                    ModVerifier.VerifyMods(ModVerifier.ProcessType.Selected, ModFolderDropdown)
+                );
+            }
         }
 
-        [SettingsUISection(VerifyTab, ModCleanupGroup)]
-        public bool CleanUpOldVersions
+        [SettingsUIButtonGroup("VerifyMod")]
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
+        public bool VerifyModsWithoutRP
         {
-            set { Task.Run(() => ModCheckup.CleanUpOldVersions()); }
+            set { Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.NoRP)); }
+        }
+
+        [SettingsUIButtonGroup("VerifyMod")]
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
+        public bool VerifyModsActivePlayset
+        {
+            set { Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.ActivePlayset)); }
+        }
+
+        [SettingsUIButtonGroup("VerifyMod")]
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
+        public bool VerifyModsCheckMetadataFormat
+        {
+            set
+            {
+                Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.CheckMetadataFormat));
+            }
         }
 
         [SettingsUIMultilineText]
-        [SettingsUISection(VerifyTab, ModCleanupGroup)]
-        [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.CleanupResultText))]
-        public string CleanUpResult => "";
+        [SettingsUISection(VerifyTab, ModVerifyGroup)]
+        [SettingsUIDisplayName(typeof(ModVerifier), nameof(ModVerifier.VerificationResultText))]
+        public string VerificationResult => "";
+
+        //[SettingsUISection(VerifyTab, ModCleanupGroup)]
+        //public bool AutoCleanUpOldVersions { get; set; } = true;
+
+        //[SettingsUISection(VerifyTab, ModCleanupGroup)]
+        //public bool CleanUpOldVersions
+        //{
+        //    set { Task.Run(() => ModCheckup.CleanUpOldVersions()); }
+        //}
+
+        //[SettingsUIMultilineText]
+        //[SettingsUISection(VerifyTab, ModCleanupGroup)]
+        //[SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.CleanupResultText))]
+        //public string CleanUpResult => "";
 
         [SettingsUIHidden]
         [SettingsUISection(ProfileNameTab, "")]
@@ -374,7 +414,6 @@ namespace SimpleModCheckerPlus
 
         private string profileName4 = "Profile 4";
 
-        //[SettingsUIAdvanced]
         [SettingsUISection(ProfileNameTab, "")]
         [SettingsUITextInput]
         public string ProfileName4
@@ -444,83 +483,9 @@ namespace SimpleModCheckerPlus
             }
         }
 
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public string NameText => Mod.Name;
-
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public string VersionText =>
-#if DEBUG
-            $"{Mod.Version} - DEBUG";
-#else
-            Mod.Version;
-# endif
-
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public string AuthorText => "StarQ";
-
-        [SettingsUIButtonGroup("Social")]
-        [SettingsUIButton]
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public bool BMaCLink
-        {
-            set
-            {
-                try
-                {
-                    Application.OpenURL($"https://buymeacoffee.com/starq");
-                }
-                catch (Exception e)
-                {
-                    LogHelper.SendLog(e);
-                }
-            }
-        }
-
-        [SettingsUIButtonGroup("Social")]
-        [SettingsUIButton]
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public bool Discord
-        {
-            set
-            {
-                try
-                {
-                    Application.OpenURL(
-                        $"https://discord.com/channels/1024242828114673724/1287440491239047208"
-                    );
-                }
-                catch (Exception e)
-                {
-                    LogHelper.SendLog(e);
-                }
-            }
-        }
-
-        //[SettingsUIMultilineText]
-        //[SettingsUISection(AboutTab, ModInfo)]
-        //public string AboutTheMod => string.Empty;
-
         [SettingsUIMultilineText]
         [SettingsUISection(AboutTab, SupportedMod)]
         public string SupportedModText => string.Empty;
-
-        [SettingsUIMultilineText]
-        [SettingsUIDisplayName(typeof(LogHelper), nameof(LogHelper.LogText))]
-        [SettingsUISection(LogTab, "")]
-        public string LogText => string.Empty;
-
-        [SettingsUISection(LogTab, "")]
-        public bool OpenLog
-        {
-            set
-            {
-                Task.Run(() =>
-                    Process.Start(
-                        $"{EnvPath.kUserDataPath}/Logs/{nameof(SimpleModCheckerPlus)}.log"
-                    )
-                );
-            }
-        }
 
         public DropdownItem<int>[] GetProfileNames()
         {
@@ -550,7 +515,11 @@ namespace SimpleModCheckerPlus
             var x = new List<DropdownItem<string>>();
 
             var directories = Directory
-                .GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+                .GetDirectories(
+                    EnvPath.kCacheDataPath + "/Mods/mods_subscribed",
+                    "*",
+                    SearchOption.TopDirectoryOnly
+                )
                 .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]));
 
             foreach (var subfolder in directories)
@@ -568,7 +537,10 @@ namespace SimpleModCheckerPlus
                     {
                         var jsonContent = File.ReadAllText(metadataFile);
                         var jsonObject = JObject.Parse(jsonContent);
-                        modName = jsonObject["DisplayName"]?.ToString() ?? modId;
+                        modName =
+                            jsonObject["DisplayName"]?.ToString()
+                            ?? jsonObject["displayName"]?.ToString()
+                            ?? modId;
                     }
                     catch (Exception) { }
                 }
@@ -576,7 +548,7 @@ namespace SimpleModCheckerPlus
                 x.Add(
                     new DropdownItem<string>
                     {
-                        value = subfolder,
+                        value = subfolder.Replace("\\", "/"),
                         displayName = $"{modName} [{modFolder}]",
                     }
                 );
@@ -591,10 +563,12 @@ namespace SimpleModCheckerPlus
         {
             ShowNotif = true;
             PlaySound = true;
+            AutoSaveOffChirp = true;
             DisableContinueOnLauncher = true;
             DisableContinueInGame = true;
             DeleteCorrupted = true;
             AutoRestoreSettingBackupOnStartup = true;
+            //AutoCleanUpOldVersions = true;
             EnableVerboseLogging = false;
             ProfileName1 = "Profile 1";
             ProfileName2 = "Profile 2";
@@ -605,11 +579,57 @@ namespace SimpleModCheckerPlus
             ProfileName7 = "Profile 7";
             ProfileName8 = "Profile 8";
             ProfileName9 = "Profile 9";
-            VerifiedRecently = false;
+            VerifyRunning = false;
             IsInGameOrEditor = false;
             ModFolderDropdown = "";
+            //ErrorMuteCooldownSecond/s = 10;
             //LastDownloaded = (long)0;
             //LastChecked = (long)0;
+        }
+
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public string NameText => Mod.Name;
+
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public string VersionText => VariableHelper.AddDevSuffix(Mod.Version);
+
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public string AuthorText => VariableHelper.StarQ;
+
+        [SettingsUIButton]
+        [SettingsUIButtonGroup("Social")]
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public bool BMaCLink
+        {
+            set => VariableHelper.OpenBMAC();
+        }
+
+        [SettingsUIButton]
+        [SettingsUIButtonGroup("Social")]
+        [SettingsUISection(AboutTab, InfoGroup)]
+        public bool Discord
+        {
+            set => VariableHelper.OpenDiscord("1287440491239047208");
+        }
+
+        [SettingsUIMultilineText]
+        [SettingsUIDisplayName(typeof(LogHelper), nameof(LogHelper.LogText))]
+        [SettingsUISection(LogTab, "")]
+        public string LogText => string.Empty;
+
+        [Exclude]
+        [SettingsUIHidden]
+        public bool IsLogMissing
+        {
+            get => VariableHelper.CheckLog(Mod.Id);
+        }
+
+        [SettingsUIButton]
+        [SettingsUIDisableByCondition(typeof(Setting), nameof(IsLogMissing))]
+        [SettingsUISection(LogTab, "")]
+        public bool OpenLog
+        {
+            set => VariableHelper.OpenLog(Mod.Id);
         }
     }
 }

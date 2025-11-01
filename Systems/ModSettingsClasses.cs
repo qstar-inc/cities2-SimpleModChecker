@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Game.Input;
+using System.Collections.Generic;
 using Game.Settings;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -15,15 +13,10 @@ namespace SimpleModCheckerPlus.Systems
     {
         private readonly Dictionary<string, object> SettingsItems = new();
 
-        public void SetValue(string property, object value)
-        {
-            SettingsItems[property] = value;
-        }
+        public void SetValue(string property, object value) => SettingsItems[property] = value;
 
-        public object GetValue(string property)
-        {
-            return SettingsItems.ContainsKey(property) ? SettingsItems[property] : null;
-        }
+        public object GetValue(string property) =>
+            SettingsItems.ContainsKey(property) ? SettingsItems[property] : null;
     }
 
     public class AdvancedRoadToolsSettings : SettingsBackup
@@ -369,11 +362,12 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(PedestrianInPathway));
             set => SetValue(nameof(PedestrianInPathway), value);
         }
-        public int PathwayPriorityDropdown
-        {
-            get => (int)GetValue(nameof(PathwayPriorityDropdown));
-            set => SetValue(nameof(PathwayPriorityDropdown), value);
-        }
+
+        //public int PathwayPriorityDropdown
+        //{
+        //    get => (int)GetValue(nameof(PathwayPriorityDropdown));
+        //    set => SetValue(nameof(PathwayPriorityDropdown), value);
+        //}
         public bool BridgesInRoads
         {
             get => (bool)GetValue(nameof(BridgesInRoads));
@@ -404,11 +398,11 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(EnableAssetPacks));
             set => SetValue(nameof(EnableAssetPacks), value);
         }
-        public bool VerboseLogging
-        {
-            get => (bool)GetValue(nameof(VerboseLogging));
-            set => SetValue(nameof(VerboseLogging), value);
-        }
+        //public bool VerboseLogging
+        //{
+        //    get => (bool)GetValue(nameof(VerboseLogging));
+        //    set => SetValue(nameof(VerboseLogging), value);
+        //}
     }
 
     public class AssetVariationChangerSettings : SettingsBackup
@@ -5568,6 +5562,11 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(PlaySound));
             set => SetValue(nameof(PlaySound), value);
         }
+        public bool IsCustomChirpsOn
+        {
+            get => (bool)GetValue(nameof(IsCustomChirpsOn));
+            set => SetValue(nameof(IsCustomChirpsOn), value);
+        }
         public bool DisableContinueOnLauncher
         {
             get => (bool)GetValue(nameof(DisableContinueOnLauncher));
@@ -5587,6 +5586,11 @@ namespace SimpleModCheckerPlus.Systems
         {
             get => (bool)GetValue(nameof(AutoRestoreSettingBackupOnStartup));
             set => SetValue(nameof(AutoRestoreSettingBackupOnStartup), value);
+        }
+        public bool AutoCleanUpOldVersions
+        {
+            get => (bool)GetValue(nameof(AutoCleanUpOldVersions));
+            set => SetValue(nameof(AutoCleanUpOldVersions), value);
         }
     }
 

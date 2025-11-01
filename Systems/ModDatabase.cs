@@ -1,9 +1,9 @@
-﻿using System;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Colossal.PSI.Environment;
 using Newtonsoft.Json;
 using StarQ.Shared.Extensions;
 
@@ -46,89 +46,87 @@ namespace SimpleModCheckerPlus.Systems
     public class ModDatabase
     {
         public Mod _mod;
-        public static Dictionary<string, ModInfo> ModDatabaseInfo { get; private set; }
+        public static ConcurrentDictionary<string, ModInfo> ModDatabaseInfo { get; private set; }
 
         public static ModDatabaseMetadata Metadata { get; private set; }
         public static string ModDatabaseTime;
-        private static readonly string modDatabaseJson =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\ModDatabase.json";
         public static bool isModDatabaseLoaded = false;
         private static readonly object databaseLock = new();
+
+        private static string FormatTimeSpan(TimeSpan ts) =>
+            $"{ts.Days} day{(ts.Days != 1 ? "s" : "")}, "
+            + $"{ts.Hours} hour{(ts.Hours != 1 ? "s" : "")}, "
+            + $"{ts.Minutes} minute{(ts.Minutes != 1 ? "s" : "")}, "
+            + $"{ts.Seconds} second{(ts.Seconds != 1 ? "s" : "")} old";
 
         public static void LoadModDatabase()
         {
             lock (databaseLock)
             {
-                if (!File.Exists(modDatabaseJson))
+                if (!File.Exists(Mod.modDatabaseJson))
                 {
                     LogHelper.SendLog("Mod database file not found");
                     return;
                 }
 
-                string jsonData = File.ReadAllText(modDatabaseJson);
+                string jsonData = File.ReadAllText(Mod.modDatabaseJson);
                 var jsonDataObject = JsonConvert.DeserializeObject<ModDatabaseWrapper>(jsonData);
+                if (jsonDataObject?.ModDatabaseInfo == null || jsonDataObject.Metadata == null)
+                {
+                    LogHelper.SendLog("Invalid mod database JSON.");
+                    return;
+                }
                 var rawModData = jsonDataObject.ModDatabaseInfo;
                 var metaData = jsonDataObject.Metadata;
                 TimeSpan timeSinceLastUpdate = TimeSpan.FromSeconds(
                     DateTimeOffset.UtcNow.ToUnixTimeSeconds() - metaData.Time
                 );
-                string readableAge =
-                    $"{timeSinceLastUpdate.Days} day{(timeSinceLastUpdate.Days != 1 ? "s" : "")}, "
-                    + $"{timeSinceLastUpdate.Hours} hour{(timeSinceLastUpdate.Hours != 1 ? "s" : "")}, "
-                    + $"{timeSinceLastUpdate.Minutes} minute{(timeSinceLastUpdate.Minutes != 1 ? "s" : "")}, "
-                    + $"{timeSinceLastUpdate.Seconds} second{(timeSinceLastUpdate.Seconds != 1 ? "s" : "")} old";
+                string readableAge = FormatTimeSpan(timeSinceLastUpdate);
                 ModDatabaseTime = DateTimeOffset
                     .FromUnixTimeSeconds(metaData.Time)
                     .ToLocalTime()
                     .ToString("dd MMMM yyyy hh:mm:ss tt zzz");
                 LogHelper.SendLog($"ModDatabase.json is {readableAge} ({ModDatabaseTime})...");
 
-                ModDatabaseInfo = new();
-                foreach (var entry in rawModData)
-                {
-                    var modInfoTemp = entry.Value;
-                    string tempclassname =
-                        $"{nameof(SimpleModCheckerPlus)}.{nameof(Systems)}.{modInfoTemp.ClassType}";
-                    var modInfo = new ModInfo
-                    {
-                        AssemblyName = modInfoTemp.AssemblyName ?? "",
-                        FragmentSource = modInfoTemp.FragmentSource ?? "",
-
-                        ClassType = !string.IsNullOrEmpty(modInfoTemp.ClassType)
-                            ? Type.GetType(tempclassname)
-                            : null,
-                        ModName = modInfoTemp.ModName ?? "",
-                        PDX_ID = entry.Key ?? "",
-                        Author = modInfoTemp.Author ?? "",
-                        Backupable = modInfoTemp.Backupable,
-                    };
-                    ModDatabaseInfo.Add(entry.Key, modInfo);
-                }
+                ModDatabaseInfo = new ConcurrentDictionary<string, ModInfo>(
+                    rawModData.Select(entry => new KeyValuePair<string, ModInfo>(
+                        entry.Key,
+                        ConvertToModInfo(entry.Key, entry.Value)
+                    ))
+                );
                 LogHelper.SendLog($"Found {ModDatabaseInfo.Count} mods in the database");
                 isModDatabaseLoaded = true;
+                LocaleHelper.UpdateDictionary();
             }
         }
 
         public static void GetModDatabase()
         {
-            string modDatabaseJson = Mod.modDatabaseJson;
             try
             {
-                if (!File.Exists(modDatabaseJson))
+                if (!File.Exists(Mod.modDatabaseJson))
                 {
                     LogHelper.SendLog("ModDatabase not found. Attempting to copy...");
                     CopyLocalBackup();
                 }
 
-                string oldJsonData = File.ReadAllText(modDatabaseJson, Encoding.UTF8);
-                Mod.oldMetadata = JsonConvert
-                    .DeserializeObject<ModDatabaseWrapper>(oldJsonData)
-                    .Metadata;
-                string newJsonData = File.ReadAllText(Mod.localBackupPath, Encoding.UTF8);
-                Mod.newMetadata = JsonConvert
-                    .DeserializeObject<ModDatabaseWrapper>(newJsonData)
-                    .Metadata;
-                if (Mod.oldMetadata.Time < Mod.newMetadata.Time)
+                var oldJsonData = JsonConvert.DeserializeObject<ModDatabaseWrapper>(
+                    File.ReadAllText(Mod.modDatabaseJson, Encoding.UTF8)
+                );
+                var newJsonData = JsonConvert.DeserializeObject<ModDatabaseWrapper>(
+                    File.ReadAllText(Mod.localBackupPath, Encoding.UTF8)
+                );
+
+                if (oldJsonData?.Metadata == null || newJsonData?.Metadata == null)
+                {
+                    LogHelper.SendLog("Metadata missing in ModDatabase or backup.", LogLevel.Error);
+                    return;
+                }
+
+                Mod.oldMetadata = oldJsonData.Metadata;
+                Mod.newMetadata = newJsonData.Metadata;
+
+                if (oldJsonData.Metadata.Time < newJsonData.Metadata.Time)
                     CopyLocalBackup();
             }
             catch (Exception ex)
@@ -156,26 +154,42 @@ namespace SimpleModCheckerPlus.Systems
                 LogHelper.SendLog("Error copying local backup: " + ex.Message);
             }
         }
+
+        private static ModInfo ConvertToModInfo(string key, ModInfoTemp temp)
+        {
+            return new ModInfo
+            {
+                AssemblyName = temp.AssemblyName ?? "",
+                FragmentSource = temp.FragmentSource ?? "",
+                ClassType = !string.IsNullOrEmpty(temp.ClassType)
+                    ? Type.GetType(
+                        $"{nameof(SimpleModCheckerPlus)}.{nameof(Systems)}.{temp.ClassType}"
+                    )
+                    : null,
+                ModName = temp.ModName ?? "",
+                PDX_ID = key ?? "",
+                Author = temp.Author ?? "",
+                Backupable = temp.Backupable,
+            };
+        }
     }
 
     public class ModInfoProcessor
     {
-        public static List<ModInfo> SortByAuthor_Mod_ID(Dictionary<string, ModInfo> type = null)
+        public static List<ModInfo> SortByAuthor_Mod_ID(IEnumerable<ModInfo> mods = null)
         {
-            Dictionary<string, ModInfo>.ValueCollection list;
-            if (type == null)
+            var list = mods ?? ModDatabase.ModDatabaseInfo?.Values;
+
+            if (list == null)
             {
-                list = ModDatabase.ModDatabaseInfo.Values;
+                LogHelper.SendLog("No mods available to sort.", LogLevel.DEV);
+                return new List<ModInfo>();
             }
-            else
-            {
-                list = type.Values;
-            }
-            var sortedMods = list.OrderBy(mod => mod.Author)
-                .ThenBy(mod => mod.ModName)
-                .ThenBy(mod => mod.PDX_ID)
+
+            return list.OrderBy(m => m.Author)
+                .ThenBy(m => m.ModName)
+                .ThenBy(m => m.PDX_ID)
                 .ToList();
-            return sortedMods;
         }
 
         //public static List<ModInfo> SortByModName(Dictionary<string, ModInfo> type = null)

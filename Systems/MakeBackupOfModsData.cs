@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Colossal.PSI.Environment;
+using StarQ.Shared.Extensions;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -7,25 +9,33 @@ namespace SimpleModCheckerPlus.Systems
     {
         public static void MakePrev()
         {
-            string sourcePath =
-                $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup";
-            if (Directory.Exists(sourcePath))
-            {
-                string destinationPath = Path.Combine(sourcePath, "_prev");
-                if (!Directory.Exists(destinationPath))
-                {
-                    Directory.CreateDirectory(destinationPath);
-                }
-                var files = Directory.GetFiles(sourcePath);
+            string sourcePath = Path.Combine(
+                EnvPath.kUserDataPath,
+                "ModsData",
+                "SimpleModChecker",
+                "SettingsBackup"
+            );
 
-                foreach (var file in files)
+            if (!Directory.Exists(sourcePath))
+                return;
+
+            string destinationPath = Path.Combine(sourcePath, "_prev");
+            Directory.CreateDirectory(destinationPath);
+
+            foreach (var file in Directory.EnumerateFiles(sourcePath))
+            {
+                string fileName = Path.GetFileName(file);
+                if (fileName.Equals("_prev", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                string destinationFile = Path.Combine(destinationPath, fileName);
+                try
                 {
-                    string fileName = Path.GetFileName(file);
-                    string destinationFile = Path.Combine(destinationPath, fileName);
-                    if (!fileName.Equals("_prev"))
-                    {
-                        File.Copy(file, destinationFile, overwrite: true);
-                    }
+                    File.Copy(file, destinationFile, overwrite: true);
+                    LogHelper.SendLog($"Copied {fileName} to _prev backup", LogLevel.DEV);
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.SendLog($"Failed to copy {fileName}: {ex.Message}", LogLevel.Warn);
                 }
             }
         }

@@ -1,8 +1,8 @@
-﻿using Game.Rendering.Utilities;
+using System.Collections.Generic;
+using Game.Rendering.Utilities;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using static Colossal.IO.AssetDatabase.AssetDatabase;
-using static Game.Settings.AnimationQualitySettings;
 using static Game.Settings.AntiAliasingQualitySettings;
 using static Game.Settings.GeneralSettings;
 using static Game.Settings.GraphicsSettings;
@@ -29,7 +29,10 @@ namespace SimpleModCheckerPlus.Systems
 
     public class GameEditorSettings
     {
+        public int PrefabPickerColumnCount { get; set; }
+        public string[] PrefabPickerFavorites { get; set; }
         public int AssetPickerColumnCount { get; set; }
+        public string[] AssetPickerFavorites { get; set; }
         public int InspectorWidth { get; set; }
         public int HierarchyWidth { get; set; }
         public bool UseParallelImport { get; set; }
@@ -91,7 +94,8 @@ namespace SimpleModCheckerPlus.Systems
         public GameTerrainQualitySettings GameTerrainQualitySettings { get; set; }
         public GameWaterQualitySettings GameWaterQualitySettings { get; set; }
         public GameLevelOfDetailQualitySettings GameLevelOfDetailQualitySettings { get; set; }
-        public GameAnimationQualitySetting GameAnimationQualitySetting { get; set; }
+
+        //public GameAnimationQualitySetting GameAnimationQualitySetting { get; set; }
         public GameTextureQualitySettings GameTextureQualitySettings { get; set; }
     }
 
@@ -205,10 +209,10 @@ namespace SimpleModCheckerPlus.Systems
         public bool StrictMeshMemory { get; set; }
     }
 
-    public class GameAnimationQualitySetting
-    {
-        public Skinning MaxBoneInfuence { get; set; }
-    }
+    //public class GameAnimationQualitySetting
+    //{
+    //    public Skinning MaxBoneInfuence { get; set; }
+    //}
 
     public class GameTextureQualitySettings
     {
@@ -262,5 +266,6 @@ namespace SimpleModCheckerPlus.Systems
         public bool UnlockAll { get; set; }
         public bool UnlimitedMoney { get; set; }
         public bool UnlockMapTiles { get; set; }
+        public List<string> SeenWhatsNew { get; set; }
     }
 }

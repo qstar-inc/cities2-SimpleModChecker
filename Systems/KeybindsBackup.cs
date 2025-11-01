@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -59,7 +59,7 @@ namespace SimpleModCheckerPlus.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
-            if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
+            if (Mod.m_Setting.AutoRestoreSettingBackupOnStartup)
             {
                 if (File.Exists(backupFile1))
                 {
@@ -305,9 +305,7 @@ namespace SimpleModCheckerPlus.Systems
                                                     : string.Join(
                                                         " + ",
                                                         newBinding
-                                                            .modifiers.Select(
-                                                                (ProxyModifier m) => m.m_Path
-                                                            )
+                                                            .modifiers.Select(m => m.m_Path)
                                                             .Append(newBinding.path)
                                                     );
                                                 LogHelper.SendLog(

@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,163 +12,184 @@ using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json.Linq;
 using StarQ.Shared.Extensions;
-
+using UnityEngine;
 
 namespace SimpleModCheckerPlus.Systems
 {
     public class ModVerifier
     {
-        public static string Header = "Mod Verification Result will appear here.";
+        public static string translateKey = $"{Mod.Id}.Verify";
+        public static string Header = LocaleHelper.Translate($"{translateKey}.Header.WillAppear");
         public static string Progress = "";
         public static int ModCount = 0;
-        public static string IssueList = "";
+        public static int donePercent = 0;
+
+        //public static string IssueList = "";
         public static int ProcesStatus = 0;
-        public static Dictionary<string, string> DownloadedModList = new();
-        public static List<string> DupedModList = new();
-        public static int RemovedBackupCIDs = 0;
-        public static int SkippedBackupCIDs = 0;
+        public static DateTime verifyStartUtc;
+        public static List<int> DownloadedModList = new();
+        public static List<int> DupedModList = new();
         public static Dictionary<string, Dictionary<string, string>> ManifestData = new();
-        public static List<string> backupsToCheck = new();
-        public static string translateKey = $"{Mod.Id}.Verify";
+        private static readonly object _issueListLock = new();
+        private static List<int> ModsById;
         public static LocalizedString VerificationResultText => GetText();
 
-        private static readonly Regex CsvRegex =
-            new(@"(?:^|,)(?:(?:""(?<value>[^""]*)"")|(?<value>[^,""]*))",
-                RegexOptions.Compiled);
+        private static readonly Regex csvRegex = new(
+            @"(?:^|,)(?:(?:""(?<value>[^""]*)"")|(?<value>[^,""]*))",
+            RegexOptions.Compiled
+        );
 
-        public static LocalizedString GetText()
+        private static bool NoModsSubscribed = false;
+
+        private static readonly SortedDictionary<ModData, List<ModIssues>> ModDataIssues = new();
+        private static readonly SortedList<int, int> ModWithOldSDK = new();
+        private static readonly List<string> MetadataOldFormat = new();
+
+        public class ModData : IComparable<ModData>
         {
-            if (ProcesStatus == 0)
+            public int modId;
+            public string modName;
+            public string modVersion;
+
+            public int CompareTo(ModData other)
             {
-                return Header;
+                if (other == null)
+                    return 1;
+
+                return modId.CompareTo(other.modId);
             }
-            else if (ProcesStatus == 1)
+
+            public override bool Equals(object obj)
             {
-                return $"{Header}\n{Progress}\n{IssueList}";
+                if (obj is not ModData other)
+                    return false;
+                return modId == other.modId;
             }
-            else if (ProcesStatus == 2)
+
+            public override int GetHashCode()
             {
-                return $"{Header}\n{IssueList}";
-            }
-            else
-            {
-                return $"{Header}\n{IssueList}";
+                return HashCode.Combine(modId, modName, modVersion);
             }
         }
 
-        public static void IssueTextHeader(string modId, string modName)
+        public class ModIssues
         {
-            if (modId == modName)
-            {
-                IssueList += $"<{modId}>:\n";
-            }
-            else
-            {
-                IssueList += $"<{modId}> {modName}:\n";
-            }
+            public IssueType issueType;
+            public string filePath;
         }
 
-        public static void RemoveBackupCID()
+        public enum IssueType
         {
-            try
-            {
-                string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
-                if (!Directory.Exists(rootFolder))
-                {
-                    return;
-                }
-
-                foreach (
-                    var subfolder in Directory
-                        .GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
-                        .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
-                )
-                {
-                    string modFolder = Path.GetFileName(subfolder);
-                    string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
-
-                    string[] modFolderParts = modFolder.Split('_');
-                    if (modFolderParts.Length != 2)
-                    {
-                        continue;
-                    }
-
-                    if (subfolder != null)
-                    {
-                        try
-                        {
-                            CheckForBackupCID(subfolder);
-                        }
-                        catch (Exception ex)
-                        {
-                            LogHelper.SendLog(
-                                $"Error verifying files in '{subfolder}': {ex.Message}"
-                            );
-                        }
-                    }
-                }
-
-                foreach (var filePath in backupsToCheck)
-                {
-                    string subfolder =
-                        $"{EnvPath.kCacheDataPath}/Mods/mods_subscribed/{filePath.Replace(EnvPath.kCacheDataPath, "").Replace("\\", "/").Replace("/Mods/mods_subscribed/", "").Split('/')[0]}";
-
-                    string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
-                    string manifestPath = FindManifestFile(subfolder);
-                    if (string.IsNullOrEmpty(manifestPath))
-                    {
-                        LogHelper.SendLog($"No manifestPath found for subfolder: {subfolder}");
-                        continue;
-                    }
-
-                    Dictionary<string, string> manifestData;
-
-                    try
-                    {
-                        manifestData = ReadManifestFile(manifestPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogHelper.SendLog(
-                            $"Error reading manifest at '{manifestPath}': {ex.Message}"
-                        );
-                        continue;
-                    }
-
-                    if (!manifestData.ContainsKey(relativePath))
-                    {
-                        File.Delete(filePath);
-                        RemovedBackupCIDs++;
-                        LogHelper.SendLog($"Deleted '{relativePath}'.");
-                    }
-                    else
-                    {
-                        SkippedBackupCIDs++;
-                        //Mod.log.Info($"Skipped '{relativePath}'.");
-                    }
-                }
-
-                LogHelper.SendLog(
-                    $"Backup CIDs: Removed {RemovedBackupCIDs}; Ignored {SkippedBackupCIDs}"
-                );
-                Mod.Setting.DeletedBackupCIDs = true;
-            }
-            catch (Exception ex)
-            {
-                LogHelper.SendLog(ex.ToString());
-            }
+            None,
+            Dirty,
+            Foreign,
+            MultipleVersion,
+            CIDMismatch,
+            AccessDenied,
+            UnknownError,
+            Missing,
+            NoManifest,
+            ErrorManifest,
         }
 
-        public static async Task VerifyMods(string selected = null)
+        private static LocalizedString GetText()
         {
+            return ProcesStatus switch
+            {
+                0 => Header,
+                1 => $"{Header}\n- {ExtraText()}\n{Progress}",
+                2 => $"{Header}\n{GetIssueText()}",
+                _ => $"{Header}\n{GetIssueText()}",
+            };
+        }
+
+        private static string GetIssueText()
+        {
+            if (NoModsSubscribed)
+                return LocaleHelper.Translate($"{translateKey}.Issue.NoModsSubscribed");
+
+            string finalText = string.Empty;
+            if (
+                ModDataIssues.Count == 0
+                && ModWithOldSDK.Count == 0
+                && MetadataOldFormat.Count == 0
+            )
+                return LocaleHelper.Translate($"{translateKey}.Issue.NoIssue");
+
+            foreach (var x in ModDataIssues.ToList())
+            {
+                ModData modData = x.Key;
+                List<ModIssues> issues = x.Value;
+                string currentHeader =
+                    modData.modId.ToString() == modData.modName
+                        ? $"<{modData.modId}>"
+                        : $"<{modData.modId}> {modData.modName}";
+
+                string issueText = string.Empty;
+                foreach (var item in issues)
+                {
+                    issueText += $"- <{item.issueType}>: **{item.filePath}**\n";
+                }
+
+                finalText += $"{currentHeader}:\n{issueText}\n";
+            }
+
+            if (ModWithOldSDK.Count > 0)
+            {
+                finalText = "Mods with old metadata.json Format: ";
+                foreach (var x in ModWithOldSDK.ToList())
+                    finalText += $"{x.Key}, ";
+
+                finalText = finalText.TrimEnd(' ', ',');
+            }
+
+            if (MetadataOldFormat.Count > 0)
+            {
+                finalText = "Old metadata.json Format:";
+                foreach (var x in MetadataOldFormat.ToList())
+                    finalText += $"\n{x}".Replace("\\", "/").Replace("/", "/\u200B");
+            }
+
+            return finalText.TrimEnd();
+        }
+
+        public static string ExtraText() =>
+            $" {donePercent}% {LocaleHelper.Translate($"{translateKey}.Complete")} | {LocaleHelper.Translate($"{translateKey}.Elapsed")} {DateTime.UtcNow - verifyStartUtc:hh\\:mm\\:ss}";
+
+        private static readonly int[] RegionPackIds = new int[]
+        {
+            91930, // French Pack
+            91931, // German Pack
+            92859, // UK Pack
+            94094, // Japan Pack
+            98960, // Eastern Europe Pack
+            100454, // China Pack
+            101898, // USA Southwest Pack
+            101948, // USA Northeast Pack
+            121130, // Netherlands Pack
+        };
+
+        public enum ProcessType
+        {
+            All,
+            Selected,
+            NoRP,
+            ActivePlayset,
+            CheckMetadataFormat,
+        }
+
+        public static async Task VerifyMods(ProcessType pt, string selected = null)
+        {
+            ModDataIssues.Clear();
             ManifestData.Clear();
             DownloadedModList.Clear();
             DupedModList.Clear();
-            IssueList = "";
 
-            // mark when Verify run starts (UTC), log time elapsed at the end
-            var verifyStartUtc = DateTime.UtcNow;
-            LogHelper.SendLog($"[Verify] START {verifyStartUtc:O}  selected={(selected ?? "ALL")}");
+            verifyStartUtc = DateTime.UtcNow;
+            LogHelper.SendLog(
+                $"[Verify] START {verifyStartUtc:O} selected={(selected ?? "ALL")}",
+                LogLevel.DEV
+            );
 
             NotificationSystem.Push(
                 "starq-smc-verify-mod",
@@ -175,25 +197,19 @@ namespace SimpleModCheckerPlus.Systems
                 text: LocaleHelper.Translate($"{translateKey}.Starting"),
                 progressState: ProgressState.Indeterminate,
                 onClicked: () =>
-                {
-                    ModCheckup.uISystem.OpenPage($"{Mod.Id}.{Mod.Id}.Mod", "VerifyTab", false);
-                }
+                    ModCheckup.uISystem.OpenPage($"{Mod.Id}.{Mod.Id}.Mod", "VerifyTab", false)
             );
 
             Header = LocaleHelper.Translate($"{translateKey}.Header.Running");
             ProcesStatus = 1;
-            Mod.Setting.VerifiedRecently = true;
-            if (selected != null)
-            {
-                LogHelper.SendLog($"Starting Mod Verification for {selected}");
-            }
-            else
-            {
-                LogHelper.SendLog("Starting Mod Verification (all subscribed mods)");
-            }
+            Mod.m_Setting.VerifyRunning = true;
+
             string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
             if (!Directory.Exists(rootFolder))
             {
+                Header = LocaleHelper.Translate($"{translateKey}.Header.Failed");
+                NoModsSubscribed = true;
+                ProcesStatus = 3;
                 NotificationSystem.Push(
                     "starq-smc-verify-mod",
                     title: Mod.Name,
@@ -209,124 +225,129 @@ namespace SimpleModCheckerPlus.Systems
                         NotificationSystem.Pop("starq-smc-verify-mod");
                     }
                 );
-                Header = LocaleHelper.Translate($"{translateKey}.Header.Failed");
-                IssueList = LocaleHelper.Translate($"{translateKey}.Issue.NoModsSubscribed");
-                ProcesStatus = 3;
                 LogHelper.SendLog("Mod Verification Process failed, no `mods_subscribed'");
                 return;
             }
 
-            string selectedModName = "";
-            string selectedModFolder = "";
-            ModCount =
-                selected != null
-                    ? 1
-                    : Directory
+            var modFolders =
+                selected == null
+                    ? Directory
                         .GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
-                        .Length;
+                        .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
+                        .ToArray()
+                    : new string[] { selected };
+
+            ModCount = pt == ProcessType.NoRP ? modFolders.Length - 7 : modFolders.Length;
+            ModsById = new();
+
+            switch (pt)
+            {
+                case ProcessType.NoRP:
+                    ModCount = modFolders.Length - 7;
+                    break;
+                case ProcessType.ActivePlayset:
+                    ModCount = ModCheckup.allMods.Count;
+                    ModsById = ModCheckup.allMods.Values.Select(m => m.Id).ToList();
+                    break;
+            }
             int i = 0;
 
-            foreach (
-                var subfolder in Directory
-                    .GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
-                    .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
-            )
+            foreach (var subfolder in modFolders)
             {
                 if (selected != null && subfolder != selected)
-                {
                     continue;
-                }
-                i++;
-                float percent = i / (float)ModCount * 100;
-                bool posted = false;
 
                 string modFolder = Path.GetFileName(subfolder);
 
                 string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
 
-                string multiText = LocaleHelper.Translate($"{translateKey}.Issue.MultiText");
-
                 string[] modFolderParts = modFolder.Split('_');
-                string modId = "";
-                string modVersion = "";
-                string modName = modId;
-                if (modFolderParts.Length == 2)
-                {
-                    modId = modFolderParts[0];
-                    modVersion = modFolderParts[1];
-
-                    modName = modId;
-                    try
-                    {
-                        string jsonContent = File.ReadAllText(metadataFile);
-                        JObject jsonObject = JObject.Parse(jsonContent);
-                        if (jsonObject["DisplayName"] != null)
-                        {
-                            modName = jsonObject["DisplayName"].ToString();
-                            selectedModName = modName;
-                            selectedModFolder = modFolder;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        LogHelper.SendLog("Error: " + ex.Message);
-                    }
-
-                    NotificationSystem.Push(
-                        "starq-smc-verify-mod",
-                        title: Mod.Name,
-                        text: new LocalizedString(
-                            $"{translateKey}.Running",
-                            null,
-                            new Dictionary<string, ILocElement>
-                            {
-                                { "I", new LocalizedNumber<int>(i) },
-                                { "ModCount", new LocalizedNumber<int>(ModCount) },
-                                { "ModName", LocalizedString.Value(modName.ToString()) },
-                            }
-                        ),
-                        progressState: ProgressState.Progressing,
-                        progress: (int)Math.Round(percent)
-                    );
-
-                    if (DownloadedModList.ContainsKey(modId) && !DupedModList.Contains(modId))
-                    {
-                        if (!posted)
-                        {
-                            IssueTextHeader(modId, modName);
-                            posted = true;
-                        }
-                        IssueList += multiText;
-                        if (!DupedModList.Contains(modId))
-                        {
-                            LogHelper.SendLog($"{multiText.Replace("\n", "")}: {modId}");
-                            DupedModList.Add(modId);
-                        }
-                    }
-                    else
-                    {
-                        DownloadedModList.Add(modId, modVersion);
-                    }
-                }
-                else
-                {
+                if (modFolderParts.Length != 2)
                     continue;
+
+                ModData modData = new()
+                {
+                    modId = int.Parse(modFolderParts[0]),
+                    modName = modFolderParts[0],
+                    modVersion = modFolderParts[1],
+                };
+
+                List<ModIssues> issues = new();
+
+                if (pt == ProcessType.NoRP && RegionPackIds.Contains(modData.modId))
+                    continue;
+
+                if (pt == ProcessType.ActivePlayset && !ModsById.Contains(modData.modId))
+                    continue;
+
+                i++;
+                int percent = (int)Math.Round(i / (float)ModCount * 100);
+                donePercent = percent;
+
+                try
+                {
+                    if (File.Exists(metadataFile))
+                    {
+                        JObject jsonObject = JObject.Parse(
+                            await File.ReadAllTextAsync(metadataFile)
+                        );
+                        if (pt == ProcessType.CheckMetadataFormat)
+                        {
+                            if (jsonObject["displayName"] == null)
+                            {
+                                MetadataOldFormat.Add(metadataFile);
+                                //ModWithOldSDK.Add(modData.modId, modData.modId);
+                            }
+
+                            continue;
+                        }
+                        modData.modName =
+                            jsonObject["DisplayName"]?.ToString()
+                            ?? jsonObject["displayName"]?.ToString()
+                            ?? modData.modId.ToString();
+                    }
                 }
-                Progress = (LocaleHelper.Translate($"{translateKey}.Progress.Processing"))
+                catch (Exception ex)
+                {
+                    LogHelper.SendLog("Error reading metadata: " + ex.Message);
+                }
+
+                NotificationSystem.Push(
+                    "starq-smc-verify-mod",
+                    title: Mod.Name,
+                    text: new LocalizedString(
+                        $"{translateKey}.Running",
+                        null,
+                        new Dictionary<string, ILocElement>
+                        {
+                            { "I", new LocalizedNumber<int>(i) },
+                            { "ModCount", new LocalizedNumber<int>(ModCount) },
+                            { "ModName", LocalizedString.Value(modData.modName) },
+                        }
+                    ),
+                    progressState: ProgressState.Progressing,
+                    progress: percent
+                );
+
+                if (
+                    DownloadedModList.Contains(modData.modId)
+                    && DupedModList.All(d => d != modData.modId)
+                )
+                    issues.Add(new() { issueType = IssueType.MultipleVersion });
+                else
+                    DownloadedModList.Add(modData.modId);
+
+                Progress = LocaleHelper
+                    .Translate($"{translateKey}.Progress.Processing")
                     .Replace("{I}", $"{new LocalizedNumber<int>(i).value}")
-                    .Replace("{ModName}", modName)
+                    .Replace("{ModName}", modData.modName)
                     .Replace("{ModCount}", $"{new LocalizedNumber<int>(ModCount).value}");
 
                 string manifestPath = FindManifestFile(subfolder);
                 if (string.IsNullOrEmpty(manifestPath))
                 {
-                    if (!posted)
-                    {
-                        IssueTextHeader(modId, modName);
-                        posted = true;
-                    }
-                    IssueList += LocaleHelper.Translate($"{translateKey}.Issue.NoManifest");
-                    LogHelper.SendLog($"No manifest found for subfolder: {subfolder}");
+                    issues.Add(new ModIssues() { issueType = IssueType.NoManifest });
+                    //LogHelper.SendLog($"No manifest found for subfolder: {subfolder}");
                     continue;
                 }
 
@@ -335,62 +356,57 @@ namespace SimpleModCheckerPlus.Systems
                 try
                 {
                     manifestData = ReadManifestFile(manifestPath);
-                    //foreach (var item in manifestData)
-                    //{
-                    //    Mod.log.Info($"{item.Key} : {item.Value}");
-                    //}
                 }
                 catch (Exception ex)
                 {
-                    if (!posted)
-                    {
-                        IssueTextHeader(modId, modName);
-                        posted = true;
-                    }
-                    IssueList += LocaleHelper.Translate($"{translateKey}.Issue.ErrorManifest");
+                    issues.Add(new ModIssues() { issueType = IssueType.ErrorManifest });
                     LogHelper.SendLog($"Error reading manifest at '{manifestPath}': {ex.Message}");
                     continue;
                 }
 
-                //string modFolder = subfolder;
-                if (subfolder != null)
+                try
                 {
-                    try
-                    {
-                        await VerifyFolderFiles(subfolder, manifestData, modId, modName, posted);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogHelper.SendLog($"Error verifying files in '{subfolder}': {ex.Message}");
-                    }
+                    await Task.Run(() =>
+                        VerifyFolderFilesParallel(subfolder, manifestData, issues)
+                    );
                 }
+                catch (Exception ex)
+                {
+                    LogHelper.SendLog($"Error verifying files in '{subfolder}': {ex.Message}");
+                }
+                if (issues.Count > 0)
+                    ModDataIssues.Add(modData, issues);
             }
             ProcesStatus = 2;
-            LogHelper.SendLog("Completed Mod Verification");
+            var verifyElapsed = DateTime.UtcNow - verifyStartUtc;
+            LogHelper.SendLog($"Completed Mod Verification in {verifyElapsed}");
+            LogHelper.SendLog(GetIssueText());
 
-            // Compute + log elapsed time for the whole Verify run (real time)
-            var verifyEndUtc = DateTime.UtcNow;
-            var verifyElapsed = verifyEndUtc - verifyStartUtc;
-            LogHelper.SendLog($"[Verify] END   {verifyEndUtc:O}  elapsed={verifyElapsed}");
-
-            // UI line shows time elapsed for Verify to complete
-            Header = $"{LocaleHelper.Translate($"{translateKey}.Header.End")} — Elapsed: {verifyElapsed:mm\\:ss\\.f}";
-
-
-            //Mod.log.Info(IssueList);
-            ProgressState hasIssue = ProgressState.Complete;
-            if (IssueList != "")
+            if (pt == ProcessType.CheckMetadataFormat && MetadataOldFormat.Count > 0)
             {
-                hasIssue = ProgressState.Warning;
+                string notifPrefix = $"{Mod.Id}.Cleanup";
+                NotificationSystem.Push(
+                    "starq-smc-cleanup-restart",
+                    title: new LocalizedString($"{notifPrefix}.Title", null, null),
+                    text: LocalizedString.Id($"{notifPrefix}.Desc"),
+                    onClicked: () =>
+                    {
+                        NotificationSystem.Pop("starq-smc-coc-restart");
+                        Application.Quit(0);
+                    }
+                );
+                foreach (var item in MetadataOldFormat)
+                    File.Delete(item);
             }
-            else
-            {
-                IssueList = LocaleHelper.Translate($"{translateKey}.Issue.NoIssue");
-                if (selected != null)
-                {
-                    IssueList += $"\n{selectedModName} ({selectedModFolder})";
-                }
-            }
+
+            Header =
+                $"{LocaleHelper.Translate($"{translateKey}.Header.End")} ({ModCount} mods) | {LocaleHelper.Translate($"{translateKey}.TimeTaken")}: {verifyElapsed:hh\\:mm\\:ss}";
+
+            ProgressState hasIssue =
+                (ModDataIssues.Count > 0 || ModWithOldSDK.Count > 0 || MetadataOldFormat.Count > 0)
+                    ? ProgressState.Warning
+                    : ProgressState.Complete;
+
             NotificationSystem.Push(
                 "starq-smc-verify-mod",
                 title: Mod.Name,
@@ -399,20 +415,13 @@ namespace SimpleModCheckerPlus.Systems
                 onClicked: () =>
                 {
                     NotificationSystem.Pop("starq-smc-verify-mod");
-                    ModCheckup.uISystem.OpenPage(
-                        $"{Mod.Id}.{Mod.Id}.Mod",
-                        "Setting.ModListTab",
-                        false
-                    );
+                    ModCheckup.uISystem.OpenPage($"{Mod.Id}.{Mod.Id}.Mod", "VerifyTab", false);
                 }
             );
-            if (selected != null)
-            {
-                Mod.Setting.VerifiedRecently = false;
-            }
+            Mod.m_Setting.VerifyRunning = false;
         }
 
-        private static string FindManifestFile(string subfolder)
+        public static string FindManifestFile(string subfolder)
         {
             string cpatchFolder = Path.Combine(subfolder, ".cpatch");
             if (!Directory.Exists(cpatchFolder))
@@ -435,9 +444,7 @@ namespace SimpleModCheckerPlus.Systems
                 {
                     string manifestPath = Path.Combine(folder, version, "complete", "manifest");
                     if (File.Exists(manifestPath))
-                    {
                         return manifestPath;
-                    }
                 }
             }
             catch (Exception ex)
@@ -448,254 +455,245 @@ namespace SimpleModCheckerPlus.Systems
             return null;
         }
 
-        private static Dictionary<string, string> ReadManifestFile(string manifestPath)
+        public static Dictionary<string, string> ReadManifestFile(string manifestPath)
         {
-
-            if (ManifestData.ContainsKey(manifestPath))
-            {
-                return ManifestData[manifestPath];
-            }
+            if (ManifestData.TryGetValue(manifestPath, out var cached))
+                return cached;
 
             var manifestData = new Dictionary<string, string>(StringComparer.Ordinal);
 
-            try
+            foreach (var line in File.ReadLines(manifestPath))
             {
-                // Stream lines to keep memory flat; parse with compiled regex; normalize keys once
-                foreach (var line in File.ReadLines(manifestPath))
-                {
-                    var matches = CsvRegex.Matches(line);
-                    var parts = matches.Cast<Match>().Select(m => m.Groups["value"].Value).ToList();
+                var parts = csvRegex
+                    .Matches(line)
+                    .Cast<Match>()
+                    .Select(m => m.Groups["value"].Value)
+                    .ToList();
 
-                    if (parts.Count >= 4)
-                    {
-                        string relativePath = parts[0].Trim('"').Replace("/", "\\"); // normalize slashes/quotes
-                        string size = parts[1];
-                        string hash = parts[2];
-                        manifestData[relativePath] = $"{size};;{hash}";
-                    }
+                if (parts.Count >= 4)
+                {
+                    string relativePath = parts[0].Trim('"').Replace("/", "\\");
+                    string size = parts[1];
+                    string hash = parts[2];
+                    manifestData[relativePath] = $"{size};;{hash}";
                 }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.SendLog($"Failed to read manifest file: {ex}", LogLevel.Error);
             }
 
             ManifestData[manifestPath] = manifestData;
             return manifestData;
         }
 
-        private static async Task VerifyFolderFiles(
+        private static void VerifyFolderFilesParallel(
             string subfolder,
             Dictionary<string, string> manifestData,
-            string modId,
-            string modName,
-            bool posted
+            List<ModIssues> issues
         )
         {
             if (!Directory.Exists(subfolder))
                 return;
 
+            var concurrentIssues = new ConcurrentBag<ModIssues>();
 
-            var files = Directory.EnumerateFiles(subfolder, "*", SearchOption.AllDirectories)
-                .Where(file => !file.Contains(".metadata") && !file.Contains(".cpatch"));
+            var files = Directory
+                .EnumerateFiles(subfolder, "*", SearchOption.AllDirectories)
+                .Where(file => !file.Contains(".metadata") && !file.Contains(".cpatch"))
+                .ToArray();
 
-            foreach (var filePath in files)
-            {
-                string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
-                string relativePathForText = $"**{relativePath.Replace("\\", "/")}**";
-                try
+            Parallel.ForEach(
+                files,
+                filePath =>
                 {
-                    // fetch manifest entry if present (keys are normalized already)
-                    if (manifestData.TryGetValue(relativePath, out var entry))
+                    string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
+                    string relativePathForText = $"{relativePath.Replace("\\", "/")}";
+                    try
                     {
-
-                        string[] manifestParts = entry.Split(new string[] { ";;" }, StringSplitOptions.None);
-                        string expectedSize = manifestParts[0];
-                        string expectedHash = manifestParts[1];
-
-                        long actualSize = new FileInfo(filePath).Length;
-
-                        // EARLY OUT: size mismatch => mark dirty, do NOT hash
-                        if (!string.Equals(expectedSize, actualSize.ToString(), StringComparison.Ordinal))
+                        if (manifestData.TryGetValue(relativePath, out var entry))
                         {
-                            if (!posted)
+                            string[] manifestParts = entry.Split(
+                                new string[] { ";;" },
+                                StringSplitOptions.None
+                            );
+                            string expectedSize = manifestParts[0];
+                            string expectedHash = manifestParts[1];
+
+                            long actualSize = new FileInfo(filePath).Length;
+
+                            if (
+                                !string.Equals(
+                                    expectedSize,
+                                    actualSize.ToString(),
+                                    StringComparison.Ordinal
+                                )
+                            )
                             {
-                                IssueTextHeader(modId, modName);
-                                posted = true;
+                                lock (_issueListLock)
+                                {
+                                    concurrentIssues.Add(
+                                        new ModIssues()
+                                        {
+                                            issueType = IssueType.Dirty,
+                                            filePath = relativePathForText.Replace("/", "/\u200B"),
+                                        }
+                                    );
+                                    //LogHelper.SendLog(
+                                    //    $"File '{relativePath}' size mismatch. Expected: {expectedSize} bytes, Found: {actualSize} bytes",
+                                    //    LogLevel.DEV
+                                    //);
+                                }
+
+                                manifestData.Remove(relativePath);
+                                return;
                             }
-                            IssueList += LocaleHelper
-                                .Translate($"{translateKey}.Issue.Dirty")
-                                .Replace("{RelativePath}", relativePathForText);
-                            LogHelper.SendLog(
-                                $"File '{relativePath}' size mismatch. Expected: {expectedSize} bytes, Found: {actualSize} bytes");
+
+                            string actualHash = ComputeSHA256HashSync(filePath);
+
+                            if (!string.Equals(expectedHash, actualHash, StringComparison.Ordinal))
+                            {
+                                lock (_issueListLock)
+                                {
+                                    concurrentIssues.Add(
+                                        new ModIssues()
+                                        {
+                                            issueType = IssueType.Dirty,
+                                            filePath = relativePathForText.Replace("/", "/\u200B"),
+                                        }
+                                    );
+                                    //LogHelper.SendLog(
+                                    //    $"File '{relativePath}' hash mismatch. Expected: {expectedHash}, Found: {actualHash} ({actualSize} bytes)",
+                                    //    LogLevel.DEV
+                                    //);
+                                }
+                            }
 
                             manifestData.Remove(relativePath);
-                            continue;
                         }
-
-                        // Size matched => compute hash one pass
-                        string actualHash = await ComputeSHA256Hash(filePath);
-
-                        if (!string.Equals(expectedHash, actualHash, StringComparison.Ordinal))
+                        else if (!filePath.EndsWith(".backup"))
                         {
-                            if (!posted)
+                            lock (_issueListLock)
                             {
-                                IssueTextHeader(modId, modName);
-                                posted = true;
+                                concurrentIssues.Add(
+                                    new ModIssues()
+                                    {
+                                        issueType = IssueType.Foreign,
+                                        filePath = relativePathForText.Replace("/", "/\u200B"),
+                                    }
+                                );
+                                //LogHelper.SendLog(
+                                //    $"File '{relativePath}' is not listed in the manifest.",
+                                //    LogLevel.DEV
+                                //);
                             }
-                            IssueList += LocaleHelper
-                                .Translate($"{translateKey}.Issue.Dirty")
-                                .Replace("{RelativePath}", relativePathForText);
-                            LogHelper.SendLog(
-                                $"File '{relativePath}' hash mismatch. Expected: {expectedHash}, Found: {actualHash} ({actualSize} bytes)");
                         }
-
-                        manifestData.Remove(relativePath);
-                    }
-                    else if (!filePath.EndsWith(".backup"))
-                    {
-                        if (!posted)
+                        else if (filePath.EndsWith(".backup"))
                         {
-                            IssueTextHeader(modId, modName);
-                            posted = true;
-                        }
-                        IssueList += LocaleHelper
-                            .Translate($"{translateKey}.Issue.Foreign")
-                            .Replace("{RelativePath}", relativePathForText);
-                        LogHelper.SendLog($"File '{relativePath}' is not listed in the manifest.");
-                    }
-                    else if (filePath.EndsWith(".backup"))
-                    {
-                        string realFilePath = filePath[..^7];
-                        relativePath = GetRelativePath(subfolder, realFilePath).Replace("/", "\\");
-                        relativePathForText = relativePath.Replace("\\", "/");
+                            string realFilePath = filePath[..^7];
+                            relativePath = GetRelativePath(subfolder, realFilePath)
+                                .Replace("/", "\\");
+                            relativePathForText = relativePath.Replace("\\", "/");
 
-                        string actualCid = File.Exists(realFilePath)
-                            ? File.ReadAllText(realFilePath)
-                            : "";
+                            string actualCid = File.Exists(realFilePath)
+                                ? File.ReadAllText(realFilePath)
+                                : "";
 
-                        string backupCid = File.Exists(filePath) ? File.ReadAllText(filePath) : "";
+                            string backupCid = File.Exists(filePath)
+                                ? File.ReadAllText(filePath)
+                                : "";
 
-                        if (actualCid != backupCid)
-                        {
-                            if (!posted)
+                            if (actualCid != backupCid)
                             {
-                                IssueTextHeader(modId, modName);
-                                posted = true;
+                                lock (_issueListLock)
+                                {
+                                    concurrentIssues.Add(
+                                        new ModIssues()
+                                        {
+                                            issueType = IssueType.CIDMismatch,
+                                            filePath = relativePathForText.Replace("/", "/\u200B"),
+                                        }
+                                    );
+                                    //LogHelper.SendLog(
+                                    //    $"Value of '{relativePath}' does not match with the backup.",
+                                    //    LogLevel.DEV
+                                    //);
+                                }
                             }
-                            IssueList += LocaleHelper
-                                .Translate($"{translateKey}.Issue.CIDMismatch")
-                                .Replace("{RelativePath}", relativePathForText);
-                            LogHelper.SendLog(
-                                $"Value of '{relativePath}' does not match with the backup."
+                        }
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        lock (_issueListLock)
+                        {
+                            concurrentIssues.Add(
+                                new ModIssues()
+                                {
+                                    issueType = IssueType.AccessDenied,
+                                    filePath = relativePathForText.Replace("/", "/\u200B"),
+                                }
                             );
+                            //LogHelper.SendLog($"Access denied to file '{filePath}'. Skipping.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        lock (_issueListLock)
+                        {
+                            concurrentIssues.Add(
+                                new ModIssues()
+                                {
+                                    issueType = IssueType.UnknownError,
+                                    filePath = relativePathForText.Replace("/", "/\u200B"),
+                                }
+                            );
+                            LogHelper.SendLog($"Error processing file '{filePath}': {ex.Message}");
                         }
                     }
                 }
-                catch (UnauthorizedAccessException)
-                {
-                    if (!posted)
-                    {
-                        IssueTextHeader(modId, modName);
-                        posted = true;
-                    }
-                    IssueList += LocaleHelper
-                        .Translate($"{translateKey}.Issue.AccessDenied")
-                                    .Replace("{RelativePath}", relativePathForText);
-                    LogHelper.SendLog($"Access denied to file '{filePath}'. Skipping.");
-                }
-                catch (Exception ex)
-                {
-                    if (!posted)
-                    {
-                        IssueTextHeader(modId, modName);
-                        posted = true;
-                    }
-                    IssueList += LocaleHelper
-                        .Translate($"{translateKey}.Issue.UnknownError")
-                        .Replace("{RelativePath}", relativePathForText);
-                    LogHelper.SendLog($"Error processing file '{filePath}': {ex.Message}");
-                }
-            }
+            );
 
             foreach (var missingFile in manifestData)
             {
                 string relativePath = missingFile.Key;
-                if (!posted)
+                lock (_issueListLock)
                 {
-                    IssueTextHeader(modId, modName);
-                    posted = true;
-                }
-                IssueList += LocaleHelper
-                    .Translate($"{translateKey}.Issue.Missing")
-                                .Replace("{RelativePath}", $"**{relativePath.Replace("\\", "/")}**");
-                LogHelper.SendLog(
-                                $"File '{relativePath}' is listed in the manifest but missing from the folder."
-                            );
-            }
-        }
-
-        private static void CheckForBackupCID(string subfolder)
-        {
-            if (!Directory.Exists(subfolder))
-                return;
-
-            var files = Directory
-                .GetFiles(subfolder, "*", SearchOption.AllDirectories)
-                .Where(file =>
-                    !file.Contains(".metadata")
-                    && !file.Contains(".cpatch")
-                    && file.Contains(".cid.backup")
-                );
-
-            foreach (var filePath in files)
-            {
-                try
-                {
-                    if (filePath.EndsWith(".backup"))
-                        backupsToCheck.Add(filePath);
-                }
-                catch (Exception ex)
-                {
-                    LogHelper.SendLog($"Error processing file '{filePath}': {ex.Message}");
+                    concurrentIssues.Add(
+                        new ModIssues()
+                        {
+                            issueType = IssueType.Missing,
+                            filePath = relativePath.Replace("/", "/\u200B"),
+                        }
+                    );
+                    //LogHelper.SendLog(
+                    //    $"File '{relativePath}' is listed in the manifest but missing from the folder.",
+                    //    LogLevel.DEV
+                    //);
                 }
             }
+            issues.AddRange(concurrentIssues);
         }
 
-        private static async Task<string> ComputeSHA256Hash(string filePath)
+        private static string ComputeSHA256HashSync(string filePath)
         {
             try
             {
                 filePath = AddLongPathPrefix(filePath);
                 using var sha256 = SHA256.Create();
 
-                const int BufferSize = 1 << 20; // larger 1 MiB reads: fewer I/O calls
                 using var stream = new FileStream(
                     filePath,
                     FileMode.Open,
                     FileAccess.Read,
                     FileShare.Read,
-                    BufferSize,
-                    FileOptions.Asynchronous | FileOptions.SequentialScan   // sequential to prefetch efficiently
+                    1 << 20,
+                    FileOptions.SequentialScan
                 );
 
-                byte[] buffer = new byte[BufferSize];
-                int bytesRead;
+                byte[] hash = sha256.ComputeHash(stream);
 
-                while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                {
-                    sha256.TransformBlock(buffer, 0, bytesRead, buffer, 0);
-                }
-
-                sha256.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-
-                return Convert.ToBase64String(sha256.Hash!).Replace("/", "_").Replace("+", "-");
+                return Convert.ToBase64String(hash).Replace("/", "_").Replace("+", "-");
             }
             catch (UnauthorizedAccessException)
             {
                 throw new UnauthorizedAccessException($"Access to file '{filePath}' is denied.");
             }
-
             catch (IOException ex)
             {
                 throw new IOException(
@@ -705,14 +703,10 @@ namespace SimpleModCheckerPlus.Systems
             }
         }
 
-        private static string AddLongPathPrefix(string path)
-        {
-            if (path.StartsWith(@"\\?\"))
-                return path;
-            return @"\\?\" + Path.GetFullPath(path);
-        }
+        private static string AddLongPathPrefix(string path) =>
+            path.StartsWith(@"\\?\") ? path : @"\\?\" + Path.GetFullPath(path);
 
-        private static string GetRelativePath(string basePath, string fullPath)
+        public static string GetRelativePath(string basePath, string fullPath)
         {
             try
             {

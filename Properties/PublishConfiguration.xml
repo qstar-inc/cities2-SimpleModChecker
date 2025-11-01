@@ -1,4 +1,4 @@
-﻿<Publish>
+<Publish>
   <ModId Value="79186" />
   <DisplayName Value="Simple Mod Checker Plus" />
   <ShortDescription Value="Mod load notification, backup/restore game/mods settings/keybinds, and more tools." />
@@ -19,7 +19,8 @@ If you don't see the notification at all, it means no mods were loaded and you n
 * Backup and Restore Game Settings and selected Mod Settings, and all keybinds (game and mod).
 * Automatically restore settings with values saved to 'Profile 1' on startup.
 * Trigger a mod verification checkup for all/selected downloaded mods (checks weather the files has been tampered, or if there's more than one version of the same mode is on storage). Found on the "" list, which when clicked will launch a set of checks to ensure the integrity of the mods. It will check if you have multiple version of the same mod downloaded and also the integrity of each file in your whole PDX Mods folder. Any files ending with "backup" are ignored. The process will only inform you about the verification result, any other steps to resolve those issues will need to be done manually.
-* [NEW] Clean up all playsets for old mod versions.
+* Automatic clean up all playsets for old mod versions.
+* Get chirp message when auto save is disabled in-game. (Requires "Custom Chirp" mod)
 * Remove the "Resume" button in the launcher and/or the "Continue Game" button in the main menu.
 * `ModsData/ModDatabase.json` is now only used for enabling/disabling what mod to back up. If a mod is causing issue, you can manually edit the `ModDatabase.json` file until I get an update out.
 * [REMOVED] ~~Get notified when .Prefab or .cok files have missing CIDs. (Includes automatic backup, original idea by Konsi/Mimonsi)~~ (Removed as backup CIDs are no longer necessary).
@@ -48,14 +49,11 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
   <Screenshot Value="Properties/Screenshot06.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="" />
-  <ModVersion Value="3.6.0" />
-  <GameVersion Value="1.3.3*" />
+  <ModVersion Value="3.7.5" />
+  <GameVersion Value="1.3.6*" />
   <Dependency Id="" />
   <ChangeLog>
-- Add support for native localization.
-- Added "Terraform Hardening", "Hard Mode", "OSM Export", "Carto", "Lazy Pedestrians", "No Dead Trees", "City Controller", "Industries Extended ", "Write Everywhere", "NavigationView", "Building Use", "Region Flag Icons", "Camera Field of View", "NoWaterElectricity", "HideBuildingsNotification", "Parking Monitor", "Resource Locator", "Crowded Stops", "Advanced Road Tools", "Camera Drag", "Traffic Jam Monitor", "Show More Happiness", "Detailed Descriptions", "HomeOfHomeless", "Asset Icon Creator", "Disable Accidents", "Events Controller", "Industry Auto Tax Adjuster", "Rent Matters Again", "MapExt", "Airplane Parameter Mod", "UrbanInequality", "Parking Pricing", "En-route / Occupancy Counts", "Prefab Asset Fixes" and "Change Company".
-- Disabled "InfoLoomTwo".
-- Added buttons to re-sort loaded list.
+- Add auto close What's New window on startup.
 	</ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />

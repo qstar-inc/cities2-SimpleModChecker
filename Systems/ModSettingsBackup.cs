@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,6 @@ using Colossal.Json;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Game;
-using Game.Economy;
 using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json;
@@ -25,26 +25,27 @@ namespace SimpleModCheckerPlus.Systems
         public static readonly List<string> loadedMods = SMC.GetLoadedMods();
 
         //public static ModManager modManager;
-        public static Dictionary<string, ModInfo> ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
-        private readonly string backupFile0 =
+        public static ConcurrentDictionary<string, ModInfo> ModDatabaseInfo =
+            ModDatabase.ModDatabaseInfo;
+        private static readonly string backupFile0 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_prev.json";
-        private readonly string backupFile1 =
+        private static readonly string backupFile1 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_1.json";
-        private readonly string backupFile2 =
+        private static readonly string backupFile2 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_2.json";
-        private readonly string backupFile3 =
+        private static readonly string backupFile3 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_3.json";
-        private readonly string backupFile4 =
+        private static readonly string backupFile4 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_4.json";
-        private readonly string backupFile5 =
+        private static readonly string backupFile5 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_5.json";
-        private readonly string backupFile6 =
+        private static readonly string backupFile6 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_6.json";
-        private readonly string backupFile7 =
+        private static readonly string backupFile7 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_7.json";
-        private readonly string backupFile8 =
+        private static readonly string backupFile8 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_8.json";
-        private readonly string backupFile9 =
+        private static readonly string backupFile9 =
             $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_9.json";
         private static int i = 0;
 
@@ -58,13 +59,13 @@ namespace SimpleModCheckerPlus.Systems
             //protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
             //{
             //base.OnGameLoadingComplete(purpose, mode);
-            while (!AutoRestoreDone && Mod.Setting.AutoRestoreSettingBackupOnStartup)
+            while (!AutoRestoreDone && Mod.m_Setting.AutoRestoreSettingBackupOnStartup)
             {
                 LogHelper.SendLog("Starting ModSettingsBackup process");
                 ModDatabaseInfo = ModDatabase.ModDatabaseInfo;
                 if (!AutoRestoreDone) // && mode == GameMode.MainMenu)
                 {
-                    if (Mod.Setting.AutoRestoreSettingBackupOnStartup)
+                    if (Mod.m_Setting.AutoRestoreSettingBackupOnStartup)
                     {
                         if (File.Exists(backupFile1))
                         {
@@ -148,11 +149,15 @@ namespace SimpleModCheckerPlus.Systems
                 title: LocalizedString.Id("SimpleModCheckerPlus.MakeModBackup.Title"),
                 text: LocalizedString.Id("SimpleModCheckerPlus.MakeModBackup.Desc"),
                 progressState: ProgressState.Warning,
-                onClicked: () => CreateBackup(1)
+                onClicked: () =>
+                {
+                    CreateBackup(1);
+                    GameSettingsBackup.CreateBackup(1);
+                }
             );
         }
 
-        public void CreateBackup(int profile, bool log = true)
+        public static void CreateBackup(int profile, bool log = true)
         {
 #if DEBUG
             log = true;
@@ -161,9 +166,14 @@ namespace SimpleModCheckerPlus.Systems
             if (profile == 1)
             {
                 NotificationSystem.Pop(
+                    "starq-smc-game-settings-update",
+                    delay: 1f,
+                    text: LocalizedString.Id($"{Mod.Id}.Working")
+                );
+                NotificationSystem.Pop(
                     "starq-smc-mod-settings-update",
                     delay: 1f,
-                    text: LocalizedString.Id("SimpleModCheckerPlus.Working")
+                    text: LocalizedString.Id($"{Mod.Id}.Working")
                 );
             }
             if (!ModDatabase.isModDatabaseLoaded)
@@ -420,7 +430,7 @@ namespace SimpleModCheckerPlus.Systems
             }
         }
 
-        public object GetSettingsData(
+        public static object GetSettingsData(
             string name,
             string fragmentSource,
             object settingsBackup,
@@ -559,7 +569,7 @@ namespace SimpleModCheckerPlus.Systems
             }
         }
 
-        private bool GetSectionValidity(string fragmentSourceType)
+        private static bool GetSectionValidity(string fragmentSourceType)
         {
             //LogHelper.SendLog($"Choosing {fragmentSourceType}");
             return fragmentSourceType switch
@@ -672,7 +682,7 @@ namespace SimpleModCheckerPlus.Systems
             ;
         }
 
-        private (bool, object) ProcessFragmentSource(
+        private static (bool, object) ProcessFragmentSource(
             object source,
             Type classType,
             JsonSerializerSettings jsonSerializerSettings
