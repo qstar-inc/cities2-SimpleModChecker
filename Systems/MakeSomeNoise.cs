@@ -15,7 +15,7 @@ namespace SimpleModCheckerPlus.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
-            GameManager.instance.RegisterUpdater(PlaySound);
+            Colossal.Core.MainThreadDispatcher.RegisterUpdater(PlaySound);
         }
 
         private bool PlaySound()

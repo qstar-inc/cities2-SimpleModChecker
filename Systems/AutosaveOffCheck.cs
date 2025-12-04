@@ -41,7 +41,7 @@ namespace SimpleModCheckerPlus.Systems
         {
             get { return UnityEngine.Time.realtimeSinceStartup; }
         }
-        private float LastAutoSaveCheck = -1f;
+        private static float LastAutoSaveCheck = -1f;
 
         //private float LastDadJokeCheck = 0f;
 
@@ -54,10 +54,10 @@ namespace SimpleModCheckerPlus.Systems
                 return;
 
             CustomChirpsBridge.PostChirp(
-                text: GetRandomText(),
+                text: $"{GetRandomText()}\nLast save: {ModDatabase.FormatTimeSpan(LastAutoSaveCheck, " ago")}",
                 department: GetRandomEnumValue<DepartmentAccountBridge>(),
                 entity: Entity.Null,
-                customSenderName: "Simple Mod Checker Plus"
+                customSenderName: Mod.Name
             );
         }
 
@@ -79,6 +79,8 @@ namespace SimpleModCheckerPlus.Systems
         {
             base.OnCreate();
             SharedSettings.instance.general.onSettingsApplied += OnSettingsChanged;
+            if (!CustomChirpsBridge.IsAvailable)
+                return;
         }
 
         private void OnSettingsChanged(Game.Settings.Setting setting)
@@ -124,6 +126,8 @@ namespace SimpleModCheckerPlus.Systems
 
         protected override void OnUpdate()
         {
+            if (!CustomChirpsBridge.IsAvailable)
+                return;
             if (LastAutoSaveCheck >= 0f && GameManager.instance.gameMode.IsGame())
             {
                 GeneralSettings general = SharedSettings.instance.general;
@@ -157,7 +161,7 @@ namespace SimpleModCheckerPlus.Systems
                 "Autosave is off?\nWow, you must really enjoy the thrill of losing hours of progress.",
                 "Autosave disabled.\nRespect. You're playing the game and gambling your entire city's existence at the same time.",
                 "Autosave is off!\nDon't worry, what could possibly go wrong... other than everything?",
-                "Turning off Autosave builds character.\nLosing your 6-hour masterpiece builds regret.",
+                "Turning off Autosave builds character.\nLosing your masterpiece builds regret.",
                 "Autosave disabled.\nYou're one crash away from an emotional support mod.",
                 "Hope you've memorized your city layout.\nBecause with Autosave off, it might be gone in one wrong move (it).",
                 "Autosave is off?\nThat's like playing with fire, but hey, at least you won't have to deal with the ashes... until you do.",

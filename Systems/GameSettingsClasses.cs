@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Rendering.Utilities;
+using Game.UI.Editor;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using static Colossal.IO.AssetDatabase.AssetDatabase;
@@ -30,15 +31,16 @@ namespace SimpleModCheckerPlus.Systems
     public class GameEditorSettings
     {
         public int PrefabPickerColumnCount { get; set; }
-        public string[] PrefabPickerFavorites { get; set; }
         public int AssetPickerColumnCount { get; set; }
-        public string[] AssetPickerFavorites { get; set; }
         public int InspectorWidth { get; set; }
         public int HierarchyWidth { get; set; }
-        public bool UseParallelImport { get; set; }
+        public int AdvisorHeight { get; set; }
         public bool LowQualityTextureCompression { get; set; }
-        public string LastSelectedProjectRootDirectory { get; set; }
-        public string LastSelectedImportDirectory { get; set; }
+        public Dictionary<string, bool> ShownTutorials { get; set; }
+        public Dictionary<
+            EditorHierarchyUISystem.ItemType,
+            bool
+        > ExpandedWorkspaceItems { get; set; }
     }
 
     public class GameGameplaySettings
@@ -48,6 +50,7 @@ namespace SimpleModCheckerPlus.Systems
         public bool DayNightVisual { get; set; }
         public bool PausedAfterLoading { get; set; }
         public bool ShowTutorials { get; set; }
+        public bool ShowEditorTutorials { get; set; }
     }
 
     public class GameGeneralSettings

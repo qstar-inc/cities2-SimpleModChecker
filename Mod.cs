@@ -10,6 +10,7 @@ using Colossal.PSI.Environment;
 using Game;
 using Game.Modding;
 using Game.SceneFlow;
+using Game.Serialization;
 using Game.Settings;
 using SimpleModCheckerPlus.Systems;
 using StarQ.Shared.Extensions;
@@ -67,8 +68,8 @@ namespace SimpleModCheckerPlus
             Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
 
 #if DEBUG
-            Setting.DeletedBackupCIDs = false;
-            Setting.EnableVerboseLogging = true;
+            m_Setting.DeletedBackupCIDs = false;
+            m_Setting.EnableVerboseLogging = true;
 #endif
 
             if (!m_Setting.DeletedBackupCIDs)
@@ -89,9 +90,9 @@ namespace SimpleModCheckerPlus
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModSettingsBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<KeybindsBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<MakeSomeNoise>();
+            //World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ContentPrereq>();
             updateSystem.UpdateAt<AutosaveOffCheck>(SystemUpdatePhase.LateUpdate);
-
-            m_Setting.IsCustomChirpsOn = ModHelper.IsModActive("CustomChirps");
+            //updateSystem.UpdateBefore<PreDeserialize<ContentPrereq>>(SystemUpdatePhase.Deserialize);
         }
 
         public void OnDispose()

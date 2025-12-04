@@ -53,11 +53,30 @@ namespace SimpleModCheckerPlus.Systems
         public static bool isModDatabaseLoaded = false;
         private static readonly object databaseLock = new();
 
-        private static string FormatTimeSpan(TimeSpan ts) =>
-            $"{ts.Days} day{(ts.Days != 1 ? "s" : "")}, "
-            + $"{ts.Hours} hour{(ts.Hours != 1 ? "s" : "")}, "
-            + $"{ts.Minutes} minute{(ts.Minutes != 1 ? "s" : "")}, "
-            + $"{ts.Seconds} second{(ts.Seconds != 1 ? "s" : "")} old";
+        public static string FormatTimeSpan(float seconds, string suffix = " old")
+        {
+            if (seconds < 0)
+                seconds = 0;
+
+            TimeSpan ts = TimeSpan.FromSeconds(seconds);
+            return FormatTimeSpan(ts, suffix);
+        }
+
+        public static string FormatTimeSpan(TimeSpan ts, string suffix = " old")
+        {
+            var parts = new List<string>();
+
+            if (ts.Days > 0)
+                parts.Add($"{ts.Days} day{(ts.Days != 1 ? "s" : "")}");
+            if (ts.Hours > 0)
+                parts.Add($"{ts.Hours} hour{(ts.Hours != 1 ? "s" : "")}");
+            if (ts.Minutes > 0)
+                parts.Add($"{ts.Minutes} minute{(ts.Minutes != 1 ? "s" : "")}");
+            if (ts.Seconds > 0 || parts.Count == 0)
+                parts.Add($"{ts.Seconds} second{(ts.Seconds != 1 ? "s" : "")}");
+
+            return string.Join(", ", parts) + suffix;
+        }
 
         public static void LoadModDatabase()
         {

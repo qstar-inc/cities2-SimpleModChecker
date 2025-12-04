@@ -4134,11 +4134,11 @@ namespace SimpleModCheckerPlus.Systems
 
     public class PrefabAssetFixesSettings : SettingsBackup
     {
-        public bool PrisonVan
-        {
-            get => (bool)GetValue(nameof(PrisonVan));
-            set => SetValue(nameof(PrisonVan), value);
-        }
+        //public bool PrisonVan
+        //{
+        //    get => (bool)GetValue(nameof(PrisonVan));
+        //    set => SetValue(nameof(PrisonVan), value);
+        //}
         public bool Prison
         {
             get => (bool)GetValue(nameof(Prison));
@@ -4150,11 +4150,11 @@ namespace SimpleModCheckerPlus.Systems
         //    get => (bool)GetValue(nameof(Storage));
         //    set => SetValue(nameof(Storage), value);
         //}
-        public bool Recycling
-        {
-            get => (bool)GetValue(nameof(Recycling));
-            set => SetValue(nameof(Recycling), value);
-        }
+        //public bool Recycling
+        //{
+        //    get => (bool)GetValue(nameof(Recycling));
+        //    set => SetValue(nameof(Recycling), value);
+        //}
         public bool Hospital
         {
             get => (bool)GetValue(nameof(Hospital));
@@ -4174,6 +4174,41 @@ namespace SimpleModCheckerPlus.Systems
         {
             get => (bool)GetValue(nameof(SolarParking));
             set => SetValue(nameof(SolarParking), value);
+        }
+        public bool RSClinic
+        {
+            get => (bool)GetValue(nameof(RSClinic));
+            set => SetValue(nameof(RSClinic), value);
+        }
+        public bool LHTBusStation02
+        {
+            get => (bool)GetValue(nameof(LHTBusStation02));
+            set => SetValue(nameof(LHTBusStation02), value);
+        }
+        public bool LHTTaxiDepot01
+        {
+            get => (bool)GetValue(nameof(LHTTaxiDepot01));
+            set => SetValue(nameof(LHTTaxiDepot01), value);
+        }
+        public bool LHTTramDepot01
+        {
+            get => (bool)GetValue(nameof(LHTTramDepot01));
+            set => SetValue(nameof(LHTTramDepot01), value);
+        }
+        public bool LHTCargoHarbor01
+        {
+            get => (bool)GetValue(nameof(LHTCargoHarbor01));
+            set => SetValue(nameof(LHTCargoHarbor01), value);
+        }
+        public bool RHTBusStation01
+        {
+            get => (bool)GetValue(nameof(RHTBusStation01));
+            set => SetValue(nameof(RHTBusStation01), value);
+        }
+        public bool NLLowHousehold
+        {
+            get => (bool)GetValue(nameof(NLLowHousehold));
+            set => SetValue(nameof(NLLowHousehold), value);
         }
     }
 
@@ -5562,10 +5597,10 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(PlaySound));
             set => SetValue(nameof(PlaySound), value);
         }
-        public bool IsCustomChirpsOn
+        public bool AutoSaveOffChirp
         {
-            get => (bool)GetValue(nameof(IsCustomChirpsOn));
-            set => SetValue(nameof(IsCustomChirpsOn), value);
+            get => (bool)GetValue(nameof(AutoSaveOffChirp));
+            set => SetValue(nameof(AutoSaveOffChirp), value);
         }
         public bool DisableContinueOnLauncher
         {
@@ -5587,11 +5622,11 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(AutoRestoreSettingBackupOnStartup));
             set => SetValue(nameof(AutoRestoreSettingBackupOnStartup), value);
         }
-        public bool AutoCleanUpOldVersions
-        {
-            get => (bool)GetValue(nameof(AutoCleanUpOldVersions));
-            set => SetValue(nameof(AutoCleanUpOldVersions), value);
-        }
+        //public bool AutoCleanUpOldVersions
+        //{
+        //    get => (bool)GetValue(nameof(AutoCleanUpOldVersions));
+        //    set => SetValue(nameof(AutoCleanUpOldVersions), value);
+        //}
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -6924,6 +6959,11 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(ConstrainBrush));
             set => SetValue(nameof(ConstrainBrush), value);
         }
+        public int PreviousAgeSelection
+        {
+            get => (int)GetValue(nameof(PreviousAgeSelection));
+            set => SetValue(nameof(PreviousAgeSelection), value);
+        }
         public int SelectedWindOption
         {
             get => (int)GetValue(nameof(SelectedWindOption));
@@ -7072,6 +7112,21 @@ namespace SimpleModCheckerPlus.Systems
             get => (int)GetValue(nameof(VanProbability));
             set => SetValue(nameof(VanProbability), value);
         }
+        public int TrailerProbability
+        {
+            get => (int)GetValue(nameof(TrailerProbability));
+            set => SetValue(nameof(TrailerProbability), value);
+        }
+        public bool EnableImprovedCarBehavior
+        {
+            get => (bool)GetValue(nameof(EnableImprovedCarBehavior));
+            set => SetValue(nameof(EnableImprovedCarBehavior), value);
+        }
+        public bool EnableImprovedTrainBehavior
+        {
+            get => (bool)GetValue(nameof(EnableImprovedTrainBehavior));
+            set => SetValue(nameof(EnableImprovedTrainBehavior), value);
+        }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
@@ -7189,6 +7244,11 @@ namespace SimpleModCheckerPlus.Systems
             get => (float)GetValue(nameof(EvaporationRate));
             set => SetValue(nameof(EvaporationRate), value);
         }
+        public bool WaterCausesDamage
+        {
+            get => (bool)GetValue(nameof(WaterCausesDamage));
+            set => SetValue(nameof(WaterCausesDamage), value);
+        }
         public bool EnableSeasonalStreams
         {
             get => (bool)GetValue(nameof(EnableSeasonalStreams));
@@ -7253,6 +7313,11 @@ namespace SimpleModCheckerPlus.Systems
         {
             get => (float)GetValue(nameof(Damping));
             set => SetValue(nameof(Damping), value);
+        }
+        public bool ForceWaterSimulationSpeed
+        {
+            get => (bool)GetValue(nameof(ForceWaterSimulationSpeed));
+            set => SetValue(nameof(ForceWaterSimulationSpeed), value);
         }
         public float Fluidness
         {

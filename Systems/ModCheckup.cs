@@ -37,12 +37,14 @@ namespace SimpleModCheckerPlus.Systems
             new();
         public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> allMods = new();
 
+        public static string lastText = "";
         public static LocalizedString CleanupResultText => LocalizedString.Id(GetText());
         public static string Header = "Mod Cleanup Result will appear here.";
         public static string Progress = "";
         public static int ModCount = 0;
         public static string IssueList = "";
         public static int ProcesStatus = 0;
+        private PdxSdkPlatform m_Manager;
 
         private static readonly FieldInfo SDKContextField = typeof(PdxSdkPlatform).GetField(
             "m_SDKContext",
@@ -82,18 +84,37 @@ namespace SimpleModCheckerPlus.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
+            m_Manager = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
+            ModHelper.AddAfterActivePlaysetOrModStatusChanged(Initialize);
+            Initialize();
+        }
+
+        public void Initialize()
+        {
+            Mod.m_Setting.IsCustomChirpsOn = ModHelper.IsModActive("CustomChirps");
+            loadedMods.Clear();
+            localMods.Clear();
+            codes.Clear();
+            packages.Clear();
+            allMods.Clear();
+
             CheckMod();
             CheckModNew();
             SendNotification(packages.Count > 0);
             //if (Mod.m_Setting.AutoCleanUpOldVersions)
             //    CleanUpOldVersions();
 
-            LogHelper.SendLog(
-                $"\nCods mods loaded:\n{LoadedList(ModTypes.CodeMods, forLog: true).Trim()}\n"
-            );
-            LogHelper.SendLog(
-                $"\nPackage mods loaded:\n{LoadedList(ModTypes.PackageMods, forLog: true).Trim()}\n"
-            );
+            string text1 =
+                $"\nCods mods loaded:\n{LoadedList(ModTypes.CodeMods, forLog: true).Trim()}\n";
+            string text2 =
+                $"\nPackage mods loaded:\n{LoadedList(ModTypes.PackageMods, forLog: true).Trim()}\n";
+
+            if (text1 + text2 == lastText)
+                return;
+
+            LogHelper.SendLog(text1 + text2);
+            lastText = text1 + text2;
+            Mod.m_Setting.ModLoadedVersion++;
         }
 
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
@@ -142,7 +163,10 @@ namespace SimpleModCheckerPlus.Systems
                     )
                     {
                         //LogHelper.SendLog($"Found local mod {modInfo.asset.name} in {modInfo.asset.path}");
-                        localMods.Add(modName, modInfo.asset.path);
+                        if (localMods.ContainsKey(modName))
+                            LogHelper.SendLog($"{modName} is loaded multiple times!");
+                        else
+                            localMods.Add(modName, modInfo.asset.path);
                     }
                     if (badDllList.Contains(modName))
                     {
@@ -417,8 +441,6 @@ namespace SimpleModCheckerPlus.Systems
                 }
             }
 
-            PdxSdkPlatform m_Manager = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
-
             var context = (IContext)SDKContextField.GetValue(m_Manager);
             var playsetResult = context.Mods.GetActivePlaysetEnabledMods().Result;
             PDX.SDK.Contracts.Service.Mods.Models.Mod[] modsResult = (
@@ -534,7 +556,7 @@ namespace SimpleModCheckerPlus.Systems
                         Progress += $"\nChecking Playset <{playset.PlaysetId}>: {playset.Name}";
 
                         var playsetModResult = context
-                            .Mods.ListModsInPlayset(playset.PlaysetId, Int32.MaxValue)
+                            .Mods.ListModsInPlayset(playset.PlaysetId, int.MaxValue)
                             .Result;
                         if (playsetModResult.Success)
                         {

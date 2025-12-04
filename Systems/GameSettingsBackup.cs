@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Colossal.Json;
 using Colossal.PSI.Common;
@@ -13,9 +14,7 @@ using Game.UI.Menu;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StarQ.Shared.Extensions;
-using TinyJson;
 using Unity.Entities;
-using static Game.Rendering.Debug.RenderPrefabRenderer;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -188,15 +187,13 @@ namespace SimpleModCheckerPlus.Systems
             var GameEditorSettings = new GameEditorSettings
             {
                 PrefabPickerColumnCount = EditorSettings.prefabPickerColumnCount,
-                PrefabPickerFavorites = EditorSettings.prefabPickerFavorites,
                 AssetPickerColumnCount = EditorSettings.assetPickerColumnCount,
-                AssetPickerFavorites = EditorSettings.assetPickerFavorites,
                 InspectorWidth = EditorSettings.inspectorWidth,
                 HierarchyWidth = EditorSettings.hierarchyWidth,
-                UseParallelImport = EditorSettings.useParallelImport,
+                AdvisorHeight = EditorSettings.advisorHeight,
                 LowQualityTextureCompression = EditorSettings.lowQualityTextureCompression,
-                LastSelectedProjectRootDirectory = EditorSettings.lastSelectedProjectRootDirectory,
-                LastSelectedImportDirectory = EditorSettings.lastSelectedImportDirectory,
+                ShownTutorials = EditorSettings.shownTutorials,
+                ExpandedWorkspaceItems = EditorSettings.expandedWorkspaceItems,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameEditorSettings");
@@ -208,6 +205,7 @@ namespace SimpleModCheckerPlus.Systems
                 DayNightVisual = GameplaySettings.dayNightVisual,
                 PausedAfterLoading = GameplaySettings.pausedAfterLoading,
                 ShowTutorials = GameplaySettings.showTutorials,
+                ShowEditorTutorials = GameplaySettings.showEditorTutorials,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameGameplaySettings");
@@ -481,7 +479,7 @@ namespace SimpleModCheckerPlus.Systems
                 UnlockAll = UserState.unlockAll,
                 UnlimitedMoney = UserState.unlimitedMoney,
                 UnlockMapTiles = UserState.unlockMapTiles,
-                SeenWhatsNew = UserState.seenWhatsNew,
+                SeenWhatsNew = UserState.seenWhatsNew ?? new List<string>(),
             };
             if (log)
                 LogHelper.SendLog("Collecting GameUserState");
@@ -730,20 +728,20 @@ namespace SimpleModCheckerPlus.Systems
                         SharedSettings.instance.editor.prefabPickerColumnCount =
                             GameEditorSettings.PrefabPickerColumnCount;
                     }
-                    if (
-                        jsonObject["GameEditorSettings"]["PrefabPickerFavorites"] != null
-                        && SharedSettings.instance.editor.prefabPickerFavorites
-                            != GameEditorSettings.PrefabPickerFavorites
-                    )
-                    {
-                        i++;
-                        if (log)
-                            LogHelper.SendLog(
-                                $"Restoring 'editor.prefabPickerFavorites'=> '{GameEditorSettings.PrefabPickerFavorites}'"
-                            );
-                        SharedSettings.instance.editor.prefabPickerFavorites =
-                            GameEditorSettings.PrefabPickerFavorites;
-                    }
+                    //if (
+                    //    jsonObject["GameEditorSettings"]["PrefabPickerFavorites"] != null
+                    //    && SharedSettings.instance.editor.prefabPickerFavorites
+                    //        != GameEditorSettings.PrefabPickerFavorites
+                    //)
+                    //{
+                    //    i++;
+                    //    if (log)
+                    //        LogHelper.SendLog(
+                    //            $"Restoring 'editor.prefabPickerFavorites'=> '{GameEditorSettings.PrefabPickerFavorites}'"
+                    //        );
+                    //    SharedSettings.instance.editor.prefabPickerFavorites =
+                    //        GameEditorSettings.PrefabPickerFavorites;
+                    //}
                     if (
                         jsonObject["GameEditorSettings"]["AssetPickerColumnCount"] != null
                         && SharedSettings.instance.editor.assetPickerColumnCount
@@ -758,20 +756,20 @@ namespace SimpleModCheckerPlus.Systems
                         SharedSettings.instance.editor.assetPickerColumnCount =
                             GameEditorSettings.AssetPickerColumnCount;
                     }
-                    if (
-                        jsonObject["GameEditorSettings"]["AssetPickerFavorites"] != null
-                        && SharedSettings.instance.editor.assetPickerFavorites
-                            != GameEditorSettings.AssetPickerFavorites
-                    )
-                    {
-                        i++;
-                        if (log)
-                            LogHelper.SendLog(
-                                $"Restoring 'editor.assetPickerFavorites'=> '{GameEditorSettings.AssetPickerFavorites}'"
-                            );
-                        SharedSettings.instance.editor.assetPickerFavorites =
-                            GameEditorSettings.AssetPickerFavorites;
-                    }
+                    //if (
+                    //    jsonObject["GameEditorSettings"]["AssetPickerFavorites"] != null
+                    //    && SharedSettings.instance.editor.assetPickerFavorites
+                    //        != GameEditorSettings.AssetPickerFavorites
+                    //)
+                    //{
+                    //    i++;
+                    //    if (log)
+                    //        LogHelper.SendLog(
+                    //            $"Restoring 'editor.assetPickerFavorites'=> '{GameEditorSettings.AssetPickerFavorites}'"
+                    //        );
+                    //    SharedSettings.instance.editor.assetPickerFavorites =
+                    //        GameEditorSettings.AssetPickerFavorites;
+                    //}
                     if (
                         jsonObject["GameEditorSettings"]["InspectorWidth"] != null
                         && SharedSettings.instance.editor.inspectorWidth
@@ -800,20 +798,20 @@ namespace SimpleModCheckerPlus.Systems
                         SharedSettings.instance.editor.hierarchyWidth =
                             GameEditorSettings.HierarchyWidth;
                     }
-                    if (
-                        jsonObject["GameEditorSettings"]["UseParallelImport"] != null
-                        && SharedSettings.instance.editor.useParallelImport
-                            != GameEditorSettings.UseParallelImport
-                    )
-                    {
-                        i++;
-                        if (log)
-                            LogHelper.SendLog(
-                                $"Restoring 'editor.useParallelImport'=> '{GameEditorSettings.UseParallelImport}'"
-                            );
-                        SharedSettings.instance.editor.useParallelImport =
-                            GameEditorSettings.UseParallelImport;
-                    }
+                    //if (
+                    //    jsonObject["GameEditorSettings"]["UseParallelImport"] != null
+                    //    && SharedSettings.instance.editor.useParallelImport
+                    //        != GameEditorSettings.UseParallelImport
+                    //)
+                    //{
+                    //    i++;
+                    //    if (log)
+                    //        LogHelper.SendLog(
+                    //            $"Restoring 'editor.useParallelImport'=> '{GameEditorSettings.UseParallelImport}'"
+                    //        );
+                    //    SharedSettings.instance.editor.useParallelImport =
+                    //        GameEditorSettings.UseParallelImport;
+                    //}
                     if (
                         jsonObject["GameEditorSettings"]["LowQualityTextureCompression"] != null
                         && SharedSettings.instance.editor.lowQualityTextureCompression
@@ -828,34 +826,34 @@ namespace SimpleModCheckerPlus.Systems
                         SharedSettings.instance.editor.lowQualityTextureCompression =
                             GameEditorSettings.LowQualityTextureCompression;
                     }
-                    if (
-                        jsonObject["GameEditorSettings"]["LastSelectedProjectRootDirectory"] != null
-                        && SharedSettings.instance.editor.lastSelectedProjectRootDirectory
-                            != GameEditorSettings.LastSelectedProjectRootDirectory
-                    )
-                    {
-                        i++;
-                        if (log)
-                            LogHelper.SendLog(
-                                $"Restoring 'editor.lastSelectedProjectRootDirectory'=> '{GameEditorSettings.LastSelectedProjectRootDirectory}'"
-                            );
-                        SharedSettings.instance.editor.lastSelectedProjectRootDirectory =
-                            GameEditorSettings.LastSelectedProjectRootDirectory;
-                    }
-                    if (
-                        jsonObject["GameEditorSettings"]["LastSelectedImportDirectory"] != null
-                        && SharedSettings.instance.editor.lastSelectedImportDirectory
-                            != GameEditorSettings.LastSelectedImportDirectory
-                    )
-                    {
-                        i++;
-                        if (log)
-                            LogHelper.SendLog(
-                                $"Restoring 'editor.lastSelectedImportDirectory'=> '{GameEditorSettings.LastSelectedImportDirectory}'"
-                            );
-                        SharedSettings.instance.editor.lastSelectedImportDirectory =
-                            GameEditorSettings.LastSelectedImportDirectory;
-                    }
+                    //if (
+                    //    jsonObject["GameEditorSettings"]["LastSelectedProjectRootDirectory"] != null
+                    //    && SharedSettings.instance.editor.lastSelectedProjectRootDirectory
+                    //        != GameEditorSettings.LastSelectedProjectRootDirectory
+                    //)
+                    //{
+                    //    i++;
+                    //    if (log)
+                    //        LogHelper.SendLog(
+                    //            $"Restoring 'editor.lastSelectedProjectRootDirectory'=> '{GameEditorSettings.LastSelectedProjectRootDirectory}'"
+                    //        );
+                    //    SharedSettings.instance.editor.lastSelectedProjectRootDirectory =
+                    //        GameEditorSettings.LastSelectedProjectRootDirectory;
+                    //}
+                    //if (
+                    //    jsonObject["GameEditorSettings"]["LastSelectedImportDirectory"] != null
+                    //    && SharedSettings.instance.editor.lastSelectedImportDirectory
+                    //        != GameEditorSettings.LastSelectedImportDirectory
+                    //)
+                    //{
+                    //    i++;
+                    //    if (log)
+                    //        LogHelper.SendLog(
+                    //            $"Restoring 'editor.lastSelectedImportDirectory'=> '{GameEditorSettings.LastSelectedImportDirectory}'"
+                    //        );
+                    //    SharedSettings.instance.editor.lastSelectedImportDirectory =
+                    //        GameEditorSettings.LastSelectedImportDirectory;
+                    //}
                 }
 
                 if (jsonObject["GameGameplaySettings"] != null)
@@ -931,6 +929,20 @@ namespace SimpleModCheckerPlus.Systems
                             );
                         SharedSettings.instance.gameplay.showTutorials =
                             GameGameplaySettings.ShowTutorials;
+                    }
+                    if (
+                        jsonObject["GameGameplaySettings"]["ShowEditorTutorials"] != null
+                        && SharedSettings.instance.gameplay.showEditorTutorials
+                            != GameGameplaySettings.ShowEditorTutorials
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'gameplay.showEditorTutorials'=> '{GameGameplaySettings.ShowEditorTutorials}'"
+                            );
+                        SharedSettings.instance.gameplay.showEditorTutorials =
+                            GameGameplaySettings.ShowEditorTutorials;
                     }
                 }
 
@@ -2748,7 +2760,7 @@ namespace SimpleModCheckerPlus.Systems
                         .ToObject<GameUserState>();
 
                     if (
-                        jsonObject["GameUserState"]["lastCloudTarget"] != null
+                        jsonObject["GameUserState"]["LastCloudTarget"] != null
                         && SharedSettings.instance.userState.lastCloudTarget
                             != GameUserState.LastCloudTarget
                     )
@@ -2762,7 +2774,7 @@ namespace SimpleModCheckerPlus.Systems
                             GameUserState.LastCloudTarget;
                     }
                     if (
-                        jsonObject["GameUserState"]["leftHandTraffic"] != null
+                        jsonObject["GameUserState"]["LeftHandTraffic"] != null
                         && SharedSettings.instance.userState.leftHandTraffic
                             != GameUserState.LeftHandTraffic
                     )
@@ -2776,7 +2788,7 @@ namespace SimpleModCheckerPlus.Systems
                             GameUserState.LeftHandTraffic;
                     }
                     if (
-                        jsonObject["GameUserState"]["naturalDisasters"] != null
+                        jsonObject["GameUserState"]["NaturalDisasters"] != null
                         && SharedSettings.instance.userState.naturalDisasters
                             != GameUserState.NaturalDisasters
                     )
@@ -2790,7 +2802,7 @@ namespace SimpleModCheckerPlus.Systems
                             GameUserState.NaturalDisasters;
                     }
                     if (
-                        jsonObject["GameUserState"]["unlockAll"] != null
+                        jsonObject["GameUserState"]["UnlockAll"] != null
                         && SharedSettings.instance.userState.unlockAll != GameUserState.UnlockAll
                     )
                     {
@@ -2802,7 +2814,7 @@ namespace SimpleModCheckerPlus.Systems
                         SharedSettings.instance.userState.unlockAll = GameUserState.UnlockAll;
                     }
                     if (
-                        jsonObject["GameUserState"]["unlimitedMoney"] != null
+                        jsonObject["GameUserState"]["UnlimitedMoney"] != null
                         && SharedSettings.instance.userState.unlimitedMoney
                             != GameUserState.UnlimitedMoney
                     )
@@ -2816,7 +2828,7 @@ namespace SimpleModCheckerPlus.Systems
                             GameUserState.UnlimitedMoney;
                     }
                     if (
-                        jsonObject["GameUserState"]["unlockMapTiles"] != null
+                        jsonObject["GameUserState"]["UnlockMapTiles"] != null
                         && SharedSettings.instance.userState.unlockMapTiles
                             != GameUserState.UnlockMapTiles
                     )
@@ -2830,17 +2842,24 @@ namespace SimpleModCheckerPlus.Systems
                             GameUserState.UnlockMapTiles;
                     }
                     if (
-                        jsonObject["GameUserState"]["seenWhatsNew"] != null
-                        && SharedSettings.instance.userState.seenWhatsNew
-                            != GameUserState.SeenWhatsNew
+                        jsonObject["GameUserState"]["SeenWhatsNew"] != null
+                        && (
+                            SharedSettings.instance.userState.seenWhatsNew == null
+                            || SharedSettings.instance.userState.seenWhatsNew.Count == 0
+                            || !SharedSettings.instance.userState.seenWhatsNew.SequenceEqual(
+                                GameUserState.SeenWhatsNew
+                            )
+                        )
                     )
                     {
-                        //    i++;
-                        //    if (log)
-                        //        LogHelper.SendLog(
-                        //            $"Restoring 'userState.seenWhatsNew'=> '{GameUserState.SeenWhatsNew.ToJSONString()}'"
-                        //        );
-                        //    SharedSettings.instance.userState.seenWhatsNew = GameUserState.SeenWhatsNew;
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'userState.seenWhatsNew'=> '{GameUserState.SeenWhatsNew.ToJSONString()}'"
+                            );
+
+                        GameUserState.SeenWhatsNew ??= new List<string>();
+                        SharedSettings.instance.userState.seenWhatsNew = GameUserState.SeenWhatsNew;
 
                         try
                         {
@@ -2858,9 +2877,6 @@ namespace SimpleModCheckerPlus.Systems
                             LogHelper.SendLog($"Failed to close WhatsNewPanel: {ex}");
                         }
                     }
-                    //LogHelper.SendLog(
-                    //    $"Restored 'userState.seenWhatsNew'=> '{GameUserState.SeenWhatsNew.ToJSONString()}'"
-                    //);
                 }
                 if (i > 0)
                 {

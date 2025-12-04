@@ -175,7 +175,7 @@ namespace SimpleModCheckerPlus.Systems
             Selected,
             NoRP,
             ActivePlayset,
-            CheckMetadataFormat,
+            //CheckMetadataFormat,
         }
 
         public static async Task VerifyMods(ProcessType pt, string selected = null)
@@ -291,16 +291,16 @@ namespace SimpleModCheckerPlus.Systems
                         JObject jsonObject = JObject.Parse(
                             await File.ReadAllTextAsync(metadataFile)
                         );
-                        if (pt == ProcessType.CheckMetadataFormat)
-                        {
-                            if (jsonObject["displayName"] == null)
-                            {
-                                MetadataOldFormat.Add(metadataFile);
-                                //ModWithOldSDK.Add(modData.modId, modData.modId);
-                            }
+                        //if (pt == ProcessType.CheckMetadataFormat)
+                        //{
+                        //    if (jsonObject["displayName"] == null)
+                        //    {
+                        //        MetadataOldFormat.Add(metadataFile);
+                        //        //ModWithOldSDK.Add(modData.modId, modData.modId);
+                        //    }
 
-                            continue;
-                        }
+                        //    continue;
+                        //}
                         modData.modName =
                             jsonObject["DisplayName"]?.ToString()
                             ?? jsonObject["displayName"]?.ToString()
@@ -382,22 +382,22 @@ namespace SimpleModCheckerPlus.Systems
             LogHelper.SendLog($"Completed Mod Verification in {verifyElapsed}");
             LogHelper.SendLog(GetIssueText());
 
-            if (pt == ProcessType.CheckMetadataFormat && MetadataOldFormat.Count > 0)
-            {
-                string notifPrefix = $"{Mod.Id}.Cleanup";
-                NotificationSystem.Push(
-                    "starq-smc-cleanup-restart",
-                    title: new LocalizedString($"{notifPrefix}.Title", null, null),
-                    text: LocalizedString.Id($"{notifPrefix}.Desc"),
-                    onClicked: () =>
-                    {
-                        NotificationSystem.Pop("starq-smc-coc-restart");
-                        Application.Quit(0);
-                    }
-                );
-                foreach (var item in MetadataOldFormat)
-                    File.Delete(item);
-            }
+            //if (pt == ProcessType.CheckMetadataFormat && MetadataOldFormat.Count > 0)
+            //{
+            //    string notifPrefix = $"{Mod.Id}.Cleanup";
+            //    NotificationSystem.Push(
+            //        "starq-smc-cleanup-restart",
+            //        title: new LocalizedString($"{notifPrefix}.Title", null, null),
+            //        text: LocalizedString.Id($"{notifPrefix}.Desc"),
+            //        onClicked: () =>
+            //        {
+            //            NotificationSystem.Pop("starq-smc-coc-restart");
+            //            Application.Quit(0);
+            //        }
+            //    );
+            //    foreach (var item in MetadataOldFormat)
+            //        File.Delete(item);
+            //}
 
             Header =
                 $"{LocaleHelper.Translate($"{translateKey}.Header.End")} ({ModCount} mods) | {LocaleHelper.Translate($"{translateKey}.TimeTaken")}: {verifyElapsed:hh\\:mm\\:ss}";

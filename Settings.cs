@@ -137,12 +137,38 @@ namespace SimpleModCheckerPlus
         [SettingsUIHidden]
         public int ProfileListVersion { get; set; }
 
+        [SettingsUIButtonGroup("AllBackup")]
+        [SettingsUIButton]
+        [SettingsUISection(BackupTab, BackupGroup)]
+        public bool CreateAllBackup
+        {
+            set
+            {
+                GameSettingsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging);
+                ModSettingsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging);
+                KeybindsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging);
+            }
+        }
+
+        [SettingsUIButtonGroup("AllBackup")]
+        [SettingsUIButton]
+        [SettingsUISection(BackupTab, BackupGroup)]
+        public bool RestoreAllBackup
+        {
+            set
+            {
+                GameSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging);
+                ModSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging);
+                KeybindsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging);
+            }
+        }
+
         [SettingsUIButtonGroup("GameBackup")]
         [SettingsUIButton]
         [SettingsUISection(BackupTab, BackupGroup)]
         public bool CreateGameBackup
         {
-            set { GameSettingsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging); }
+            set => GameSettingsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging);
         }
 
         [SettingsUIButtonGroup("GameBackup")]
@@ -150,7 +176,7 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(BackupTab, BackupGroup)]
         public bool RestoreGameBackup
         {
-            set { GameSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); }
+            set => GameSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging);
         }
 
         [SettingsUIButtonGroup("ModBackup")]
@@ -158,7 +184,7 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(BackupTab, BackupGroup)]
         public bool CreateModBackup
         {
-            set { ModSettingsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging); }
+            set => ModSettingsBackup.CreateBackup(ProfileDropdown, EnableVerboseLogging);
         }
 
         [SettingsUIButtonGroup("ModBackup")]
@@ -166,7 +192,7 @@ namespace SimpleModCheckerPlus
         [SettingsUISection(BackupTab, BackupGroup)]
         public bool RestoreModBackup
         {
-            set { ModSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging); }
+            set => ModSettingsBackup.RestoreBackup(ProfileDropdown, EnableVerboseLogging);
         }
 
         [SettingsUIButtonGroup("KeybindsBackup")]
@@ -286,13 +312,19 @@ namespace SimpleModCheckerPlus
             }
         }
 
+        [Exclude]
+        [SettingsUIHidden]
+        public int ModLoadedVersion { get; set; }
+
         [SettingsUIMultilineText]
         [SettingsUISection(ModListTab, CodeModsGroup)]
+        [SettingsUIValueVersion(typeof(Setting), nameof(ModLoadedVersion))]
         [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.CodeModsText))]
         public string CodeMods => "";
 
         [SettingsUIMultilineText]
         [SettingsUISection(ModListTab, PackageModsGroup)]
+        [SettingsUIValueVersion(typeof(Setting), nameof(ModLoadedVersion))]
         [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.PackageModsText))]
         public string PackageMods => "";
 
@@ -348,16 +380,16 @@ namespace SimpleModCheckerPlus
             set { Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.ActivePlayset)); }
         }
 
-        [SettingsUIButtonGroup("VerifyMod")]
-        [SettingsUISection(VerifyTab, ModVerifyGroup)]
-        [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
-        public bool VerifyModsCheckMetadataFormat
-        {
-            set
-            {
-                Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.CheckMetadataFormat));
-            }
-        }
+        //[SettingsUIButtonGroup("VerifyMod")]
+        //[SettingsUISection(VerifyTab, ModVerifyGroup)]
+        //[SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
+        //public bool VerifyModsCheckMetadataFormat
+        //{
+        //    set
+        //    {
+        //        Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.CheckMetadataFormat));
+        //    }
+        //}
 
         [SettingsUIMultilineText]
         [SettingsUISection(VerifyTab, ModVerifyGroup)]

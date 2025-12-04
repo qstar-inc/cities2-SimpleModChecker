@@ -1,6 +1,6 @@
 <Publish>
   <ModId Value="79186" />
-  <DisplayName Value="Simple Mod Checker Plus" />
+  <DisplayName Value="Simple Mod Checker Plus TEST" />
   <ShortDescription Value="Mod load notification, backup/restore game/mods settings/keybinds, and more tools." />
   <LongDescription># Simple Mod Checker Plus
 I'm a simple man; I see "Loaded {x} mods", I start playing.
@@ -49,13 +49,16 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
   <Screenshot Value="Properties/Screenshot06.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="" />
-  <ModVersion Value="3.7.5" />
-  <GameVersion Value="1.3.6*" />
+  <ModVersion Value="3.8.0" />
+  <GameVersion Value="1.5.2*" />
   <Dependency Id="" />
   <ChangeLog>
-- Add auto close What's New window on startup.
-	</ChangeLog>
+- Recompiled for game version 1.5.1f1.
+- Support for dynamic playset changes.
+- Added support for new Editor settings backup/restore.
+  </ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
   <ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />
+  <AccessLevel Value="Public" />
 </Publish>
