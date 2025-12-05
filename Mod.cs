@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 using Colossal.IO.AssetDatabase;
 using Colossal.Localization;
 using Colossal.Logging;
+using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
+using Colossal.PSI.PdxSdk;
 using Game;
 using Game.Modding;
 using Game.SceneFlow;
 using Game.Serialization;
 using Game.Settings;
+using PDX.SDK.Contracts;
+using PDX.SDK.Contracts.Service.Mods.Result;
 using SimpleModCheckerPlus.Systems;
 using StarQ.Shared.Extensions;
 using Unity.Entities;
@@ -61,6 +65,7 @@ namespace SimpleModCheckerPlus
                 m_Setting,
                 new Setting(this)
             );
+            Colossal.Core.MainThreadDispatcher.RegisterUpdater(TryFixUIMods);
 
             Task.Run(() => MigrateFiles(Directory.GetParent(modDatabaseJson).FullName)).Wait();
 
@@ -264,6 +269,41 @@ namespace SimpleModCheckerPlus
             }
             Directory.Delete(sourceDir);
             LogHelper.SendLog($"Deleted source directory: {sourceDir}");
+        }
+
+        //private async void ListMods()
+        //{
+        //    PdxSdkPlatform pdxPlatform = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
+        //    IContext context =
+        //        typeof(PdxSdkPlatform)
+        //            .GetField("m_SDKContext", BindingFlags.Instance | BindingFlags.NonPublic)
+        //            .GetValue(pdxPlatform) as IContext;
+        //    ModListResult enabledMods = await context.Mods.GetActivePlaysetEnabledMods();
+        //    TryFixUIMods(enabledMods);
+        //}
+
+        private static void TryFixUIMods()
+        {
+            List<String> strings = new();
+            foreach (
+                UIModuleAsset uimoduleAsset in AssetDatabase.global.GetAssets<UIModuleAsset>(
+                    SearchFilter<UIModuleAsset>.ByCondition(
+                        (UIModuleAsset asset) => asset.path != null,
+                        false
+                    )
+                )
+            )
+            {
+                strings.Add(uimoduleAsset.path);
+                GameManager.instance.modManager.AddUIModule(uimoduleAsset);
+            }
+
+            if (strings.Count > 0)
+                LogHelper.SendLog(
+                    $"Found {strings.Count} UIMod(s) in the AssetDatabase: {string.Join(", ", strings)}"
+                );
+            else
+                LogHelper.SendLog("No UIMods found in the AssetDatabase.");
         }
     }
 }

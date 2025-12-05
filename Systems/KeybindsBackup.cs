@@ -251,69 +251,87 @@ namespace SimpleModCheckerPlus.Systems
 
                             foreach (var keybind in keybindsArray)
                             {
-                                string actionName = keybind["ActionName"]?.ToString();
-                                string bindingName = keybind["BindingName"]?.ToString();
-                                int deviceString = keybind["Device"].Value<int>();
-                                JArray modifiers = keybind["Modifiers"] as JArray;
-                                string path = keybind["Path"]?.ToString();
-                                InputManager.DeviceType device =
-                                    (InputManager.DeviceType)deviceString;
-                                if (inputManager.TryFindAction(mapName, actionName, out var action))
+                                try
                                 {
-                                    ProxyBinding oldBinding = bindings.FirstOrDefault(b =>
-                                        b.mapName == mapName
-                                        && b.actionName == actionName
-                                        && b.name == bindingName
-                                        && b.device == device
-                                    );
-
-                                    if (oldBinding != null)
+                                    string actionName = keybind["ActionName"]?.ToString();
+                                    string bindingName = keybind["BindingName"]?.ToString();
+                                    int deviceString = keybind["Device"].Value<int>();
+                                    JArray modifiers = keybind["Modifiers"] as JArray;
+                                    string path = keybind["Path"]?.ToString();
+                                    InputManager.DeviceType device =
+                                        (InputManager.DeviceType)deviceString;
+                                    if (
+                                        inputManager.TryFindAction(
+                                            mapName,
+                                            actionName,
+                                            out var action
+                                        )
+                                    )
                                     {
-                                        ProxyBinding newBinding = oldBinding.Copy();
+                                        ProxyBinding oldBinding = bindings.First(b =>
+                                            b.mapName == mapName
+                                            && b.actionName == actionName
+                                            && b.name == bindingName
+                                            && b.device == device
+                                        );
 
-                                        newBinding.modifiers =
-                                            modifiers != null
-                                                ? modifiers
-                                                    .Select(m => new ProxyModifier
-                                                    {
-                                                        m_Component = (ActionComponent)
-                                                            Enum.Parse(
-                                                                typeof(ActionComponent),
-                                                                m["m_Component"]?.ToString()
-                                                                    ?? "None"
-                                                            ),
-                                                        m_Name = m["m_Name"]?.ToString(),
-                                                        m_Path = m["m_Path"]?.ToString(),
-                                                    })
-                                                    .ToArray()
-                                                : Array.Empty<ProxyModifier>();
-                                        newBinding.path = string.IsNullOrEmpty(path)
-                                            ? oldBinding.path
-                                            : path;
-
-                                        if (!(newBinding.path == oldBinding.path))
+                                        if (oldBinding != null && oldBinding.actionName != null)
                                         {
-                                            i++;
-                                            inputManager.SetBinding(newBinding, out ProxyBinding _);
+                                            ProxyBinding newBinding = oldBinding.Copy();
 
-                                            if (log)
+                                            newBinding.modifiers =
+                                                modifiers != null
+                                                    ? modifiers
+                                                        .Select(m => new ProxyModifier
+                                                        {
+                                                            m_Component = (ActionComponent)
+                                                                Enum.Parse(
+                                                                    typeof(ActionComponent),
+                                                                    m["m_Component"]?.ToString()
+                                                                        ?? "None"
+                                                                ),
+                                                            m_Name = m["m_Name"]?.ToString(),
+                                                            m_Path = m["m_Path"]?.ToString(),
+                                                        })
+                                                        .ToArray()
+                                                    : Array.Empty<ProxyModifier>();
+                                            newBinding.path = string.IsNullOrEmpty(path)
+                                                ? oldBinding.path
+                                                : path;
+
+                                            if (!(newBinding.path == oldBinding.path))
                                             {
-                                                string newBindingText = string.IsNullOrEmpty(
-                                                    newBinding.path
-                                                )
-                                                    ? "Not set"
-                                                    : string.Join(
-                                                        " + ",
-                                                        newBinding
-                                                            .modifiers.Select(m => m.m_Path)
-                                                            .Append(newBinding.path)
-                                                    );
-                                                LogHelper.SendLog(
-                                                    $"Setting {newBinding.title} to {newBindingText}"
+                                                i++;
+                                                inputManager.SetBinding(
+                                                    newBinding,
+                                                    out ProxyBinding _
                                                 );
+
+                                                if (log)
+                                                {
+                                                    string newBindingText = string.IsNullOrEmpty(
+                                                        newBinding.path
+                                                    )
+                                                        ? "Not set"
+                                                        : string.Join(
+                                                            " + ",
+                                                            newBinding
+                                                                .modifiers.Select(m => m.m_Path)
+                                                                .Append(newBinding.path)
+                                                        );
+                                                    LogHelper.SendLog(
+                                                        $"Setting {newBinding.title} to {newBindingText}"
+                                                    );
+                                                }
                                             }
                                         }
                                     }
+                                }
+                                catch (Exception ex)
+                                {
+                                    LogHelper.SendLog(
+                                        $"Keybinds Restoration Skipped for {keybind["ActionName"]?.ToString()}/{keybind["BindingName"]?.ToString()}: {ex.Message}"
+                                    );
                                 }
                             }
                         }
