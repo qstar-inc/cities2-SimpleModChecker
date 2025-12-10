@@ -3,7 +3,7 @@
     <Configurations>Debug;Release</Configurations>
     <AssemblyName>SimpleModCheckerPlus</AssemblyName>
     <AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
-    <Version>3.8.1</Version>
+    <Version>3.8.2</Version>
     <Authors>StarQ</Authors>
     <!--The file where mod information which is required for publishing mod on PDX mods are stored-->
     <PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>

@@ -65,7 +65,7 @@ namespace SimpleModCheckerPlus
                 m_Setting,
                 new Setting(this)
             );
-            Colossal.Core.MainThreadDispatcher.RegisterUpdater(TryFixUIMods);
+            //Colossal.Core.MainThreadDispatcher.RegisterUpdater(TryFixUIMods);
 
             Task.Run(() => MigrateFiles(Directory.GetParent(modDatabaseJson).FullName)).Wait();
 
@@ -282,28 +282,28 @@ namespace SimpleModCheckerPlus
         //    TryFixUIMods(enabledMods);
         //}
 
-        private static void TryFixUIMods()
-        {
-            List<String> strings = new();
-            foreach (
-                UIModuleAsset uimoduleAsset in AssetDatabase.global.GetAssets<UIModuleAsset>(
-                    SearchFilter<UIModuleAsset>.ByCondition(
-                        (UIModuleAsset asset) => asset.path != null,
-                        false
-                    )
-                )
-            )
-            {
-                strings.Add(uimoduleAsset.path);
-                GameManager.instance.modManager.AddUIModule(uimoduleAsset);
-            }
+        //private static void TryFixUIMods()
+        //{
+        //    List<String> strings = new();
+        //    foreach (
+        //        UIModuleAsset uimoduleAsset in AssetDatabase.global.GetAssets<UIModuleAsset>(
+        //            SearchFilter<UIModuleAsset>.ByCondition(
+        //                (UIModuleAsset asset) => asset.path != null,
+        //                false
+        //            )
+        //        )
+        //    )
+        //    {
+        //        strings.Add(uimoduleAsset.path);
+        //        GameManager.instance.modManager.AddUIModule(uimoduleAsset);
+        //    }
 
-            if (strings.Count > 0)
-                LogHelper.SendLog(
-                    $"Found {strings.Count} UIMod(s) in the AssetDatabase: {string.Join(", ", strings)}"
-                );
-            else
-                LogHelper.SendLog("No UIMods found in the AssetDatabase.");
-        }
+        //    if (strings.Count > 0)
+        //        LogHelper.SendLog(
+        //            $"Found {strings.Count} UIMod(s) in the AssetDatabase: {string.Join(", ", strings)}"
+        //        );
+        //    else
+        //        LogHelper.SendLog("No UIMods found in the AssetDatabase.");
+        //}
     }
 }

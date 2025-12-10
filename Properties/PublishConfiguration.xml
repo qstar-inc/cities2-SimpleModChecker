@@ -49,12 +49,11 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
   <Screenshot Value="Properties/Screenshot06.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="" />
-  <ModVersion Value="3.8.1" />
-  <GameVersion Value="1.5.2*" />
+  <ModVersion Value="3.8.2" />
+  <GameVersion Value="1.5.3*" />
   <Dependency Id="" />
   <ChangeLog>
-- Hotfix for keybind backup/restore not working properly.
-- Hotfix for force reloading all UI Mods.
+- Remove hotfix for force reloading all UI Mods.
   </ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
