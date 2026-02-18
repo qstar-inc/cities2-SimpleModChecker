@@ -9,15 +9,12 @@ using Colossal.IO.AssetDatabase;
 using Colossal.Json;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
-using Colossal.UI;
 using Game;
 using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StarQ.Shared.Extensions;
-using Unity.Collections;
-using Unity.Entities;
 
 namespace SimpleModCheckerPlus.Systems
 {

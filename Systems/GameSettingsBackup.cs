@@ -434,6 +434,7 @@ namespace SimpleModCheckerPlus.Systems
             var GameInputSettings = new GameInputSettings
             {
                 ElevationDraggingEnabled = InputSettings.elevationDraggingEnabled,
+                UseLegacyCamera = InputSettings.useLegacyCamera,
                 MouseScrollSensitivity = InputSettings.mouseScrollSensitivity,
                 KeyboardMoveSensitivity = InputSettings.keyboardMoveSensitivity,
                 KeyboardRotateSensitivity = InputSettings.keyboardRotateSensitivity,
@@ -454,7 +455,10 @@ namespace SimpleModCheckerPlus.Systems
             var InterfaceSettings = sharedSettings.userInterface;
             var GameInterfaceSettings = new GameInterfaceSettings
             {
+                SavedInterfaceStyle = InterfaceSettings.savedInterfaceStyle,
+                SavedInterfaceTransparency = InterfaceSettings.savedInterfaceTransparency,
                 CurrentLocale = InterfaceSettings.currentLocale,
+                UseLegacyInterface = InterfaceSettings.useLegacyInterface,
                 InterfaceStyle = InterfaceSettings.interfaceStyle,
                 InterfaceTransparency = InterfaceSettings.interfaceTransparency,
                 InterfaceScaling = InterfaceSettings.interfaceScaling,
@@ -473,6 +477,7 @@ namespace SimpleModCheckerPlus.Systems
             var UserState = sharedSettings.userState;
             var GameUserState = new GameUserState
             {
+                AutoplayTutorials = UserState.autoplayTutorials,
                 LastCloudTarget = UserState.lastCloudTarget,
                 LeftHandTraffic = UserState.leftHandTraffic,
                 NaturalDisasters = UserState.naturalDisasters,
@@ -2359,6 +2364,20 @@ namespace SimpleModCheckerPlus.Systems
                             GameInputSettings.ElevationDraggingEnabled;
                     }
                     if (
+                        jsonObject["GameInputSettings"]["UseLegacyCamera"] != null
+                        && SharedSettings.instance.input.useLegacyCamera
+                            != GameInputSettings.UseLegacyCamera
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'input.useLegacyCamera'=> '{GameInputSettings.UseLegacyCamera}'"
+                            );
+                        SharedSettings.instance.input.useLegacyCamera =
+                            GameInputSettings.UseLegacyCamera;
+                    }
+                    if (
                         jsonObject["GameInputSettings"]["MouseScrollSensitivity"] != null
                         && SharedSettings.instance.input.mouseScrollSensitivity
                             != GameInputSettings.MouseScrollSensitivity
@@ -2562,6 +2581,34 @@ namespace SimpleModCheckerPlus.Systems
                         .ToObject<GameInterfaceSettings>();
 
                     if (
+                        jsonObject["GameInterfaceSettings"]["SavedInterfaceStyle"] != null
+                        && SharedSettings.instance.userInterface.savedInterfaceStyle
+                            != GameInterfaceSettings.SavedInterfaceStyle
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'userInterface.savedInterfaceStyle'=> '{GameInterfaceSettings.SavedInterfaceStyle}'"
+                            );
+                        SharedSettings.instance.userInterface.savedInterfaceStyle =
+                            GameInterfaceSettings.SavedInterfaceStyle;
+                    }
+                    if (
+                        jsonObject["GameInterfaceSettings"]["SavedInterfaceTransparency"] != null
+                        && SharedSettings.instance.userInterface.savedInterfaceTransparency
+                            != GameInterfaceSettings.SavedInterfaceTransparency
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'userInterface.savedInterfaceStyle'=> '{GameInterfaceSettings.SavedInterfaceTransparency}'"
+                            );
+                        SharedSettings.instance.userInterface.savedInterfaceTransparency =
+                            GameInterfaceSettings.SavedInterfaceTransparency;
+                    }
+                    if (
                         jsonObject["GameInterfaceSettings"]["CurrentLocale"] != null
                         && SharedSettings.instance.userInterface.currentLocale
                             != GameInterfaceSettings.CurrentLocale
@@ -2574,6 +2621,20 @@ namespace SimpleModCheckerPlus.Systems
                             );
                         SharedSettings.instance.userInterface.currentLocale =
                             GameInterfaceSettings.CurrentLocale;
+                    }
+                    if (
+                        jsonObject["GameInterfaceSettings"]["UseLegacyInterface"] != null
+                        && SharedSettings.instance.userInterface.useLegacyInterface
+                            != GameInterfaceSettings.UseLegacyInterface
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'userInterface.useLegacyInterface'=> '{GameInterfaceSettings.UseLegacyInterface}'"
+                            );
+                        SharedSettings.instance.userInterface.useLegacyInterface =
+                            GameInterfaceSettings.UseLegacyInterface;
                     }
                     if (!loadedMods.Contains("ExtraUIScreens"))
                     {
@@ -2772,6 +2833,20 @@ namespace SimpleModCheckerPlus.Systems
                             );
                         SharedSettings.instance.userState.lastCloudTarget =
                             GameUserState.LastCloudTarget;
+                    }
+                    if (
+                        jsonObject["GameUserState"]["AutoplayTutorials"] != null
+                        && SharedSettings.instance.userState.autoplayTutorials
+                            != GameUserState.AutoplayTutorials
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'userState.autoplayTutorials'=> '{GameUserState.AutoplayTutorials}'"
+                            );
+                        SharedSettings.instance.userState.autoplayTutorials =
+                            GameUserState.AutoplayTutorials;
                     }
                     if (
                         jsonObject["GameUserState"]["LeftHandTraffic"] != null

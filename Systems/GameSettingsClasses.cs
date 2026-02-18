@@ -226,6 +226,7 @@ namespace SimpleModCheckerPlus.Systems
     public class GameInputSettings
     {
         public bool ElevationDraggingEnabled { get; set; }
+        public bool UseLegacyCamera { get; set; }
 
         //public string Keybinds { get; set; }
         public float MouseScrollSensitivity { get; set; }
@@ -246,7 +247,10 @@ namespace SimpleModCheckerPlus.Systems
 
     public class GameInterfaceSettings
     {
+        public string SavedInterfaceStyle { get; set; }
+        public float SavedInterfaceTransparency { get; set; }
         public string CurrentLocale { get; set; }
+        public bool UseLegacyInterface { get; set; }
         public string InterfaceStyle { get; set; }
         public float InterfaceTransparency { get; set; }
         public bool InterfaceScaling { get; set; }
@@ -263,6 +267,7 @@ namespace SimpleModCheckerPlus.Systems
 
     public class GameUserState
     {
+        public bool AutoplayTutorials { get; set; }
         public string LastCloudTarget { get; set; }
         public bool LeftHandTraffic { get; set; }
         public bool NaturalDisasters { get; set; }
