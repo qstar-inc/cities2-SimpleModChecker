@@ -3,7 +3,7 @@
     <Configurations>Debug;Release</Configurations>
     <AssemblyName>SimpleModCheckerPlus</AssemblyName>
     <AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
-    <Version>3.8.3</Version>
+    <Version>3.9.0</Version>
     <Authors>StarQ</Authors>
     <!--The file where mod information which is required for publishing mod on PDX mods are stored-->
     <PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
@@ -92,34 +92,14 @@
     <None Include="$(ModPropsFile)" Link="Properties\Mod.props" />
     <None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
   </ItemGroup>
+  <Target Name="RunPythonPreBuild" BeforeTargets="BeforeBuild" Condition="Exists('$(ProjectDir)LocalizationSource')">
+    <Message Text="Running Python lang processor..." Importance="high" />
+    <Exec Command="python &quot;D:\_Q\Codes\CS2 Processors\lang\create_loc_batch.py&quot;" WorkingDirectory="$(ProjectDir)LocalizationSource" />
+  </Target>
   <Target Name="GetAdditionalFiles" AfterTargets="DeployWIP">
     <ItemGroup>
       <AdditionalFilesToDeploy Include="Resources\**\*.*" />
     </ItemGroup>
-    <Copy
-      SourceFiles="@(AdditionalFilesToDeploy)"
-      DestinationFiles="@(AdditionalFilesToDeploy-&gt;'$(DeployDir)\%(RecursiveDir)%(Filename)%(Extension)')"
-    />
+    <Copy SourceFiles="@(AdditionalFilesToDeploy)" DestinationFiles="@(AdditionalFilesToDeploy->'$(DeployDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
-  <ItemGroup>
-    <EmbeddedResource Include="Locale.json" />
-    <EmbeddedResource Include="Locale\*.json" />
-    <None Remove="Locale.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Locale\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
 </Project>

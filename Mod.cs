@@ -4,18 +4,12 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Colossal.IO.AssetDatabase;
-using Colossal.Localization;
 using Colossal.Logging;
-using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
-using Colossal.PSI.PdxSdk;
 using Game;
 using Game.Modding;
 using Game.SceneFlow;
-using Game.Serialization;
 using Game.Settings;
-using PDX.SDK.Contracts;
-using PDX.SDK.Contracts.Service.Mods.Result;
 using SimpleModCheckerPlus.Systems;
 using StarQ.Shared.Extensions;
 using Unity.Entities;
@@ -34,7 +28,7 @@ namespace SimpleModCheckerPlus
             .GetName()
             .Version.ToString(3);
 
-        public static ILog log = LogManager.GetLogger($"{Id}").SetShowsErrorsInUI(false);
+        public static ILog log = LogManager.GetLogger($"{Id}").SetShowsErrorsInUI(true);
         public static Setting m_Setting;
 
         public CocCleaner CocCleaner;
@@ -77,8 +71,8 @@ namespace SimpleModCheckerPlus
             m_Setting.EnableVerboseLogging = true;
 #endif
 
-            if (!m_Setting.DeletedBackupCIDs)
-                Task.Run(() => ModCheckup.RemoveBackupCID()).Wait();
+            //if (!m_Setting.DeletedBackupCIDs)
+            //    Task.Run(() => ModCheckup.RemoveBackupCID()).Wait();
             //GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
             m_Setting.VerifyRunning = false;
             m_Setting.IsInGameOrEditor = false;

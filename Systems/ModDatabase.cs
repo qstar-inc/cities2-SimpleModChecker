@@ -201,7 +201,7 @@ namespace SimpleModCheckerPlus.Systems
 
             if (list == null)
             {
-                LogHelper.SendLog("No mods available to sort.", LogLevel.DEV);
+                //LogHelper.SendLog("No mods available to sort.", LogLevel.DEV);
                 return new List<ModInfo>();
             }
 

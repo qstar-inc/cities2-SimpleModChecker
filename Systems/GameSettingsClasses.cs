@@ -255,6 +255,7 @@ namespace SimpleModCheckerPlus.Systems
         public float InterfaceTransparency { get; set; }
         public bool InterfaceScaling { get; set; }
         public float TextScale { get; set; }
+        public float ToolbarScale { get; set; }
         public bool UnlockHighlightsEnabled { get; set; }
         public bool ChirperPopupsEnabled { get; set; }
         public bool BlockingPopupsEnabled { get; set; }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Colossal.IO.AssetDatabase;
 using Colossal.Json;
@@ -399,6 +400,11 @@ namespace SimpleModCheckerPlus
         //[SettingsUISection(VerifyTab, ModCleanupGroup)]
         //public bool AutoCleanUpOldVersions { get; set; } = true;
 
+        //[Exclude]
+        //[SettingsUIHidden]
+        //public bool IsCleaningUp { get; set; } = false;
+
+        //[SettingsUIDisableByCondition(typeof(Setting), nameof(IsCleaningUp))]
         //[SettingsUISection(VerifyTab, ModCleanupGroup)]
         //public bool CleanUpOldVersions
         //{
@@ -546,13 +552,16 @@ namespace SimpleModCheckerPlus
         {
             var x = new List<DropdownItem<string>>();
 
+            string root = EnvPath.kCacheDataPath + ModCheckup.PDXModsPath;
+
+            if (!Directory.Exists(root))
+                return x.ToArray();
+
             var directories = Directory
-                .GetDirectories(
-                    EnvPath.kCacheDataPath + "/Mods/mods_subscribed",
-                    "*",
-                    SearchOption.TopDirectoryOnly
-                )
-                .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]));
+                .GetDirectories(root)
+                .Where(f => ModCheckup.ModFolderPattern.IsMatch(Path.GetFileName(f)))
+                .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
+                .ThenBy(f => int.Parse(Path.GetFileName(f).Split('_')[1]));
 
             foreach (var subfolder in directories)
             {

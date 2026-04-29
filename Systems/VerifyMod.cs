@@ -6,13 +6,13 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Colossal.AssetPipeline.PostProcessors.InteriorMapping;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json.Linq;
 using StarQ.Shared.Extensions;
-using UnityEngine;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -27,11 +27,11 @@ namespace SimpleModCheckerPlus.Systems
         //public static string IssueList = "";
         public static int ProcesStatus = 0;
         public static DateTime verifyStartUtc;
-        public static List<int> DownloadedModList = new();
-        public static List<int> DupedModList = new();
+        public static List<string> DownloadedModList = new();
+        public static List<string> DupedModList = new();
         public static Dictionary<string, Dictionary<string, string>> ManifestData = new();
         private static readonly object _issueListLock = new();
-        private static List<int> ModsById;
+        private static List<string> ModsById;
         public static LocalizedString VerificationResultText => GetText();
 
         private static readonly Regex csvRegex = new(
@@ -39,7 +39,7 @@ namespace SimpleModCheckerPlus.Systems
             RegexOptions.Compiled
         );
 
-        private static bool NoModsSubscribed = false;
+        private static bool NoPDXMods = false;
 
         private static readonly SortedDictionary<ModData, List<ModIssues>> ModDataIssues = new();
         private static readonly SortedList<int, int> ModWithOldSDK = new();
@@ -47,7 +47,7 @@ namespace SimpleModCheckerPlus.Systems
 
         public class ModData : IComparable<ModData>
         {
-            public int modId;
+            public string modId;
             public string modName;
             public string modVersion;
 
@@ -105,8 +105,8 @@ namespace SimpleModCheckerPlus.Systems
 
         private static string GetIssueText()
         {
-            if (NoModsSubscribed)
-                return LocaleHelper.Translate($"{translateKey}.Issue.NoModsSubscribed");
+            if (NoPDXMods)
+                return $"{ModCheckup.PDXModsPath} does not exist";
 
             string finalText = string.Empty;
             if (
@@ -128,6 +128,12 @@ namespace SimpleModCheckerPlus.Systems
                 string issueText = string.Empty;
                 foreach (var item in issues)
                 {
+                    if (item.issueType == IssueType.MultipleVersion)
+                    {
+                        issueText +=
+                            $"- <{item.issueType}>: Multiple versions of this mod detected.\n";
+                        continue;
+                    }
                     issueText += $"- <{item.issueType}>: **{item.filePath}**\n";
                 }
 
@@ -156,17 +162,17 @@ namespace SimpleModCheckerPlus.Systems
         public static string ExtraText() =>
             $" {donePercent}% {LocaleHelper.Translate($"{translateKey}.Complete")} | {LocaleHelper.Translate($"{translateKey}.Elapsed")} {DateTime.UtcNow - verifyStartUtc:hh\\:mm\\:ss}";
 
-        private static readonly int[] RegionPackIds = new int[]
+        private static readonly string[] RegionPackIds = new string[]
         {
-            91930, // French Pack
-            91931, // German Pack
-            92859, // UK Pack
-            94094, // Japan Pack
-            98960, // Eastern Europe Pack
-            100454, // China Pack
-            101898, // USA Southwest Pack
-            101948, // USA Northeast Pack
-            121130, // Netherlands Pack
+            "91930", // French Pack
+            "91931", // German Pack
+            "92859", // UK Pack
+            "94094", // Japan Pack
+            "98960", // Eastern Europe Pack
+            "100454", // China Pack
+            "101898", // USA Southwest Pack
+            "101948", // USA Northeast Pack
+            "121130", // Netherlands Pack
         };
 
         public enum ProcessType
@@ -204,11 +210,11 @@ namespace SimpleModCheckerPlus.Systems
             ProcesStatus = 1;
             Mod.m_Setting.VerifyRunning = true;
 
-            string rootFolder = EnvPath.kCacheDataPath + "/Mods/mods_subscribed";
+            string rootFolder = EnvPath.kCacheDataPath + ModCheckup.PDXModsPath;
             if (!Directory.Exists(rootFolder))
             {
                 Header = LocaleHelper.Translate($"{translateKey}.Header.Failed");
-                NoModsSubscribed = true;
+                NoPDXMods = true;
                 ProcesStatus = 3;
                 NotificationSystem.Push(
                     "starq-smc-verify-mod",
@@ -225,15 +231,17 @@ namespace SimpleModCheckerPlus.Systems
                         NotificationSystem.Pop("starq-smc-verify-mod");
                     }
                 );
-                LogHelper.SendLog("Mod Verification Process failed, no `mods_subscribed'");
+                LogHelper.SendLog("Mod Verification Process failed, no `pdx_mods'");
                 return;
             }
 
             var modFolders =
                 selected == null
                     ? Directory
-                        .GetDirectories(rootFolder, "*", SearchOption.TopDirectoryOnly)
+                        .GetDirectories(rootFolder)
+                        .Where(f => ModCheckup.ModFolderPattern.IsMatch(Path.GetFileName(f)))
                         .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
+                        .ThenBy(f => int.Parse(Path.GetFileName(f).Split('_')[1]))
                         .ToArray()
                     : new string[] { selected };
 
@@ -267,7 +275,7 @@ namespace SimpleModCheckerPlus.Systems
 
                 ModData modData = new()
                 {
-                    modId = int.Parse(modFolderParts[0]),
+                    modId = modFolderParts[0],
                     modName = modFolderParts[0],
                     modVersion = modFolderParts[1],
                 };
@@ -374,8 +382,22 @@ namespace SimpleModCheckerPlus.Systems
                 {
                     LogHelper.SendLog($"Error verifying files in '{subfolder}': {ex.Message}");
                 }
-                if (issues.Count > 0)
-                    ModDataIssues.Add(modData, issues);
+                try
+                {
+                    if (issues.Count > 0)
+                    {
+                        if (ModDataIssues.ContainsKey(modData))
+                        {
+                            List<ModIssues> oldIssues = ModDataIssues[modData];
+                            issues = oldIssues.Concat(issues).ToList();
+                        }
+                        ModDataIssues[modData] = issues;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.SendLog($"Error verifying files in '{subfolder}': {ex.Message}");
+                }
             }
             ProcesStatus = 2;
             var verifyElapsed = DateTime.UtcNow - verifyStartUtc;
@@ -658,7 +680,7 @@ namespace SimpleModCheckerPlus.Systems
                         new ModIssues()
                         {
                             issueType = IssueType.Missing,
-                            filePath = relativePath.Replace("/", "/\u200B"),
+                            filePath = relativePath.Replace("\\", "/").Replace("/", "/\u200B"),
                         }
                     );
                     //LogHelper.SendLog(

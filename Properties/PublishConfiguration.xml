@@ -49,11 +49,11 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
   <Screenshot Value="Properties/Screenshot06.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="" />
-  <ModVersion Value="3.8.3" />
-  <GameVersion Value="1.5.4*" />
+  <ModVersion Value="3.9.0" />
+  <GameVersion Value="1.5.7*" />
   <Dependency Id="" />
   <ChangeLog>
-- Add support for new options added to game version 1.5.4f1.
+- Fix for new PDX SDK added to game version 1.5.7f1.
   </ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />

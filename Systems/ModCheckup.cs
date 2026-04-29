@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Colossal.Json;
 using Colossal.PSI.Common;
 using Colossal.PSI.Environment;
 using Colossal.PSI.PdxSdk;
@@ -17,6 +19,7 @@ using Game.UI.Localization;
 using Game.UI.Menu;
 using Newtonsoft.Json.Linq;
 using PDX.SDK.Contracts;
+using PDX.SDK.Contracts.Service.Mods.Interfaces;
 using PDX.SDK.Contracts.Service.Mods.Models;
 using StarQ.Shared.Extensions;
 using Unity.Entities;
@@ -32,10 +35,9 @@ namespace SimpleModCheckerPlus.Systems
 
         //public static string LoggedInUserName { get; set; } = "";
         public static SortedDictionary<string, string> localMods = new();
-        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> codes = new();
-        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> packages =
-            new();
-        public static Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> allMods = new();
+        public static Dictionary<string, IModDetails> codes = new();
+        public static Dictionary<string, IModDetails> packages = new();
+        public static Dictionary<string, IModDetails> allMods = new();
 
         public static string lastText = "";
         public static LocalizedString CleanupResultText => LocalizedString.Id(GetText());
@@ -51,7 +53,7 @@ namespace SimpleModCheckerPlus.Systems
             BindingFlags.NonPublic | BindingFlags.Instance
         );
 
-        private const string ModsSubscribedPath = "/Mods/mods_subscribed/";
+        public const string PDXModsPath = "/Mods/pdx_mods/";
         private const string MetadataFolder = ".metadata";
         private const string CPatchFolder = ".cpatch";
 
@@ -59,6 +61,7 @@ namespace SimpleModCheckerPlus.Systems
             @"\s*[\(\[\<].*?[\)\]\>]\s*$",
             RegexOptions.Compiled
         );
+        public static readonly Regex ModFolderPattern = new(@"^\d+_\d+$");
 
         private static readonly object _extLock = new();
 
@@ -86,7 +89,14 @@ namespace SimpleModCheckerPlus.Systems
             base.OnCreate();
             m_Manager = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
             ModHelper.AddAfterActivePlaysetOrModStatusChanged(Initialize);
+
+            Stopwatch stopwatch = new();
+            stopwatch.Start();
             Initialize();
+            stopwatch.Stop();
+            LogHelper.SendLog(
+                $"First initialization took {stopwatch.Elapsed.TotalSeconds} seconds"
+            );
         }
 
         public void Initialize()
@@ -154,9 +164,7 @@ namespace SimpleModCheckerPlus.Systems
                     }
 
                     if (
-                        !modInfo.asset.path.Contains(
-                            $"{EnvPath.kCacheDataPath}{ModsSubscribedPath}"
-                        )
+                        !modInfo.asset.path.Contains($"{EnvPath.kCacheDataPath}{PDXModsPath}")
                         && !modName.StartsWith("Colossal.")
                         && !modName.StartsWith("0Harmony")
                         && !modName.StartsWith("Newtonsoft.Json")
@@ -266,7 +274,7 @@ namespace SimpleModCheckerPlus.Systems
         private static string BuildModList(
             string headerText,
             SortedDictionary<string, string> localMods,
-            Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> mods,
+            Dictionary<string, IModDetails> mods,
             SortOptions sort,
             bool forLog,
             bool isAsc
@@ -292,10 +300,8 @@ namespace SimpleModCheckerPlus.Systems
             return builder.ToString();
         }
 
-        private static IEnumerable<
-            KeyValuePair<string, PDX.SDK.Contracts.Service.Mods.Models.Mod>
-        > SortMods(
-            Dictionary<string, PDX.SDK.Contracts.Service.Mods.Models.Mod> mods,
+        private static IEnumerable<KeyValuePair<string, IModDetails>> SortMods(
+            Dictionary<string, IModDetails> mods,
             SortOptions sort,
             bool isAsc
         )
@@ -329,7 +335,7 @@ namespace SimpleModCheckerPlus.Systems
                 return $"{sizeInKB:0.##} KB";
         }
 
-        static string ReturnText(PDX.SDK.Contracts.Service.Mods.Models.Mod mod, bool forLog = false)
+        static string ReturnText(IModDetails mod, bool forLog = false)
         {
             if (mod == null)
                 return string.Empty;
@@ -376,7 +382,7 @@ namespace SimpleModCheckerPlus.Systems
 
         public void CheckModNew()
         {
-            static void ProcessFolder(string folderPath, Dictionary<string, int> extensionCounts)
+            void ProcessFolder(string folderPath, Dictionary<string, int> extensionCounts)
             {
                 try
                 {
@@ -418,10 +424,7 @@ namespace SimpleModCheckerPlus.Systems
                 }
             }
 
-            static void CategoriseMods(
-                PDX.SDK.Contracts.Service.Mods.Models.Mod mod,
-                Dictionary<string, int> extensionCounts
-            )
+            void CategoriseMods(IModDetails mod, Dictionary<string, int> extensionCounts)
             {
                 if (
                     extensionCounts.ContainsKey(".dll") && extensionCounts[".dll"] > 0
@@ -441,22 +444,32 @@ namespace SimpleModCheckerPlus.Systems
                 }
             }
 
-            var context = (IContext)SDKContextField.GetValue(m_Manager);
-            var playsetResult = context.Mods.GetActivePlaysetEnabledMods().Result;
-            PDX.SDK.Contracts.Service.Mods.Models.Mod[] modsResult = (
+            IContext context = (IContext)SDKContextField.GetValue(m_Manager);
+
+            PDX.SDK.Contracts.Service.Mods.Results.IListModsInPlaysetResult playsetResult = context
+                .Mods.GetActivePlaysetEnabledMods()
+                .Result;
+            ILocalPlaysetMod[] modsResult = (
                 !playsetResult.Success
-                    ? new List<PDX.SDK.Contracts.Service.Mods.Models.Mod>()
+                    ? new List<ILocalPlaysetMod>()
                     : playsetResult.Mods.Where(m =>
                         !string.IsNullOrEmpty(m.LocalData.FolderAbsolutePath)
                     )
             ).ToArray();
 
-            HashSet<PDX.SDK.Contracts.Service.Mods.Models.Mod> mods = new(modsResult);
+            HashSet<ILocalPlaysetMod> mods = new(modsResult);
 
             if (mods != null)
             {
-                foreach (var mod in mods)
+                foreach (var modX in mods)
                 {
+                    var data = context
+                        .Mods.GetLocalModDetails(modX.Id)
+                        .ConfigureAwait(false)
+                        .GetAwaiter()
+                        .GetResult();
+                    var mod = data.Mod;
+                    LogHelper.SendLog(data.ToJSONString() + "\n", LogLevel.DEVD);
                     try
                     {
                         string folderPath = mod.LocalData.FolderAbsolutePath;
@@ -534,154 +547,189 @@ namespace SimpleModCheckerPlus.Systems
         public void RemoveNotification() =>
             NotificationSystem.Pop("starq-smc-mod-check", delay: 1, text: "...");
 
-        public static void CleanUpOldVersions()
-        {
-            Header = $"Mod Cleanup Process is running...";
-            ProcesStatus = 1;
-            Progress = "";
+        //public static void CleanUpOldVersions()
+        //{
+        //    if (Mod.m_Setting.IsCleaningUp)
+        //        return;
+        //    Mod.m_Setting.IsCleaningUp = true;
+        //    try
+        //    {
+        //        LogHelper.SendLog($"Verification starting...");
+        //        PdxSdkPlatform m_Manager = PlatformManager.instance.GetPSI<PdxSdkPlatform>(
+        //            "PdxSdk"
+        //        );
+        //        var context = (IContext)SDKContextField.GetValue(m_Manager);
+        //        var r = context
+        //            .Mods.()
+        //            .ConfigureAwait(false)
+        //            .GetAwaiter()
+        //            .GetResult();
 
-            PdxSdkPlatform m_Manager = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
-            if (m_Manager != null)
-            {
-                Dictionary<int, SortedSet<int>> modIdToVersions = new();
-                Dictionary<(int modId, int version), HashSet<int>> modVersionToPlaysets = new();
+        //        LogHelper.SendLog($"Verification ending...");
+        //        LogHelper.SendLog($"Verification result: {r.Success}");
+        //        if (!r.Success)
+        //        {
+        //            LogHelper.SendLog($"Verification issues: {r.Error}");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogHelper.SendLog(ex);
+        //    }
+        //    finally
+        //    {
+        //        Mod.m_Setting.IsCleaningUp = false;
+        //    }
+        //}
 
-                var context = (IContext)SDKContextField.GetValue(m_Manager);
-                var playsetResult = context.Mods.ListAllPlaysets().Result;
-                if (playsetResult.Success)
-                {
-                    for (int i = 0; i < playsetResult.AllPlaysets.Count; i++)
-                    {
-                        Playset playset = playsetResult.AllPlaysets[i];
-                        Progress += $"\nChecking Playset <{playset.PlaysetId}>: {playset.Name}";
+        //public static void CleanUpOldVersions()
+        //{
+        //    Header = $"Mod Cleanup Process is running...";
+        //    ProcesStatus = 1;
+        //    Progress = "";
 
-                        var playsetModResult = context
-                            .Mods.ListModsInPlayset(playset.PlaysetId, int.MaxValue)
-                            .Result;
-                        if (playsetModResult.Success)
-                        {
-                            Progress += ".";
-                            for (int j = 0; j < playsetModResult.Mods.Count; j++)
-                            {
-                                var mod = playsetModResult.Mods[j];
+        //    PdxSdkPlatform m_Manager = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
+        //    if (m_Manager != null)
+        //    {
+        //        Dictionary<int, SortedSet<int>> modIdToVersions = new();
+        //        Dictionary<(int modId, int version), HashSet<int>> modVersionToPlaysets = new();
 
-                                string[] modFolderParts = mod
-                                    .LocalData.FolderAbsolutePath.Replace(
-                                        EnvPath.kCacheDataPath,
-                                        ""
-                                    )
-                                    .Replace("\\", "/")
-                                    .Replace(ModsSubscribedPath, "")
-                                    .Split('_');
-                                int id = int.Parse(modFolderParts[0]);
-                                int ver = int.Parse(modFolderParts[1]);
-                                if (!modIdToVersions.TryGetValue(id, out var versions))
-                                    modIdToVersions[id] = versions = new SortedSet<int>();
-                                versions.Add(ver);
-                                var key = (id, ver);
-                                if (!modVersionToPlaysets.TryGetValue(key, out var playsets))
-                                    modVersionToPlaysets[key] = playsets = new HashSet<int>();
-                                playsets.Add(playset.PlaysetId);
-                                //LogHelper.SendLog($"{playset.PlaysetId}, {id}_{ver}");
-                            }
-                            Progress += ".. **Done**";
-                        }
-                    }
-                }
+        //        var context = (IContext)SDKContextField.GetValue(m_Manager);
+        //        var playsetResult = context.Mods.ListAllPlaysets().Result;
+        //        if (playsetResult.Success)
+        //        {
+        //            for (int i = 0; i < playsetResult.AllPlaysets.Count; i++)
+        //            {
+        //                Playset playset = playsetResult.AllPlaysets[i];
+        //                Progress += $"\nChecking Playset <{playset.PlaysetId}>: {playset.Name}";
 
-                Progress += "\n ------------------------";
+        //                var playsetModResult = context
+        //                    .Mods.ListModsInPlayset(playset.PlaysetId, int.MaxValue)
+        //                    .Result;
+        //                if (playsetModResult.Success)
+        //                {
+        //                    Progress += ".";
+        //                    for (int j = 0; j < playsetModResult.Mods.Count; j++)
+        //                    {
+        //                        var mod = playsetModResult.Mods[j];
 
-                List<DownloadedModData> CurrentDownloadedMods = GetCurrentDownloadedMods();
-                List<DownloadedModData> CurrentDownloadedModsFiltered = new();
-                bool hasSubbed = false;
+        //                        string[] modFolderParts = mod
+        //                            .LocalData.FolderAbsolutePath.Replace(
+        //                                EnvPath.kCacheDataPath,
+        //                                ""
+        //                            )
+        //                            .Replace("\\", "/")
+        //                            .Replace(ModsSubscribedPath, "")
+        //                            .Split('_');
+        //                        int id = int.Parse(modFolderParts[0]);
+        //                        int ver = int.Parse(modFolderParts[1]);
+        //                        if (!modIdToVersions.TryGetValue(id, out var versions))
+        //                            modIdToVersions[id] = versions = new SortedSet<int>();
+        //                        versions.Add(ver);
+        //                        var key = (id, ver);
+        //                        if (!modVersionToPlaysets.TryGetValue(key, out var playsets))
+        //                            modVersionToPlaysets[key] = playsets = new HashSet<int>();
+        //                        playsets.Add(playset.PlaysetId);
+        //                        //LogHelper.SendLog($"{playset.PlaysetId}, {id}_{ver}");
+        //                    }
+        //                    Progress += ".. **Done**";
+        //                }
+        //            }
+        //        }
 
-                foreach (var kvp in modIdToVersions)
-                {
-                    int modId = kvp.Key;
-                    var versions = kvp.Value;
+        //        Progress += "\n ------------------------";
 
-                    if (versions.Count <= 1)
-                    {
-                        continue;
-                    }
+        //        List<DownloadedModData> CurrentDownloadedMods = GetCurrentDownloadedMods();
+        //        List<DownloadedModData> CurrentDownloadedModsFiltered = new();
+        //        bool hasSubbed = false;
 
-                    int latest = versions.Max();
+        //        foreach (var kvp in modIdToVersions)
+        //        {
+        //            int modId = kvp.Key;
+        //            var versions = kvp.Value;
 
-                    foreach (var version in versions)
-                    {
-                        var match = CurrentDownloadedMods.FirstOrDefault(m =>
-                            m.Id == modId && m.Version == version
-                        );
-                        if (match == null)
-                            CurrentDownloadedModsFiltered.Add(match);
+        //            if (versions.Count <= 1)
+        //            {
+        //                continue;
+        //            }
 
-                        var playsets = modVersionToPlaysets[(modId, version)];
-                        if (version < latest)
-                        {
-                            string text =
-                                $"[{match.Id}_{match.Version}] {match.DisplayName} is outdated in playsets: {string.Join(", ", playsets)} (latest: {latest})";
-                            LogHelper.SendLog(text);
-                            Progress += $"\n{text}";
-                            foreach (var playset in playsets)
-                            {
-                                var subscribeResult = context
-                                    .Mods.Subscribe(match.Id, playset, $"{latest}")
-                                    .Result;
+        //            int latest = versions.Max();
 
-                                if (subscribeResult.Success)
-                                {
-                                    LogHelper.SendLog(
-                                        $"Resub successful: {match.Id} ({subscribeResult.ModsSubscribedStatus[0].Mod.Version})"
-                                    );
-                                    Progress += "... **Fixed!**";
-                                    hasSubbed = true;
-                                }
-                                else
-                                {
-                                    LogHelper.SendLog(
-                                        $"Resub failed: {match.Id} ({subscribeResult.ModsSubscribedStatus[0].Mod.Version})"
-                                    );
-                                    Progress += "... **Failed!**";
-                                }
-                            }
-                        }
-                    }
-                }
+        //            foreach (var version in versions)
+        //            {
+        //                var match = CurrentDownloadedMods.FirstOrDefault(m =>
+        //                    m.Id == modId && m.Version == version
+        //                );
+        //                if (match == null)
+        //                    CurrentDownloadedModsFiltered.Add(match);
 
-                foreach (var mod in CurrentDownloadedModsFiltered)
-                {
-                    string text =
-                        $"[{mod.Id}_{mod.Version}] {mod.DisplayName} is not present in any playsets.";
-                    LogHelper.SendLog(text);
-                    Progress += $"\n{text}";
-                }
+        //                var playsets = modVersionToPlaysets[(modId, version)];
+        //                if (version < latest)
+        //                {
+        //                    string text =
+        //                        $"[{match.Id}_{match.Version}] {match.DisplayName} is outdated in playsets: {string.Join(", ", playsets)} (latest: {latest})";
+        //                    LogHelper.SendLog(text);
+        //                    Progress += $"\n{text}";
+        //                    foreach (var playset in playsets)
+        //                    {
+        //                        var subscribeResult = context
+        //                            .Mods.Subscribe(match.Id, playset, $"{latest}")
+        //                            .Result;
 
-                Header = "Mod Cleanup Process has ended!";
-                if (hasSubbed)
-                {
-                    Header += " **Restart Required...**";
-                    Progress += "\n**Restart Required...**";
-                    context.Mods.Sync(PDX.SDK.Contracts.Service.Mods.Enums.SyncDirection.Upstream);
+        //                        if (subscribeResult.Success)
+        //                        {
+        //                            LogHelper.SendLog(
+        //                                $"Resub successful: {match.Id} ({subscribeResult.ModsSubscribedStatus[0].Mod.Version})"
+        //                            );
+        //                            Progress += "... **Fixed!**";
+        //                            hasSubbed = true;
+        //                        }
+        //                        else
+        //                        {
+        //                            LogHelper.SendLog(
+        //                                $"Resub failed: {match.Id} ({subscribeResult.ModsSubscribedStatus[0].Mod.Version})"
+        //                            );
+        //                            Progress += "... **Failed!**";
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
 
-                    string notifPrefix = $"{Mod.Id}.Cleanup";
-                    NotificationSystem.Push(
-                        "starq-smc-cleanup-restart",
-                        title: new LocalizedString($"{notifPrefix}.Title", null, null),
-                        text: LocalizedString.Id($"{notifPrefix}.Desc"),
-                        onClicked: () =>
-                        {
-                            NotificationSystem.Pop("starq-smc-coc-restart");
-                            Application.Quit(0);
-                        }
-                    );
-                }
-                Progress += "\nDone";
-            }
-        }
+        //        foreach (var mod in CurrentDownloadedModsFiltered)
+        //        {
+        //            string text =
+        //                $"[{mod.Id}_{mod.Version}] {mod.DisplayName} is not present in any playsets.";
+        //            LogHelper.SendLog(text);
+        //            Progress += $"\n{text}";
+        //        }
+
+        //        Header = "Mod Cleanup Process has ended!";
+        //        if (hasSubbed)
+        //        {
+        //            Header += " **Restart Required...**";
+        //            Progress += "\n**Restart Required...**";
+        //            context.Mods.Sync(PDX.SDK.Contracts.Service.Mods.Enums.SyncDirection.Upstream);
+
+        //            string notifPrefix = $"{Mod.Id}.Cleanup";
+        //            NotificationSystem.Push(
+        //                "starq-smc-cleanup-restart",
+        //                title: new LocalizedString($"{notifPrefix}.Title", null, null),
+        //                text: LocalizedString.Id($"{notifPrefix}.Desc"),
+        //                onClicked: () =>
+        //                {
+        //                    NotificationSystem.Pop("starq-smc-coc-restart");
+        //                    Application.Quit(0);
+        //                }
+        //            );
+        //        }
+        //        Progress += "\nDone";
+        //    }
+        //}
 
         public class DownloadedModData
         {
-            public int Id;
+            public string Id;
             public int Version;
             public string DisplayName;
         }
@@ -692,7 +740,7 @@ namespace SimpleModCheckerPlus.Systems
 
             var directories = Directory
                 .GetDirectories(
-                    EnvPath.kCacheDataPath + ModsSubscribedPath,
+                    EnvPath.kCacheDataPath + PDXModsPath,
                     "*",
                     SearchOption.TopDirectoryOnly
                 )
@@ -724,7 +772,7 @@ namespace SimpleModCheckerPlus.Systems
                 list.Add(
                     new DownloadedModData
                     {
-                        Id = int.Parse(modId),
+                        Id = modId,
                         Version = int.Parse(modFolderParts[1]),
                         DisplayName = modName,
                     }
@@ -742,7 +790,7 @@ namespace SimpleModCheckerPlus.Systems
             int SkippedBackupCIDs = 0;
             try
             {
-                string rootFolder = EnvPath.kCacheDataPath + ModsSubscribedPath;
+                string rootFolder = EnvPath.kCacheDataPath + PDXModsPath;
                 if (!Directory.Exists(rootFolder))
                 {
                     return;
@@ -781,7 +829,7 @@ namespace SimpleModCheckerPlus.Systems
                 foreach (var filePath in backupsToCheck)
                 {
                     string subfolder =
-                        $"{EnvPath.kCacheDataPath}{ModsSubscribedPath}{filePath.Replace(EnvPath.kCacheDataPath, "").Replace("\\", "/").Replace(ModsSubscribedPath, "").Split('/')[0]}";
+                        $"{EnvPath.kCacheDataPath}{PDXModsPath}{filePath.Replace(EnvPath.kCacheDataPath, "").Replace("\\", "/").Replace(PDXModsPath, "").Split('/')[0]}";
 
                     string relativePath = ModVerifier
                         .GetRelativePath(subfolder, filePath)

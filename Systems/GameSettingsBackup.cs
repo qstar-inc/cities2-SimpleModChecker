@@ -372,16 +372,16 @@ namespace SimpleModCheckerPlus.Systems
                 MeshMemoryBudget = LevelOfDetailQualitySettings.meshMemoryBudget,
                 StrictMeshMemory = LevelOfDetailQualitySettings.strictMeshMemory,
             };
-            //if (log)
-            //    LogHelper.SendLog("Collecting GameLevelOfDetailQualitySettings");
+            if (log)
+                LogHelper.SendLog("Collecting GameLevelOfDetailQualitySettings");
             //var GameAnimationQualitySetting = new GameAnimationQualitySetting
             //{
             //    MaxBoneInfuence = SharedSettings
             //        .instance.graphics.GetQualitySetting<AnimationQualitySettings>()
             //        .maxBoneInfuence,
             //};
-            if (log)
-                LogHelper.SendLog("Collecting GameAnimationQualitySetting");
+            //if (log)
+            //    LogHelper.SendLog("Collecting GameAnimationQualitySetting");
             var TextureQualitySettings =
                 sharedSettings.graphics.GetQualitySetting<TextureQualitySettings>();
             var GameTextureQualitySettings = new GameTextureQualitySettings
@@ -463,6 +463,7 @@ namespace SimpleModCheckerPlus.Systems
                 InterfaceTransparency = InterfaceSettings.interfaceTransparency,
                 InterfaceScaling = InterfaceSettings.interfaceScaling,
                 TextScale = InterfaceSettings.textScale,
+                ToolbarScale = InterfaceSettings.toolbarScale,
                 UnlockHighlightsEnabled = InterfaceSettings.unlockHighlightsEnabled,
                 ChirperPopupsEnabled = InterfaceSettings.chirperPopupsEnabled,
                 InputHintsType = InterfaceSettings.inputHintsType,
@@ -2700,6 +2701,20 @@ namespace SimpleModCheckerPlus.Systems
                             );
                         SharedSettings.instance.userInterface.textScale =
                             GameInterfaceSettings.TextScale;
+                    }
+                    if (
+                        jsonObject["GameInterfaceSettings"]["ToolbarScale"] != null
+                        && SharedSettings.instance.userInterface.toolbarScale
+                            != GameInterfaceSettings.ToolbarScale
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'userInterface.toolbarScale'=> '{GameInterfaceSettings.ToolbarScale}'"
+                            );
+                        SharedSettings.instance.userInterface.toolbarScale =
+                            GameInterfaceSettings.ToolbarScale;
                     }
                     if (
                         jsonObject["GameInterfaceSettings"]["UnlockHighlightsEnabled"] != null
