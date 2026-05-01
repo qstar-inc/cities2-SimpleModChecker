@@ -20,10 +20,8 @@ using Game.UI.Menu;
 using Newtonsoft.Json.Linq;
 using PDX.SDK.Contracts;
 using PDX.SDK.Contracts.Service.Mods.Interfaces;
-using PDX.SDK.Contracts.Service.Mods.Models;
 using StarQ.Shared.Extensions;
 using Unity.Entities;
-using UnityEngine;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -130,15 +128,22 @@ namespace SimpleModCheckerPlus.Systems
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
         {
             base.OnGameLoadingComplete(purpose, mode);
-            if (mode.IsGameOrEditor())
+            try
             {
-                Mod.m_Setting.IsInGameOrEditor = true;
-                RemoveNotification();
+                if (mode.IsGameOrEditor())
+                {
+                    Mod.m_Setting.IsInGameOrEditor = true;
+                    RemoveNotification();
+                }
+                else
+                {
+                    Mod.m_Setting.IsInGameOrEditor = false;
+                    SendNotification(packages.Count > 0);
+                }
             }
-            else
+            catch (Exception e)
             {
-                Mod.m_Setting.IsInGameOrEditor = false;
-                SendNotification(packages.Count > 0);
+                LogHelper.SendLog(e, LogLevel.Error);
             }
         }
 

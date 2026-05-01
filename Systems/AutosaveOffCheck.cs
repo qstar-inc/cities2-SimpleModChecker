@@ -115,6 +115,11 @@ namespace SimpleModCheckerPlus.Systems
 
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
         {
+            if (!Mod.m_Setting.IsCustomChirpsOn)
+            {
+                Enabled = false;
+                return;
+            }
             if (
                 (purpose == Purpose.LoadGame || purpose == Purpose.NewGame)
                 && !SharedSettings.instance.general.autoSave

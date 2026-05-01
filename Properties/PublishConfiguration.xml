@@ -49,11 +49,12 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
   <Screenshot Value="Properties/Screenshot06.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="" />
-  <ModVersion Value="3.9.0" />
+  <ModVersion Value="3.9.1" />
   <GameVersion Value="1.5.7*" />
   <Dependency Id="" />
   <ChangeLog>
-- Fix for new PDX SDK added to game version 1.5.7f1.
+- Minor fix related to CustomChirp integration.
+- Add try-catch to know more about error popup on world load.
   </ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
