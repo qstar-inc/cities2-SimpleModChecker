@@ -6,9 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Colossal.AssetPipeline.PostProcessors.InteriorMapping;
 using Colossal.PSI.Common;
-using Colossal.PSI.Environment;
 using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json.Linq;
@@ -106,7 +104,7 @@ namespace SimpleModCheckerPlus.Systems
         private static string GetIssueText()
         {
             if (NoPDXMods)
-                return $"{ModCheckup.PDXModsPath} does not exist";
+                return $"{Mod.PDXModsPaths} does not exist";
 
             string finalText = string.Empty;
             if (
@@ -210,8 +208,8 @@ namespace SimpleModCheckerPlus.Systems
             ProcesStatus = 1;
             Mod.m_Setting.VerifyRunning = true;
 
-            string rootFolder = EnvPath.kCacheDataPath + ModCheckup.PDXModsPath;
-            if (!Directory.Exists(rootFolder))
+            var roots = Mod.PDXModsPaths.Where(Directory.Exists).ToArray();
+            if (roots.Length == 0)
             {
                 Header = LocaleHelper.Translate($"{translateKey}.Header.Failed");
                 NoPDXMods = true;
@@ -237,8 +235,8 @@ namespace SimpleModCheckerPlus.Systems
 
             var modFolders =
                 selected == null
-                    ? Directory
-                        .GetDirectories(rootFolder)
+                    ? roots
+                        .SelectMany(root => Directory.GetDirectories(root))
                         .Where(f => ModCheckup.ModFolderPattern.IsMatch(Path.GetFileName(f)))
                         .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
                         .ThenBy(f => int.Parse(Path.GetFileName(f).Split('_')[1]))

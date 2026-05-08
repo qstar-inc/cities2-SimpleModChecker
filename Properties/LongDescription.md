@@ -1,8 +1,4 @@
-<Publish>
-  <ModId Value="79186" />
-  <DisplayName Value="Simple Mod Checker Plus" />
-  <ShortDescription Value="Mod load notification, backup/restore game/mods settings/keybinds, and more tools." />
-  <LongDescription># Simple Mod Checker Plus
+# Simple Mod Checker Plus
 I'm a simple man; I see "Loaded {x} mods", I start playing.
 
 This mod adds a **persistent** notification to the Main Menu, showing how many mods have loaded in the current session.
@@ -38,24 +34,4 @@ Safe to remove anytime.
 
 Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding** Discord.
 
-Feedback / Bug Report: https://discord.com/channels/1024242828114673724/1287440491239047208</LongDescription>
-  <Thumbnail Value="Properties/Thumbnail.png" />
-  <Screenshot Value="Properties/Screenshot01.jpg" />
-  <Screenshot Value="Properties/Screenshot02.jpg" />
-  <Screenshot Value="Properties/Screenshot03.jpg" />
-  <Screenshot Value="Properties/Screenshot04.jpg" />
-  <Screenshot Value="Properties/Screenshot05.jpg" />
-  <Screenshot Value="Properties/Screenshot06.jpg" />
-  <Tag Value="Code Mod" />
-  <ForumLink Value="" />
-  <ModVersion Value="3.9.2" />
-  <GameVersion Value="1.5.7*" />
-  <Dependency Id="" />
-  <ChangeLog>- Add notification on mod failing to load.
-- Add support for variable and multiple Source.PDXMods locations. (Not currently in use by the PDX SDK)
-- Removed unused codes related to removed features.</ChangeLog>
-  <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
-  <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
-  <ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />
-  <AccessLevel Value="Public" />
-</Publish>
+Feedback / Bug Report: https://discord.com/channels/1024242828114673724/1287440491239047208

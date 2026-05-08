@@ -3,7 +3,7 @@
     <Configurations>Debug;Release</Configurations>
     <AssemblyName>SimpleModCheckerPlus</AssemblyName>
     <AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
-    <Version>3.9.1</Version>
+    <Version>3.9.2</Version>
     <Authors>StarQ</Authors>
     <!--The file where mod information which is required for publishing mod on PDX mods are stored-->
     <PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
@@ -110,6 +110,23 @@
     <Copy
       SourceFiles="@(AdditionalFilesToDeploy)"
       DestinationFiles="@(AdditionalFilesToDeploy->'$(DeployDir)\%(RecursiveDir)%(Filename)%(Extension)')"
+    />
+  </Target>
+  <Target Name="SetupAttributes" BeforeTargets="BeforeBuild">
+    <XmlPoke
+      XmlInputPath="$(PublishConfigurationPath)"
+      Value="$([System.IO.File]::ReadAllText(Properties/LongDescription.md))"
+      Query="//LongDescription"
+    />
+    <XmlPoke
+      XmlInputPath="$(PublishConfigurationPath)"
+      Value="$([System.IO.File]::ReadAllText(Properties/ChangeLog.md))"
+      Query="//ChangeLog"
+    />
+    <XmlPoke
+      XmlInputPath="$(PublishConfigurationPath)"
+      Value="$(Version)"
+      Query="//ModVersion/@Value"
     />
   </Target>
 </Project>

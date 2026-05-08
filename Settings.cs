@@ -86,9 +86,6 @@ namespace SimpleModCheckerPlus
 
         public const string LogTab = "LogTab";
 
-        [SettingsUIHidden]
-        public bool DeletedBackupCIDs { get; set; } = false;
-
         //[SettingsUISlider(min = 10, max = 120)]
         //[SettingsUISection(MainTab, OptionsGroup)]
         //public int ErrorMuteCooldownSeconds
@@ -551,13 +548,13 @@ namespace SimpleModCheckerPlus
         {
             var x = new List<DropdownItem<string>>();
 
-            string root = EnvPath.kCacheDataPath + ModCheckup.PDXModsPath;
+            var roots = Mod.PDXModsPaths.Where(Directory.Exists).ToArray();
 
-            if (!Directory.Exists(root))
+            if (roots.Length == 0)
                 return x.ToArray();
 
-            var directories = Directory
-                .GetDirectories(root)
+            var directories = roots
+                .SelectMany(root => Directory.GetDirectories(root))
                 .Where(f => ModCheckup.ModFolderPattern.IsMatch(Path.GetFileName(f)))
                 .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
                 .ThenBy(f => int.Parse(Path.GetFileName(f).Split('_')[1]));

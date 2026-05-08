@@ -18,6 +18,7 @@ namespace SimpleModCheckerPlus
 {
     public class Mod : IMod
     {
+        public static string[] PDXModsPaths = Array.Empty<string>();
         public static string Id = nameof(SimpleModCheckerPlus);
         public static string Name = Assembly
             .GetExecutingAssembly()
@@ -59,6 +60,9 @@ namespace SimpleModCheckerPlus
                 m_Setting,
                 new Setting(this)
             );
+
+            PDXModsPaths = ModHelper.GetPDXModsPath();
+
             //Colossal.Core.MainThreadDispatcher.RegisterUpdater(TryFixUIMods);
 
             Task.Run(() => MigrateFiles(Directory.GetParent(modDatabaseJson).FullName)).Wait();
@@ -67,13 +71,8 @@ namespace SimpleModCheckerPlus
             Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
 
 #if DEBUG
-            m_Setting.DeletedBackupCIDs = false;
             m_Setting.EnableVerboseLogging = true;
 #endif
-
-            //if (!m_Setting.DeletedBackupCIDs)
-            //    Task.Run(() => ModCheckup.RemoveBackupCID()).Wait();
-            //GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(Setting));
             m_Setting.VerifyRunning = false;
             m_Setting.IsInGameOrEditor = false;
             m_Setting.ModFolderDropdown = "";
@@ -84,14 +83,16 @@ namespace SimpleModCheckerPlus
 
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModCheckup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<CocCleaner>();
+            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<MakeSomeNoise>();
+            updateSystem.UpdateAt<AutosaveOffCheck>(SystemUpdatePhase.LateUpdate);
+        }
+
+        public static void InitBackup()
+        {
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ProfileNameBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<GameSettingsBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModSettingsBackup>();
             World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<KeybindsBackup>();
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<MakeSomeNoise>();
-            //World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ContentPrereq>();
-            updateSystem.UpdateAt<AutosaveOffCheck>(SystemUpdatePhase.LateUpdate);
-            //updateSystem.UpdateBefore<PreDeserialize<ContentPrereq>>(SystemUpdatePhase.Deserialize);
         }
 
         public void OnDispose()
@@ -118,11 +119,6 @@ namespace SimpleModCheckerPlus
                 {
                     LogHelper.SendLog(ex);
                 }
-
-                //if (Setting.DeleteMissing && CIDBackupRestore.CanDelete.Count > 0)
-                //{
-                //    CIDBackupRestore.DeleteFolders();
-                //}
 
                 if (m_Setting.DeleteCorrupted && CocCleaner.CanDelete.Count > 0)
                     CocCleaner.DeleteFolders();
