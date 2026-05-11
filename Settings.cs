@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Colossal.IO.AssetDatabase;
 using Colossal.Json;
-using Colossal.PSI.Environment;
 using Game.Modding;
 using Game.Settings;
 using Game.UI.Widgets;

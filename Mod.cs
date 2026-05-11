@@ -73,9 +73,9 @@ namespace SimpleModCheckerPlus
 #if DEBUG
             m_Setting.EnableVerboseLogging = true;
 #endif
-            m_Setting.VerifyRunning = false;
-            m_Setting.IsInGameOrEditor = false;
-            m_Setting.ModFolderDropdown = "";
+            //m_Setting.VerifyRunning = false;
+            //m_Setting.IsInGameOrEditor = false;
+            //m_Setting.ModFolderDropdown = "";
             //GameSettingsBackup.SetErrorMuteCooldown(10);
 
             if (m_Setting.DisableContinueInGame)
@@ -122,9 +122,9 @@ namespace SimpleModCheckerPlus
 
                 if (m_Setting.DeleteCorrupted && CocCleaner.CanDelete.Count > 0)
                     CocCleaner.DeleteFolders();
-                m_Setting.VerifyRunning = false;
-                m_Setting.IsInGameOrEditor = false;
-                m_Setting.ModFolderDropdown = "";
+                //m_Setting.VerifyRunning = false;
+                //m_Setting.IsInGameOrEditor = false;
+                //m_Setting.ModFolderDropdown = "";
                 m_Setting.UnregisterInOptionsUI();
                 m_Setting = null;
             }

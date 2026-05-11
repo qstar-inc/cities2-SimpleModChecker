@@ -43,7 +43,6 @@ namespace SimpleModCheckerPlus.Systems
         public static Dictionary<string, string> modLocationDict = new();
         public static OptionsUISystem uISystem = new();
 
-        //public static string LoggedInUserName { get; set; } = "";
         public static SortedDictionary<string, string> localMods = new();
         public static Dictionary<string, LoadedModInfo> codes = new();
         public static Dictionary<string, LoadedModInfo> packages = new();
@@ -146,8 +145,6 @@ namespace SimpleModCheckerPlus.Systems
             CheckMod();
             CheckModNew();
             SendNotification(packages.Count > 0);
-            //if (Mod.m_Setting.AutoCleanUpOldVersions)
-            //    CleanUpOldVersions();
 
             string text1 =
                 $"\nCods mods loaded:\n{LoadedList(ModTypes.CodeMods, forLog: true).Trim()}\n";
@@ -168,9 +165,6 @@ namespace SimpleModCheckerPlus.Systems
             base.OnGameLoadingComplete(purpose, mode);
             try
             {
-                //if (!FirstMethodRan)
-                //    FirstRunMethod();
-
                 if (mode.IsGameOrEditor())
                 {
                     Mod.m_Setting.IsInGameOrEditor = true;
@@ -188,20 +182,7 @@ namespace SimpleModCheckerPlus.Systems
             }
         }
 
-        //protected override void OnGameLoaded(Context serializationContext)
-        //{
-        //    base.OnGameLoaded(serializationContext);
-
-        //    if (!FirstMethodRan)
-        //        FirstRunMethod();
-        //}
-
         protected override void OnUpdate() { }
-
-        //    Enabled = false;
-        //    FirstRunMethod();
-        //
-        //}
 
         private void CheckMod()
         {
@@ -236,7 +217,6 @@ namespace SimpleModCheckerPlus.Systems
                     if (!loadedMods.Contains(modName))
                     {
                         loadedMods.Add(modName);
-
                         modLocationDict[normalizedFolder] = modName;
 
                         //LogHelper.SendLog($"Adding {modName} from {normalizedFolder}");
@@ -526,13 +506,13 @@ namespace SimpleModCheckerPlus.Systems
                     || extensionCounts.ContainsKey(".bundle") && extensionCounts[".bundle"] > 0
                 )
                 {
-                    codes.Add(mod.DisplayName, mod);
-                    allMods.Add(mod.DisplayName, mod);
+                    codes[mod.DisplayName] = mod;
+                    allMods[mod.DisplayName] = mod;
                 }
                 else
                 {
-                    packages.Add(mod.DisplayName, mod);
-                    allMods.Add(mod.DisplayName, mod);
+                    packages[mod.DisplayName] = mod;
+                    allMods[mod.DisplayName] = mod;
                 }
             }
 
@@ -541,19 +521,20 @@ namespace SimpleModCheckerPlus.Systems
             PDX.SDK.Contracts.Service.Mods.Results.IListModsInPlaysetResult playsetResult = context
                 .Mods.GetActivePlaysetEnabledMods()
                 .Result;
-            ILocalPlaysetMod[] modsResult = (
-                !playsetResult.Success
-                    ? new List<ILocalPlaysetMod>()
-                    : playsetResult.Mods.Where(m =>
-                        !string.IsNullOrEmpty(m.LocalData.FolderAbsolutePath)
-                    )
-            ).ToArray();
+            ILocalPlaysetMod[] modsResult = !playsetResult.Success
+                ? Array.Empty<ILocalPlaysetMod>()
+                : (playsetResult.Mods ?? Enumerable.Empty<ILocalPlaysetMod>())
+                    .Where(m => !string.IsNullOrEmpty(m?.LocalData?.FolderAbsolutePath))
+                    .ToArray();
 
             HashSet<ILocalPlaysetMod> mods = new(modsResult);
 
-            if (mods != null)
+            if (LogHelper.CheckNull(mods, $"Playset mod data"))
+                return;
+
+            foreach (ILocalPlaysetMod modX in mods)
             {
-                foreach (ILocalPlaysetMod modX in mods)
+                try
                 {
                     PDX.SDK.Contracts.Service.Mods.Results.IModDetailsResult data = context
                         .Mods.GetLocalModDetails(modX.Id)
@@ -562,23 +543,35 @@ namespace SimpleModCheckerPlus.Systems
                         .GetResult();
                     IModDetails mod = data.Mod;
 
+                    string folderPath = mod?.LocalData?.FolderAbsolutePath;
+                    Dictionary<string, int> extensionCounts = new();
+
+                    if (LogHelper.CheckNull(mod, $"Mod {mod.Id}"))
+                        continue;
+                    if (LogHelper.CheckNull(mod.LocalData, $"Mod {mod.Id} LocalData"))
+                        continue;
+                    if (
+                        LogHelper.CheckNull(
+                            mod.LocalData.FolderAbsolutePath,
+                            $"Mod {mod.Id} LocalData.FolderAbsolutePath"
+                        )
+                    )
+                        continue;
+
+                    LoadedModInfo lm = new()
+                    {
+                        Id = mod.Id,
+                        DisplayName = mod.DisplayName,
+                        Author = mod.Author,
+                        Version = mod.Version,
+                        LatestVersion = mod.LatestVersion,
+                        UserModVersion = mod.UserModVersion,
+                        Size = mod.Size,
+                        Active = true,
+                    };
+
                     try
                     {
-                        string folderPath = mod.LocalData.FolderAbsolutePath;
-                        Dictionary<string, int> extensionCounts = new();
-
-                        LoadedModInfo lm = new()
-                        {
-                            Id = mod.Id,
-                            DisplayName = mod.DisplayName,
-                            Author = mod.Author,
-                            Version = mod.Version,
-                            LatestVersion = mod.LatestVersion,
-                            UserModVersion = mod.UserModVersion,
-                            Size = mod.Size,
-                            Active = true,
-                        };
-
                         string normalizedFolder = Path.GetFullPath(folderPath)
                             .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                             .Replace("\\", "/");
@@ -587,23 +580,50 @@ namespace SimpleModCheckerPlus.Systems
 
                         if (!modLocationDict.TryGetValue(normalizedFolder, out string existingMod))
                             lm.Active = false;
+                    }
+                    catch (Exception exception)
+                    {
+                        LogHelper.SendLog(
+                            $"Error while running ProcessFolder for {lm.DisplayName ?? ""} ({lm.Id ?? ""}) for {extensionCounts} extensions on folderPath"
+                        );
+                        LogHelper.SendLog(exception);
+                        continue;
+                    }
 
-                        //LogHelper.SendLog(lm.ToJSONString());
+                    //LogHelper.SendLog(lm.ToJSONString());
+                    try
+                    {
                         ProcessFolder(folderPath, extensionCounts);
+                    }
+                    catch (Exception exception)
+                    {
+                        LogHelper.SendLog(
+                            $"Error while running ProcessFolder for {lm.DisplayName ?? ""} ({lm.Id ?? ""}) for {extensionCounts} extensions on folderPath"
+                        );
+                        LogHelper.SendLog(exception);
+                        continue;
+                    }
+                    try
+                    {
                         CategoriseMods(lm, extensionCounts);
                     }
                     catch (Exception exception)
                     {
+                        LogHelper.SendLog(
+                            $"Error while running CategoriseMods for {lm.DisplayName ?? ""} ({lm.Id ?? ""}) for {extensionCounts} extensions"
+                        );
                         LogHelper.SendLog(exception);
+                        continue;
                     }
                 }
-                LogHelper.SendLog(mods.Count + " subbed mods");
-                FirstRun = false;
+                catch (Exception exception)
+                {
+                    LogHelper.SendLog(exception);
+                    continue;
+                }
             }
-            else
-            {
-                LogHelper.SendLog("No playset active");
-            }
+            LogHelper.SendLog(mods.Count + " subbed mods");
+            FirstRun = false;
         }
 
         public void SendNotification(bool hasPackage)

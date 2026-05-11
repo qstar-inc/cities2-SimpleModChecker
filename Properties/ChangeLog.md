@@ -1,3 +1,1 @@
-- Add notification on mod failing to load.
-- Add support for variable and multiple Source.PDXMods locations. (Not currently in use by the PDX SDK)
-- Removed unused codes related to removed features.
+- Add more try/catch blocks to catch and log more error messages.
