@@ -1,1 +1,1 @@
-- Add more try/catch blocks to catch and log more error messages.
+- Moved LocalData IDK why error popup from UI to log only.

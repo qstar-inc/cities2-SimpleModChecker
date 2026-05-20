@@ -48,10 +48,10 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
   <Screenshot Value="Properties/Screenshot06.jpg" />
   <Tag Value="Code Mod" />
   <ForumLink Value="" />
-  <ModVersion Value="3.9.4" />
+  <ModVersion Value="3.9.5" />
   <GameVersion Value="1.5.7*" />
   <Dependency Id="" />
-  <ChangeLog>- Add more try/catch blocks to catch and log more error messages.</ChangeLog>
+  <ChangeLog>- Moved LocalData IDK why error popup from UI to log only.</ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
   <ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />

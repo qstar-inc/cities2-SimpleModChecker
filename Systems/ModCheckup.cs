@@ -532,23 +532,26 @@ namespace SimpleModCheckerPlus.Systems
             if (LogHelper.CheckNull(mods, $"Playset mod data"))
                 return;
 
-            foreach (ILocalPlaysetMod modX in mods)
+            foreach (ILocalPlaysetMod modData in mods)
             {
                 try
                 {
                     PDX.SDK.Contracts.Service.Mods.Results.IModDetailsResult data = context
-                        .Mods.GetLocalModDetails(modX.Id)
+                        .Mods.GetLocalModDetails(modData.Id)
                         .ConfigureAwait(false)
                         .GetAwaiter()
                         .GetResult();
                     IModDetails mod = data.Mod;
 
-                    string folderPath = mod?.LocalData?.FolderAbsolutePath;
-                    Dictionary<string, int> extensionCounts = new();
-
-                    if (LogHelper.CheckNull(mod, $"Mod {mod.Id}"))
+                    if (LogHelper.CheckNull(mod, $"Mod {modData.Id}"))
                         continue;
-                    if (LogHelper.CheckNull(mod.LocalData, $"Mod {mod.Id} LocalData"))
+                    if (
+                        LogHelper.CheckNull(
+                            mod.LocalData,
+                            $"Mod {mod.Id} LocalData",
+                            level: LogLevel.Info
+                        )
+                    )
                         continue;
                     if (
                         LogHelper.CheckNull(
@@ -557,6 +560,9 @@ namespace SimpleModCheckerPlus.Systems
                         )
                     )
                         continue;
+
+                    string folderPath = mod?.LocalData?.FolderAbsolutePath;
+                    Dictionary<string, int> extensionCounts = new();
 
                     LoadedModInfo lm = new()
                     {
