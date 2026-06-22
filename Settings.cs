@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,7 +7,6 @@ using Colossal.Json;
 using Game.Modding;
 using Game.Settings;
 using Game.UI.Widgets;
-using Newtonsoft.Json.Linq;
 using SimpleModCheckerPlus.Systems;
 using StarQ.Shared.Extensions;
 
@@ -308,6 +306,13 @@ namespace SimpleModCheckerPlus
             }
         }
 
+        [SettingsUIButton]
+        [SettingsUISection(ModListTab, ModsListSortGroup)]
+        public bool ReinitializeModList
+        {
+            set { WorldHelper.GetSystem<ModCheckup>().Initialize(); }
+        }
+
         [Exclude]
         [SettingsUIHidden]
         public int ModLoadedVersion { get; set; }
@@ -324,13 +329,13 @@ namespace SimpleModCheckerPlus
         [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.PackageModsText))]
         public string PackageMods => "";
 
-        [Exclude]
-        [SettingsUIHidden]
-        public int ModFolderListVersion { get; set; }
+        //[Exclude]
+        //[SettingsUIHidden]
+        //public int ModFolderListVersion { get; set; }
 
         [Exclude]
         [SettingsUIDropdown(typeof(Setting), nameof(GetModFolderList))]
-        [SettingsUIValueVersion(typeof(Setting), nameof(ModFolderListVersion))]
+        [SettingsUIValueVersion(typeof(Setting), nameof(ModLoadedVersion))]
         [SettingsUISection(VerifyTab, ModVerifyGroup)]
         [SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
         public string ModFolderDropdown { get; set; } = string.Empty;
@@ -545,41 +550,36 @@ namespace SimpleModCheckerPlus
 
         public DropdownItem<string>[] GetModFolderList()
         {
-            var x = new List<DropdownItem<string>>();
+            List<DropdownItem<string>> x = new();
 
-            var roots = Mod.PDXModsPaths.Where(Directory.Exists).ToArray();
+            string[] roots = Mod.PDXModsPaths.Where(Directory.Exists).ToArray();
 
             if (roots.Length == 0)
                 return x.ToArray();
 
-            var directories = roots
+            IOrderedEnumerable<string> directories = roots
                 .SelectMany(root => Directory.GetDirectories(root))
                 .Where(f => ModCheckup.ModFolderPattern.IsMatch(Path.GetFileName(f)))
                 .OrderBy(f => int.Parse(Path.GetFileName(f).Split('_')[0]))
                 .ThenBy(f => int.Parse(Path.GetFileName(f).Split('_')[1]));
 
-            foreach (var subfolder in directories)
+            foreach (string subfolder in directories)
             {
                 string modFolder = Path.GetFileName(subfolder);
                 string[] modFolderParts = modFolder.Split('_');
 
                 string modId = modFolderParts.Length == 2 ? modFolderParts[0] : "";
-                string metadataFile = Path.Combine(subfolder, ".metadata", "metadata.json");
+
+                PDX.SDK.Contracts.Service.Mods.Interfaces.IModDetails mod =
+                    ModCheckup.GetLocalModData(modId);
+
+                if (LogHelper.CheckNull(mod, $"{subfolder} shows null mod data"))
+                    continue;
+
                 string modName = modId;
 
                 if (modFolderParts.Length == 2)
-                {
-                    try
-                    {
-                        var jsonContent = File.ReadAllText(metadataFile);
-                        var jsonObject = JObject.Parse(jsonContent);
-                        modName =
-                            jsonObject["DisplayName"]?.ToString()
-                            ?? jsonObject["displayName"]?.ToString()
-                            ?? modId;
-                    }
-                    catch (Exception) { }
-                }
+                    modName = mod.DisplayName ?? modId;
 
                 x.Add(
                     new DropdownItem<string>

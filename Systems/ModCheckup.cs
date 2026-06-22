@@ -47,6 +47,7 @@ namespace SimpleModCheckerPlus.Systems
         public static Dictionary<string, LoadedModInfo> codes = new();
         public static Dictionary<string, LoadedModInfo> packages = new();
         public static Dictionary<string, LoadedModInfo> allMods = new();
+        public static Dictionary<string, IModDetails> CachedModData = new();
 
         public static string lastText = "";
         public static LocalizedString CleanupResultText => LocalizedString.Id(GetText());
@@ -56,7 +57,7 @@ namespace SimpleModCheckerPlus.Systems
         public static string IssueList = "";
         public static int ProcesStatus = 0;
         private PdxSdkPlatform m_Manager;
-
+        private static IContext context = null;
         private static readonly FieldInfo SDKContextField = typeof(PdxSdkPlatform).GetField(
             "m_SDKContext",
             BindingFlags.NonPublic | BindingFlags.Instance
@@ -452,71 +453,68 @@ namespace SimpleModCheckerPlus.Systems
         public static LocalizedString PackageModsText =>
             LocalizedString.Id(LoadedList(ModTypes.PackageMods, Mod.m_Setting.TextSort));
 
+        static void ProcessFolder(string folderPath, Dictionary<string, int> extensionCounts)
+        {
+            try
+            {
+                Parallel.ForEach(
+                    Directory.EnumerateFiles(folderPath),
+                    file =>
+                    {
+                        string extension = Path.GetExtension(file)?.ToLowerInvariant();
+                        if (string.IsNullOrEmpty(extension))
+                            extension = "???";
+
+                        lock (_extLock)
+                        {
+                            extensionCounts.TryGetValue(extension, out int count);
+                            extensionCounts[extension] = count + 1;
+                        }
+                    }
+                );
+
+                Parallel.ForEach(
+                    Directory.EnumerateDirectories(folderPath),
+                    dir =>
+                    {
+                        string dirName = Path.GetFileName(dir);
+                        if (
+                            !dirName.Equals(CPatchFolder, StringComparison.OrdinalIgnoreCase)
+                            && !dirName.Equals(MetadataFolder, StringComparison.OrdinalIgnoreCase)
+                        )
+                            ProcessFolder(dir, extensionCounts);
+                    }
+                );
+            }
+            catch (UnauthorizedAccessException)
+            {
+                LogHelper.SendLog($"Access denied to {folderPath}");
+            }
+        }
+
+        static void CategoriseMods(LoadedModInfo mod, Dictionary<string, int> extensionCounts)
+        {
+            if (
+                extensionCounts.ContainsKey(".dll") && extensionCounts[".dll"] > 0
+                || extensionCounts.ContainsKey(".mjs") && extensionCounts[".mjs"] > 0
+                || extensionCounts.ContainsKey(".pdb") && extensionCounts[".pdb"] > 0
+                || extensionCounts.ContainsKey(".so") && extensionCounts[".so"] > 0
+                || extensionCounts.ContainsKey(".bundle") && extensionCounts[".bundle"] > 0
+            )
+            {
+                codes[mod.DisplayName] = mod;
+                allMods[mod.DisplayName] = mod;
+            }
+            else
+            {
+                packages[mod.DisplayName] = mod;
+                allMods[mod.DisplayName] = mod;
+            }
+        }
+
         public void CheckModNew()
         {
-            void ProcessFolder(string folderPath, Dictionary<string, int> extensionCounts)
-            {
-                try
-                {
-                    Parallel.ForEach(
-                        Directory.EnumerateFiles(folderPath),
-                        file =>
-                        {
-                            string extension = Path.GetExtension(file)?.ToLowerInvariant();
-                            if (string.IsNullOrEmpty(extension))
-                                extension = "???";
-
-                            lock (_extLock)
-                            {
-                                extensionCounts.TryGetValue(extension, out int count);
-                                extensionCounts[extension] = count + 1;
-                            }
-                        }
-                    );
-
-                    Parallel.ForEach(
-                        Directory.EnumerateDirectories(folderPath),
-                        dir =>
-                        {
-                            string dirName = Path.GetFileName(dir);
-                            if (
-                                !dirName.Equals(CPatchFolder, StringComparison.OrdinalIgnoreCase)
-                                && !dirName.Equals(
-                                    MetadataFolder,
-                                    StringComparison.OrdinalIgnoreCase
-                                )
-                            )
-                                ProcessFolder(dir, extensionCounts);
-                        }
-                    );
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    LogHelper.SendLog($"Access denied to {folderPath}");
-                }
-            }
-
-            void CategoriseMods(LoadedModInfo mod, Dictionary<string, int> extensionCounts)
-            {
-                if (
-                    extensionCounts.ContainsKey(".dll") && extensionCounts[".dll"] > 0
-                    || extensionCounts.ContainsKey(".mjs") && extensionCounts[".mjs"] > 0
-                    || extensionCounts.ContainsKey(".pdb") && extensionCounts[".pdb"] > 0
-                    || extensionCounts.ContainsKey(".so") && extensionCounts[".so"] > 0
-                    || extensionCounts.ContainsKey(".bundle") && extensionCounts[".bundle"] > 0
-                )
-                {
-                    codes[mod.DisplayName] = mod;
-                    allMods[mod.DisplayName] = mod;
-                }
-                else
-                {
-                    packages[mod.DisplayName] = mod;
-                    allMods[mod.DisplayName] = mod;
-                }
-            }
-
-            IContext context = (IContext)SDKContextField.GetValue(m_Manager);
+            context = (IContext)SDKContextField.GetValue(m_Manager);
 
             PDX.SDK.Contracts.Service.Mods.Results.IListModsInPlaysetResult playsetResult = context
                 .Mods.GetActivePlaysetEnabledMods()
@@ -536,14 +534,9 @@ namespace SimpleModCheckerPlus.Systems
             {
                 try
                 {
-                    PDX.SDK.Contracts.Service.Mods.Results.IModDetailsResult data = context
-                        .Mods.GetLocalModDetails(modData.Id)
-                        .ConfigureAwait(false)
-                        .GetAwaiter()
-                        .GetResult();
-                    IModDetails mod = data.Mod;
+                    IModDetails mod = GetLocalModData(modData.Id);
 
-                    if (LogHelper.CheckNull(mod, $"Mod {modData.Id}"))
+                    if (LogHelper.CheckNull(mod, $"Mod {modData.Id}", level: LogLevel.Info))
                         continue;
                     if (
                         LogHelper.CheckNull(
@@ -682,7 +675,7 @@ namespace SimpleModCheckerPlus.Systems
                             onClicked: () =>
                             {
                                 uISystem.OpenPage(
-                                    $"{Mod.Id}.{Mod.Id}.Mod",
+                                    $"SimpleModChecker.SimpleModCheckerPlus.Mod",
                                     "Setting.ModListTab",
                                     false
                                 );
@@ -712,7 +705,7 @@ namespace SimpleModCheckerPlus.Systems
                         onClicked: () =>
                         {
                             uISystem.OpenPage(
-                                $"{Mod.Id}.{Mod.Id}.Mod",
+                                $"SimpleModChecker.SimpleModCheckerPlus.Mod",
                                 "Setting.ModListTab",
                                 false
                             );
@@ -788,6 +781,31 @@ namespace SimpleModCheckerPlus.Systems
             }
 
             return list;
+        }
+
+        public static IModDetails GetLocalModData(string modId)
+        {
+            try
+            {
+                if (CachedModData.ContainsKey(modId))
+                    return CachedModData[modId];
+
+                if (LogHelper.CheckNull(context, "Context is null", "ModCheckup didn't run yet"))
+                    return null;
+
+                PDX.SDK.Contracts.Service.Mods.Results.IModDetailsResult data = context
+                    .Mods.GetLocalModDetails(modId)
+                    .ConfigureAwait(false)
+                    .GetAwaiter()
+                    .GetResult();
+                CachedModData[modId] = data.Mod;
+                return data.Mod;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.SendLog(ex, LogLevel.Error);
+            }
+            return null;
         }
     }
 }

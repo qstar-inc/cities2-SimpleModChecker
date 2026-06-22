@@ -75,6 +75,8 @@
   "SimpleModCheckerPlus.StarQ_Option.ModDatabaseTime.Desc": "The time when the current mod database was published.",
   "SimpleModCheckerPlus.StarQ_Option.SupportedModText.Label": "{SimpleModCheckerPlus.Replacement.SupportedMods}",
   "SimpleModCheckerPlus.StarQ_Option.SupportedModText.Desc": "A list of currently supported mod for settings backup/restore.",
+  "SimpleModCheckerPlus.StarQ_Option.ReinitializeModList.Label": "Reinitialize Mod List",
+  "SimpleModCheckerPlus.StarQ_Option.ReinitializeModList.Desc": "Cleanup loaded mod data and reinitialize the mod list.",
   "SimpleModCheckerPlus.ShortName": "SMC+",
   "SimpleModCheckerPlus.CocCleaner.Title": "{SimpleModCheckerPlus.ShortName}: Found {FileCount} corrupted Settings file",
   "SimpleModCheckerPlus.CocCleaner.Desc": "Click here to delete and restart to prevent errors...",
@@ -118,5 +120,6 @@
   "SimpleModCheckerPlus.CodePlural": "Code Mods",
   "SimpleModCheckerPlus.PackageSingular": "Package Mod",
   "SimpleModCheckerPlus.PackagePlural": "Package Mods",
-  "SimpleModCheckerPlus.VerifyMoreText": "\nThe process will take some time depending on the number and size of the mods.\n- Please do not run this while in game/editor.\n- Please do not launch game/editor while the verification is running."
+  "SimpleModCheckerPlus.VerifyMoreText": "\nThe process will take some time depending on the number and size of the mods.\n- Please do not run this while in game/editor.\n- Please do not launch game/editor while the verification is running.",
+  "SimpleModCheckerPlus.KeybindsAlwaysSupported": "All keybinds are always supported for backup and restore, regardless if the mod itself is supported or not."
 }

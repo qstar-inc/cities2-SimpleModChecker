@@ -1,9 +1,35 @@
 {
   "Metadata": {
-    "Version": "3.6.0",
-    "Time": 1756753260
+    "Version": "4.0.0",
+    "Time": 1781892430
   },
   "ModDatabaseInfo": {
+    "74151": {
+      "ModName": "Extra UI Screens",
+      "Author": "klyte45",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "74182": {
+      "ModName": "Addresses & Names Mod",
+      "Author": "klyte45",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "74238": {
+      "ModName": "Xtended Transport Manager",
+      "Author": "klyte45",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "74285": {
+      "AssemblyName": "SceneExplorer",
+      "FragmentSource": "SceneExplorer.Settings",
+      "ClassType": "SceneExplorerSettings",
+      "ModName": "Scene Explorer",
+      "Author": "krzychu124",
+      "Backupable": true
+    },
     "74286": {
       "AssemblyName": "FPS_Limiter",
       "FragmentSource": "FPS_Limiter.FPSLimiterSettings",
@@ -27,6 +53,12 @@
       "ModName": "529 Tiles",
       "Author": "algernon",
       "Backupable": true
+    },
+    "74417": {
+      "ModName": "Unified Icon Library",
+      "Author": "algernon",
+      "Backupable": false,
+      "Reason": "No Settings"
     },
     "74535": {
       "AssemblyName": "HistoricalStart",
@@ -52,13 +84,53 @@
       "Author": "yenyang",
       "Backupable": true
     },
+    "75101": {
+      "ModName": "PreservePhotoMode",
+      "Author": "Nyyoko",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "75102": {
+      "ModName": "[OBSOLETE] Magical Hearse",
+      "Author": "Wayz",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "75104": {
+      "ModName": "Prop Lights Mod",
+      "Author": "Trejak",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "75107": {
+      "ModName": "Abandoned Building Remover",
+      "Author": "Wayz",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "75179": {
+      "AssemblyName": "ResolutionExtension",
+      "FragmentSource": "ResolutionExtension.Setting",
+      "ClassType": "ResolutionExtensionSettings",
+      "ModName": "ResolutionExtension",
+      "Author": "Nyyoko",
+      "Backupable": false,
+      "Reason": "Broken"
+    },
+    "75185": {
+      "ModName": "Road Wear Remover",
+      "Author": "Cgameworld",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
     "75190": {
       "AssemblyName": "SchoolCapacityBalancer",
       "FragmentSource": "SchoolCapacityBalancer.Setting",
       "ClassType": "SchoolCapacityBalancerSettings",
       "ModName": "School Capacity Balancer",
       "Author": "Wayz",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "75249": {
       "AssemblyName": "BrushSizeUnlimiter",
@@ -80,7 +152,7 @@
       "AssemblyName": "I18NEverywhere",
       "FragmentSource": "I18NEverywhere.Setting",
       "ClassType": "I18NEverywhereSettings",
-      "ModName": "I18n EveryWhere",
+      "ModName": "I18n Everywhere",
       "Author": "Baka-gourd",
       "Backupable": true
     },
@@ -98,7 +170,58 @@
       "ClassType": "DepotCapacityChangerSettings",
       "ModName": "Depot Capacity Changer",
       "Author": "Wayz",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "75724": {
+      "ModName": "ExtraLib",
+      "Author": "Triton Supreme",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "75728": {
+      "ModName": "ExtraLandscapingTools",
+      "Author": "Triton Supreme",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "75745": {
+      "ModName": "[OBSOLETE] Achievement Enabler",
+      "Author": "Wayz",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "75749": {
+      "ModName": "Free Range Camera",
+      "Author": "algernon",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "75750": {
+      "ModName": "Zoning Toolkit",
+      "Author": "zeeshanabid94",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "75804": {
+      "ModName": "Skyve",
+      "Author": "TDW",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "75816": {
+      "AssemblyName": "LineTool",
+      "FragmentSource": "LineTool.ModSettings",
+      "ClassType": "AdvancedLineToolSettings",
+      "ModName": "Advanced Line Tool",
+      "Author": "algernon",
       "Backupable": true
+    },
+    "75824": {
+      "ModName": "[DEPRECATED] Realistic Building Occupancy [Beta]",
+      "Author": "Trejak",
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "75826": {
       "AssemblyName": "PlopTheGrowables",
@@ -108,6 +231,19 @@
       "Author": "algernon",
       "Backupable": true
     },
+    "75862": {
+      "AssemblyName": "ExtendedRadio",
+      "FragmentSource": "ExtendedRadio.Setting",
+      "ClassType": "ExtendedRadioSettings",
+      "ModName": "ExtendedRadio",
+      "Author": "Triton Supreme",
+      "Backupable": true
+    },
+    "75863": {
+      "ModName": "Diamond City Radio",
+      "Author": "Triton Supreme",
+      "Backupable": false
+    },
     "75993": {
       "AssemblyName": "Tree_Controller",
       "FragmentSource": "Tree_Controller.Settings.TreeControllerSettings",
@@ -115,6 +251,137 @@
       "ModName": "Tree Controller",
       "Author": "yenyang",
       "Backupable": true
+    },
+    "76037": {
+      "ModName": "Population Rebalance",
+      "Author": "Infixo",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "76050": {
+      "AssemblyName": "MapTextureReplacer",
+      "FragmentSource": "MapTextureReplacer.MapTextureReplacerOptions",
+      "ClassType": "MapTextureReplacerSettings",
+      "ModName": "Map Texture Replacer",
+      "Author": "Cgameworld",
+      "Backupable": true
+    },
+    "76052": {
+      "ModName": "Desert Map Theme",
+      "Author": "Cgameworld",
+      "Backupable": false
+    },
+    "76061": {
+      "ModName": "Home of Chamëleon TBN",
+      "Author": "Chamëleon TBN",
+      "Backupable": false
+    },
+    "76065": {
+      "ModName": "SignatureFix",
+      "Author": "Infixo",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "76222": {
+      "ModName": "City Planner Plays Downtown Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76232": {
+      "ModName": "City Planner Plays Capitol Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76239": {
+      "ModName": "City Planner Plays Badger Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76241": {
+      "ModName": "City_Planner_Plays_By_The_Lake_Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76243": {
+      "ModName": "City Planner Plays North Woods Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76247": {
+      "ModName": "City Planner Plays Suburbia Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76252": {
+      "ModName": "City Planner Plays Young Linden Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76446": {
+      "ModName": "SimCity Radio",
+      "Author": "defnotrobbie",
+      "Backupable": false
+    },
+    "76447": {
+      "ModName": "CityRat Network Jazz Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76448": {
+      "ModName": "CityRat Network AltRock Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76450": {
+      "ModName": "CityRat Network Country Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76451": {
+      "ModName": "CityRat Network EDM Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76455": {
+      "ModName": "CityRat Network Hip Hop Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76459": {
+      "ModName": "CityRat Network Pop Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76512": {
+      "ModName": "NedDirt Radio",
+      "Author": "CodiakTheKodiak",
+      "Backupable": false
+    },
+    "76536": {
+      "ModName": "Radio NRW2",
+      "Author": "Randomicalcraft",
+      "Backupable": false
+    },
+    "76544": {
+      "ModName": "Mediterranean Theme",
+      "Author": "FSFRanger",
+      "Backupable": false
+    },
+    "76545": {
+      "ModName": "Ukrainian localization / Українська локалізація",
+      "Author": "PanReshalo",
+      "Backupable": false
+    },
+    "76559": {
+      "ModName": "Simtropolis Radio Network",
+      "Author": "Ulisse Wolf",
+      "Backupable": false
+    },
+    "76583": {
+      "ModName": "City Services Rebalance",
+      "Author": "Infixo",
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "76662": {
       "AssemblyName": "EmploymentTracker",
@@ -124,13 +391,60 @@
       "Author": "mattswarthout",
       "Backupable": true
     },
+    "76744": {
+      "ModName": "Arid Theme",
+      "Author": "FSFRanger",
+      "Backupable": false
+    },
+    "76785": {
+      "ModName": "Throwback Network 60s Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76787": {
+      "ModName": "ThrowBack Network 70s Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76791": {
+      "ModName": "Throwback Network 80s Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76792": {
+      "ModName": "Throwback Network 90s Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76793": {
+      "ModName": "Throwback Network 2000s Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76798": {
+      "ModName": "Throwback Network 2010s Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "76823": {
+      "ModName": "ReplaceRICO",
+      "Author": "theZiggurat",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "76828": {
+      "ModName": "Alpine Theme",
+      "Author": "FSFRanger",
+      "Backupable": false
+    },
     "76836": {
       "AssemblyName": "TrafficSimulationAdjuster",
       "FragmentSource": "TrafficSimulationAdjuster.TrafficSimulationAdjusterOptions",
       "ClassType": "TrafficSimulationAdjusterSettings",
       "ModName": "Traffic Simulation Adjuster",
       "Author": "tduck973564",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "76849": {
       "AssemblyName": "SunGlasses",
@@ -139,6 +453,11 @@
       "ModName": "SunGlasses",
       "Author": "Cmyna",
       "Backupable": true
+    },
+    "76887": {
+      "ModName": "South-East Asia Theme",
+      "Author": "FSFRanger",
+      "Backupable": false
     },
     "76908": {
       "AssemblyName": "AutoDistrictNameStations",
@@ -154,7 +473,49 @@
       "ClassType": "TerraformHardeningSettings",
       "ModName": "Terraform Hardening",
       "Author": "Ciantic",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "76965": {
+      "ModName": "Rockies Grassy Map Theme",
+      "Author": "JSTLFPewex",
+      "Backupable": false
+    },
+    "76966": {
+      "ModName": "Rockies Sandy Map Theme",
+      "Author": "JSTLFPewex",
+      "Backupable": false
+    },
+    "76971": {
+      "ModName": "[DEPRECATED] Extended Road Upgrades",
+      "Author": "ST-Apps",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "76972": {
+      "AssemblyName": "CrimeRemover",
+      "FragmentSource": "CrimeRemover.Setting.CrimeSetting",
+      "ClassType": "CrimeRemoverSettings",
+      "ModName": "Crime Remover",
+      "Author": "RollWind",
       "Backupable": true
+    },
+    "77086": {
+      "ModName": "Moonbeam Radio ~ NIGHTMODE [DMCA FREE]",
+      "Author": "CodiakTheKodiak",
+      "Backupable": false
+    },
+    "77092": {
+      "ModName": "(Deprecated)LandValueRemake",
+      "Author": "Noel2",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "77104": {
+      "ModName": "RenderMastery",
+      "Author": "Nyyoko",
+      "Backupable": false,
+      "Reason": "No Code"
     },
     "77171": {
       "AssemblyName": "Time2Work",
@@ -163,6 +524,24 @@
       "ModName": "Realistic Trips",
       "Author": "ruzbeh0",
       "Backupable": true
+    },
+    "77175": {
+      "ModName": "Extra Networks and Areas",
+      "Author": "Mimonsi",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "77209": {
+      "ModName": "DependencyPack",
+      "Author": "H3llb0und",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "77225": {
+      "ModName": "Gooee",
+      "Author": "H3llb0und",
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "77240": {
       "AssemblyName": "FindIt",
@@ -180,6 +559,49 @@
       "Author": "HX2003",
       "Backupable": true
     },
+    "77268": {
+      "ModName": "Éxitos en España Radio",
+      "Author": "Gonzalo924",
+      "Backupable": false
+    },
+    "77271": {
+      "ModName": "Ukrainian Radio / Українське радіо",
+      "Author": "PanReshalo",
+      "Backupable": false
+    },
+    "77319": {
+      "ModName": "LegacyFlavour",
+      "Author": "H3llb0und",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "77321": {
+      "AssemblyName": "SuperFastBuildingAndLeveling",
+      "FragmentSource": "SuperFastBuildingAndLeveling.Setting",
+      "ClassType": "SuperFastBuildingAndLevelingSettings",
+      "ModName": "Super Fast Building And Leveling",
+      "Author": "TitanGod_",
+      "Backupable": true
+    },
+    "77345": {
+      "AssemblyName": "FireStarter",
+      "FragmentSource": "FireStarter.Setting",
+      "ClassType": "FireStarterSettings",
+      "ModName": "FireStarter",
+      "Author": "mattswarthout",
+      "Backupable": true
+    },
+    "77367": {
+      "ModName": "Korea live stream radio",
+      "Author": "Goldilocks25",
+      "Backupable": false
+    },
+    "77397": {
+      "ModName": "Land Value Overhaul",
+      "Author": "jimmyok",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
     "77463": {
       "AssemblyName": "RoadNameRemover",
       "FragmentSource": "RoadNameRemover.Setting",
@@ -187,6 +609,40 @@
       "ModName": "Road Name Remover",
       "Author": "Mimonsi",
       "Backupable": true
+    },
+    "77486": {
+      "ModName": "Vietnamese localization/ Việt hoá game Cities Skylines 2",
+      "Author": "kirimason64",
+      "Backupable": false
+    },
+    "77509": {
+      "ModName": "Economy Rebalance",
+      "Author": "Infixo",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "77597": {
+      "ModName": "ConfigurableElevatedRoad",
+      "Author": "jimmyok",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "77637": {
+      "ModName": "InfoLoom",
+      "Author": "Infixo",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "77872": {
+      "ModName": "Lapland Map Theme",
+      "Author": "MAJØR",
+      "Backupable": false
+    },
+    "77901": {
+      "ModName": "InfiniteDemand",
+      "Author": "johnytoxic",
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "77923": {
       "AssemblyName": "BetterMoonLight",
@@ -196,6 +652,16 @@
       "Author": "Cmyna",
       "Backupable": true
     },
+    "78106": {
+      "ModName": "Bryxton Bay Theme",
+      "Author": "alexatc",
+      "Backupable": false
+    },
+    "78128": {
+      "ModName": "VividCities 4k Map Theme",
+      "Author": "zreezy_streams",
+      "Backupable": false
+    },
     "78131": {
       "AssemblyName": "StationNaming",
       "FragmentSource": "StationNaming.Setting.StationNamingSettings",
@@ -204,6 +670,11 @@
       "Author": "RollWind",
       "Backupable": true
     },
+    "78145": {
+      "ModName": "Seaside Serenity Map Theme",
+      "Author": "zreezy_streams",
+      "Backupable": false
+    },
     "78188": {
       "AssemblyName": "ExtendedTooltip",
       "FragmentSource": "ExtendedTooltip.ModSettings",
@@ -211,6 +682,23 @@
       "ModName": "Extended Tooltip",
       "Author": "Mimonsi",
       "Backupable": true
+    },
+    "78190": {
+      "ModName": "Balkans Theme",
+      "Author": "FSFRanger",
+      "Backupable": false
+    },
+    "78298": {
+      "ModName": "Daylight Switch",
+      "Author": "Xiyng",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "78554": {
+      "ModName": "Overpopulated Gizmo and Fix",
+      "Author": "Infixo",
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "78601": {
       "AssemblyName": "NoPollution",
@@ -228,6 +716,18 @@
       "Author": "TheSonnyX",
       "Backupable": true
     },
+    "78627": {
+      "ModName": "PedestrianPathfinding",
+      "Author": "TheSonnyX",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "78802": {
+      "ModName": "Postal Helper",
+      "Author": "Infixo",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
     "78847": {
       "AssemblyName": "AssetVariationChanger",
       "FragmentSource": "AssetVariationChanger.Setting",
@@ -236,29 +736,65 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
-    "78903": {
-      "AssemblyName": "AssetPacksManager",
-      "FragmentSource": "AssetPacksManager.Setting",
-      "ClassType": "AssetPacksManagerSettings",
-      "ModName": "Asset Packs Manager",
-      "Author": "Mimonsi",
-      "Backupable": true
+    "78908": {
+      "ModName": "⚠Deprecated | Mio Road Assets Pack⚠",
+      "Author": "F_thx",
+      "Backupable": false
     },
-    "78960": {
-      "AssemblyName": "C2VM.TrafficLightsEnhancement",
-      "FragmentSource": "C2VM.TrafficLightsEnhancement.Settings",
-      "ClassType": "TrafficLightsEnhancementSettings",
-      "ModName": "Traffic Lights Enhancement Alpha",
-      "Author": "C2VMTLE",
-      "Backupable": true
+    "78926": {
+      "ModName": "ESCN Legends",
+      "Author": "hval.alyse",
+      "Backupable": false
+    },
+    "78963": {
+      "ModName": "Mio Circular Assets Pack",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "78966": {
+      "ModName": "MagicTaxi",
+      "Author": "Phanionx",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "78967": {
+      "ModName": "Modular Subway Station Assets Pack",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "78974": {
+      "ModName": "Super Elementary School Upgrade Asset",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "79123": {
+      "ModName": "Nice Weather",
+      "Author": "ModJuggler",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "79161": {
+      "ModName": "ESCN Euphoria",
+      "Author": "hval.alyse",
+      "Backupable": false
     },
     "79186": {
       "AssemblyName": "SimpleModChecker",
       "FragmentSource": "SimpleModCheckerPlus.Setting",
       "ClassType": "SimpleModCheckerSettings",
       "ModName": "Simple Mod Checker Plus",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
+    },
+    "79201": {
+      "ModName": "Mio Overpass Asset Pack",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "79222": {
+      "ModName": "Beach Pack",
+      "Author": "Washi776",
+      "Backupable": false
     },
     "79237": {
       "AssemblyName": "FirstPersonCameraContinued",
@@ -268,6 +804,98 @@
       "Author": "Cgameworld",
       "Backupable": true
     },
+    "79313": {
+      "ModName": "Mini Elementary School Asset (Upgradable)",
+      "Author": "MrSandcraft",
+      "Backupable": false
+    },
+    "79328": {
+      "ModName": "ESCN Radio Junior",
+      "Author": "hval.alyse",
+      "Backupable": false
+    },
+    "79345": {
+      "ModName": "Compact Editor",
+      "Author": "F_thx",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "79356": {
+      "ModName": "mio Hotkeys Mod",
+      "Author": "F_thx",
+      "Backupable": false,
+      "Reason": "Keybinds"
+    },
+    "79358": {
+      "ModName": "高架地铁站 Elevated subway station",
+      "Author": "jiangguixin",
+      "Backupable": false
+    },
+    "79390": {
+      "ModName": "Residential Service Building Asset Pack",
+      "Author": "Mimonsi",
+      "Backupable": false
+    },
+    "79394": {
+      "ModName": "Roundabouts Pack",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "79399": {
+      "ModName": "下沉式地铁站 sunken subway station",
+      "Author": "jiangguixin",
+      "Backupable": false
+    },
+    "79419": {
+      "ModName": "公交终点站(右侧交通) Bus Station(Right-Hand Traffic)",
+      "Author": "a935027590",
+      "Backupable": false
+    },
+    "79423": {
+      "ModName": "货运火车站(右侧交通) Cargo Train Terminal(LORHT)",
+      "Author": "a935027590",
+      "Backupable": false
+    },
+    "79429": {
+      "ModName": "小型高架地铁/火车站Tiny elevated subway/railway station",
+      "Author": "a935027590",
+      "Backupable": false
+    },
+    "79436": {
+      "ModName": "新乡东站 Xinxiang East Railway Station",
+      "Author": "a935027590",
+      "Backupable": false
+    },
+    "79483": {
+      "ModName": "Parking 2x2 Extendable",
+      "Author": "MrSandcraft",
+      "Backupable": false
+    },
+    "79539": {
+      "ModName": "⚠Deprecated | Stair and Path Assets Pack ⚠",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "79565": {
+      "ModName": "Mio Parking Asset Pack",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "79578": {
+      "ModName": "Thai Localization (Thailand)",
+      "Author": "Naruebet",
+      "Backupable": false
+    },
+    "79581": {
+      "ModName": "Large Apartment Complex",
+      "Author": "xgflash",
+      "Backupable": false
+    },
+    "79589": {
+      "ModName": "全局汉化 Chinese Loc I18nCN",
+      "Author": "F_thx",
+      "Backupable": false
+    },
     "79634": {
       "AssemblyName": "AssetIconLibrary",
       "FragmentSource": "AssetIconLibrary.Setting",
@@ -276,21 +904,117 @@
       "Author": "TDW",
       "Backupable": true
     },
+    "79732": {
+      "ModName": "[UNSTABLE] TLE Canary",
+      "Author": "C2VMTLE",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "79752": {
+      "ModName": "中央火车站 CentralStation",
+      "Author": "jiangguixin",
+      "Backupable": false
+    },
+    "79764": {
+      "ModName": "Service Cheat Assets",
+      "Author": "PablowAugust",
+      "Backupable": false
+    },
     "79794": {
-      "AssemblyName": "AdvancedSimulationSpeed",
-      "FragmentSource": "AdvancedSimulationSpeed.Setting",
-      "ClassType": "AdvancedSimulationSpeedSettings",
       "ModName": "AdvancedSimulationSpeed",
       "Author": "zakuro9715",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "79827": {
+      "ModName": "Kiosks Pack",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "79836": {
+      "ModName": "Outdoor Fireplace Asset Pack",
+      "Author": "MayorWanze",
+      "Backupable": false
     },
     "79872": {
       "AssemblyName": "AutoVehicleRenamer",
       "FragmentSource": "AutoVehicleRenamer.Setting",
       "ClassType": "AutoVehicleRenamerSettings",
       "ModName": "Auto Vehicle Renamer",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
+    },
+    "79875": {
+      "ModName": "[DEPRECATED] TripsData",
+      "Author": "ruzbeh0",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "79887": {
+      "ModName": "Local Hospital Upgradable",
+      "Author": "MrSandcraft",
+      "Backupable": false
+    },
+    "79888": {
+      "ModName": "Floatable Boathouses",
+      "Author": "MayorWanze",
+      "Backupable": false
+    },
+    "79901": {
+      "ModName": "eurovibes #1",
+      "Author": "Ben84",
+      "Backupable": false
+    },
+    "79936": {
+      "ModName": "eurovibes #2",
+      "Author": "Ben84",
+      "Backupable": false
+    },
+    "79937": {
+      "ModName": "eurovibes #3",
+      "Author": "Ben84",
+      "Backupable": false
+    },
+    "79943": {
+      "ModName": "(Deprecated) CS2LiteBooster(系统精简加速)",
+      "Author": "Noel2",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "79997": {
+      "ModName": "Coal Truck Resource Piles",
+      "Author": "MayorWanze",
+      "Backupable": false
+    },
+    "79999": {
+      "ModName": "Trash Asset Pack",
+      "Author": "MayorWanze",
+      "Backupable": false
+    },
+    "80003": {
+      "ModName": "More Water Assets",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "80006": {
+      "ModName": "Mio Policy Asset Pack",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "80019": {
+      "ModName": "Cityscape Upgrade Asset Pack",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "80036": {
+      "ModName": "Dumpsterfire Asset Pack",
+      "Author": "MayorWanze",
+      "Backupable": false
+    },
+    "80044": {
+      "ModName": "ZMZ铁路/地铁轨道资产包 ZMZ Train/Subway Track Assets Pack",
+      "Author": "a935027590",
+      "Backupable": false
     },
     "80095": {
       "AssemblyName": "Traffic",
@@ -300,13 +1024,41 @@
       "Author": "krzychu124",
       "Backupable": true
     },
-    "80205": {
-      "AssemblyName": "HardMode",
-      "FragmentSource": "HardMode.Settings.HardModeSettings",
-      "ClassType": "HardModeSettings",
-      "ModName": "Hard Mode",
-      "Author": "TDW",
-      "Backupable": true
+    "80116": {
+      "ModName": "(Deprecated) Extended Cargo Harbor",
+      "Author": "Shaine2010",
+      "Backupable": false
+    },
+    "80214": {
+      "ModName": "[Unstable] Mio Road Assets Pack",
+      "Author": "F_thx",
+      "Backupable": false
+    },
+    "80251": {
+      "ModName": "中式高铁站 high-speed railway station",
+      "Author": "jiangguixin",
+      "Backupable": false
+    },
+    "80267": {
+      "ModName": "(Deprecated) Extended Cargo Harbor for left-hand traffic",
+      "Author": "Shaine2010",
+      "Backupable": false
+    },
+    "80275": {
+      "ModName": "Asset Error Handler",
+      "Author": "F_thx",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "80323": {
+      "ModName": "Rapid Response Helipad AssetPack",
+      "Author": "PablowAugust",
+      "Backupable": false
+    },
+    "80382": {
+      "ModName": "Mixed Row Zone",
+      "Author": "Washi776",
+      "Backupable": false
     },
     "80403": {
       "AssemblyName": "TransitCapacityMultiplier",
@@ -314,7 +1066,19 @@
       "ClassType": "TransitCapacityMultiplierSettings",
       "ModName": "TransitCapacityMultiplier",
       "Author": "ruzbeh0",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "80428": {
+      "ModName": "WorkForceCheatAssetPack",
+      "Author": "PablowAugust",
+      "Backupable": false
+    },
+    "80528": {
+      "ModName": "ExtraDetailingTools",
+      "Author": "Triton Supreme",
+      "Backupable": false,
+      "Reason": "No Settings"
     },
     "80529": {
       "AssemblyName": "ExtraAssetsImporter",
@@ -324,13 +1088,106 @@
       "Author": "Triton Supreme",
       "Backupable": true
     },
-    "80826": {
-      "AssemblyName": "Whiteness-Toggle",
-      "FragmentSource": "Whiteness_Toggle.Setting",
-      "ClassType": "WhitenessToggleSettings",
-      "ModName": "Whiteness Toggle",
-      "Author": "Daniel-00001",
-      "Backupable": true
+    "80530": {
+      "ModName": "EAI - Surfaces Pack",
+      "Author": "Triton Supreme",
+      "Backupable": false
+    },
+    "80537": {
+      "ModName": "Road Markings (Words & Symbols) Decal Pack",
+      "Author": "Tigon Ologdring",
+      "Backupable": false
+    },
+    "80538": {
+      "ModName": "Ground Textures Decal Pack",
+      "Author": "Tigon Ologdring",
+      "Backupable": false
+    },
+    "80540": {
+      "ModName": "Extra Team Graffiti",
+      "Author": "Tigon Ologdring",
+      "Backupable": false
+    },
+    "80541": {
+      "ModName": "British Brands Pack 01",
+      "Author": "Bruceyboy24804",
+      "Backupable": false
+    },
+    "80572": {
+      "ModName": "Rosies Medium Residentials",
+      "Author": "PablowAugust",
+      "Backupable": false
+    },
+    "80578": {
+      "ModName": "Extra3.0 Graffiti Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "80580": {
+      "ModName": "Italian Posters By Dome",
+      "Author": "De Magistris",
+      "Backupable": false
+    },
+    "80582": {
+      "ModName": "Cities Skylines II Graffiti Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "80584": {
+      "ModName": "Stains and Leakage Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "80591": {
+      "ModName": "EAI - China Warnings Pack",
+      "Author": "Baka-gourd",
+      "Backupable": false
+    },
+    "80609": {
+      "ModName": "Farming Zones USE THIS VERSION",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "80611": {
+      "ModName": "EAI Rocky Surfaces",
+      "Author": "TheBroMan10",
+      "Backupable": false
+    },
+    "80701": {
+      "ModName": "Large Melbourne Murals Vol I",
+      "Author": "trist1322",
+      "Backupable": false
+    },
+    "80706": {
+      "ModName": "Melbourne Paste Ups and Stencils Volume I",
+      "Author": "trist1322",
+      "Backupable": false
+    },
+    "80708": {
+      "ModName": "Melbourne Laneway Murals Pack Volume I",
+      "Author": "trist1322",
+      "Backupable": false
+    },
+    "80709": {
+      "ModName": "TrafficUnlocker",
+      "Author": "ZoinkCN",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "80789": {
+      "ModName": "Train Variation Asset Pack",
+      "Author": "Mimonsi",
+      "Backupable": false
+    },
+    "80797": {
+      "ModName": "Subway Variation Asset Pack",
+      "Author": "Mimonsi",
+      "Backupable": false
+    },
+    "80897": {
+      "ModName": "Row Services Pack",
+      "Author": "Washi776",
+      "Backupable": false
     },
     "80931": {
       "AssemblyName": "ToggleableOverlays",
@@ -340,6 +1197,21 @@
       "Author": "TDW",
       "Backupable": true
     },
+    "80939": {
+      "ModName": "Real World Brand: Paradox Interactive",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "80942": {
+      "ModName": "More Deathcare",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "80943": {
+      "ModName": "Dunder Mifflin",
+      "Author": "Washi776",
+      "Backupable": false
+    },
     "81012": {
       "AssemblyName": "VehicleVariationPacks",
       "FragmentSource": "VehicleVariationPacks.Setting",
@@ -347,6 +1219,11 @@
       "ModName": "Vehicle Variation Packs",
       "Author": "Mimonsi",
       "Backupable": true
+    },
+    "81040": {
+      "ModName": "More Transport",
+      "Author": "Washi776",
+      "Backupable": false
     },
     "81157": {
       "AssemblyName": "AreaBucket",
@@ -356,13 +1233,34 @@
       "Author": "Cmyna",
       "Backupable": true
     },
+    "81336": {
+      "ModName": "Parking Lots By Dome",
+      "Author": "De Magistris",
+      "Backupable": false
+    },
+    "81346": {
+      "ModName": "More Education Buildings",
+      "Author": "Washi776",
+      "Backupable": false
+    },
     "81407": {
       "AssemblyName": "StifferVehicles",
       "FragmentSource": "StifferVehicles.Setting",
       "ClassType": "StifferVehiclesSettings",
       "ModName": "Stiffer Vehicles",
       "Author": "Mimonsi",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "81421": {
+      "ModName": "Tree Grates & Road Covers",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "81498": {
+      "ModName": "Angra Map old Terrain Theme for Map Texture Replacer Mod",
+      "Author": "ArtPTarkovsky",
+      "Backupable": false
     },
     "81568": {
       "AssemblyName": "ZoneColorChanger",
@@ -372,13 +1270,202 @@
       "Author": "TDW",
       "Backupable": true
     },
+    "81578": {
+      "ModName": "SettingsManager",
+      "Author": "zakuro9715",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "81625": {
+      "ModName": "Real World Brand: Petrochemicals",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "81837": {
+      "ModName": "More Parks",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "81913": {
+      "ModName": "Overground Parking By Dome",
+      "Author": "De Magistris",
+      "Backupable": false
+    },
+    "81925": {
+      "ModName": "ctrlC",
+      "Author": "jk142",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "82020": {
+      "ModName": "Corners for row zones",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "82100": {
+      "ModName": "More Recycling",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "82254": {
+      "ModName": "[DEPRECATED] Vanilla Car Props Asset pack ",
+      "Author": "ZedeTTV",
+      "Backupable": false
+    },
+    "82255": {
+      "ModName": "[DEPRECATED] CO Vanilla Car Props Asset pack",
+      "Author": "ZedeTTV",
+      "Backupable": false
+    },
+    "82256": {
+      "ModName": "[DEPRECATED] SF Vanilla Car Props Asset pack",
+      "Author": "ZedeTTV",
+      "Backupable": false
+    },
+    "82360": {
+      "ModName": "Payment Point",
+      "Author": "Bless_Santana",
+      "Backupable": false
+    },
     "82374": {
       "AssemblyName": "BetterSaveList",
       "FragmentSource": "BetterSaveList.Setting",
       "ClassType": "BetterSaveListSettings",
       "ModName": "BetterSaveList",
       "Author": "zakuro9715",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "82633": {
+      "ModName": "TestDummy",
+      "Author": "zakuro9715",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "82675": {
+      "AssemblyName": "DCMilestoneRewards",
+      "FragmentSource": "DCMilestoneRewards.Setting",
+      "ClassType": "DCMilestoneRewardsSettings",
+      "ModName": "Disable Milestone Rewards - Difficulty Config",
+      "Author": "mattswarthout",
       "Backupable": true
+    },
+    "82714": {
+      "ModName": "Carbon",
+      "Author": "conboy137",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "82966": {
+      "ModName": "Beach Row Zone",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "83063": {
+      "ModName": "Monogatari Collection",
+      "Author": "Randomicalcraft",
+      "Backupable": false
+    },
+    "83154": {
+      "ModName": "Gray Stained Surfaces",
+      "Author": "TheBroMan10",
+      "Backupable": false
+    },
+    "83168": {
+      "ModName": "Real World Brand: Adobe",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "83247": {
+      "ModName": "Doors Decal Pack 01 - Industrial",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "83469": {
+      "ModName": "Crumbling_Walls",
+      "Author": "Gyffes",
+      "Backupable": false
+    },
+    "83489": {
+      "ModName": "High Mast Light",
+      "Author": "Executablefiles47",
+      "Backupable": false
+    },
+    "83492": {
+      "ModName": "Rust",
+      "Author": "Gyffes",
+      "Backupable": false
+    },
+    "83596": {
+      "ModName": "Move It [Beta]",
+      "Author": "yenyang",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "83733": {
+      "ModName": "Show Text Trends",
+      "Author": "DanielVNZ",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "83825": {
+      "ModName": "Profit Based Industry And Office (PBIAO)",
+      "Author": "Adwozo",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "83887": {
+      "ModName": "Temperate Map Theme",
+      "Author": "comcom ED75",
+      "Backupable": false
+    },
+    "83996": {
+      "ModName": "Everytime Radio",
+      "Author": "Randomicalcraft",
+      "Backupable": false
+    },
+    "84014": {
+      "ModName": "Doors Decal Pack 02 - European Antique Doors",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "84017": {
+      "ModName": "Mario Kart Collection",
+      "Author": "Randomicalcraft",
+      "Backupable": false
+    },
+    "84186": {
+      "ModName": "Real World Brand: Discord",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "84492": {
+      "ModName": "LineColorRandomizer",
+      "Author": "TheSprtCZ",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "84515": {
+      "ModName": "Elevated Train Station",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "84524": {
+      "ModName": "Small Industrial Firehouse 01",
+      "Author": "hordechickey",
+      "Backupable": false
+    },
+    "84571": {
+      "ModName": "Bye Bye Homeless (no longer needed after 1.2.5f1)",
+      "Author": "wxdao",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "84619": {
+      "ModName": "Pathfind Costs",
+      "Author": "Aberro",
+      "Backupable": false,
+      "Reason": "Test Mod"
     },
     "84638": {
       "AssemblyName": "Recolor",
@@ -388,6 +1475,62 @@
       "Author": "yenyang",
       "Backupable": true
     },
+    "84644": {
+      "ModName": "Modular Transport Station [Subway Freedom]",
+      "Author": "rodrigmatrix",
+      "Backupable": false
+    },
+    "84657": {
+      "ModName": "Live Translation Editor",
+      "Author": "klyte45",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "84661": {
+      "ModName": "Performance Monitor",
+      "Author": "rcav8tr",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "84778": {
+      "ModName": "Example Pack (do not subscribe)",
+      "Author": "Jeong3in",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "84784": {
+      "ModName": "Crossed Theme Train Variation Asset Pack",
+      "Author": "Mimonsi",
+      "Backupable": false
+    },
+    "84819": {
+      "ModName": "Nicer Brighter Grass Map Theme",
+      "Author": "Scrithel",
+      "Backupable": false
+    },
+    "84953": {
+      "ModName": "Silence XP",
+      "Author": "uj_",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "84978": {
+      "ModName": "Columbia Valley Map Theme",
+      "Author": "Monleybread",
+      "Backupable": false
+    },
+    "85078": {
+      "ModName": "Traffic_Mod",
+      "Author": "Tim1503",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "85081": {
+      "ModName": "Straight roads default mode",
+      "Author": "Pragmatick",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
     "85211": {
       "AssemblyName": "NoTrafficDespawn",
       "FragmentSource": "NoTrafficDespawn.TrafficDespawnSettings",
@@ -395,6 +1538,11 @@
       "ModName": "No Vehicle Despawn",
       "Author": "mattswarthout",
       "Backupable": true
+    },
+    "85217": {
+      "ModName": "[G87] Color Surfaces",
+      "Author": "elGendo87",
+      "Backupable": false
     },
     "85284": {
       "AssemblyName": "CityStats",
@@ -404,21 +1552,73 @@
       "Author": "kendallroth",
       "Backupable": true
     },
+    "85340": {
+      "ModName": "Save All Prefabs",
+      "Author": "fergusq",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "85643": {
+      "ModName": "City Vitals Watch (Monitor Stats)",
+      "Author": "franzvz",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "85650": {
+      "ModName": "Speed Limit Editor",
+      "Author": "Aberro",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "85685": {
+      "ModName": "SimCity Radio [FORK - simplified]",
+      "Author": "SaveSaki",
+      "Backupable": false
+    },
+    "85804": {
+      "ModName": "Farming Zones 2 //THIS MOD IS NO LONGER GONNA BE UPDATED//",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "85825": {
+      "ModName": "Cim Census",
+      "Author": "mattswarthout",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "85845": {
+      "ModName": "ESCN Dreamers",
+      "Author": "hval.alyse",
+      "Backupable": false
+    },
     "86124": {
       "AssemblyName": "TradingCostTweaker",
       "FragmentSource": "TradingCostTweaker.Setting",
       "ClassType": "TradingCostTweakerSettings",
       "ModName": "Trading Cost Tweaker",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
     },
-    "86462": {
-      "AssemblyName": "PathfindingCustomizer",
-      "FragmentSource": "PathfindingCustomizer.Setting",
-      "ClassType": "PathfindingCustomizerSettings",
-      "ModName": "Pathfinding Customizer",
-      "Author": "Caby71",
-      "Backupable": true
+    "86260": {
+      "ModName": "Compass",
+      "Author": "Cgameworld",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "86267": {
+      "ModName": "American Road Surface Extension",
+      "Author": "PickledDragon",
+      "Backupable": false
+    },
+    "86268": {
+      "ModName": "American Road Surface Extension (Decals)",
+      "Author": "PickledDragon",
+      "Backupable": false
+    },
+    "86423": {
+      "ModName": "Real World Brand: Apple",
+      "Author": "StarQ",
+      "Backupable": false
     },
     "86510": {
       "AssemblyName": "NoTeleporting",
@@ -426,6 +1626,26 @@
       "ClassType": "NoTeleportingSettings",
       "ModName": "No Teleporting",
       "Author": "fergusq",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "86516": {
+      "ModName": "Test Pack for a new RoadPack (DO NOT SUBSCRIBE)",
+      "Author": "Randomicalcraft",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "86538": {
+      "ModName": "(Deprecated)Extended Bus Station",
+      "Author": "Shaine2010",
+      "Backupable": false
+    },
+    "86553": {
+      "AssemblyName": "NoVehicleTrailers",
+      "FragmentSource": "NoVehicleTrailers.Setting",
+      "ClassType": "NoVehicleTrailersSettings",
+      "ModName": "No Car Trailers",
+      "Author": "mattswarthout",
       "Backupable": true
     },
     "86605": {
@@ -441,8 +1661,19 @@
       "FragmentSource": "BoundaryLinesModifier.Setting",
       "ClassType": "BoundaryLinesModifierSettings",
       "ModName": "Boundary Lines Modifier",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
+    },
+    "86746": {
+      "ModName": "TestMod",
+      "Author": "ZganDouma",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "86779": {
+      "ModName": "Lelmaster's Graveyard Pack",
+      "Author": "Lelmaster",
+      "Backupable": false
     },
     "86868": {
       "AssemblyName": "RealLife",
@@ -452,13 +1683,48 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
+    "86876": {
+      "ModName": "Driftless_Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "86878": {
+      "ModName": "RetentionRadio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "86885": {
+      "ModName": "Custom Road Assets",
+      "Author": "sermainer",
+      "Backupable": false
+    },
     "86944": {
       "AssemblyName": "DemandMasterControl",
       "FragmentSource": "DemandMasterControl.Setting",
       "ClassType": "DemandMasterControlSettings",
       "ModName": "Demand Master Control",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
+    },
+    "86976": {
+      "ModName": "Small Subway Garage and Train Garage Asset",
+      "Author": "rodrigmatrix",
+      "Backupable": false
+    },
+    "87032": {
+      "ModName": "Confluence Mesa Map Theme",
+      "Author": "Drfrozenfire",
+      "Backupable": false
+    },
+    "87056": {
+      "ModName": "Transport Vehicle Props",
+      "Author": "rodrigmatrix",
+      "Backupable": false
+    },
+    "87099": {
+      "ModName": "Prop Vanilla Vegetations",
+      "Author": "StarQ",
+      "Backupable": false
     },
     "87190": {
       "AssemblyName": "RoadBuilder",
@@ -468,13 +1734,38 @@
       "Author": "TDW",
       "Backupable": true
     },
+    "87219": {
+      "ModName": "Intersectable Subway System",
+      "Author": "StarQ",
+      "Backupable": false
+    },
     "87313": {
       "AssemblyName": "RealisticParking",
       "FragmentSource": "RealisticParking.Setting",
       "ClassType": "RealisticParkingSettings",
-      "ModName": "Realistic Parking Mod",
+      "ModName": "Realistic Parking",
       "Author": "DaancingBanana",
       "Backupable": true
+    },
+    "87315": {
+      "ModName": "Big Brands Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "87316": {
+      "ModName": "Movie Posters 2024 Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "87317": {
+      "ModName": "Tire Marks Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "87352": {
+      "ModName": "Shallow Sea Map Theme",
+      "Author": "Drfrozenfire",
+      "Backupable": false
     },
     "87422": {
       "AssemblyName": "OSMExport",
@@ -492,6 +1783,21 @@
       "Author": "Taipei Native",
       "Backupable": true
     },
+    "87499": {
+      "ModName": "GameTracksFM",
+      "Author": "Jeshua13",
+      "Backupable": false
+    },
+    "87564": {
+      "ModName": "Mini Track Services",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "87720": {
+      "ModName": "[G87] Trash Decals",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
     "87755": {
       "AssemblyName": "RWH",
       "FragmentSource": "RealisticWorkplacesAndHouseholds.Setting",
@@ -500,13 +1806,77 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
+    "87791": {
+      "ModName": "City_Planner_Poster_And_Flag_Pack",
+      "Author": "Tigon Ologdring",
+      "Backupable": false
+    },
+    "87943": {
+      "ModName": "5x10 Park",
+      "Author": "MrSandcraft",
+      "Backupable": false
+    },
+    "87948": {
+      "ModName": "[G87] Stains and Puddles Decals: Wet Pack",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "87949": {
+      "ModName": "[G87] Stains and Puddles Surfaces: Wet Pack",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "87968": {
+      "ModName": "McDonalds Decal Pack",
+      "Author": "Kaidius",
+      "Backupable": false
+    },
+    "87995": {
+      "ModName": "Basketball Courts Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "87996": {
+      "ModName": "Tennis Courts Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "87997": {
+      "ModName": "Concrete Tiles Surface Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "88034": {
+      "ModName": "Clock widget",
+      "Author": "embarq",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "88157": {
+      "ModName": "Extra Hotkeys",
+      "Author": "Fenrir200678",
+      "Backupable": false,
+      "Reason": "Keybinds"
+    },
+    "88206": {
+      "ModName": "CC22A Road Pack 1",
+      "Author": "FBC22A",
+      "Backupable": false
+    },
     "88266": {
       "AssemblyName": "LazyPedestrians",
       "FragmentSource": "LazyPedestrians.Settings",
       "ClassType": "LazyPedestriansSettings",
-      "ModName": "Lazy Pedestrians",
+      "ModName": "[DONT USE] Lazy Pedestrians",
       "Author": "applesthepi",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "88488": {
+      "ModName": "Unlimited Unique Buildings",
+      "Author": "rodrigmatrix",
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "88500": {
       "AssemblyName": "NoDeadTrees",
@@ -516,6 +1886,81 @@
       "Author": "rodrigmatrix",
       "Backupable": true
     },
+    "88524": {
+      "ModName": "ON1 Portrait LUT Pack",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "88803": {
+      "ModName": "PolyHaven Cubemap Pack 1",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "88863": {
+      "ModName": "PolyHaven Cubemap Pack Pure Sky",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "88893": {
+      "AssemblyName": "TimeWeatherAnarchy",
+      "FragmentSource": "TimeWeatherAnarchy.TimeWeatherAnarchySettings ",
+      "ClassType": "TimeAndWeatherAnarchySettings",
+      "ModName": "Time & Weather Anarchy",
+      "Author": "rodrigmatrix",
+      "Backupable": true
+    },
+    "89004": {
+      "ModName": "Sand Surfaces and Beach Decal Pack",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "89102": {
+      "ModName": "下沉式地铁站（重制版） Sinking subway station",
+      "Author": "jiangguixin",
+      "Backupable": false
+    },
+    "89111": {
+      "ModName": "Hybrid Shuttle Bus",
+      "Author": "Caz Brecker",
+      "Backupable": false
+    },
+    "89165": {
+      "ModName": "Google Earth Inspired LUT Pack",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "89195": {
+      "ModName": "CRA Core Assets",
+      "Author": "sermainer",
+      "Backupable": false
+    },
+    "89270": {
+      "ModName": "AutoSaveAlwaysOn",
+      "Author": "Nyyoko",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "89402": {
+      "ModName": "Asphalt Patches Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "89403": {
+      "ModName": "Modders Graffiti Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "89406": {
+      "ModName": "L.A. Misc. Decal Pack 1",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "89458": {
+      "ModName": "TimeAdjusterMod",
+      "Author": "ABINGAI",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
     "89495": {
       "AssemblyName": "CityController",
       "FragmentSource": "CityController.Settings.Setting",
@@ -523,6 +1968,44 @@
       "ModName": "City Controller",
       "Author": "Mbyron26",
       "Backupable": true
+    },
+    "89556": {
+      "ModName": "Minecraft HDRI Sky",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "89607": {
+      "ModName": "Outside Traffic: Fake Traffic Adjuster",
+      "Author": "dex3r",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "89804": {
+      "ModName": "[UNSTABLE] TLE 0.3 Preview",
+      "Author": "C2VMTLE",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "89930": {
+      "ModName": "[G87] Urban Surfaces: Paving Pack",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "89993": {
+      "ModName": "Reserve_housing_for_local_population",
+      "Author": "Krazze",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "90127": {
+      "ModName": "Advanced Hospital",
+      "Author": "Caz Brecker",
+      "Backupable": false
+    },
+    "90128": {
+      "ModName": "Another Bus Stop",
+      "Author": "Caz Brecker",
+      "Backupable": false
     },
     "90264": {
       "AssemblyName": "SmartTransportation",
@@ -532,6 +2015,11 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
+    "90442": {
+      "ModName": "Fire Station Mosaic Pack",
+      "Author": "trist1322",
+      "Backupable": false
+    },
     "90641": {
       "AssemblyName": "HallOfFame",
       "FragmentSource": "HallOfFame.Settings",
@@ -540,12 +2028,72 @@
       "Author": "toverux",
       "Backupable": true
     },
+    "90794": {
+      "ModName": "[Deprecated] Tigon's Original Rail Infrastructure Pack",
+      "Author": "Tigon Ologdring",
+      "Backupable": false
+    },
+    "90896": {
+      "ModName": "[G87] Tarumi Junction: Piccana's Pack",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "91072": {
+      "ModName": "CC22A's Tram Transit Pack 02",
+      "Author": "FBC22A",
+      "Backupable": false
+    },
+    "91429": {
+      "ModName": "Signature Buildings By Dome",
+      "Author": "De Magistris",
+      "Backupable": false
+    },
     "91433": {
       "AssemblyName": "InfoLoomTwo",
       "FragmentSource": "InfoLoomTwo.Setting",
       "ClassType": "InfoLoomTwoSettings",
       "ModName": "InfoLoom",
       "Author": "Bruceyboy24804",
+      "Backupable": true
+    },
+    "91534": {
+      "ModName": "Pickleball Courts",
+      "Author": "TheBroMan10",
+      "Backupable": false
+    },
+    "91836": {
+      "ModName": "Candy Commercial LUT",
+      "Author": "damiancio",
+      "Backupable": false
+    },
+    "91964": {
+      "ModName": "Urban Elements Vol. 1: Storefront Clutter & Signs",
+      "Author": "r3d koolaide",
+      "Backupable": false
+    },
+    "92004": {
+      "ModName": "[G87] Road Repair: Patch Pack",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "92128": {
+      "ModName": "BassAddict Radio",
+      "Author": "aseed85",
+      "Backupable": false
+    },
+    "92245": {
+      "ModName": "Bridge Expansion Pack",
+      "Author": "brianrocha",
+      "Backupable": false
+    },
+    "92407": {
+      "ModName": "American Route Decals",
+      "Author": "NPKaiser",
+      "Backupable": false
+    },
+    "92441": {
+      "ModName": "MiniParks Asset Pack",
+      "Author": "MrSandcraft",
       "Backupable": false
     },
     "92499": {
@@ -554,7 +2102,14 @@
       "ClassType": "IndustriesExtendedSettings",
       "ModName": "Industries Extended ",
       "Author": "Javapower",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Broken"
+    },
+    "92671": {
+      "ModName": "StarQ's Workflow Kit",
+      "Author": "StarQ",
+      "Backupable": false,
+      "Reason": "No Settings"
     },
     "92908": {
       "AssemblyName": "BelzontWE",
@@ -569,16 +2124,152 @@
       "FragmentSource": "CitizenModelManager.Setting",
       "ClassType": "CitizenModelManagerSettings",
       "ModName": "Citizen Model Manager",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
+    },
+    "92955": {
+      "ModName": " (DEPRECIATED) Vanilla Citizen Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "92957": {
+      "ModName": "(DEPRECIATED) Los Angeles Citizen Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "92959": {
+      "ModName": "(DEPRECIATED) Beach Citizen Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "92964": {
+      "ModName": "(DEPRECIATED) Basketball Citizen Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "92967": {
+      "ModName": "[G87] Street Art Decals",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "93051": {
+      "ModName": "Baseball Fields Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "93056": {
+      "ModName": "Manicured Grass Texture Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "93112": {
+      "ModName": "[G87] French Inspired Surfaces",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "93192": {
+      "ModName": "Test",
+      "Author": "bomol",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "93199": {
+      "ModName": "Broken Segment Detector",
+      "Author": "yenyang",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "93312": {
+      "ModName": "Baseball Logos",
+      "Author": "TheBroMan10",
+      "Backupable": false
     },
     "93523": {
       "AssemblyName": "NavigationView",
       "FragmentSource": "NavigationView.Setting",
       "ClassType": "NavigationViewSettings",
-      "ModName": "NavigationView (Updated for 1.3.3f1)",
+      "ModName": "NavigationView",
       "Author": "lpaladin",
       "Backupable": true
+    },
+    "93811": {
+      "ModName": "Monochrome Graffiti Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "93836": {
+      "ModName": "DVNZ - Parking Lots with Parks (Depreciated)",
+      "Author": "DanielVNZ",
+      "Backupable": false
+    },
+    "93866": {
+      "ModName": "Street Art Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "93949": {
+      "ModName": "Scribbles and Tags Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "93955": {
+      "ModName": "Non Garbage Producing Hospital ",
+      "Author": "mistral82cy",
+      "Backupable": false
+    },
+    "94036": {
+      "ModName": "[G87] German Inspired Surfaces",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "94081": {
+      "ModName": "Creator Graffiti Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "94250": {
+      "ModName": "No Garbage Airports (test)",
+      "Author": "mistral82cy",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "94256": {
+      "ModName": "More Healthcare",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "94265": {
+      "ModName": "Vibrant Foliage Pack",
+      "Author": "brianrocha",
+      "Backupable": false
+    },
+    "94273": {
+      "ModName": "Pedestrian Bridges",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "94321": {
+      "ModName": "Prague mosaics",
+      "Author": "Kironet",
+      "Backupable": false
+    },
+    "94394": {
+      "AssemblyName": "Lumina",
+      "FragmentSource": "Lumina.Setting",
+      "ClassType": "LuminaSettings",
+      "ModName": "Lumina",
+      "Author": "Nyyoko",
+      "Backupable": true
+    },
+    "94423": {
+      "ModName": "Brand Signage Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "94656": {
+      "ModName": "Poster Advert Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
     },
     "94762": {
       "AssemblyName": "BuildingUse",
@@ -588,6 +2279,41 @@
       "Author": "rcav8tr",
       "Backupable": true
     },
+    "95059": {
+      "ModName": "Small Tram Depot",
+      "Author": "rodrigmatrix",
+      "Backupable": false
+    },
+    "95076": {
+      "ModName": "UK Beaches",
+      "Author": "TheBroMan10",
+      "Backupable": false
+    },
+    "95077": {
+      "ModName": "UK Outdoor Tiles",
+      "Author": "TheBroMan10",
+      "Backupable": false
+    },
+    "95080": {
+      "ModName": "Farming Surfaces and Decals",
+      "Author": "TheBroMan10",
+      "Backupable": false
+    },
+    "95088": {
+      "ModName": "[G87] British Inspired Surfaces",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "95129": {
+      "ModName": "More Parkings",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "95357": {
+      "ModName": "Quays and Piers",
+      "Author": "Washi776",
+      "Backupable": false
+    },
     "95437": {
       "AssemblyName": "RegionFlagIcons",
       "FragmentSource": "RegionFlagIcons.Setting",
@@ -595,6 +2321,38 @@
       "ModName": "Region Flag Icons",
       "Author": "Mimonsi",
       "Backupable": true
+    },
+    "95499": {
+      "ModName": "Improved Building Level Info View",
+      "Author": "rcav8tr",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "95588": {
+      "ModName": "Chicks and Cocks Art Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "95683": {
+      "ModName": "Road vehicle plate positions [WE Module]",
+      "Author": "klyte45",
+      "Backupable": false
+    },
+    "95765": {
+      "ModName": "Gas Station Pylon Prices [WE Module]",
+      "Author": "klyte45",
+      "Backupable": false
+    },
+    "95823": {
+      "ModName": "Station Entrance Visuals",
+      "Author": "rodrigmatrix",
+      "Backupable": false
+    },
+    "95830": {
+      "ModName": "CslProject1",
+      "Author": "atst_96",
+      "Backupable": false,
+      "Reason": "Test Mod"
     },
     "95872": {
       "AssemblyName": "CameraFieldOfView",
@@ -604,12 +2362,57 @@
       "Author": "TDW",
       "Backupable": true
     },
+    "95885": {
+      "ModName": "Train Visuals",
+      "Author": "rodrigmatrix",
+      "Backupable": false
+    },
+    "95965": {
+      "ModName": "Zone Organizer",
+      "Author": "Mimonsi",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "96102": {
+      "ModName": "[G87] Japanese Inspired Surfaces",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "96103": {
+      "ModName": "Public Transport Vehicles Texts & Decals [WE Module]",
+      "Author": "klyte45",
+      "Backupable": false
+    },
+    "96221": {
+      "ModName": "解决公园无家可归问题-本体公园 Get rid of homelessness-Ontology park",
+      "Author": "jiangguixin",
+      "Backupable": false
+    },
+    "96222": {
+      "ModName": "解决公园无家可归问题-DLC公园 Get rid of homelessness-DLC park",
+      "Author": "jiangguixin",
+      "Backupable": false
+    },
     "96267": {
       "AssemblyName": "NoWaterElectricity",
       "FragmentSource": "NoWaterElectricity.Setting",
       "ClassType": "NoWaterElectricitySettings",
       "ModName": "NoWaterElectricity",
       "Author": "Clmb17",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "96309": {
+      "ModName": "Blueachive_OST_Cover_Radio",
+      "Author": "Johnbee1",
+      "Backupable": false
+    },
+    "96619": {
+      "AssemblyName": "TripsDataView",
+      "FragmentSource": "TripsDataView.Setting",
+      "ClassType": "TripsViewSettings",
+      "ModName": "Trips View",
+      "Author": "ruzbeh0",
       "Backupable": true
     },
     "96645": {
@@ -618,15 +2421,41 @@
       "ClassType": "HideBuildingsNotificationSettings",
       "ModName": "HideBuildingsNotification",
       "Author": "Clmb17",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Broken"
     },
     "96718": {
       "AssemblyName": "RoadWearAdjuster",
       "FragmentSource": "RoadWearAdjuster.Setting",
       "ClassType": "RoadWearAdjusterSettings",
-      "ModName": "Road Wear Adjuster",
+      "ModName": "Road Visual Tweaks (formerly Road Wear Adjuster)",
       "Author": "HX2003",
       "Backupable": true
+    },
+    "96854": {
+      "ModName": "DVNZ - Asset Pack Icon (Depreciated)",
+      "Author": "DanielVNZ",
+      "Backupable": false
+    },
+    "96916": {
+      "ModName": "More Trams Stops and Bus",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "96995": {
+      "ModName": "Fallen leaves decals",
+      "Author": "gagaXm",
+      "Backupable": false
+    },
+    "97068": {
+      "ModName": "Service Parking Upgrade Pack",
+      "Author": "DanielVNZ",
+      "Backupable": false
+    },
+    "97145": {
+      "ModName": "[G87] Vanilla Asphalt",
+      "Author": "elGendo87",
+      "Backupable": false
     },
     "97195": {
       "AssemblyName": "ParkingMonitor",
@@ -636,13 +2465,105 @@
       "Author": "mattswarthout",
       "Backupable": true
     },
+    "97380": {
+      "ModName": "Click 2 Sick",
+      "Author": "mattswarthout",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "97381": {
+      "AssemblyName": "CityServiceCapacityAdjuster",
+      "FragmentSource": "CityServiceCapacityAdjuster.Setting",
+      "ClassType": "CityServiceCapacityAdjusterSettings",
+      "ModName": "City Services and Traffic - Adjuster",
+      "Author": "Levengothon",
+      "Backupable": true
+    },
+    "97389": {
+      "ModName": "Canadian Moose Surfaces and Decals",
+      "Author": "TheBroMan10",
+      "Backupable": false
+    },
+    "97565": {
+      "ModName": "Sticker Walls Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "97828": {
+      "ModName": "[G87] Road Markings (includes UK Set)",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "98056": {
+      "ModName": "SK2_MOD_App1",
+      "Author": "upamasaki",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "98058": {
+      "ModName": "skii_demo_mod_App1",
+      "Author": "maki-maki-ai",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "98066": {
+      "ModName": "初めてのMOD - ウェルカムメッセージ",
+      "Author": "maki-maki-ai",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "98290": {
+      "ModName": "RealCitiesRoadImport",
+      "Author": "ShapkaKapibara",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
     "98560": {
       "AssemblyName": "AssetUIManager",
       "FragmentSource": "AssetUIManager.Setting",
       "ClassType": "AssetUIManagerSettings",
       "ModName": "Asset UI Manager",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
+    },
+    "98624": {
+      "ModName": "[G87] Road Markings: Stripes and Chevrons",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "98718": {
+      "ModName": "[Kelvinspaces] Mediterranean Surface",
+      "Author": "kelvinspaces",
+      "Backupable": false
+    },
+    "98764": {
+      "ModName": "Kuromi Decal",
+      "Author": "kelvinspaces",
+      "Backupable": false
+    },
+    "98771": {
+      "AssemblyName": "SpeechFreeRadio",
+      "FragmentSource": "SpeechFreeRadio.ModSettings.ModSettings",
+      "ClassType": "SpeechFreeRadioSettings",
+      "ModName": "Speech Free Radio",
+      "Author": "Didero",
+      "Backupable": true
+    },
+    "98778": {
+      "ModName": "Enable Achievements",
+      "Author": "Asser",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "98782": {
+      "ModName": "UK Road Signs *Decals*",
+      "Author": "Lesmith",
+      "Backupable": false
+    },
+    "98843": {
+      "ModName": "Kelvinspaces City Radio with APT",
+      "Author": "kelvinspaces",
+      "Backupable": false
     },
     "99048": {
       "AssemblyName": "ResourceLocator",
@@ -652,13 +2573,163 @@
       "Author": "rcav8tr",
       "Backupable": true
     },
+    "99062": {
+      "ModName": "[G87] Vanilla Curb",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "99200": {
+      "ModName": "Edges and Borders Netlane Pack",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "99268": {
+      "ModName": "CustomThemesMod",
+      "Author": "Nuckerr",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "99292": {
+      "ModName": "[G87] Vanilla Dark Grass",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "99529": {
+      "ModName": "[G87] Small-sided Football Pitches",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "99552": {
+      "ModName": "Terrazzo: Timeless Elegance, Layered and Vibrant",
+      "Author": "kelvinspaces",
+      "Backupable": false
+    },
+    "99587": {
+      "ModName": "Terrazzo (Lite): Timeless Elegance and Vibrant",
+      "Author": "kelvinspaces",
+      "Backupable": false
+    },
+    "99589": {
+      "ModName": " City Planner Plays Support Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "99602": {
+      "ModName": " City Planner Plays Between Two Lakes Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "99603": {
+      "ModName": " City Planner Plays Cranberry Radio",
+      "Author": "CityRatPlays",
+      "Backupable": false
+    },
+    "99944": {
+      "ModName": "[G87] Vanilla Pavement",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "100336": {
+      "ModName": "Tigon's Cricket Decals",
+      "Author": "Tigon Ologdring",
+      "Backupable": false
+    },
+    "100339": {
+      "ModName": "[G87] Dirty Roads",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "100369": {
+      "ModName": "Stash It",
+      "Author": "Baka-gourd",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "100387": {
+      "ModName": "Death Stranding Radio",
+      "Author": "Snapper1988",
+      "Backupable": false
+    },
+    "100504": {
+      "ModName": "Urban Art Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "100561": {
+      "ModName": "Bigger Partial Cloverleaf (REPLACED)",
+      "Author": "Gladiathor96",
+      "Backupable": false
+    },
+    "100659": {
+      "ModName": "Bigger Trumpet Intersection (REPLACED)",
+      "Author": "Gladiathor96",
+      "Backupable": false
+    },
+    "100671": {
+      "ModName": "Bigger T-Intersection (REPLACED)",
+      "Author": "Gladiathor96",
+      "Backupable": false
+    },
+    "100778": {
+      "ModName": "Bigger Cloverleaf Intersection (REPLACED)",
+      "Author": "Gladiathor96",
+      "Backupable": false
+    },
+    "100839": {
+      "ModName": "Const's Sports Decal Pack. V1",
+      "Author": "Const Builds",
+      "Backupable": false
+    },
+    "100908": {
+      "ModName": "Long Train Variation Asset Pack",
+      "Author": "Mimonsi",
+      "Backupable": false
+    },
+    "101104": {
+      "ModName": "Boule Lane",
+      "Author": "ClemiMD",
+      "Backupable": false
+    },
+    "101105": {
+      "ModName": "Football Pitch",
+      "Author": "ClemiMD",
+      "Backupable": false
+    },
+    "101106": {
+      "ModName": "Mural Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "101159": {
+      "ModName": "Save Checker",
+      "Author": "Baka-gourd",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "101170": {
+      "ModName": "Airplane Outside Connection Custom (OUT OF SERVICE)",
+      "Author": "Gladiathor96",
+      "Backupable": false
+    },
+    "101251": {
+      "ModName": "Zoning By-Law Builder [Beta]",
+      "Author": "Trejak",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
     "102080": {
       "AssemblyName": "CrowdedStation",
       "FragmentSource": "CrowdedStation.ModSettings",
       "ClassType": "CrowdedStationSettings",
       "ModName": "Crowded Stops",
       "Author": "Murcielagome",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "102122": {
+      "ModName": "[KS] Chinese Brick Relief",
+      "Author": "kelvinspaces",
+      "Backupable": false
     },
     "102147": {
       "AssemblyName": "AdvancedRoadTools",
@@ -666,15 +2737,61 @@
       "ClassType": "AdvancedRoadToolsSettings",
       "ModName": "Advanced Road Tools",
       "Author": "Kemorno",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "102348": {
+      "ModName": "CarBattery",
+      "Author": "MoRpcHeuZ",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "102429": {
+      "ModName": "[KS] Chinese Graffiti",
+      "Author": "kelvinspaces",
+      "Backupable": false
+    },
+    "102514": {
+      "ModName": "Small Art Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "102774": {
+      "ModName": "[G87] Piccana´s Dream F1 Circuit",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "102782": {
+      "ModName": "Pandemic (TEST VERSION)",
+      "Author": "mattswarthout",
+      "Backupable": false,
+      "Reason": "Test Mod"
     },
     "102892": {
-      "AssemblyName": "CameraDrag",
-      "FragmentSource": "CameraDrag.Setting",
-      "ClassType": "CameraDragSettings",
       "ModName": "Camera Drag",
       "Author": "pi_does_code",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Broken"
+    },
+    "102961": {
+      "ModName": "Fishing Boat kit",
+      "Author": "Mr.Kreuter",
+      "Backupable": false
+    },
+    "103160": {
+      "ModName": "Lofi Falls Radio",
+      "Author": "ChiefLEGOMAN1",
+      "Backupable": false
+    },
+    "103433": {
+      "ModName": "Lemons Snow Decal Pack",
+      "Author": "GenericLemons",
+      "Backupable": false
+    },
+    "103507": {
+      "ModName": "Volleyball Net",
+      "Author": "Mr.Kreuter",
+      "Backupable": false
     },
     "103515": {
       "AssemblyName": "TrafficJamMaker",
@@ -682,7 +2799,29 @@
       "ClassType": "TrafficJamMonitorSettings",
       "ModName": "Traffic Jam Monitor",
       "Author": "Murcielagome",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "103725": {
+      "ModName": "Los Vagos Signs Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "103826": {
+      "ModName": "Terrain Surfaces Pack",
+      "Author": "gagaXm",
+      "Backupable": false
+    },
+    "103829": {
+      "ModName": "River Barge Fleet",
+      "Author": "Mr.Kreuter",
+      "Backupable": false
+    },
+    "103929": {
+      "ModName": "SaveEnroller",
+      "Author": "Baka-gourd",
+      "Backupable": false,
+      "Reason": "No Settings"
     },
     "103983": {
       "AssemblyName": "ShowMoreHappiness",
@@ -692,13 +2831,33 @@
       "Author": "rcav8tr",
       "Backupable": true
     },
+    "104583": {
+      "ModName": "Portland Bay Lighthouse",
+      "Author": "NickM01",
+      "Backupable": false
+    },
+    "104636": {
+      "ModName": "[KS] Ultimate Color Decals [256 Colors][10k+][Opacity]",
+      "Author": "kelvinspaces",
+      "Backupable": false
+    },
     "104707": {
       "AssemblyName": "DetailedDescriptions",
       "FragmentSource": "DetailedDescriptions.Setting",
       "ClassType": "DetailedDescriptionsSettings",
-      "ModName": "Detailed Descriptions (Zone Lot Size Display)",
+      "ModName": "Detailed Descriptions",
       "Author": "Mimonsi",
       "Backupable": true
+    },
+    "104750": {
+      "ModName": "Chirpies Churros Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "104752": {
+      "ModName": "Food And Beverages Decals US Pack",
+      "Author": "HerissonFR",
+      "Backupable": false
     },
     "104781": {
       "AssemblyName": "VehicleController",
@@ -708,13 +2867,47 @@
       "Author": "Mimonsi",
       "Backupable": true
     },
+    "104792": {
+      "ModName": "Shipping And Cargo Decal Pack",
+      "Author": "HerissonFR",
+      "Backupable": false
+    },
+    "104816": {
+      "ModName": "Building Prop Fixes",
+      "Author": "yenyang",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
     "104818": {
       "AssemblyName": "HomeOfHomeless",
       "FragmentSource": "HomeOfHomeless.ModSettings",
       "ClassType": "HomeOfHomelessSettings",
       "ModName": "HomeOfHomeless",
       "Author": "Murcielagome",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "104852": {
+      "ModName": "Cars Pack BillBoard",
+      "Author": "HerissonFR",
+      "Backupable": false
+    },
+    "104910": {
+      "ModName": "Arikki TEST MOD",
+      "Author": "Yumesumi",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "104919": {
+      "ModName": "[KS] Extra Hotkeys",
+      "Author": "kelvinspaces",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "104987": {
+      "ModName": "San Diego and Coronado Map Theme",
+      "Author": "vince_111",
+      "Backupable": false
     },
     "105288": {
       "AssemblyName": "AssetIconCreator",
@@ -723,6 +2916,16 @@
       "ModName": "Asset Icon Creator",
       "Author": "TDW",
       "Backupable": true
+    },
+    "105442": {
+      "ModName": "DVNZ - Beach Parking Lots",
+      "Author": "DanielVNZ",
+      "Backupable": false
+    },
+    "105528": {
+      "ModName": "(Migrated. Obsoleted.) Underground tunnel Intersection Pack",
+      "Author": "Danodanoda",
+      "Backupable": false
     },
     "105715": {
       "AssemblyName": "DisableAccidents",
@@ -740,13 +2943,72 @@
       "Author": "Bruceyboy24804",
       "Backupable": true
     },
+    "105801": {
+      "ModName": "Asset Update Mod",
+      "Author": "TDW",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "105885": {
+      "ModName": "Graffiti Legends Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "106083": {
+      "ModName": "Chirpies Chino Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "106338": {
+      "ModName": "Wall Decor Nature and Ocean Decal Pack",
+      "Author": "HerissonFR",
+      "Backupable": false
+    },
+    "106410": {
+      "ModName": "Wall décor  Business Signs and Small Shop decal pack",
+      "Author": "HerissonFR",
+      "Backupable": false
+    },
+    "106465": {
+      "ModName": "Universal Bus Station",
+      "Author": "Vodahmin von Riſʒ",
+      "Backupable": false
+    },
+    "106473": {
+      "ModName": "Wall Decor Food and Drink Decal Pack",
+      "Author": "HerissonFR",
+      "Backupable": false
+    },
+    "106529": {
+      "ModName": "Wall Decor Pop Culture and Arts – Decal Pack",
+      "Author": "HerissonFR",
+      "Backupable": false
+    },
+    "106564": {
+      "ModName": "Wall Decor City and Urban theme decal pack",
+      "Author": "HerissonFR",
+      "Backupable": false
+    },
     "106609": {
       "AssemblyName": "IndustryAutoTaxAdjuster",
       "FragmentSource": "IndustryAutoTaxAdjuster.Setting",
       "ClassType": "IndustryAutoTaxAdjusterSettings",
       "ModName": "Industry Auto Tax Adjuster",
       "Author": "Levengothon",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "106650": {
+      "ModName": "Crime and Unemployment Matter",
+      "Author": "SereneLobotomy",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "106939": {
+      "ModName": "Specialized Industrial Zones",
+      "Author": "DillN2",
+      "Backupable": false,
+      "Reason": "No Settings"
     },
     "106957": {
       "AssemblyName": "RentMod2",
@@ -754,23 +3016,128 @@
       "ClassType": "RentMattersAgainSettings",
       "ModName": "Rent Matters Again",
       "Author": "SereneLobotomy",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "107002": {
+      "ModName": "Clean Industry Zones",
+      "Author": "Mimonsi",
+      "Backupable": false
+    },
+    "107468": {
+      "ModName": "UltraPainter",
+      "Author": "jk142",
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "107487": {
       "AssemblyName": "SmartUpkeepManager",
       "FragmentSource": "SmartUpkeepManager.Setting",
       "ClassType": "SmartUpkeepManagerSettings",
       "ModName": "Smart Upkeep Manager",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
+    },
+    "107511": {
+      "ModName": "Designer Walls Decal Pack",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "107590": {
+      "ModName": "[TO BE DELETED] Modular Zoning Blocks",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "107591": {
+      "ModName": "[TO BE DELETED] Modular Service Blocks",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "107621": {
+      "ModName": "RonJon Surf Shop Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "107683": {
+      "ModName": "Dummy Traffic Remover",
+      "Author": "Mimonsi",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "107732": {
+      "ModName": "[G87] More Concrete",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "107734": {
+      "ModName": "Bikes Pack",
+      "Author": "Washi776",
+      "Backupable": false
     },
     "107939": {
       "AssemblyName": "MapExt2",
       "FragmentSource": "MapExtPDX.ModSettings",
       "ClassType": "MapExtSettings",
-      "ModName": "MapExt",
+      "ModName": "MapExt: Big Map, Economy and Performance",
       "Author": "Noel2",
       "Backupable": true
+    },
+    "107956": {
+      "ModName": "FI - Finland Traffic Signs (Asset Pack)",
+      "Author": "Marakusa",
+      "Backupable": false
+    },
+    "107957": {
+      "ModName": "Finland Vanilla Theme Override (Write Everywhere)",
+      "Author": "Marakusa",
+      "Backupable": false
+    },
+    "108135": {
+      "ModName": "CS Korean Road Netlane Pack",
+      "Author": "uzacha",
+      "Backupable": false
+    },
+    "108303": {
+      "ModName": "[G87] Moss and Rust",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "108365": {
+      "ModName": "Heart of the Rockies Theme 1.2",
+      "Author": "Drfrozenfire",
+      "Backupable": false
+    },
+    "108376": {
+      "ModName": "Canadian Brands and Ads Decal Pack",
+      "Author": "Hxbble",
+      "Backupable": false
+    },
+    "108707": {
+      "ModName": "SE - Sweden Vanilla Theme Override",
+      "Author": "lolok",
+      "Backupable": false
+    },
+    "108745": {
+      "ModName": "Filmstock LUT Pack",
+      "Author": "damiancio",
+      "Backupable": false
+    },
+    "108773": {
+      "ModName": "Skyve [BETA]",
+      "Author": "TDW",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "108929": {
+      "ModName": "Chirp Air Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "109084": {
+      "ModName": "(deprecated) Airplane Parameter Mod",
+      "Author": "FireKill213",
+      "Backupable": false,
+      "Reason": "Deprecated"
     },
     "109086": {
       "AssemblyName": "AirplaneParameterMod",
@@ -778,7 +3145,53 @@
       "ClassType": "AirplaneParameterModSettings",
       "ModName": "Airplane Parameter Mod",
       "Author": "FireKill213",
-      "Backupable": true
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "109107": {
+      "ModName": "Commercial Quay Zone",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "109310": {
+      "ModName": "Station Signage [BETA] [WE Module]",
+      "Author": "rodrigmatrix",
+      "Backupable": false
+    },
+    "109457": {
+      "ModName": "Void Murals Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "109774": {
+      "ModName": "Small Signs Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "109786": {
+      "ModName": "Small Shops Decal Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "109832": {
+      "ModName": "Boats Pack",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "109949": {
+      "ModName": "Road Textures Surface Pack",
+      "Author": "GenericLemons",
+      "Backupable": false
+    },
+    "110027": {
+      "ModName": "Teddy Radko Decal Pack",
+      "Author": "Teddy Radko",
+      "Backupable": false
+    },
+    "110044": {
+      "ModName": "[G87] Industrial Signs",
+      "Author": "elGendo87",
+      "Backupable": false
     },
     "110245": {
       "AssemblyName": "UrbanInequality",
@@ -788,6 +3201,62 @@
       "Author": "ruzbeh0",
       "Backupable": true
     },
+    "110328": {
+      "ModName": "More Water Transportation",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "110424": {
+      "ModName": "Chirpies Chirpotle Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "111552": {
+      "ModName": "Multipurpose Cubes",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "111710": {
+      "ModName": "Const's Supermarket Decal Pack",
+      "Author": "Const Builds",
+      "Backupable": false
+    },
+    "112020": {
+      "ModName": "Magnolia County Decals Pack",
+      "Author": "City Planner Plays",
+      "Backupable": false
+    },
+    "112028": {
+      "ModName": "Intersection Collection",
+      "Author": "Javapower",
+      "Backupable": false
+    },
+    "112052": {
+      "ModName": "Multipurpose Slabs",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "112063": {
+      "ModName": "Fishing Boats",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "112081": {
+      "ModName": "Cable Car Asset Pack",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "112128": {
+      "ModName": "Street Lights",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "112283": {
+      "ModName": "Advanced Building Control",
+      "Author": "StarQ",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
     "112452": {
       "AssemblyName": "ParkingPricing",
       "FragmentSource": "ParkingPricing.ModSettings",
@@ -796,21 +3265,130 @@
       "Author": "ExpedientFalcon",
       "Backupable": true
     },
+    "112968": {
+      "ModName": "Addresses Mod Road Marker Brazil Pack",
+      "Author": "klyte45",
+      "Backupable": false
+    },
+    "112978": {
+      "AssemblyName": "EvenBetterSaveList",
+      "FragmentSource": "EvenBetterSaveList.Setting",
+      "ClassType": "EvenBetterSaveListSettings",
+      "ModName": "Even Better Save List",
+      "Author": "Baka-gourd",
+      "Backupable": true
+    },
+    "113034": {
+      "ModName": "B and P 0.5",
+      "Author": "nobody_from_nowhere",
+      "Backupable": false
+    },
+    "113108": {
+      "ModName": "Const's Sports Decal Pack V2",
+      "Author": "Const Builds",
+      "Backupable": false
+    },
+    "113121": {
+      "ModName": "Industrial Bridge",
+      "Author": "supayurobeat",
+      "Backupable": false
+    },
     "113193": {
       "AssemblyName": "BuildingUsageTracker",
       "FragmentSource": "BuildingUsageTracker.Setting",
       "ClassType": "BuildingUsageTrackerSettings",
-      "ModName": "En-route / Occupancy Counts",
+      "ModName": "Building Usage Displays",
       "Author": "mattswarthout",
       "Backupable": true
+    },
+    "113205": {
+      "ModName": "中国道路标线包/ChineseRoadMarkings",
+      "Author": "huanfeng",
+      "Backupable": false
+    },
+    "113207": {
+      "ModName": "Airport Details Pack",
+      "Author": "叮咚叮咚QWQ",
+      "Backupable": false
+    },
+    "113261": {
+      "ModName": "Highway Sign Structures [REPLACED]",
+      "Author": "lolok",
+      "Backupable": false
+    },
+    "113299": {
+      "ModName": "Disable Mouse Hint",
+      "Author": "Azsaidi",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "113401": {
+      "ModName": "Ravenkhor's Russian Brands Decal Pack [INCOMPLETE]",
+      "Author": "ravenkhor",
+      "Backupable": false
+    },
+    "113417": {
+      "ModName": "FG Cinematica LUT Bundle",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "113454": {
+      "ModName": "Quays And Piers 2",
+      "Author": "Washi776",
+      "Backupable": false
+    },
+    "113470": {
+      "ModName": "Lumina [Experimental]",
+      "Author": "Nyyoko",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "113675": {
+      "ModName": "Specialized Industrial Zones [alpha]",
+      "Author": "DillN2",
+      "Backupable": false,
+      "Reason": "Test Mod"
     },
     "113708": {
       "AssemblyName": "PrefabAssetFixes",
       "FragmentSource": "PrefabAssetFixes.Setting",
       "ClassType": "PrefabAssetFixesSettings",
       "ModName": "Prefab Asset Fixes",
-      "Author": "Qoushik",
+      "Author": "StarQ",
       "Backupable": true
+    },
+    "113726": {
+      "ModName": "[Bikes] Extra Hotkeys",
+      "Author": "bikester1",
+      "Backupable": false,
+      "Reason": "Keybinds"
+    },
+    "113744": {
+      "ModName": "Trends UI",
+      "Author": "DanielVNZ",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "113745": {
+      "ModName": "[G87] Streams and Ditches",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "113771": {
+      "ModName": "Hong Kong Decals Pack",
+      "Author": "ND81",
+      "Backupable": false
+    },
+    "113843": {
+      "ModName": "Office Sales Go! [5/5 Bugfix]",
+      "Author": "Cimplicity",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "113988": {
+      "ModName": "Custom Swedish HWY Signs",
+      "Author": "lolok",
+      "Backupable": false
     },
     "114101": {
       "AssemblyName": "ChangeCompany",
@@ -819,6 +3397,2339 @@
       "ModName": "Change Company",
       "Author": "rcav8tr",
       "Backupable": true
-    }
+    },
+    "114154": {
+      "ModName": "Tree Lined Road Pack",
+      "Author": "brianrocha",
+      "Backupable": false
+    },
+    "114210": {
+      "ModName": "Planet Pizza Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "114432": {
+      "ModName": "Flags of Europe",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "114483": {
+      "ModName": "Taller Trees",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "114527": {
+      "ModName": "Flags of Oceania",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "114589": {
+      "ModName": "[DEPRECIATED] Fish, Fish and more Fish!",
+      "Author": "DanielVNZ",
+      "Backupable": false
+    },
+    "114593": {
+      "ModName": "Flags of America",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "114999": {
+      "ModName": "Flags of Africa",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "115010": {
+      "ModName": "In-N-Out Burger Illuminated Sign",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "115012": {
+      "ModName": "McDonald's Illuminated Signs",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "115032": {
+      "ModName": "Mars Map Theme",
+      "Author": "Marain",
+      "Backupable": false
+    },
+    "115063": {
+      "ModName": "Extra Bridges",
+      "Author": "likelyrandom",
+      "Backupable": false
+    },
+    "115132": {
+      "ModName": "Fences",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "115146": {
+      "ModName": "[NEW LINK IN DESC] United Logo [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115150": {
+      "ModName": "United Old Livery Default Airliner Mockup [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115183": {
+      "ModName": "Flags of Asia",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "115199": {
+      "ModName": "American Airlines A330 Mockup Livery [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115218": {
+      "ModName": "United Airlines (2019 Mockup) Airliner [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115220": {
+      "ModName": "AdvancedTrafficSyncMod",
+      "Author": "elpitu",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "115233": {
+      "ModName": "Bollards",
+      "Author": "CryptoGamerSkylines",
+      "Backupable": false
+    },
+    "115296": {
+      "ModName": "Delta Airlines Mockup Default Airliner [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115315": {
+      "ModName": "Etihad Airways A330 [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115319": {
+      "ModName": "North American Street Signs (Write Everywhere)",
+      "Author": "lirondco",
+      "Backupable": false
+    },
+    "115327": {
+      "ModName": "Delta Regional Jet [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115400": {
+      "ModName": "UPS A300 [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115401": {
+      "ModName": "Garbage and Postal Theme Replacement",
+      "Author": "lirondco",
+      "Backupable": false
+    },
+    "115405": {
+      "ModName": "FedEx A330-200F [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115414": {
+      "ModName": "Air Canada A330-200 (Star Alliance) [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115435": {
+      "ModName": "DHL A300 [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115439": {
+      "ModName": "Airfrance A330 Neo [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115470": {
+      "ModName": "Air Canada (Original Variant) [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115555": {
+      "ModName": "test",
+      "Author": "yesbe",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "115701": {
+      "ModName": "Station Pylon Asset",
+      "Author": "rodrigmatrix",
+      "Backupable": false
+    },
+    "115803": {
+      "ModName": "Pepsi Billboard [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115815": {
+      "ModName": "Truck Rental Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "115840": {
+      "ModName": "Lufthansa A330 [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115867": {
+      "ModName": "Air Force One Handler",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115869": {
+      "ModName": "Air Force One - Boeing 747 VC-25A/B [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115929": {
+      "ModName": "B787 Dreamliner Core Pack [Livery Ready]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115948": {
+      "ModName": "Qantas B787 Livery [Write Everywhere + Core Pack]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "115956": {
+      "ModName": "FSLTL A320 NEO [Core Pack]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "116008": {
+      "ModName": "Jetway [Write Everywhere]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "116165": {
+      "ModName": "Flags of the US States",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "116595": {
+      "AssemblyName": "CustomizableMenu",
+      "FragmentSource": "CustomizableMenu.Setting",
+      "ClassType": "CustomizableMenuSettings",
+      "ModName": "Customizable Menu",
+      "Author": "Baka-gourd",
+      "Backupable": true
+    },
+    "116621": {
+      "ModName": "Ancient-Set",
+      "Author": "Mr.Kreuter",
+      "Backupable": false
+    },
+    "116674": {
+      "ModName": "UKSpeedCamera",
+      "Author": "kyleabela",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "116701": {
+      "ModName": "FAIB B767-200 Core Pack",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "117020": {
+      "ModName": "Cheats",
+      "Author": "likelyrandom",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "117064": {
+      "ModName": "Airport Essentials Pack",
+      "Author": "Sully_Skylines",
+      "Backupable": false
+    },
+    "117100": {
+      "ModName": "AeroMexico Boeing 787-9 Dreamliner",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "117146": {
+      "ModName": "Flags of Provinces of Canada",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "117160": {
+      "ModName": "China Eastern (Boeing 787-9 Dreamliner)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "117161": {
+      "AssemblyName": "CitizenCleaner",
+      "FragmentSource": "CitizenCleaner.Setting",
+      "ClassType": "CitizenCleanerSettings",
+      "ModName": "Citizen Cleaner",
+      "Author": "phillycheeze1",
+      "Backupable": true
+    },
+    "117192": {
+      "ModName": "China Southern (Boeing 787-9 Dreamliner)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "117373": {
+      "ModName": "USE NEW ASSET FORMAT INSTEAD.",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "117402": {
+      "ModName": "Taiwan Road Markings 台灣道路標線",
+      "Author": "YufuCharioteer",
+      "Backupable": false
+    },
+    "117459": {
+      "ModName": "Alaska Airlines (Boeing 737 Max 8)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "117464": {
+      "ModName": "Norwegian Air Shuttle (Boeing 737 Max 8) Sir Freddie Laker",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "117548": {
+      "ModName": "AchievementManager",
+      "Author": "M1XT3NZ",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "117866": {
+      "ModName": "Commercial Workplaces Fix",
+      "Author": "rcav8tr",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "117942": {
+      "ModName": "Qantas (Boeing 787-9) V2",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "117948": {
+      "ModName": "Ciao Italia Map Theme",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "118002": {
+      "ModName": "[TO BE DELETED] Modular Resource Blocks",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "118039": {
+      "ModName": "Oi, Rio! Map Theme",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "118049": {
+      "ModName": "Bombardier CRJ-900 (Core Pack)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "118162": {
+      "ModName": "Korean Air (Boeing 787-9 Dreamliner)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "118183": {
+      "ModName": "RealVision Decals",
+      "Author": "StatikNoize",
+      "Backupable": false
+    },
+    "118228": {
+      "ModName": "Compass Rose Lisbon",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "118352": {
+      "ModName": "Copacabana Surface",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "118524": {
+      "ModName": "Old Cities Netlanes Pack 1",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "118584": {
+      "ModName": "Flags of World Organizations",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "118639": {
+      "ModName": "Pride Pack",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "118721": {
+      "ModName": "Fraggnaut's Medieval Asset Pack (FMAP)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "118757": {
+      "ModName": "Old Cities Surfaces - Pack 1",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "118778": {
+      "ModName": "OUTDATED",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "118914": {
+      "ModName": "Old Cities Netlanes Pack 2",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "119149": {
+      "ModName": "Brazilian Billboards Decals",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "119225": {
+      "ModName": "Fraggnaut's Church Asset Pack (FCAP)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "119402": {
+      "ModName": "Fraggnaut's Glass Asset Pack (FGAP)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "119403": {
+      "ModName": "Fraggnaut's Glass Asset Pack - Region Packs (FGAP)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "119450": {
+      "ModName": "Old Cities Surfaces - Pack 2",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "119551": {
+      "ModName": "TFS Boeing 777-200LR [Core Pack]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "119621": {
+      "ModName": "Remo Map Theme Pack",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "119796": {
+      "ModName": "Twitch Tags Decal Pack",
+      "Author": "MayorCheeks",
+      "Backupable": false
+    },
+    "119886": {
+      "ModName": "CityFlow Orchestrator",
+      "Author": "Subeme la",
+      "Backupable": false
+    },
+    "119933": {
+      "ModName": "Normal Mode with Resource Regeneration",
+      "Author": "Mimonsi",
+      "Backupable": false
+    },
+    "119943": {
+      "ModName": "Visual Deluxe Pack 1",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "119968": {
+      "ModName": "JLIG's Hospital",
+      "Author": "POWER_monkey",
+      "Backupable": false
+    },
+    "119992": {
+      "ModName": "JLIG's Central Station",
+      "Author": "POWER_monkey",
+      "Backupable": false
+    },
+    "119998": {
+      "ModName": "Downtown Hospital by JLIG",
+      "Author": "POWER_monkey",
+      "Backupable": false
+    },
+    "120112": {
+      "ModName": "Visual Deluxe Pack 2",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "120143": {
+      "AssemblyName": "ExtractorsBegone",
+      "FragmentSource": "crud89.ExtractorsBegone.ModSettings",
+      "ClassType": "ExtractorsBegoneSettings",
+      "ModName": "Extractors Begone",
+      "Author": "crud89",
+      "Backupable": true
+    },
+    "120226": {
+      "ModName": "PIA (Boeing 777-200LR)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "120287": {
+      "ModName": "Crematorium by JLIG",
+      "Author": "POWER_monkey",
+      "Backupable": false
+    },
+    "120289": {
+      "ModName": "AIG Boeing 757-200 Core Pack",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "120303": {
+      "ModName": "Cathay Pacific (Boeing 777-200LR)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "120305": {
+      "ModName": "Urban Decay Pack 1",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "120322": {
+      "ModName": "American Airlines (Boeing 777-200LR) + Baggage Cart Prop",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "120345": {
+      "ModName": "Liquor Store Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "120375": {
+      "ModName": "中国社区贴花包(Fix)/Chinese_Neighborhood_Ad_Pack",
+      "Author": "UN-SUN",
+      "Backupable": false
+    },
+    "120500": {
+      "ModName": "Urban Decay Pack 2",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "120547": {
+      "ModName": "Fraggnaut's Render Prefab Pack - Vanilla (FRPP-Vanilla)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "120549": {
+      "ModName": "St. Stephens Cathedral",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "120627": {
+      "ModName": "German Signs (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "120684": {
+      "ModName": "Plaza Decals Pack 1",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "120804": {
+      "ModName": "Urban Tags",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "120814": {
+      "ModName": "E-Dragon Airlines (Fictional) (Boeing 777-200LR)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "120826": {
+      "ModName": "United Airlines (2019) (Boeing 737 Max 8)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "120857": {
+      "ModName": "OUTDATED. LINK IN DESC.",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "120876": {
+      "ModName": "British Airways (Boeing 787-9 Dreamliner)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "121003": {
+      "ModName": "UTT Airbus A350-1000",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "121023": {
+      "ModName": "[BROKEN EXPECT UPDATE SOON] TFS Airbus A380-800",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "121086": {
+      "ModName": "Iberojet (A350-1000)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "121093": {
+      "ModName": "Emirates (A380-800)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "121109": {
+      "ModName": "Qatar Airways (A380-800)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "121191": {
+      "ModName": "[BROKEN] ",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "121194": {
+      "ModName": "Dutch Vibes",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "121207": {
+      "ModName": "NBA Team Logos",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "121223": {
+      "ModName": "Dutch Signs v1.0(WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "121226": {
+      "AssemblyName": "RealisticPathFinding",
+      "FragmentSource": "RealisticPathFinding.Setting",
+      "ClassType": "RealisticPathFindingSettings",
+      "ModName": "Realistic PathFinding",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "121256": {
+      "ModName": "Achievement Fixer",
+      "Author": "River-mochi",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "121444": {
+      "ModName": "Spooky Night",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "121486": {
+      "ModName": "[G87] More Wood",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "121503": {
+      "ModName": "Fraggnaut's Tunnel Pack (FTAP)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "121557": {
+      "ModName": "A350-1000 [Lufthansa, Virgin Atlantic, Ethiopian Airlines]",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "121582": {
+      "ModName": "Modular Service Blocks: Airport Runways",
+      "Author": "StarQ",
+      "Backupable": false
+    },
+    "121615": {
+      "ModName": "Italian Signs (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "121699": {
+      "ModName": "Denser Japanese Low Density Residential",
+      "Author": "nuggethead33",
+      "Backupable": false
+    },
+    "121703": {
+      "ModName": "中国商业贴花包/Chinese commercial Ad Pack",
+      "Author": "UN-SUN",
+      "Backupable": false
+    },
+    "121812": {
+      "AssemblyName": "CustomChirps",
+      "FragmentSource": "CustomChirps.Setting",
+      "ClassType": "CustomChirpsSettings",
+      "ModName": "Custom Chirps",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "122108": {
+      "ModName": "Tianfu Square",
+      "Author": "liqiqina",
+      "Backupable": false
+    },
+    "122305": {
+      "ModName": "Plaza Decals Pack 2",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "122319": {
+      "ModName": "X-CSL/FAIB Boeing 747-8 Intercontinental",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "122379": {
+      "ModName": "Cessna 208 Grand Caravan",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "122385": {
+      "ModName": "Volaris El Salvador (A320 Neo)",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "122432": {
+      "ModName": "Pure Nature",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "122444": {
+      "ModName": "Large Cracks - Decals",
+      "Author": "-Erin-",
+      "Backupable": false
+    },
+    "122474": {
+      "ModName": "The Colosseum",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "122495": {
+      "ModName": "OUTDATED.  LINK IN DESC",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "122627": {
+      "ModName": "Water Tower, Ohlsdorf",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "122716": {
+      "ModName": "Smokeless Chimneys - Assets",
+      "Author": "-Erin-",
+      "Backupable": false
+    },
+    "122736": {
+      "ModName": "BR Creators",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "122765": {
+      "ModName": "Gooderham Building, Toronto",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "122837": {
+      "ModName": "Washington Monument",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "122865": {
+      "AssemblyName": "RoadWearToolToggle",
+      "FragmentSource": "RoadWearToolToggle.RoadWearToolToggleSetting",
+      "ClassType": "RoadWearToolToggleSettings",
+      "ModName": "Road Wear Toggler",
+      "Author": "LucaDevDesign",
+      "Backupable": true
+    },
+    "122923": {
+      "ModName": "Market Based Economy (BETA)",
+      "Author": "Adwozo",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "123039": {
+      "ModName": "Better Dev Menu",
+      "Author": "LucaDevDesign",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "123049": {
+      "ModName": "[G87] Urban Promenades Grass",
+      "Author": "elGendo87",
+      "Backupable": false
+    },
+    "123069": {
+      "ModName": "UK Naval Memorial Monument",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "123086": {
+      "ModName": "Brick and Stone - Decals",
+      "Author": "-Erin-",
+      "Backupable": false
+    },
+    "123096": {
+      "ModName": "Dankirei Construction Churches (!!!DO NOT SUBSCRIBE!!!)",
+      "Author": "Dankirei Construction",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "123100": {
+      "ModName": "Dankirei Construction Foundation (!!!DO NOT SUBSCRIBE!!!)",
+      "Author": "Dankirei Construction",
+      "Backupable": false,
+      "Reason": "Test Mod"
+    },
+    "123170": {
+      "ModName": "Infinite Resources (BETA)",
+      "Author": "Zheng22",
+      "Backupable": false
+    },
+    "123307": {
+      "ModName": "Fraggnaut's Render Prefab Pack - Netherlands RP (FRPP-NL)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "123308": {
+      "ModName": "Fraggnaut's Render Prefab Pack - Germany RP (FRPP-GER)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "123311": {
+      "ModName": "Fraggnaut's Render Prefab Pack - FR and UK RP (FRPP-FRUK)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "123312": {
+      "ModName": "Fraggnaut's Render Prefab Pack - China RP (FRPP-CN)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "123345": {
+      "AssemblyName": "FindIt.Character",
+      "FragmentSource": "FindIt.Character.Setting",
+      "ClassType": "FindCharacterSettings",
+      "ModName": "Find Character",
+      "Author": "Baka-gourd",
+      "Backupable": true
+    },
+    "123441": {
+      "ModName": "Marina Vibes",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "123489": {
+      "ModName": "Abandoned Building Remover (Retired)",
+      "Author": "deviancele",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "123492": {
+      "ModName": "NoWaterElectricity - Deviance Fix",
+      "Author": "deviancele",
+      "Backupable": false,
+      "Reason": "Code Missing"
+    },
+    "123497": {
+      "AssemblyName": "MagicHearse",
+      "FragmentSource": "MagicHearse.Setting",
+      "ClassType": "MagicHearseSettings",
+      "ModName": "Funeral Director + Magic Hearse",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "123500": {
+      "AssemblyName": "RealisticJobSearch",
+      "FragmentSource": "RealisticJobSearch.Setting",
+      "ClassType": "RealisticJobSearchSettings",
+      "ModName": "Realistic JobSearch",
+      "Author": "ruzbeh0",
+      "Backupable": true
+    },
+    "123563": {
+      "ModName": "Swiss Vanilla Sign Overrider (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "123567": {
+      "ModName": "Intersection Mod Series 1",
+      "Author": "Pro Best Cities",
+      "Backupable": false
+    },
+    "123623": {
+      "ModName": "Ports Pack",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "123738": {
+      "AssemblyName": "AdjustTransit",
+      "FragmentSource": "AdjustTransit.Setting",
+      "ClassType": "AdjustTransitSettings",
+      "ModName": "Adjust Transit Capacity",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "123745": {
+      "ModName": "German Vanilla Sign Overrider (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "123877": {
+      "ModName": "Aus Road Signs",
+      "Author": "peijo",
+      "Backupable": false
+    },
+    "123887": {
+      "AssemblyName": "AdjustSchoolCapacity",
+      "FragmentSource": "AdjustSchoolCapacity.Setting",
+      "ClassType": "AdjustSchoolCapacitySettings",
+      "ModName": "Adjust School Capacity",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "123893": {
+      "ModName": "French Vanilla Sign Overrider (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "123904": {
+      "ModName": "Adjustable Powerline Capacity 2.0",
+      "Author": ".edge.",
+      "Backupable": false,
+      "Reason": "Broken"
+    },
+    "123929": {
+      "ModName": "Smooth Left-Hand Traffic",
+      "Author": "NicoKatsu",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "123968": {
+      "ModName": "Build a Neighborhood Easily",
+      "Author": "Pro Best Cities",
+      "Backupable": false
+    },
+    "123983": {
+      "ModName": "Spat Out Gum - Decals",
+      "Author": "-Erin-",
+      "Backupable": false
+    },
+    "124159": {
+      "AssemblyName": "MagicGarbage",
+      "FragmentSource": "MagicGarbage.Setting",
+      "ClassType": "MagicGarbageSettings",
+      "ModName": "Magic Garbage + Trash Boss",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "124160": {
+      "ModName": "Bridge Expansion Pack: B&P",
+      "Author": "brianrocha",
+      "Backupable": false
+    },
+    "124188": {
+      "ModName": "Intersection MOD Series 2",
+      "Author": "Pro Best Cities",
+      "Backupable": false
+    },
+    "124191": {
+      "ModName": "Al Mare",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "124269": {
+      "ModName": "Italian Vanilla Sign Overrider (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "124276": {
+      "ModName": "NFL Team Logos",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "124286": {
+      "ModName": "Angra New Terrain Theme Map Texture Replacer mod (maptex)",
+      "Author": "ArtPTarkovsky",
+      "Backupable": false
+    },
+    "124288": {
+      "ModName": "Swiss Signs (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "124289": {
+      "ModName": "French Signs (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "124290": {
+      "ModName": "Spanish Signs (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "124304": {
+      "AssemblyName": "AdvancedSimulationSpeed",
+      "FragmentSource": "AdvancedSimulationSpeed.Setting",
+      "ClassType": "AdvancedSimulationSpeedSettings",
+      "ModName": "Advanced Simulation Speed",
+      "Author": "Bruceyboy24804",
+      "Backupable": true
+    },
+    "124548": {
+      "AssemblyName": "GottaGoFast",
+      "FragmentSource": "GottaGoFast.Setting",
+      "ClassType": "GottaGoFastSettings",
+      "ModName": "Gotta Go Fast",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "124553": {
+      "AssemblyName": "LaClock",
+      "FragmentSource": "LaClock.ModSettings",
+      "ClassType": "LaClockSettings",
+      "ModName": "La Clock (Show System Time)",
+      "Author": "_HomeOnMars_",
+      "Backupable": true
+    },
+    "124832": {
+      "ModName": "No Bikes Decal Pack",
+      "Author": "Teddy Radko",
+      "Backupable": false
+    },
+    "124842": {
+      "ModName": "Roundabout Pack 1",
+      "Author": "rzzirrah",
+      "Backupable": false
+    },
+    "124883": {
+      "ModName": "Flags of Italy",
+      "Author": "Marc Pi",
+      "Backupable": false
+    },
+    "124947": {
+      "AssemblyName": "OutsideTrafficAdjuster",
+      "FragmentSource": "OutsideTrafficAdjuster.Setting",
+      "ClassType": "OutsideTrafficAdjusterSettings",
+      "ModName": "Outside Traffic Adjuster",
+      "Author": "DaancingBanana",
+      "Backupable": true
+    },
+    "125249": {
+      "ModName": "Dutch Vanilla Sign Overrider (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "125278": {
+      "AssemblyName": "Platter",
+      "FragmentSource": "Platter.Settings.PlatterModSettings",
+      "ClassType": "PlatterSettings",
+      "ModName": "Platter [Beta]",
+      "Author": "LucaDevDesign",
+      "Backupable": true
+    },
+    "125292": {
+      "ModName": "System Time Widget",
+      "Author": "mxerFix",
+      "Backupable": false,
+      "Reason": "Broken"
+    },
+    "125342": {
+      "AssemblyName": "C2VM.TrafficToolEssentials",
+      "FragmentSource": "C2VM.TrafficToolEssentials.Settings",
+      "ClassType": "TrafficToolEssentialsSettings",
+      "ModName": "Traffic Tool Essentials",
+      "Author": "ZessonsMOD",
+      "Backupable": true
+    },
+    "125343": {
+      "AssemblyName": "MagicMail",
+      "FragmentSource": "MagicMail.Setting",
+      "ClassType": "MagicMailSettings",
+      "ModName": "Magic Mail",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "125352": {
+      "ModName": "Traffic Lights Enhancement - 1.4.2f1 Hotfix (Unofficial)",
+      "Author": "mxerFix",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "125362": {
+      "ModName": "App1",
+      "Author": "kullanicii3487",
+      "Backupable": false
+    },
+    "125474": {
+      "ModName": "Seafood Restaurant Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "125476": {
+      "ModName": "Fraggnaut's Render Prefab Pack - Japan RP (FRPP-JP)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "125477": {
+      "ModName": "Fraggnaut's Church Asset Pack - Extra Church (FCAP-JP)",
+      "Author": "fraggn.aut",
+      "Backupable": false
+    },
+    "125585": {
+      "ModName": "Earth Texture Pack (BetterMoonLight)",
+      "Author": "Cmyna",
+      "Backupable": false
+    },
+    "125675": {
+      "AssemblyName": "ConfigXML",
+      "FragmentSource": "ConfigXML.Setting",
+      "ClassType": "ConfigXMLSettings",
+      "ModName": "Config-XML",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "125722": {
+      "ModName": "Intersection MOD series 3 ",
+      "Author": "Pro Best Cities",
+      "Backupable": false
+    },
+    "125866": {
+      "ModName": "Road Speed Adjuster",
+      "Author": "DanielVNZ",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "125896": {
+      "ModName": "Hong Kong Signs Pack[Write Everywhere]",
+      "Author": "baipin",
+      "Backupable": false
+    },
+    "125994": {
+      "ModName": "8-armed-ıntersections",
+      "Author": "Pro Best Cities",
+      "Backupable": false
+    },
+    "126123": {
+      "ModName": "Redesigned Top Buttons",
+      "Author": "LucaDevDesign",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "126220": {
+      "ModName": "Intersectable Subway Tracks",
+      "Author": "Jorue23",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "126306": {
+      "AssemblyName": "Red_bike_path",
+      "FragmentSource": "Red_bike_path.Setting",
+      "ClassType": "ColoredBikePathSettings",
+      "ModName": "Colored bike path (CBP)",
+      "Author": "redlabracer",
+      "Backupable": true
+    },
+    "126355": {
+      "AssemblyName": "Road_Precision",
+      "FragmentSource": "Road_Precision.Setting",
+      "ClassType": "RoadPrecisionSettings",
+      "ModName": "Road Precision",
+      "Author": "LevelZeroZilch",
+      "Backupable": true
+    },
+    "126468": {
+      "AssemblyName": "Colored_Bus_Lane",
+      "FragmentSource": "Colored_Bus_Lane.Setting",
+      "ClassType": "ColoredBusLaneSettings",
+      "ModName": "Colored Bus Lane (CBL)",
+      "Author": "redlabracer",
+      "Backupable": true
+    },
+    "126471": {
+      "ModName": "PBC Aesthetic Cloverleaf",
+      "Author": "Pro Best Cities",
+      "Backupable": false
+    },
+    "126521": {
+      "ModName": "Taiwan Road Sign",
+      "Author": "go2schoolbybus",
+      "Backupable": false
+    },
+    "127268": {
+      "ModName": "Directional and Static Traffic Lights [Write Everywhere]",
+      "Author": "baipin",
+      "Backupable": false
+    },
+    "127507": {
+      "AssemblyName": "AssetMigrationUtility",
+      "FragmentSource": "AssetMigrationUtility.Setting",
+      "ClassType": "AssetMigrationUtilitySettings",
+      "ModName": "Asset Migration Utility",
+      "Author": "StarQ",
+      "Backupable": true
+    },
+    "127510": {
+      "ModName": "Spanish Vanilla Sign Overrider (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "127751": {
+      "ModName": "RYDER High-Capacity Highway Offramp 1",
+      "Author": "TurboRyder",
+      "Backupable": false
+    },
+    "127758": {
+      "ModName": "Ryder HW Roudabout Interchange 1",
+      "Author": "TurboRyder",
+      "Backupable": false
+    },
+    "127797": {
+      "ModName": "UK Signs Pack [Write Everywhere]",
+      "Author": "baipin",
+      "Backupable": false
+    },
+    "127887": {
+      "ModName": "China Signs Pack 中国大陆路牌包[Write Everywhere]",
+      "Author": "baipin",
+      "Backupable": false
+    },
+    "127928": {
+      "ModName": "[Alpha] Universal Zoning System (UZS)",
+      "Author": "redlabracer",
+      "Backupable": false
+    },
+    "127990": {
+      "ModName": "(NA-EU) Dynamic Street Signs (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "128005": {
+      "ModName": "Snow Surfaces Dependency",
+      "Author": "lipegar",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "128035": {
+      "ModName": "Hong Kong Signs Overrider (WE-Module)",
+      "Author": "baipin",
+      "Backupable": false
+    },
+    "128164": {
+      "ModName": "study with miku radio channel",
+      "Author": "exteems",
+      "Backupable": false
+    },
+    "128269": {
+      "AssemblyName": "ZoningToolkit",
+      "FragmentSource": "ZoningToolkit.Setting",
+      "ClassType": "ZoneToolsSettings",
+      "ModName": "Zone Tools",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "128374": {
+      "ModName": "North American Highway Signs (WE-Module)",
+      "Author": "jackskellington6_CS",
+      "Backupable": false
+    },
+    "128433": {
+      "ModName": "Customize Editor Component",
+      "Author": "StarQ",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "128566": {
+      "AssemblyName": "TrafficSpy",
+      "FragmentSource": "TrafficSpy.ModSettings.ModSettings",
+      "ClassType": "TrafficSpySettings",
+      "ModName": "Traffic Spy",
+      "Author": "gnznroses",
+      "Backupable": true
+    },
+    "128573": {
+      "ModName": "Polish Vanilla Sign Overrider (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "128577": {
+      "AssemblyName": "BuildingHeightAndFootprint",
+      "FragmentSource": "BuildingHeightAndFootprint.ModSettings",
+      "ClassType": "BuildingHeightAndFootprintSettings",
+      "ModName": "Building Heights and Footprint",
+      "Author": "MislabeledGadget",
+      "Backupable": true
+    },
+    "128911": {
+      "AssemblyName": "C2VM.TrafficLightsEnhancement",
+      "FragmentSource": "C2VM.TrafficLightsEnhancement.Settings",
+      "ClassType": "TrafficLightsEnhancementSettings",
+      "ModName": "Traffic Lights Enhancement",
+      "Author": "Bruceyboy24804",
+      "Backupable": true
+    },
+    "129134": {
+      "ModName": "Innercity HW Intersection Trumpet",
+      "Author": "TurboRyder",
+      "Backupable": false
+    },
+    "129197": {
+      "ModName": "Tollbooths Collection [Beta]",
+      "Author": "Javapower",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "129323": {
+      "AssemblyName": "CollisionBeGone",
+      "FragmentSource": "CollisionBeGone.Setting",
+      "ClassType": "CollisionBeGoneSettings",
+      "ModName": "Collision Be Gone V2.0",
+      "Author": "Kevin1118",
+      "Backupable": true
+    },
+    "129482": {
+      "ModName": "Polish Signs (WE-Module)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "129485": {
+      "ModName": "Longer Days",
+      "Author": "SteefWayer",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "129540": {
+      "ModName": "RandomFart",
+      "Author": "SteefWayer",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "129607": {
+      "ModName": "1LS CA Highway (Freeway) Signs (WE Module)",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "129789": {
+      "ModName": "Topo Toggle",
+      "Author": "yenyang",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "129820": {
+      "ModName": "1LM CA Highway (Freeway) Signs (WE Module)",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "129957": {
+      "ModName": "2LS CA Highway (Freeway) Signs (WE Module)",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "130176": {
+      "ModName": "2LM CA Highway (Freeway) Signs (WE Module)",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "130199": {
+      "ModName": "Strict Bus Lanes BETA",
+      "Author": "VKamiloss",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "130356": {
+      "ModName": "Industrial Zoning Expanded",
+      "Author": "DaftHuman",
+      "Backupable": false,
+      "Reason": "Broken"
+    },
+    "130383": {
+      "AssemblyName": "Realistic_Industrial_Power_Consumption",
+      "FragmentSource": "Realistic_Industrial_Power_Consumption.Setting",
+      "ClassType": "RealisticIndustrialPowerConsumptionSettings",
+      "ModName": "Realistic Industrial Power Consumption",
+      "Author": "r.salas",
+      "Backupable": true
+    },
+    "130611": {
+      "ModName": "Integrated Doctors Office / Integrierte Arztpraxis",
+      "Author": "ITO_Tim",
+      "Backupable": false
+    },
+    "131355": {
+      "ModName": "3LS CA Highway (Freeway) Signs (WE Module)",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "131405": {
+      "ModName": "BetterChineseNames（更好的中文译名）",
+      "Author": "lpaladin",
+      "Backupable": false
+    },
+    "131525": {
+      "AssemblyName": "EmergencyGhosts",
+      "FragmentSource": "EmergencyGhosts.Setting",
+      "ClassType": "EmergencyGhostsSettings",
+      "ModName": "Emergency Ghosts",
+      "Author": "J0elminer",
+      "Backupable": true
+    },
+    "131746": {
+      "ModName": "Ambulance Station / Rettungswache",
+      "Author": "ITO_Tim",
+      "Backupable": false
+    },
+    "131999": {
+      "ModName": "3LM CA Highway (Freeway) Signs (WE Module)",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "132315": {
+      "ModName": "Chinese Chirpies Decal Pack",
+      "Author": "ChaosFun",
+      "Backupable": false
+    },
+    "132381": {
+      "ModName": "桥墩调节器 BridgePillarAdjuster",
+      "Author": "Kyrrin",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "132532": {
+      "ModName": "[G87] Toggle Markers",
+      "Author": "elGendo87",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "132554": {
+      "ModName": "pointentitygetter",
+      "Author": "kuroneko79",
+      "Backupable": false
+    },
+    "132559": {
+      "ModName": "pointentitygetter",
+      "Author": "kuroneko79",
+      "Backupable": false
+    },
+    "132837": {
+      "ModName": "Vodahmin Assets Dynamic Features (WE-Addon)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "132866": {
+      "AssemblyName": "CS2_Clearance",
+      "FragmentSource": "CS2_Clearance.Setting",
+      "ClassType": "ClearanceHelperSettings",
+      "ModName": "Clearance Helper",
+      "Author": "LucaDevDesign",
+      "Backupable": true
+    },
+    "132965": {
+      "ModName": "Romanian Billboards Pack1",
+      "Author": "UrbanCrafter",
+      "Backupable": false
+    },
+    "133060": {
+      "ModName": "Romanian Shop Signs & Brands Pack 1",
+      "Author": "UrbanCrafter",
+      "Backupable": false
+    },
+    "133261": {
+      "AssemblyName": "ServiceCims",
+      "FragmentSource": "ServiceCims.ModSettings",
+      "ClassType": "ServiceCimsSettings",
+      "ModName": "Service Cims - Park Volunteers",
+      "Author": "MislabeledGadget",
+      "Backupable": true
+    },
+    "133286": {
+      "ModName": "Bahnhof des Jahres (WE-Integration)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "133507": {
+      "ModName": "No Pillar Roundabout",
+      "Author": "ChromoXYX",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "133736": {
+      "AssemblyName": "NetworkTools",
+      "FragmentSource": "NetworkTools.Settings.NT_Settings",
+      "ClassType": "NetworkToolsSettings",
+      "ModName": "Network Tools [Early Access]",
+      "Author": "LucaDevDesign",
+      "Backupable": true
+    },
+    "134032": {
+      "AssemblyName": "ParkingFeeControl",
+      "FragmentSource": "ParkingFeeControl.ModSettings",
+      "ClassType": "ParkingFeeControlSettings",
+      "ModName": "Parking Fee Control [BETA]",
+      "Author": "stealthcold",
+      "Backupable": true
+    },
+    "134067": {
+      "AssemblyName": "FastBikes",
+      "FragmentSource": "FastBikes.Setting",
+      "ClassType": "FastBikesSettings",
+      "ModName": "Fast Bikes + Path Speed Limit",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "134142": {
+      "ModName": "Radius Delete: Bulk Bulldoze",
+      "Author": "gnznroses",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "134166": {
+      "ModName": "Thailand Vanilla Sign Overrider (WE-Module)",
+      "Author": "gohkenytp",
+      "Backupable": false
+    },
+    "134167": {
+      "ModName": "Thai Road Signs Pack (WE-Module)",
+      "Author": "gohkenytp",
+      "Backupable": false
+    },
+    "134259": {
+      "ModName": "Straight Terrain Tool",
+      "Author": "Moose1999",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "134629": {
+      "ModName": "Belgian Road Signs (WE-Module)",
+      "Author": "gohkenytp",
+      "Backupable": false
+    },
+    "134630": {
+      "ModName": "Belgium Vanilla Sign Overrider (WE-Module)",
+      "Author": "gohkenytp",
+      "Backupable": false
+    },
+    "134947": {
+      "ModName": "Cash",
+      "Author": "KKyle6",
+      "Backupable": false
+    },
+    "134952": {
+      "ModName": "Cash",
+      "Author": "KKyle6",
+      "Backupable": false
+    },
+    "135138": {
+      "ModName": "BetterDistricts",
+      "Author": "xivamnain",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "135321": {
+      "ModName": "testCS2mod",
+      "Author": "liqiqina",
+      "Backupable": false
+    },
+    "135322": {
+      "ModName": "ElevatedTramStationEnhancedVisual",
+      "Author": "liqiqina",
+      "Backupable": false
+    },
+    "135367": {
+      "AssemblyName": "SirenChanger",
+      "FragmentSource": "SirenChanger.SirenChangerSettings",
+      "ClassType": "SirenChangerSettings",
+      "ModName": "Audio Switcher",
+      "Author": "SNITZ1",
+      "Backupable": true
+    },
+    "135438": {
+      "ModName": "[DEPRECATED] Improved Aircraft Sounds",
+      "Author": "SNITZ1",
+      "Backupable": false
+    },
+    "135482": {
+      "ModName": "MultiSkyLinesII",
+      "Author": "E3GE",
+      "Backupable": false
+    },
+    "135633": {
+      "ModName": "1LXL CA Highway (Freeway) Signs (WE Module)",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "135637": {
+      "ModName": "1LXXL CA Highway (Freeway) Signs (WE Module)",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "135810": {
+      "ModName": "[DEPRECATED] Sounds of Japan (Audio Switcher Module)",
+      "Author": "aidant69",
+      "Backupable": false
+    },
+    "135838": {
+      "ModName": "UTT Boeing 787-8 Dreamliner Sound Pack",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "135841": {
+      "ModName": "FAIB Boeing 737-800 Sound Pack",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "135849": {
+      "ModName": "Simulation Speed+",
+      "Author": "JakoLV",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "135854": {
+      "ModName": "UTT Airbus A350-1000 Sound Pack",
+      "Author": "Nyyoko",
+      "Backupable": false
+    },
+    "136207": {
+      "ModName": "Fix Broken Trailers",
+      "Author": "Mimonsi",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "136261": {
+      "AssemblyName": "EasyZoning",
+      "FragmentSource": "EasyZoning.Setting",
+      "ClassType": "EasyZoningSettings",
+      "ModName": "Easy Zoning",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "136370": {
+      "AssemblyName": "ChirpGPT",
+      "FragmentSource": "ChirpGPT.Setting",
+      "ClassType": "ChirpGPTSettings",
+      "ModName": "ChirpGPT",
+      "Author": "ninelivescat",
+      "Backupable": true
+    },
+    "137029": {
+      "ModName": "CityForge",
+      "Author": "venatorax",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "137126": {
+      "ModName": "No Office Demand Fix",
+      "Author": "AnotherFireFox",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "137149": {
+      "AssemblyName": "EconomyEX",
+      "FragmentSource": "EconomyEX.Settings.ModSettings",
+      "ClassType": "EconomyEXSettings",
+      "ModName": "EconomyEX",
+      "Author": "Noel2",
+      "Backupable": true
+    },
+    "137297": {
+      "ModName": "Light Stains - Decals",
+      "Author": "-Erin-",
+      "Backupable": false
+    },
+    "137401": {
+      "AssemblyName": "ExtractorBoost",
+      "FragmentSource": "ExtractorBoost.Setting",
+      "ClassType": "ExtractorBoostSettings",
+      "ModName": "ExtractorBoost",
+      "Author": "Thearchy.Helios",
+      "Backupable": true
+    },
+    "137806": {
+      "ModName": "Родные названия | TrueRuNames",
+      "Author": "Metrotram",
+      "Backupable": false
+    },
+    "137980": {
+      "ModName": "CityStats",
+      "Author": "rudahee",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "138166": {
+      "ModName": "Select to Center",
+      "Author": "X_Bean_X",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "138236": {
+      "ModName": "Transit Hotspots",
+      "Author": "Siont",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "138250": {
+      "ModName": "Luca's Debug Utils [Mod Developer Tool]",
+      "Author": "LucaDevDesign",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "138257": {
+      "ModName": "Fix B&P Harbor Imports (Retired)",
+      "Author": "NicoKatsu",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "138258": {
+      "ModName": "[BETA] Traffic Law Enforcement",
+      "Author": "Pectus Solentis",
+      "Backupable": false,
+      "Reason": "Non Standard"
+    },
+    "138390": {
+      "AssemblyName": "PublicWorksPlus",
+      "FragmentSource": "PublicWorksPlus.Setting",
+      "ClassType": "PublicWorksPlusSettings",
+      "ModName": "ALL TRANSIT+PASSENGERS + TRUCKS",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "138523": {
+      "AssemblyName": "NodeController",
+      "FragmentSource": "NodeController.Setting",
+      "ClassType": "NodeControllerSettings",
+      "ModName": "Node Controller",
+      "Author": "Bruceyboy24804",
+      "Backupable": true
+    },
+    "138746": {
+      "ModName": "ULEZ - Ultra Low Emission Zone",
+      "Author": "Kriz1200",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "139016": {
+      "ModName": "Route Planning Extension",
+      "Author": "NicoKatsu",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "139219": {
+      "ModName": "Settings File Guard",
+      "Author": "Pectus Solentis",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "139455": {
+      "ModName": "Platform Switcher",
+      "Author": "klyte45",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "139487": {
+      "AssemblyName": "TrafficLightManager.Code",
+      "FragmentSource": "TrafficLightManager.Code.Settings",
+      "ClassType": "TrafficLightManagerSettings",
+      "ModName": "Traffic Light Manager",
+      "Author": "星启StarsSail",
+      "Backupable": true
+    },
+    "139534": {
+      "ModName": "Auto Budget and Tax",
+      "Author": "Taomillig",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "139584": {
+      "AssemblyName": "CameraDrag",
+      "FragmentSource": "CameraDrag.Setting",
+      "ClassType": "CameraDragSettings",
+      "ModName": "Mouse Pan (Camera Drag Fixed)",
+      "Author": "csmod-r",
+      "Backupable": true
+    },
+    "139595": {
+      "AssemblyName": "BetterTransitView",
+      "FragmentSource": "BetterTransitView.ModSettings.ModSettings",
+      "ClassType": "BetterTransitViewSettings",
+      "ModName": "Better Transit View",
+      "Author": "gnznroses",
+      "Backupable": true
+    },
+    "139839": {
+      "AssemblyName": "EXRScreenshot",
+      "FragmentSource": "EXRScreenshot.Settings.Setting",
+      "ClassType": "EXRScreenshotSettings",
+      "ModName": "EXR Screenshot",
+      "Author": "damiancio",
+      "Backupable": true
+    },
+    "139944": {
+      "ModName": "CA Highway (Freeway) Signs (WE Module) Extras",
+      "Author": "GhostRaiderMX",
+      "Backupable": false
+    },
+    "139959": {
+      "ModName": "Transit Scope",
+      "Author": "arataki_iitto",
+      "Backupable": false,
+      "Reason": "Non Standard"
+    },
+    "140057": {
+      "ModName": "SocialIntegration",
+      "Author": "rudahee",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "140062": {
+      "AssemblyName": "Traffic_Settings",
+      "FragmentSource": "Traffic_Settings.Setting",
+      "ClassType": "TrafficSettingsSettings",
+      "ModName": "Traffic Settings",
+      "Author": "Espur04",
+      "Backupable": true
+    },
+    "140411": {
+      "ModName": "[BETA] Zoned Building Filter",
+      "Author": "Kanjir00",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "140794": {
+      "ModName": "Japanese Vanilla Sign Overrider (WE-Module)",
+      "Author": "gohkenytp",
+      "Backupable": false
+    },
+    "140919": {
+      "ModName": "Earth2Cities – Real World Cities Import [alpha]",
+      "Author": "BussianRanana",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "141243": {
+      "AssemblyName": "CustomizeIt",
+      "FragmentSource": "CustomizeIt.Setting",
+      "ClassType": "CustomTourismSettings",
+      "ModName": "Custom Tourism[Alpha]",
+      "Author": "Hunter - Josh",
+      "Backupable": true
+    },
+    "141371": {
+      "ModName": "SimCity Radio",
+      "Author": "CombatMedic02",
+      "Backupable": false
+    },
+    "141486": {
+      "AssemblyName": "AdvancedTPM",
+      "FragmentSource": "AdvancedTPM.TPMModSettings",
+      "ClassType": "AdvancedTPMSettings",
+      "ModName": "AdvancedTPM",
+      "Author": "Binded",
+      "Backupable": true
+    },
+    "141524": {
+      "ModName": "kjmci Assets Dynamic Features (WE-Addon)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "141603": {
+      "AssemblyName": "DisableHover",
+      "FragmentSource": "DisableHover.Settings.ModSettings",
+      "ClassType": "DisableHoverSettings",
+      "ModName": "Disable Tooltips and Hover",
+      "Author": "vezit",
+      "Backupable": true
+    },
+    "141606": {
+      "AssemblyName": "CustomRoadSnap",
+      "FragmentSource": "CustomRoadSnap.Setting",
+      "ClassType": "CustomRoadSnapSettings",
+      "ModName": "Custom Road Snap",
+      "Author": "Rias1944",
+      "Backupable": true
+    },
+    "141632": {
+      "ModName": "Transport Dynamic Scaling",
+      "Author": "csmod-r",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "141751": {
+      "AssemblyName": "LodControl",
+      "FragmentSource": "LodControl.Setting",
+      "ClassType": "LodControlSettings",
+      "ModName": "LOD Control",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "141755": {
+      "ModName": "Industrial Freight Optimizer",
+      "Author": "Swedish12",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "141997": {
+      "AssemblyName": "FastBoarding",
+      "FragmentSource": "FastBoarding.Setting",
+      "ClassType": "FastBoardingSettings",
+      "ModName": "Fast Boarding",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "142258": {
+      "ModName": "CarPool Hub",
+      "Author": "Astronotus53",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "142309": {
+      "AssemblyName": "Beyond_Numbers_with_STT",
+      "FragmentSource": "Beyond_Numbers_with_STT.Setting",
+      "ClassType": "BeyondNumbersSettings",
+      "ModName": "Beyond Numbers",
+      "Author": "redlabracer",
+      "Backupable": true
+    },
+    "142319": {
+      "ModName": "Industrial Debuff",
+      "Author": "Actrz",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "142431": {
+      "ModName": "Permanent Adult Trees",
+      "Author": "Swedish12",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "142520": {
+      "AssemblyName": "RoadConstructionEvents",
+      "FragmentSource": "RoadConstructionEvents.Setting",
+      "ClassType": "RoadConstructionEventsSettings",
+      "ModName": "RoadWorks+",
+      "Author": "Stooth2",
+      "Backupable": true
+    },
+    "142632": {
+      "ModName": "Texture Unifier",
+      "Author": "Vipraz",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "142745": {
+      "ModName": "REV0's Assets Dynamic Features (WE-Addon)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "142766": {
+      "AssemblyName": "AutomaticBulldozeAndRepair",
+      "FragmentSource": "AutomaticBulldozeAndRepair.Setting",
+      "ClassType": "AutomaticBulldozeAndRepairSettings",
+      "ModName": "Automatic Bulldoze and Repair",
+      "Author": "Bruceyboy24804",
+      "Backupable": true
+    },
+    "142844": {
+      "ModName": "Vanilla Profiler",
+      "Author": "Theorist_dev",
+      "Backupable": false,
+      "Reason": "Non Standard"
+    },
+    "142984": {
+      "ModName": "Realistic Speed [ON HOLD]",
+      "Author": "FrenchieToasty",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "143066": {
+      "ModName": "Change Climate",
+      "Author": "NicoKatsu",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "143093": {
+      "ModName": "产能大师 (Production Master)",
+      "Author": "周星星市长",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "143260": {
+      "ModName": "Smart Road Signs",
+      "Author": "Stooth2",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "143324": {
+      "ModName": "School Bus Hub",
+      "Author": "Astronotus53",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "143394": {
+      "ModName": "Realistic Vehicle Colors",
+      "Author": "Bartuszek",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "143440": {
+      "ModName": "Editor UI Object Placement Fix",
+      "Author": "winterqt",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "143447": {
+      "AssemblyName": "WetRoads",
+      "FragmentSource": "WetRoads.Setting",
+      "ClassType": "WetRoadsSettings",
+      "ModName": "Wet Roads (experimental)",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "143732": {
+      "AssemblyName": "TreesReduceNoisePollution",
+      "FragmentSource": "TreesReduceNoisePollution.Setting",
+      "ClassType": "TreesReduceNoisePollutionSettings",
+      "ModName": "Trees Reduce Noise Pollution",
+      "Author": "Kepler444f",
+      "Backupable": true
+    },
+    "143752": {
+      "ModName": "Control Traffic Speed [ON HOLD]",
+      "Author": "FrenchieToasty",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "143761": {
+      "ModName": "TINB Assets WE-Module",
+      "Author": "ThisIsNotBelize",
+      "Backupable": false
+    },
+    "143765": {
+      "ModName": "ZombieLand: Toxic Outbreak",
+      "Author": "Astronotus53",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "143817": {
+      "ModName": "Rail Traffic Visualizer",
+      "Author": "csmod-r",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "143857": {
+      "AssemblyName": "FertilityControl",
+      "FragmentSource": "FertilityControl.Setting",
+      "ClassType": "FertilityControlSettings",
+      "ModName": "Fertility Control",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "144000": {
+      "AssemblyName": "SnapToTopography",
+      "FragmentSource": "SnapToTopography.Setting",
+      "ClassType": "SnapToTopographySettings",
+      "ModName": "Snap To Topography [Beta]",
+      "Author": "Kepler444f",
+      "Backupable": true
+    },
+    "144126": {
+      "ModName": "Maestro's Assets Dynamic Features (WE-Addon)",
+      "Author": "UnMaestro",
+      "Backupable": false
+    },
+    "144130": {
+      "ModName": "Hard Mode Continued",
+      "Author": "CaPiLi",
+      "Backupable": false,
+      "Reason": "Code Missing"
+    },
+    "144264": {
+      "ModName": "Water Placer",
+      "Author": "KBEof",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "144316": {
+      "ModName": "Show me the property’s vehicles",
+      "Author": "Fampa",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "144317": {
+      "ModName": "Who Works There",
+      "Author": "Fampa",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "144420": {
+      "ModName": "District Statistics",
+      "Author": "雷震子xlx",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "144795": {
+      "ModName": "Undo",
+      "Author": "KBEof",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "144817": {
+      "ModName": "City Data Analysis",
+      "Author": "misakoto",
+      "Backupable": false,
+      "Reason": "Non Standard"
+    },
+    "144908": {
+      "AssemblyName": "CityWatchdog",
+      "FragmentSource": "CityWatchdog.Setting",
+      "ClassType": "CityWatchdogSettings",
+      "ModName": "City Watchdog",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "144928": {
+      "ModName": "Behavior Realism Overhaul ( BRO )",
+      "Author": "Estillia",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "144964": {
+      "ModName": "Transport_For_Wales (WE-Module)",
+      "Author": "Vttoc",
+      "Backupable": false
+    },
+    "145021": {
+      "AssemblyName": "Area_of_Effect",
+      "FragmentSource": "Area_of_Effect.ModSettings.ModSettings",
+      "ClassType": "AreaOfEffectSettings",
+      "ModName": "Area_of_Effect",
+      "Author": "Binded",
+      "Backupable": true
+    },
+    "145145": {
+      "ModName": "Beta Test Driving Mod (Stable)",
+      "Author": "Stooth2",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "145195": {
+      "ModName": "Cims' Destinations Highlighted",
+      "Author": "Fampa",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "145221": {
+      "AssemblyName": "AdvancedRoadNaming",
+      "FragmentSource": "AdvancedRoadNaming.Settings.AdvancedRoadNamingSettings",
+      "ClassType": "AdvancedRoadNamingSettings",
+      "ModName": "Advanced Road Naming [BETA]",
+      "Author": "Brainium",
+      "Backupable": true
+    },
+    "145228": {
+      "ModName": "Traffic Bridge",
+      "Author": "offical_blackfoxer",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "145283": {
+      "ModName": "Custom Crematorium | 火葬场自定义",
+      "Author": "Xuanyezzz",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "145499": {
+      "ModName": "CityTimelineMod",
+      "Author": "The-Goscq",
+      "Backupable": false,
+      "Reason": "Non Standard"
+    },
+    "145525": {
+      "ModName": "Workforce Advisor",
+      "Author": "Astronotus53",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "145605": {
+      "AssemblyName": "CityStoryMod",
+      "FragmentSource": "CityStoryMod.Settings",
+      "ClassType": "GhostwriterSettings",
+      "ModName": "Ghostwriter",
+      "Author": "lang14",
+      "Backupable": true
+    },
+    "145663": {
+      "AssemblyName": "SimpleRadio",
+      "FragmentSource": "SimpleRadio.Settings.ModSettings",
+      "ClassType": "SimpleRadioSettings",
+      "ModName": "SimpleRadio",
+      "Author": "Noel2",
+      "Backupable": true
+    },
+    "145688": {
+      "ModName": "One-Way Invisible Pedestrian Path",
+      "Author": "QIYEHE",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "145932": {
+      "AssemblyName": "SimpleBrush",
+      "FragmentSource": "SimpleBrush.Settings.ModSettings",
+      "ClassType": "SimpleBrushSettings",
+      "ModName": "SimpleBrush",
+      "Author": "Noel2",
+      "Backupable": true
+    },
+    "146044": {
+      "AssemblyName": "HoverColors",
+      "FragmentSource": "HoverColors.Settings.HoverColorsSettings",
+      "ClassType": "HoverColorsSettings",
+      "ModName": "Hover Colors",
+      "Author": "River-mochi",
+      "Backupable": true
+    },
+    "146086": {
+      "ModName": "TrafficMod",
+      "Author": "ach9999",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "146160": {
+      "AssemblyName": "DisablePlacementSway",
+      "FragmentSource": "DisablePlacementSway.Setting",
+      "ClassType": "DisablePlacementSwaySettings",
+      "ModName": "Disable Placement Sway",
+      "Author": "Mimonsi",
+      "Backupable": true
+    },
+    "146195": {
+      "ModName": "[BETA] Social Trips [RT Module]",
+      "Author": "ruzbeh0",
+      "Backupable": false
+    },
+    "146199": {
+      "ModName": "FlowBalance",
+      "Author": "Trent321",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "146210": {
+      "ModName": "DynamicWind",
+      "Author": "Kepler444f",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "146263": {
+      "ModName": "Flexible Sub Buildings",
+      "Author": "ruzbeh0",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "146296": {
+      "ModName": "CPP One Hour Bike Challenge",
+      "Author": "LucaDevDesign",
+      "Backupable": false
+    },
+    "146322": {
+      "ModName": "Vehicle Quantity & Transit Adjuster / 车辆数量与公共交通调节器",
+      "Author": "Cliangu",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "146344": {
+      "ModName": "Expanded City Policies [ON HOLD]",
+      "Author": "FrenchieToasty",
+      "Backupable": false,
+      "Reason": "Deprecated"
+    },
+    "146816": {
+      "ModName": "Elections [RT Module]",
+      "Author": "ruzbeh0",
+      "Backupable": false
+    },
+    "146817": {
+      "AssemblyName": "IntelligentCommodityScheduling",
+      "FragmentSource": "IntelligentCommodityScheduling.ICSSettings",
+      "ClassType": "IntelligentCommoditySchedulingSettings",
+      "ModName": "Intelligent Commodity Scheduling (ICS)",
+      "Author": "GreenBlorg49301",
+      "Backupable": true
+    },
+    "146876": {
+      "ModName": "HSR Station Road Access Fix",
+      "Author": "QIYEHE",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "147113": {
+      "ModName": "Citizen Education Level Adjuster / 市民教育程度调整",
+      "Author": "Cliangu",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "147311": {
+      "AssemblyName": "CivicVoice",
+      "FragmentSource": "CivicVoice.CivicVoiceSettings",
+      "ClassType": "CivicVoiceSettings",
+      "ModName": "Civic Voice (BETA)",
+      "Author": "Tfact",
+      "Backupable": true
+    },
+    "147332": {
+      "ModName": "Change Internal Roads",
+      "Author": "NicoKatsu",
+      "Backupable": false,
+      "Reason": "No Settings"
+    },
+    "147350": {
+      "ModName": "No External Trains禁止外部列车",
+      "Author": "QIYEHE",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "147434": {
+      "ModName": "CityLapse (time-lapse tool)",
+      "Author": "ruffiØ",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "147521": {
+      "AssemblyName": "MouseLight",
+      "FragmentSource": "MouseLight.MouseLightSettings",
+      "ClassType": "MouseLightSettings",
+      "ModName": "MouseLight",
+      "Author": "arataki_iitto",
+      "Backupable": true
+    },
+    "147593": {
+      "ModName": "Cheat V2",
+      "Author": "Xcels",
+      "Backupable": false,
+      "Reason": "No Code"
+    },
+    "147630": {
+      "AssemblyName": "NightVehiclesMod",
+      "FragmentSource": "NightVehiclesMod.ModSettings",
+      "ClassType": "TransitNightSchedulerSettings",
+      "ModName": "Transit Night Scheduler (BETA)",
+      "Author": "Mah0oo",
+      "Backupable": true
+    },
+    "147665": {
+      "ModName": "Civic Survival [BETA]",
+      "Author": "Theorist_dev",
+      "Backupable": false,
+      "Reason": "Code Missing"
+    },
+    "147689": {
+      "ModName": "拖动镜头",
+      "Author": "血刃战神",
+      "Backupable": false,
+      "Reason": "Duplicate"
+    },
   }
 }

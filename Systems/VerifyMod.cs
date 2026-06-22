@@ -201,7 +201,14 @@ namespace SimpleModCheckerPlus.Systems
                 text: LocaleHelper.Translate($"{translateKey}.Starting"),
                 progressState: ProgressState.Indeterminate,
                 onClicked: () =>
-                    ModCheckup.uISystem.OpenPage($"{Mod.Id}.{Mod.Id}.Mod", "VerifyTab", false)
+                {
+                    ModCheckup.uISystem.OpenPage(
+                        $"SimpleModChecker.SimpleModCheckerPlus.Mod",
+                        "Setting.VerifyTab",
+                        false
+                    );
+                    NotificationSystem.Pop("starq-smc-verify-mod");
+                }
             );
 
             Header = LocaleHelper.Translate($"{translateKey}.Header.Running");
@@ -222,7 +229,7 @@ namespace SimpleModCheckerPlus.Systems
                     onClicked: () =>
                     {
                         ModCheckup.uISystem.OpenPage(
-                            $"{Mod.Id}.{Mod.Id}.Mod",
+                            $"SimpleModChecker.SimpleModCheckerPlus.Mod",
                             "Setting.VerifyTab",
                             false
                         );
@@ -332,7 +339,13 @@ namespace SimpleModCheckerPlus.Systems
                         }
                     ),
                     progressState: ProgressState.Progressing,
-                    progress: percent
+                    progress: percent,
+                    onClicked: () =>
+                        ModCheckup.uISystem.OpenPage(
+                            $"SimpleModChecker.SimpleModCheckerPlus.Mod",
+                            "Setting.VerifyTab",
+                            false
+                        )
                 );
 
                 if (
@@ -434,8 +447,12 @@ namespace SimpleModCheckerPlus.Systems
                 progressState: hasIssue,
                 onClicked: () =>
                 {
+                    ModCheckup.uISystem.OpenPage(
+                        $"SimpleModChecker.SimpleModCheckerPlus.Mod",
+                        "Setting.VerifyTab",
+                        false
+                    );
                     NotificationSystem.Pop("starq-smc-verify-mod");
-                    ModCheckup.uISystem.OpenPage($"{Mod.Id}.{Mod.Id}.Mod", "VerifyTab", false);
                 }
             );
             Mod.m_Setting.VerifyRunning = false;

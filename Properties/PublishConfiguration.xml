@@ -40,18 +40,21 @@ Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding**
 
 Feedback / Bug Report: https://discord.com/channels/1024242828114673724/1287440491239047208</LongDescription>
   <Thumbnail Value="Properties/Thumbnail.png" />
-  <Screenshot Value="Properties/Screenshot01.jpg" />
-  <Screenshot Value="Properties/Screenshot02.jpg" />
-  <Screenshot Value="Properties/Screenshot03.jpg" />
-  <Screenshot Value="Properties/Screenshot04.jpg" />
-  <Screenshot Value="Properties/Screenshot05.jpg" />
-  <Screenshot Value="Properties/Screenshot06.jpg" />
+  <Screenshot Value="Properties/Screenshot01.png" />
+  <Screenshot Value="Properties/Screenshot02.png" />
+  <Screenshot Value="Properties/Screenshot03.png" />
+  <Screenshot Value="Properties/Screenshot04.png" />
+  <Screenshot Value="Properties/Screenshot05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="" />
-  <ModVersion Value="3.9.5" />
-  <GameVersion Value="1.5.7*" />
+  <ModVersion Value="4.0.0" />
+  <GameVersion Value="" />
   <Dependency Id="" />
-  <ChangeLog>- Moved LocalData IDK why error popup from UI to log only.</ChangeLog>
+  <ChangeLog>- Added mod settings backup: AdjustSchoolCapacity, AdjustTransit, AdvancedLineTool, AdvancedRoadNaming, AdvancedTPM, AreaOfEffect, AssetMigrationUtility, AutomaticBulldozeAndRepair, BetterTransitView, BeyondNumbers, BuildingHeightAndFootprint, ChirpGPT, CitizenCleaner, CityServiceCapacityAdjuster, CityWatchdog, CivicVoice, ClearanceHelper, CollisionBeGone, ColoredBikePath, ColoredBusLane, ConfigXML, CrimeRemover, CustomChirps, CustomizableMenu, CustomRoadSnap, CustomTourism, DCMilestoneRewards, DisableHover, DisablePlacementSway, EasyZoning, EconomyEX, EmergencyGhosts, EvenBetterSaveList, EXRScreenshot, ExtendedRadio, ExtractorBoost, ExtractorsBegone, FastBikes, FastBoarding, FertilityControl, FindCharacter, FireStarter, Ghostwriter, GottaGoFast, HoverColors, InfoLoomTwo, IntelligentCommodityScheduling, LaClock, LodControl, Lumina, MagicGarbage, MagicHearse, MagicMail, MapTextureReplacer, MouseLight, NetworkTools, NodeController, NoVehicleTrailers, OutsideTrafficAdjuster, ParkingFeeControl, Platter, PublicWorksPlus, RealisticIndustrialPowerConsumption, RealisticJobSearch, RealisticPathFinding, RoadConstructionEvents, RoadPrecision, RoadWearToolToggle, SceneExplorer, ServiceCims, SimpleBrush, SimpleRadio, SirenChanger, SnapToTopography, SpeechFreeRadio, SuperFastBuildingAndLeveling, TimeAndWeatherAnarchy, TrafficLightManager, TrafficSettings, TrafficSpy, TrafficToolEssentials, TransitNightScheduler, TreesReduceNoisePollution, TripsView, VehicleController, WetRoads, ZoneTools.
+- Removed mod settings backup: AdvancedRoadTools, AirplaneParameterMod, AssetPacksManager, BetterSaveList, CrowdedStation, DepotCapacityChanger, HardMode, HideBuildingsNotification, HomeOfHomeless, IndustriesExtended, IndustryAutoTaxAdjuster, LazyPedestrians, NoTeleporting, NoWaterElectricity, PathfindingCustomizer, RentMattersAgain, SchoolCapacityBalancer, StifferVehicles, TerraformHardening, TrafficJamMonitor, TrafficSimulationAdjuster, TransitCapacityMultiplier, WhitenessToggle.
+- Fix Verify page mod list not loading.
+- Add button to refresh mod list on Loaded Mod page.
+- Mod settings backup notification timer increased to 30 seconds.</ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
   <ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />

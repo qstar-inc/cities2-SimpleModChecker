@@ -276,5 +276,7 @@ namespace SimpleModCheckerPlus.Systems
         public bool UnlimitedMoney { get; set; }
         public bool UnlockMapTiles { get; set; }
         public List<string> SeenWhatsNew { get; set; }
+        public Dictionary<string, float> ZoneFillAlphas { get; set; }
+        public Dictionary<string, float> ZoneEdgeAlphas { get; set; }
     }
 }

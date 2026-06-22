@@ -486,6 +486,8 @@ namespace SimpleModCheckerPlus.Systems
                 UnlimitedMoney = UserState.unlimitedMoney,
                 UnlockMapTiles = UserState.unlockMapTiles,
                 SeenWhatsNew = UserState.seenWhatsNew ?? new List<string>(),
+                ZoneFillAlphas = UserState.zoneFillAlphas,
+                ZoneEdgeAlphas = UserState.zoneEdgeAlphas,
             };
             if (log)
                 LogHelper.SendLog("Collecting GameUserState");
@@ -2966,6 +2968,42 @@ namespace SimpleModCheckerPlus.Systems
                         {
                             LogHelper.SendLog($"Failed to close WhatsNewPanel: {ex}");
                         }
+                    }
+                    if (
+                        jsonObject["GameUserState"]["ZoneFillAlphas"] != null
+                        && (
+                            SharedSettings.instance.userState.zoneFillAlphas == null
+                            || SharedSettings.instance.userState.zoneFillAlphas.Count == 0
+                        )
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'userState.zoneFillAlphas'=> '{GameUserState.ZoneFillAlphas.ToJSONString()}'"
+                            );
+
+                        GameUserState.ZoneFillAlphas ??= new Dictionary<string, float>();
+                        SharedSettings.instance.userState.zoneFillAlphas =
+                            GameUserState.ZoneFillAlphas;
+                    }
+                    if (
+                        jsonObject["GameUserState"]["ZoneEdgeAlphas"] != null
+                        && (
+                            SharedSettings.instance.userState.zoneEdgeAlphas == null
+                            || SharedSettings.instance.userState.zoneEdgeAlphas.Count == 0
+                        )
+                    )
+                    {
+                        i++;
+                        if (log)
+                            LogHelper.SendLog(
+                                $"Restoring 'userState.zoneEdgeAlphas'=> '{GameUserState.ZoneEdgeAlphas.ToJSONString()}'"
+                            );
+
+                        GameUserState.ZoneEdgeAlphas ??= new Dictionary<string, float>();
+                        SharedSettings.instance.userState.zoneEdgeAlphas =
+                            GameUserState.ZoneEdgeAlphas;
                     }
                 }
                 if (i > 0)

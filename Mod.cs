@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Colossal.IO.AssetDatabase;
@@ -97,6 +98,7 @@ namespace SimpleModCheckerPlus
 
         public void OnDispose()
         {
+            LocaleHelper.Dispose();
             if (m_Setting != null)
             {
                 try
@@ -184,12 +186,14 @@ namespace SimpleModCheckerPlus
 
         public static string GetListOfSupportedMods()
         {
-            string finalLine = "";
-            List<ModInfo> sortedMods = ModInfoProcessor.SortByAuthor_Mod_ID();
-            foreach (var entry in sortedMods)
+            List<ModInfo> backupable = ModInfoProcessor
+                .SortByAuthor_Mod_ID()
+                .Where(x => x.Backupable == true)
+                .ToList();
+            string finalLine =
+                $"{LocaleHelper.Translate("SimpleModCheckerPlus.StarQ_OptionGroup.SupportedMod")} ({backupable.Count})\n";
+            foreach (var entry in backupable)
             {
-                if (entry.Backupable != true)
-                    continue;
                 string name = entry.ModName ?? "(no name)";
                 string id = entry.PDX_ID ?? "(no id)";
                 string author = entry.Author ?? "(no author)";
@@ -197,6 +201,9 @@ namespace SimpleModCheckerPlus
                 string line = $"- {author} — {id}: <{name}>";
                 finalLine = string.Join("\n", finalLine, line);
             }
+            finalLine +=
+                "\n\n" + LocaleHelper.Translate("SimpleModCheckerPlus.KeybindsAlwaysSupported");
+            finalLine = finalLine.TrimEnd('\n');
             return finalLine;
         }
 
