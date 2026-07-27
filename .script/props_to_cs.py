@@ -57,11 +57,11 @@ output2 = []
 
 output1.append("using Game.Settings;")
 output1.append("using System.Globalization;")
-output1.append("using Unity.Mathematics;")
 output1.append("")
-output1.append("namespace SimpleModCheckerPlus.Systems")
+output1.append("namespace SimpleModCheckerPlus.Systems.ModSettingsClasses")
 output1.append("{")
 
+output2.append("using SimpleModCheckerPlus.Systems.ModSettingsClasses;")
 output2.append("namespace SimpleModCheckerPlus.Systems")
 output2.append("{")
 output2.append("public class ModSettings")

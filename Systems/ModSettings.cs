@@ -1,4 +1,6 @@
-﻿namespace SimpleModCheckerPlus.Systems
+﻿using SimpleModCheckerPlus.Systems.ModSettingsClasses;
+
+namespace SimpleModCheckerPlus.Systems
 {
     public class ModSettings
     {

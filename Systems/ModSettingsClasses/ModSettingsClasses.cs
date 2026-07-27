@@ -1,7 +1,7 @@
 using System.Globalization;
 using Game.Settings;
 
-namespace SimpleModCheckerPlus.Systems
+namespace SimpleModCheckerPlus.Systems.ModSettingsClasses
 {
     public class AdjustSchoolCapacitySettings : SettingsBackup
     {
