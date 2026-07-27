@@ -207,7 +207,7 @@ BetterMoonLightSettings	float	ZRotation
 BetterMoonLightSettings	bool	MoonLightIntensityBalance	
 BetterMoonLightSettings	int	AuroraOverwriteLevel	
 BetterMoonLightSettings	float	AuroraIntensity	
-BetterMoonLightSettings	bool	Contra	
+BetterMoonLightSettings	bool	Contra	TRUE
 BetterMoonLightSettings	bool	ShowOptionsInDeveloperPanel	
 BetterMoonLightSettings	bool	OverrideTexture	
 BetterMoonLightSettings	string	SelectedTexture	
@@ -255,10 +255,10 @@ BuildingUseSettings	ServiceBuildingColorChoice	ServiceBuildingColor
 BuildingUseSettings	ProductionInfoviewColorChoice	ProductionInfoviewColor	
 BuildingUseSettings	bool	ColorSpecializedIndustryLots	
 BuildingUseSettings	bool	ReverseColors	
-BuildingUseSettings	bool	CountVehiclesInUse	
-BuildingUseSettings	bool	CountVehiclesInMaintenance	
-BuildingUseSettings	bool	EfficiencyMaxColor200Percent	
-BuildingUseSettings	bool	ProductionMaxColor200Percent	
+BuildingUseSettings	bool	CountVehiclesInUse	TRUE
+BuildingUseSettings	bool	CountVehiclesInMaintenance	TRUE
+BuildingUseSettings	bool	EfficiencyMaxColor200Percent	TRUE
+BuildingUseSettings	bool	ProductionMaxColor200Percent	TRUE
 CameraDragSettings	ButtonMode	AllowLeftMouseButton	
 CameraDragSettings	ButtonMode	AllowRightMouseButton	
 CameraDragSettings	ButtonMode	AllowMiddleMouseButton	
@@ -419,9 +419,9 @@ ChangeCompanySettings	int	ProductionBalanceMaximumCompanyProductionIndustrial
 ChangeCompanySettings	int	ProductionBalanceMaximumCompanyProductionOffice	
 ChangeCompanySettings	bool	ProductionBalanceHideActivationButton	
 ChangeCompanySettings	ProxyBinding	ProductionBalanceActivationKey	
-ChangeCompanySettings	bool	ProductionBalancePanelVisible	
-ChangeCompanySettings	int	ProductionBalancePanelPositionX	
-ChangeCompanySettings	int	ProductionBalancePanelPositionY	
+ChangeCompanySettings	bool	ProductionBalancePanelVisible	TRUE
+ChangeCompanySettings	int	ProductionBalancePanelPositionX	TRUE
+ChangeCompanySettings	int	ProductionBalancePanelPositionY	TRUE
 ChangeCompanySettings	bool	LockAfterChange	
 ChangeCompanySettings	bool	LockAllCompanies	
 ChangeCompanySettings	bool	KeepWorkplacesOverrideAfterChange	
@@ -438,7 +438,7 @@ ChirpGPTSettings	OptionFrequency	Hashtags
 ChirpGPTSettings	string	Keywords	
 ChirpGPTSettings	string	MistralAPIKey	TRUE
 ChirpGPTSettings	string	GoogleaiAPIKey	TRUE
-CimRouteHighlighterSettings	bool	highlightRoutes	
+CimRouteHighlighterSettings	bool	highlightRoutes	TRUE
 CimRouteHighlighterSettings	bool	highlightWorkplaces	
 CimRouteHighlighterSettings	bool	highlightEmployeeResidences	
 CimRouteHighlighterSettings	bool	highlightEmployeeCommuters	
@@ -1335,7 +1335,7 @@ InfoLoomTwoSettings	float	underemploymentThreshold
 InfoLoomTwoSettings	float	homelessThreshold	
 InfoLoomTwoSettings	bool	enableElectrictyChirps	
 InfoLoomTwoSettings	bool	enableWaterAndSweageChirps	
-InfoLoomTwoSettings	float2	panelPosition	
+InfoLoomTwoSettings	float2	panelPosition	TRUE
 InfoLoomTwoSettings	int	exportFilesRetentionCount	
 InfoLoomTwoSettings	bool	exportReplaceExisting	
 InfoLoomTwoSettings	bool	exportWorkforce	
@@ -1601,11 +1601,11 @@ NoPollutionSettings	float	DistanceExponent
 NoPollutionSettings	float	HomelessNoisePollution	
 NoPollutionSettings	float	GroundPollutionLandValueDivisor	
 NoVehicleDespawnSettings	bool	trafficDespawnDisabled	
-NoVehicleDespawnSettings	DespawnBehavior	despawnBehavior	
+NoVehicleDespawnSettings	DespawnBehavior	despawnBehavior	TRUE
 NoVehicleDespawnSettings	bool	highlightStuckObjects	
 NoVehicleDespawnSettings	int	deadlockLingerFrames	
-NoVehicleDespawnSettings	bool	attemptReroute	
-NoVehicleDespawnSettings	int	attemptRerouteFrames	
+NoVehicleDespawnSettings	bool	attemptReroute	TRUE
+NoVehicleDespawnSettings	int	attemptRerouteFrames	TRUE
 NoVehicleDespawnSettings	int	deadlockSearchDepth	
 NoVehicleDespawnSettings	int	maxStuckObjectRemovalCount	
 NoVehicleDespawnSettings	int	maxStuckObjectSpeed	
@@ -1873,9 +1873,9 @@ RealisticTripsSettings	int	hospital_inpatient_average_hours
 RealisticTripsSettings	int	hospital_inpatient_stddev_hours	
 RealisticTripsSettings	int	hospital_inpatient_minimum_hours	
 RealisticTripsSettings	int	hospital_inpatient_maximum_hours	
-RealisticTripsSettings	int	avg_time_prison	
+RealisticTripsSettings	int	avg_time_prison	TRUE
 RealisticTripsSettings	bool	use_school_vanilla_timeoff	
-RealisticTripsSettings	float	school_vacation_per_year	
+RealisticTripsSettings	float	school_vacation_per_year	TRUE
 RealisticTripsSettings	months	school_vacation_month1	
 RealisticTripsSettings	months	school_vacation_month2	
 RealisticTripsSettings	timeEnum	school_start_time	
@@ -1899,10 +1899,10 @@ RealisticTripsSettings	int	school_lv34_sunday_pct
 RealisticTripsSettings	timeEnum	work_start_time	
 RealisticTripsSettings	timeEnum	work_end_time	
 RealisticTripsSettings	float	avg_work_hours_ft_wd	
-RealisticTripsSettings	float	avg_work_hours_ft_we	
+RealisticTripsSettings	float	avg_work_hours_ft_we	TRUE
 RealisticTripsSettings	int	part_time_percentage	
 RealisticTripsSettings	float	avg_work_hours_pt_wd	
-RealisticTripsSettings	float	avg_work_hours_pt_we	
+RealisticTripsSettings	float	avg_work_hours_pt_we	TRUE
 RealisticTripsSettings	DTSimulationEnum	dt_simulation	
 RealisticTripsSettings	float	slow_time_factor	
 RealisticTripsSettings	int	daysPerMonth	
@@ -1923,7 +1923,7 @@ RealisticTripsSettings	int	cityServices_weekday_pct
 RealisticTripsSettings	int	cityServices_avgday_pct	
 RealisticTripsSettings	int	cityServices_sat_pct	
 RealisticTripsSettings	int	cityServices_sun_pct	
-RealisticTripsSettings	bool	better_trucks	
+RealisticTripsSettings	bool	better_trucks	TRUE
 RealisticTripsSettings	bool	tourism_trips	
 RealisticTripsSettings	bool	commuter_trips	
 RealisticTripsSettings	int	service_expenses_night_reduction	
@@ -2075,11 +2075,11 @@ ResourceLocatorSettings	bool	IncludeGasPowerPlant
 ResourceLocatorSettings	bool	IncludeMedicalFacility	
 ResourceLocatorSettings	bool	IncludeEmeregencyShelter	
 ResourceLocatorSettings	bool	IncludeCargoStation	
-ResourceLocatorSettings	DisplayOption	DisplayOption	
-ResourceLocatorSettings	ColorOption	ColorOption	
-ResourceLocatorSettings	float	OneColorR	
-ResourceLocatorSettings	float	OneColorG	
-ResourceLocatorSettings	float	OneColorB	
+ResourceLocatorSettings	DisplayOption	DisplayOption	TRUE
+ResourceLocatorSettings	ColorOption	ColorOption	TRUE
+ResourceLocatorSettings	float	OneColorR	TRUE
+ResourceLocatorSettings	float	OneColorG	TRUE
+ResourceLocatorSettings	float	OneColorB	TRUE
 RoadBuilderSettings	ProxyBinding	ApplyMimic	
 RoadBuilderSettings	ProxyBinding	CancelMimic	
 RoadBuilderSettings	ProxyBinding	ToolToggle	
@@ -2584,7 +2584,7 @@ SunGlassesSettings	bool	LensFlare
 SunGlassesSettings	float	SunBloom	
 SunGlassesSettings	float	SkyExposure	
 SunGlassesSettings	float	IndirectDiffuseSunLighting	
-SunGlassesSettings	float	GroundDiffuseLight	
+SunGlassesSettings	float	GroundDiffuseLight	TRUE
 SunGlassesSettings	BrightenDarknessLevel	BrightenLevel	
 SunGlassesSettings	bool	Contra	
 SuperFastBuildingAndLevelingSettings	bool	EnableSuperFastBuild	
@@ -2789,20 +2789,20 @@ VehicleControllerSettings	int	PickupProbability
 VehicleControllerSettings	int	SUVProbability	
 VehicleControllerSettings	int	MuscleCarProbability	
 VehicleControllerSettings	int	VanProbability	
-VehicleControllerSettings	int	TrailerProbability	
-VehicleControllerSettings	bool	UseImprovedStiffnessValues	
+VehicleControllerSettings	int	TrailerProbability	TRUE
+VehicleControllerSettings	bool	UseImprovedStiffnessValues	TRUE
 VehicleControllerSettings	float	StiffnessModifier	
 VehicleControllerSettings	float	DampingModifier	
-VehicleControllerSettings	string	DefaultPropertyPackDropdown	
-VehicleControllerSettings	string	SavegamePropertyPackDropdown	
-VehicleControllerSettings	float	SavegamePropertyPackFactor	
-VehicleControllerSettings	bool	CustomSpeedLimitFactor	
-VehicleControllerSettings	float	SpeedLimitFactor	
+VehicleControllerSettings	string	DefaultPropertyPackDropdown	TRUE
+VehicleControllerSettings	string	SavegamePropertyPackDropdown	TRUE
+VehicleControllerSettings	float	SavegamePropertyPackFactor	TRUE
+VehicleControllerSettings	bool	CustomSpeedLimitFactor	TRUE
+VehicleControllerSettings	float	SpeedLimitFactor	TRUE
 VehicleControllerSettings	bool	DisableSpeedLimitUpdate	
 VehicleControllerSettings	string	PackName	
-VehicleControllerSettings	int	VehicleMaxSpeed	
-VehicleControllerSettings	int	VehicleAcceleration	
-VehicleControllerSettings	int	VehicleBraking	
+VehicleControllerSettings	int	VehicleMaxSpeed	TRUE
+VehicleControllerSettings	int	VehicleAcceleration	TRUE
+VehicleControllerSettings	int	VehicleBraking	TRUE
 VehicleControllerSettings	bool	EnableChangeVehicles	
 VehicleControllerSettings	bool	DisplayVehiclePrefabNames	
 VehicleControllerSettings	ProxyBinding	ResetAllSpeedLimitsBinding	

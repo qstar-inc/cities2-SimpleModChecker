@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -24,7 +23,6 @@ namespace SimpleModCheckerPlus.Systems
         public static ModCheckup SMC = new();
         public static readonly List<string> loadedMods = SMC.GetLoadedMods();
 
-        //public static ModManager modManager;
         public static ConcurrentDictionary<string, ModInfo> ModDatabaseInfo =
             ModDatabase.ModDatabaseInfo;
         private static readonly string backupFile0 =

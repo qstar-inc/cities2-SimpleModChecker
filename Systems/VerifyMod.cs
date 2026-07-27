@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Colossal.PSI.Common;
 using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json.Linq;
 using StarQ.Shared.Extensions;
+using StarQ.Shared.Types;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -27,48 +27,15 @@ namespace SimpleModCheckerPlus.Systems
         public static DateTime verifyStartUtc;
         public static List<string> DownloadedModList = new();
         public static List<string> DupedModList = new();
-        public static Dictionary<string, Dictionary<string, string>> ManifestData = new();
         private static readonly object _issueListLock = new();
         private static List<string> ModsById;
         public static LocalizedString VerificationResultText => GetText();
-
-        private static readonly Regex csvRegex = new(
-            @"(?:^|,)(?:(?:""(?<value>[^""]*)"")|(?<value>[^,""]*))",
-            RegexOptions.Compiled
-        );
 
         private static bool NoPDXMods = false;
 
         private static readonly SortedDictionary<ModData, List<ModIssues>> ModDataIssues = new();
         private static readonly SortedList<int, int> ModWithOldSDK = new();
         private static readonly List<string> MetadataOldFormat = new();
-
-        public class ModData : IComparable<ModData>
-        {
-            public string modId;
-            public string modName;
-            public string modVersion;
-
-            public int CompareTo(ModData other)
-            {
-                if (other == null)
-                    return 1;
-
-                return modId.CompareTo(other.modId);
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (obj is not ModData other)
-                    return false;
-                return modId == other.modId;
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(modId, modName, modVersion);
-            }
-        }
 
         public class ModIssues
         {
@@ -185,7 +152,7 @@ namespace SimpleModCheckerPlus.Systems
         public static async Task VerifyMods(ProcessType pt, string selected = null)
         {
             ModDataIssues.Clear();
-            ManifestData.Clear();
+            ManifestHelper.ManifestData.Clear();
             DownloadedModList.Clear();
             DupedModList.Clear();
 
@@ -362,7 +329,7 @@ namespace SimpleModCheckerPlus.Systems
                     .Replace("{ModName}", modData.modName)
                     .Replace("{ModCount}", $"{new LocalizedNumber<int>(ModCount).value}");
 
-                string manifestPath = FindManifestFile(subfolder);
+                string manifestPath = ManifestHelper.FindManifestFile(subfolder);
                 if (string.IsNullOrEmpty(manifestPath))
                 {
                     issues.Add(new ModIssues() { issueType = IssueType.NoManifest });
@@ -374,7 +341,7 @@ namespace SimpleModCheckerPlus.Systems
 
                 try
                 {
-                    manifestData = ReadManifestFile(manifestPath);
+                    manifestData = ManifestHelper.ReadManifestFile(manifestPath);
                 }
                 catch (Exception ex)
                 {
@@ -458,69 +425,7 @@ namespace SimpleModCheckerPlus.Systems
             Mod.m_Setting.VerifyRunning = false;
         }
 
-        public static string FindManifestFile(string subfolder)
-        {
-            string cpatchFolder = Path.Combine(subfolder, ".cpatch");
-            if (!Directory.Exists(cpatchFolder))
-                return null;
-            try
-            {
-                string folderName = Path.GetFileName(Path.GetDirectoryName(cpatchFolder));
-                if (folderName == null || !folderName.Contains("_"))
-                    return null;
-
-                string version = folderName.Split('_')[1];
-
-                var randomFolders = Directory.GetDirectories(
-                    cpatchFolder,
-                    "*",
-                    SearchOption.TopDirectoryOnly
-                );
-
-                foreach (var folder in randomFolders)
-                {
-                    string manifestPath = Path.Combine(folder, version, "complete", "manifest");
-                    if (File.Exists(manifestPath))
-                        return manifestPath;
-                }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.SendLog($"Error searching for manifest in '.cpatch': {ex.Message}");
-            }
-
-            return null;
-        }
-
-        public static Dictionary<string, string> ReadManifestFile(string manifestPath)
-        {
-            if (ManifestData.TryGetValue(manifestPath, out var cached))
-                return cached;
-
-            var manifestData = new Dictionary<string, string>(StringComparer.Ordinal);
-
-            foreach (var line in File.ReadLines(manifestPath))
-            {
-                var parts = csvRegex
-                    .Matches(line)
-                    .Cast<Match>()
-                    .Select(m => m.Groups["value"].Value)
-                    .ToList();
-
-                if (parts.Count >= 4)
-                {
-                    string relativePath = parts[0].Trim('"').Replace("/", "\\");
-                    string size = parts[1];
-                    string hash = parts[2];
-                    manifestData[relativePath] = $"{size};;{hash}";
-                }
-            }
-
-            ManifestData[manifestPath] = manifestData;
-            return manifestData;
-        }
-
-        private static void VerifyFolderFilesParallel(
+        internal static void VerifyFolderFilesParallel(
             string subfolder,
             Dictionary<string, string> manifestData,
             List<ModIssues> issues
@@ -540,7 +445,9 @@ namespace SimpleModCheckerPlus.Systems
                 files,
                 filePath =>
                 {
-                    string relativePath = GetRelativePath(subfolder, filePath).Replace("/", "\\");
+                    string relativePath = FileHelper
+                        .GetRelativePath(subfolder, filePath)
+                        .Replace("/", "\\");
                     string relativePathForText = $"{relativePath.Replace("\\", "/")}";
                     try
                     {
@@ -624,7 +531,8 @@ namespace SimpleModCheckerPlus.Systems
                         else if (filePath.EndsWith(".backup"))
                         {
                             string realFilePath = filePath[..^7];
-                            relativePath = GetRelativePath(subfolder, realFilePath)
+                            relativePath = FileHelper
+                                .GetRelativePath(subfolder, realFilePath)
                                 .Replace("/", "\\");
                             relativePathForText = relativePath.Replace("\\", "/");
 
@@ -711,7 +619,7 @@ namespace SimpleModCheckerPlus.Systems
         {
             try
             {
-                filePath = AddLongPathPrefix(filePath);
+                filePath = FileHelper.AddLongPathPrefix(filePath);
                 using var sha256 = SHA256.Create();
 
                 using var stream = new FileStream(
@@ -735,33 +643,6 @@ namespace SimpleModCheckerPlus.Systems
             {
                 throw new IOException(
                     $"Error computing SHA256 for file '{filePath}': {ex.Message}",
-                    ex
-                );
-            }
-        }
-
-        private static string AddLongPathPrefix(string path) =>
-            path.StartsWith(@"\\?\") ? path : @"\\?\" + Path.GetFullPath(path);
-
-        public static string GetRelativePath(string basePath, string fullPath)
-        {
-            try
-            {
-                Uri baseUri = new(
-                    basePath.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar
-                );
-                Uri fullUri = new(fullPath);
-                return Uri.UnescapeDataString(
-                    baseUri
-                        .MakeRelativeUri(fullUri)
-                        .ToString()
-                        .Replace('/', Path.DirectorySeparatorChar)
-                );
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    $"Failed to compute relative path for '{fullPath}': {ex.Message}",
                     ex
                 );
             }

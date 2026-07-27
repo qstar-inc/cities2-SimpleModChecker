@@ -2,40 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Colossal.IO.AssetDatabase;
-using Colossal.Logging;
 using Colossal.PSI.Environment;
 using Game;
 using Game.Modding;
-using Game.SceneFlow;
 using Game.Settings;
 using SimpleModCheckerPlus.Systems;
 using StarQ.Shared.Extensions;
-using Unity.Entities;
+using StarQ.Shared.Generators;
 
 namespace SimpleModCheckerPlus
 {
-    public class Mod : IMod
+    [GenerateModInfo]
+    public partial class Mod : IMod
     {
         public static string[] PDXModsPaths = Array.Empty<string>();
-        public static string Id = nameof(SimpleModCheckerPlus);
-        public static string Name = Assembly
-            .GetExecutingAssembly()
-            .GetCustomAttribute<AssemblyTitleAttribute>()
-            .Title;
-        public static string Version = Assembly
-            .GetExecutingAssembly()
-            .GetName()
-            .Version.ToString(3);
-
-        public static ILog log = LogManager.GetLogger($"{Id}").SetShowsErrorsInUI(true);
-        public static Setting m_Setting;
 
         public CocCleaner CocCleaner;
 
-        public static ModManager modManager = GameManager.instance.modManager;
         public static readonly string modDatabaseJson = Path.Combine(
             EnvPath.kUserDataPath,
             "ModsData",
@@ -51,8 +36,8 @@ namespace SimpleModCheckerPlus
             LogHelper.Init(Id, log);
             LocaleHelper.Init(Id, Name, GetReplacements, AddLocales);
 
-            GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset);
-            localBackupPath = $"{Directory.GetParent(asset.path).FullName}\\ModDatabase.json";
+            string modPath = ModHelper.GetModPath(this);
+            localBackupPath = $"{Directory.GetParent(modPath).FullName}\\ModDatabase.json";
 
             m_Setting = new Setting(this);
             m_Setting.RegisterInOptionsUI();
@@ -82,18 +67,18 @@ namespace SimpleModCheckerPlus
             if (m_Setting.DisableContinueInGame)
                 SharedSettings.instance.userState.lastSaveGameMetadata = null;
 
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModCheckup>();
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<CocCleaner>();
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<MakeSomeNoise>();
+            WorldHelper.GetSystem<ModCheckup>();
+            WorldHelper.GetSystem<CocCleaner>();
+            WorldHelper.GetSystem<MakeSomeNoise>();
             updateSystem.UpdateAt<AutosaveOffCheck>(SystemUpdatePhase.LateUpdate);
         }
 
         public static void InitBackup()
         {
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ProfileNameBackup>();
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<GameSettingsBackup>();
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<ModSettingsBackup>();
-            World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<KeybindsBackup>();
+            WorldHelper.GetSystem<ProfileNameBackup>();
+            WorldHelper.GetSystem<GameSettingsBackup>();
+            WorldHelper.GetSystem<ModSettingsBackup>();
+            WorldHelper.GetSystem<KeybindsBackup>();
         }
 
         public void OnDispose()
@@ -191,7 +176,7 @@ namespace SimpleModCheckerPlus
                 .Where(x => x.Backupable == true)
                 .ToList();
             string finalLine =
-                $"{LocaleHelper.Translate("SimpleModCheckerPlus.StarQ_OptionGroup.SupportedMod")} ({backupable.Count})\n";
+                $"{LocaleHelper.Translate(LocaleHelper.GetOptionsGroupLocaleId("SupportedMod"))} ({backupable.Count})\n";
             foreach (var entry in backupable)
             {
                 string name = entry.ModName ?? "(no name)";
@@ -267,40 +252,5 @@ namespace SimpleModCheckerPlus
             Directory.Delete(sourceDir);
             LogHelper.SendLog($"Deleted source directory: {sourceDir}");
         }
-
-        //private async void ListMods()
-        //{
-        //    PdxSdkPlatform pdxPlatform = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
-        //    IContext context =
-        //        typeof(PdxSdkPlatform)
-        //            .GetField("m_SDKContext", BindingFlags.Instance | BindingFlags.NonPublic)
-        //            .GetValue(pdxPlatform) as IContext;
-        //    ModListResult enabledMods = await context.Mods.GetActivePlaysetEnabledMods();
-        //    TryFixUIMods(enabledMods);
-        //}
-
-        //private static void TryFixUIMods()
-        //{
-        //    List<String> strings = new();
-        //    foreach (
-        //        UIModuleAsset uimoduleAsset in AssetDatabase.global.GetAssets<UIModuleAsset>(
-        //            SearchFilter<UIModuleAsset>.ByCondition(
-        //                (UIModuleAsset asset) => asset.path != null,
-        //                false
-        //            )
-        //        )
-        //    )
-        //    {
-        //        strings.Add(uimoduleAsset.path);
-        //        GameManager.instance.modManager.AddUIModule(uimoduleAsset);
-        //    }
-
-        //    if (strings.Count > 0)
-        //        LogHelper.SendLog(
-        //            $"Found {strings.Count} UIMod(s) in the AssetDatabase: {string.Join(", ", strings)}"
-        //        );
-        //    else
-        //        LogHelper.SendLog("No UIMods found in the AssetDatabase.");
-        //}
     }
 }

@@ -2,8 +2,8 @@ import csv
 from collections import defaultdict
 
 INPUT_FILE = "props_to_import.tsv"
-OUTPUT_FILE_1 = "props_to_output1.txt"
-OUTPUT_FILE_2 = "props_to_output2.txt"
+OUTPUT_FILE_1 = "out_ModSettingsClasses.txt"
+OUTPUT_FILE_2 = "out_ModSettings.txt"
 
 classes = defaultdict(list)
 

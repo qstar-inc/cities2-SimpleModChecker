@@ -1,12 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configurations>Debug;Release</Configurations>
     <AssemblyName>SimpleModCheckerPlus</AssemblyName>
     <AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
-    <Version>4.0.0</Version>
-    <GameVersion>$(CS2_GAMEVERSION)</GameVersion>
-    <ForumLink>$(CS2_FORUMLINK)</ForumLink>
-    <Authors>StarQ</Authors>
+    <Version>4.1.0</Version>
     <!--The file where mod information which is required for publishing mod on PDX mods are stored-->
     <PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
   </PropertyGroup>
@@ -14,22 +10,9 @@
   <Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.props" />
   <Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
   <Import Project="..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.props" />
+  <Import Project="..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.targets" />
   <ItemGroup>
-    <Reference Include="Colossal.AssetPipeline">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Colossal.Mathematics">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Colossal.PSI.Common">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Colossal.PSI.PdxSdk">
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="PDX.SDK">
-      <Private>false</Private>
-    </Reference>
     <Reference Include="Game">
       <Private>false</Private>
     </Reference>
@@ -97,51 +80,4 @@
     <None Include="$(ModPropsFile)" Link="Properties\Mod.props" />
     <None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
   </ItemGroup>
-  <Target
-    Name="RunPythonPreBuild"
-    BeforeTargets="BeforeBuild"
-    Condition="Exists('$(ProjectDir)LocalizationSource')"
-  >
-    <Message Text="Running Python lang processor..." Importance="high" />
-    <Exec
-      Command="python &quot;D:\_Q\Codes\CS2 Processors\lang\create_loc_batch.py&quot;"
-      WorkingDirectory="$(ProjectDir)LocalizationSource"
-    />
-  </Target>
-  <Target Name="GetAdditionalFiles" AfterTargets="DeployWIP">
-    <ItemGroup>
-      <AdditionalFilesToDeploy Include="Resources\**\*.*" />
-    </ItemGroup>
-    <Copy
-      SourceFiles="@(AdditionalFilesToDeploy)"
-      DestinationFiles="@(AdditionalFilesToDeploy-&gt;'$(DeployDir)\%(RecursiveDir)%(Filename)%(Extension)')"
-    />
-  </Target>
-  <Target Name="SetupAttributes" BeforeTargets="BeforeBuild">
-    <XmlPoke
-      XmlInputPath="$(PublishConfigurationPath)"
-      Value="$([System.IO.File]::ReadAllText(Properties/LongDescription.md))"
-      Query="//LongDescription"
-    />
-    <XmlPoke
-      XmlInputPath="$(PublishConfigurationPath)"
-      Value="$([System.IO.File]::ReadAllText(Properties/ChangeLog.md))"
-      Query="//ChangeLog"
-    />
-    <XmlPoke
-      XmlInputPath="$(PublishConfigurationPath)"
-      Value="$(Version)"
-      Query="//ModVersion/@Value"
-    />
-    <XmlPoke
-      XmlInputPath="$(PublishConfigurationPath)"
-      Value="$(GameVersion)"
-      Query="//GameVersion/@Value"
-    />
-    <XmlPoke
-      XmlInputPath="$(PublishConfigurationPath)"
-      Value="$(ForumLink)"
-      Query="//ForumLink/@Value"
-    />
-  </Target>
 </Project>

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Colossal.PSI.Common;
-using Colossal.PSI.PdxSdk;
 using Colossal.Serialization.Entities;
 using Game;
 using Game.PSI;
@@ -19,22 +17,11 @@ using Newtonsoft.Json.Linq;
 using PDX.SDK.Contracts;
 using PDX.SDK.Contracts.Service.Mods.Interfaces;
 using StarQ.Shared.Extensions;
+using StarQ.Shared.Types;
 using Unity.Entities;
 
 namespace SimpleModCheckerPlus.Systems
 {
-    public class LoadedModInfo
-    {
-        public string Id { get; set; }
-        public string DisplayName { get; set; }
-        public string Author { get; set; }
-        public string Version { get; set; }
-        public string LatestVersion { get; set; }
-        public string UserModVersion { get; set; }
-        public ulong Size { get; set; }
-        public bool Active { get; set; }
-    }
-
     public partial class ModCheckup : GameSystemBase
     {
         public Mod _mod;
@@ -48,6 +35,7 @@ namespace SimpleModCheckerPlus.Systems
         public static Dictionary<string, LoadedModInfo> packages = new();
         public static Dictionary<string, LoadedModInfo> allMods = new();
         public static Dictionary<string, IModDetails> CachedModData = new();
+        public static bool ModScanCompleted = false;
 
         public static string lastText = "";
         public static LocalizedString CleanupResultText => LocalizedString.Id(GetText());
@@ -56,12 +44,6 @@ namespace SimpleModCheckerPlus.Systems
         public static int ModCount = 0;
         public static string IssueList = "";
         public static int ProcesStatus = 0;
-        private PdxSdkPlatform m_Manager;
-        private static IContext context = null;
-        private static readonly FieldInfo SDKContextField = typeof(PdxSdkPlatform).GetField(
-            "m_SDKContext",
-            BindingFlags.NonPublic | BindingFlags.Instance
-        );
 
         private const string MetadataFolder = ".metadata";
         private const string CPatchFolder = ".cpatch";
@@ -96,7 +78,6 @@ namespace SimpleModCheckerPlus.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
-            m_Manager = PlatformManager.instance.GetPSI<PdxSdkPlatform>("PdxSdk");
             ModHelper.AddAfterActivePlaysetOrModStatusChanged(Initialize);
             Colossal.Core.MainThreadDispatcher.RegisterUpdater(FirstRunMethod);
         }
@@ -109,7 +90,7 @@ namespace SimpleModCheckerPlus.Systems
                 return true;
 
             if (
-                !GameManager.instance.modManager.isInitialized
+                !WorldHelper.ModManager.isInitialized
                 || GameManager.instance.gameMode != GameMode.MainMenu
                 || GameManager.instance.state == GameManager.State.Loading
                 || GameManager.instance.state == GameManager.State.Booting
@@ -142,6 +123,7 @@ namespace SimpleModCheckerPlus.Systems
             codes.Clear();
             packages.Clear();
             allMods.Clear();
+            ModScanCompleted = false;
 
             CheckMod();
             CheckModNew();
@@ -192,7 +174,7 @@ namespace SimpleModCheckerPlus.Systems
 
             try
             {
-                foreach (var modInfo in GameManager.instance.modManager)
+                foreach (var modInfo in WorldHelper.ModManager)
                 {
                     string modName = modInfo.asset.name;
                     if (
@@ -391,20 +373,6 @@ namespace SimpleModCheckerPlus.Systems
             };
         }
 
-        static string FormatSize(ulong bytes)
-        {
-            double sizeInKB = bytes / 1024.0;
-            double sizeInMB = sizeInKB / 1024.0;
-            double sizeInGB = sizeInMB / 1024.0;
-
-            if (sizeInGB >= 1)
-                return $"{sizeInGB:0.##} GB";
-            else if (sizeInMB >= 1)
-                return $"{sizeInMB:0.##} MB";
-            else
-                return $"{sizeInKB:0.##} KB";
-        }
-
         static string ReturnText(LoadedModInfo mod, string codeOrPackage, bool forLog = false)
         {
             if (mod == null)
@@ -418,7 +386,7 @@ namespace SimpleModCheckerPlus.Systems
             {
                 prefix = "<";
                 suffix = ">";
-                sizeText = $" — {FormatSize(mod.Size)}" ?? "";
+                sizeText = $" — {StringHelper.FormatSize(mod.Size)}" ?? "";
             }
 
             string outDatedText = "";
@@ -514,18 +482,7 @@ namespace SimpleModCheckerPlus.Systems
 
         public void CheckModNew()
         {
-            context = (IContext)SDKContextField.GetValue(m_Manager);
-
-            PDX.SDK.Contracts.Service.Mods.Results.IListModsInPlaysetResult playsetResult = context
-                .Mods.GetActivePlaysetEnabledMods()
-                .Result;
-            ILocalPlaysetMod[] modsResult = !playsetResult.Success
-                ? Array.Empty<ILocalPlaysetMod>()
-                : (playsetResult.Mods ?? Enumerable.Empty<ILocalPlaysetMod>())
-                    .Where(m => !string.IsNullOrEmpty(m?.LocalData?.FolderAbsolutePath))
-                    .ToArray();
-
-            HashSet<ILocalPlaysetMod> mods = new(modsResult);
+            HashSet<ILocalPlaysetMod> mods = ModHelper.GetLocalPlaysetMods();
 
             if (LogHelper.CheckNull(mods, $"Playset mod data"))
                 return;
@@ -567,6 +524,7 @@ namespace SimpleModCheckerPlus.Systems
                         UserModVersion = mod.UserModVersion,
                         Size = mod.Size,
                         Active = true,
+                        AccessControl = mod.AccessControlLevelState,
                     };
 
                     try
@@ -623,6 +581,7 @@ namespace SimpleModCheckerPlus.Systems
             }
             LogHelper.SendLog(mods.Count + " subbed mods");
             FirstRun = false;
+            ModScanCompleted = true;
         }
 
         public void SendNotification(bool hasPackage)
@@ -790,7 +749,15 @@ namespace SimpleModCheckerPlus.Systems
                 if (CachedModData.ContainsKey(modId))
                     return CachedModData[modId];
 
-                if (LogHelper.CheckNull(context, "Context is null", "ModCheckup didn't run yet"))
+                IContext context = ModHelper.GetContext();
+                if (
+                    LogHelper.CheckNull(
+                        context,
+                        "Context is null",
+                        "ModCheckup didn't run yet",
+                        LogLevel.Info
+                    )
+                )
                     return null;
 
                 PDX.SDK.Contracts.Service.Mods.Results.IModDetailsResult data = context

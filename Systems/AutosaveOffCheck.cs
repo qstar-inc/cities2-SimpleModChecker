@@ -54,7 +54,7 @@ namespace SimpleModCheckerPlus.Systems
                 return;
 
             CustomChirpsBridge.PostChirp(
-                text: $"{GetRandomText()}\nLast save: {ModDatabase.FormatTimeSpan(LastAutoSaveCheck, " ago")}",
+                text: $"{GetRandomText()}\nLast save: {StringHelper.FormatTime(LastAutoSaveCheck, " ago")}",
                 department: GetRandomEnumValue<DepartmentAccountBridge>(),
                 entity: Entity.Null,
                 customSenderName: Mod.Name

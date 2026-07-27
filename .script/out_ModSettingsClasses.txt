@@ -1,5 +1,6 @@
 using Game.Settings;
 using System.Globalization;
+using Unity.Mathematics;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -1038,11 +1039,11 @@ public float AuroraIntensity
     get => (float)GetValue(nameof(AuroraIntensity));
     set => SetValue(nameof(AuroraIntensity), value);
 }
-public bool Contra
-{
-    get => (bool)GetValue(nameof(Contra));
-    set => SetValue(nameof(Contra), value);
-}
+//public bool Contra
+//{
+//    get => (bool)GetValue(nameof(Contra));
+//    set => SetValue(nameof(Contra), value);
+//}
 public bool ShowOptionsInDeveloperPanel
 {
     get => (bool)GetValue(nameof(ShowOptionsInDeveloperPanel));
@@ -1295,26 +1296,26 @@ public bool ReverseColors
     get => (bool)GetValue(nameof(ReverseColors));
     set => SetValue(nameof(ReverseColors), value);
 }
-public bool CountVehiclesInUse
-{
-    get => (bool)GetValue(nameof(CountVehiclesInUse));
-    set => SetValue(nameof(CountVehiclesInUse), value);
-}
-public bool CountVehiclesInMaintenance
-{
-    get => (bool)GetValue(nameof(CountVehiclesInMaintenance));
-    set => SetValue(nameof(CountVehiclesInMaintenance), value);
-}
-public bool EfficiencyMaxColor200Percent
-{
-    get => (bool)GetValue(nameof(EfficiencyMaxColor200Percent));
-    set => SetValue(nameof(EfficiencyMaxColor200Percent), value);
-}
-public bool ProductionMaxColor200Percent
-{
-    get => (bool)GetValue(nameof(ProductionMaxColor200Percent));
-    set => SetValue(nameof(ProductionMaxColor200Percent), value);
-}
+//public bool CountVehiclesInUse
+//{
+//    get => (bool)GetValue(nameof(CountVehiclesInUse));
+//    set => SetValue(nameof(CountVehiclesInUse), value);
+//}
+//public bool CountVehiclesInMaintenance
+//{
+//    get => (bool)GetValue(nameof(CountVehiclesInMaintenance));
+//    set => SetValue(nameof(CountVehiclesInMaintenance), value);
+//}
+//public bool EfficiencyMaxColor200Percent
+//{
+//    get => (bool)GetValue(nameof(EfficiencyMaxColor200Percent));
+//    set => SetValue(nameof(EfficiencyMaxColor200Percent), value);
+//}
+//public bool ProductionMaxColor200Percent
+//{
+//    get => (bool)GetValue(nameof(ProductionMaxColor200Percent));
+//    set => SetValue(nameof(ProductionMaxColor200Percent), value);
+//}
 }
 public class CameraDragSettings : SettingsBackup
 {
@@ -2122,21 +2123,21 @@ public bool ProductionBalanceHideActivationButton
     get => (bool)GetValue(nameof(ProductionBalanceHideActivationButton));
     set => SetValue(nameof(ProductionBalanceHideActivationButton), value);
 }
-public bool ProductionBalancePanelVisible
-{
-    get => (bool)GetValue(nameof(ProductionBalancePanelVisible));
-    set => SetValue(nameof(ProductionBalancePanelVisible), value);
-}
-public int ProductionBalancePanelPositionX
-{
-    get => (int)GetValue(nameof(ProductionBalancePanelPositionX));
-    set => SetValue(nameof(ProductionBalancePanelPositionX), value);
-}
-public int ProductionBalancePanelPositionY
-{
-    get => (int)GetValue(nameof(ProductionBalancePanelPositionY));
-    set => SetValue(nameof(ProductionBalancePanelPositionY), value);
-}
+//public bool ProductionBalancePanelVisible
+//{
+//    get => (bool)GetValue(nameof(ProductionBalancePanelVisible));
+//    set => SetValue(nameof(ProductionBalancePanelVisible), value);
+//}
+//public int ProductionBalancePanelPositionX
+//{
+//    get => (int)GetValue(nameof(ProductionBalancePanelPositionX));
+//    set => SetValue(nameof(ProductionBalancePanelPositionX), value);
+//}
+//public int ProductionBalancePanelPositionY
+//{
+//    get => (int)GetValue(nameof(ProductionBalancePanelPositionY));
+//    set => SetValue(nameof(ProductionBalancePanelPositionY), value);
+//}
 public bool LockAfterChange
 {
     get => (bool)GetValue(nameof(LockAfterChange));
@@ -2224,11 +2225,11 @@ public string Keywords
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style","IDE1006:Naming Styles",Justification = "<Pending>")]
 public class CimRouteHighlighterSettings : SettingsBackup
 {
-public bool highlightRoutes
-{
-    get => (bool)GetValue(nameof(highlightRoutes));
-    set => SetValue(nameof(highlightRoutes), value);
-}
+//public bool highlightRoutes
+//{
+//    get => (bool)GetValue(nameof(highlightRoutes));
+//    set => SetValue(nameof(highlightRoutes), value);
+//}
 public bool highlightWorkplaces
 {
     get => (bool)GetValue(nameof(highlightWorkplaces));
@@ -6552,11 +6553,11 @@ public bool enableWaterAndSweageChirps
     get => (bool)GetValue(nameof(enableWaterAndSweageChirps));
     set => SetValue(nameof(enableWaterAndSweageChirps), value);
 }
-public float2 panelPosition
-{
-    get => (float2)GetValue(nameof(panelPosition));
-    set => SetValue(nameof(panelPosition), value);
-}
+//public float2 panelPosition
+//{
+//    get => (float2)GetValue(nameof(panelPosition));
+//    set => SetValue(nameof(panelPosition), value);
+//}
 public int exportFilesRetentionCount
 {
     get => (int)GetValue(nameof(exportFilesRetentionCount));
@@ -7736,11 +7737,11 @@ public bool trafficDespawnDisabled
     get => (bool)GetValue(nameof(trafficDespawnDisabled));
     set => SetValue(nameof(trafficDespawnDisabled), value);
 }
-public int despawnBehavior
-{
-    get => (int)GetValue(nameof(despawnBehavior));
-    set => SetValue(nameof(despawnBehavior), value);
-}
+//public int despawnBehavior
+//{
+//    get => (int)GetValue(nameof(despawnBehavior));
+//    set => SetValue(nameof(despawnBehavior), value);
+//}
 public bool highlightStuckObjects
 {
     get => (bool)GetValue(nameof(highlightStuckObjects));
@@ -7751,16 +7752,16 @@ public int deadlockLingerFrames
     get => (int)GetValue(nameof(deadlockLingerFrames));
     set => SetValue(nameof(deadlockLingerFrames), value);
 }
-public bool attemptReroute
-{
-    get => (bool)GetValue(nameof(attemptReroute));
-    set => SetValue(nameof(attemptReroute), value);
-}
-public int attemptRerouteFrames
-{
-    get => (int)GetValue(nameof(attemptRerouteFrames));
-    set => SetValue(nameof(attemptRerouteFrames), value);
-}
+//public bool attemptReroute
+//{
+//    get => (bool)GetValue(nameof(attemptReroute));
+//    set => SetValue(nameof(attemptReroute), value);
+//}
+//public int attemptRerouteFrames
+//{
+//    get => (int)GetValue(nameof(attemptRerouteFrames));
+//    set => SetValue(nameof(attemptRerouteFrames), value);
+//}
 public int deadlockSearchDepth
 {
     get => (int)GetValue(nameof(deadlockSearchDepth));
@@ -9111,21 +9112,21 @@ public int hospital_inpatient_maximum_hours
     get => (int)GetValue(nameof(hospital_inpatient_maximum_hours));
     set => SetValue(nameof(hospital_inpatient_maximum_hours), value);
 }
-public int avg_time_prison
-{
-    get => (int)GetValue(nameof(avg_time_prison));
-    set => SetValue(nameof(avg_time_prison), value);
-}
+//public int avg_time_prison
+//{
+//    get => (int)GetValue(nameof(avg_time_prison));
+//    set => SetValue(nameof(avg_time_prison), value);
+//}
 public bool use_school_vanilla_timeoff
 {
     get => (bool)GetValue(nameof(use_school_vanilla_timeoff));
     set => SetValue(nameof(use_school_vanilla_timeoff), value);
 }
-public float school_vacation_per_year
-{
-    get => (float)GetValue(nameof(school_vacation_per_year));
-    set => SetValue(nameof(school_vacation_per_year), value);
-}
+//public float school_vacation_per_year
+//{
+//    get => (float)GetValue(nameof(school_vacation_per_year));
+//    set => SetValue(nameof(school_vacation_per_year), value);
+//}
 public int school_vacation_month1
 {
     get => (int)GetValue(nameof(school_vacation_month1));
@@ -9241,11 +9242,11 @@ public float avg_work_hours_ft_wd
     get => (float)GetValue(nameof(avg_work_hours_ft_wd));
     set => SetValue(nameof(avg_work_hours_ft_wd), value);
 }
-public float avg_work_hours_ft_we
-{
-    get => (float)GetValue(nameof(avg_work_hours_ft_we));
-    set => SetValue(nameof(avg_work_hours_ft_we), value);
-}
+//public float avg_work_hours_ft_we
+//{
+//    get => (float)GetValue(nameof(avg_work_hours_ft_we));
+//    set => SetValue(nameof(avg_work_hours_ft_we), value);
+//}
 public int part_time_percentage
 {
     get => (int)GetValue(nameof(part_time_percentage));
@@ -9256,11 +9257,11 @@ public float avg_work_hours_pt_wd
     get => (float)GetValue(nameof(avg_work_hours_pt_wd));
     set => SetValue(nameof(avg_work_hours_pt_wd), value);
 }
-public float avg_work_hours_pt_we
-{
-    get => (float)GetValue(nameof(avg_work_hours_pt_we));
-    set => SetValue(nameof(avg_work_hours_pt_we), value);
-}
+//public float avg_work_hours_pt_we
+//{
+//    get => (float)GetValue(nameof(avg_work_hours_pt_we));
+//    set => SetValue(nameof(avg_work_hours_pt_we), value);
+//}
 public int dt_simulation
 {
     get => (int)GetValue(nameof(dt_simulation));
@@ -9361,11 +9362,11 @@ public int cityServices_sun_pct
     get => (int)GetValue(nameof(cityServices_sun_pct));
     set => SetValue(nameof(cityServices_sun_pct), value);
 }
-public bool better_trucks
-{
-    get => (bool)GetValue(nameof(better_trucks));
-    set => SetValue(nameof(better_trucks), value);
-}
+//public bool better_trucks
+//{
+//    get => (bool)GetValue(nameof(better_trucks));
+//    set => SetValue(nameof(better_trucks), value);
+//}
 public bool tourism_trips
 {
     get => (bool)GetValue(nameof(tourism_trips));
@@ -10128,31 +10129,31 @@ public bool IncludeCargoStation
     get => (bool)GetValue(nameof(IncludeCargoStation));
     set => SetValue(nameof(IncludeCargoStation), value);
 }
-public int DisplayOption
-{
-    get => (int)GetValue(nameof(DisplayOption));
-    set => SetValue(nameof(DisplayOption), value);
-}
-public int ColorOption
-{
-    get => (int)GetValue(nameof(ColorOption));
-    set => SetValue(nameof(ColorOption), value);
-}
-public float OneColorR
-{
-    get => (float)GetValue(nameof(OneColorR));
-    set => SetValue(nameof(OneColorR), value);
-}
-public float OneColorG
-{
-    get => (float)GetValue(nameof(OneColorG));
-    set => SetValue(nameof(OneColorG), value);
-}
-public float OneColorB
-{
-    get => (float)GetValue(nameof(OneColorB));
-    set => SetValue(nameof(OneColorB), value);
-}
+//public int DisplayOption
+//{
+//    get => (int)GetValue(nameof(DisplayOption));
+//    set => SetValue(nameof(DisplayOption), value);
+//}
+//public int ColorOption
+//{
+//    get => (int)GetValue(nameof(ColorOption));
+//    set => SetValue(nameof(ColorOption), value);
+//}
+//public float OneColorR
+//{
+//    get => (float)GetValue(nameof(OneColorR));
+//    set => SetValue(nameof(OneColorR), value);
+//}
+//public float OneColorG
+//{
+//    get => (float)GetValue(nameof(OneColorG));
+//    set => SetValue(nameof(OneColorG), value);
+//}
+//public float OneColorB
+//{
+//    get => (float)GetValue(nameof(OneColorB));
+//    set => SetValue(nameof(OneColorB), value);
+//}
 }
 public class RoadBuilderSettings : SettingsBackup
 {
@@ -12691,11 +12692,11 @@ public float IndirectDiffuseSunLighting
     get => (float)GetValue(nameof(IndirectDiffuseSunLighting));
     set => SetValue(nameof(IndirectDiffuseSunLighting), value);
 }
-public float GroundDiffuseLight
-{
-    get => (float)GetValue(nameof(GroundDiffuseLight));
-    set => SetValue(nameof(GroundDiffuseLight), value);
-}
+//public float GroundDiffuseLight
+//{
+//    get => (float)GetValue(nameof(GroundDiffuseLight));
+//    set => SetValue(nameof(GroundDiffuseLight), value);
+//}
 public int BrightenLevel
 {
     get => (int)GetValue(nameof(BrightenLevel));
@@ -13717,16 +13718,16 @@ public int VanProbability
     get => (int)GetValue(nameof(VanProbability));
     set => SetValue(nameof(VanProbability), value);
 }
-public int TrailerProbability
-{
-    get => (int)GetValue(nameof(TrailerProbability));
-    set => SetValue(nameof(TrailerProbability), value);
-}
-public bool UseImprovedStiffnessValues
-{
-    get => (bool)GetValue(nameof(UseImprovedStiffnessValues));
-    set => SetValue(nameof(UseImprovedStiffnessValues), value);
-}
+//public int TrailerProbability
+//{
+//    get => (int)GetValue(nameof(TrailerProbability));
+//    set => SetValue(nameof(TrailerProbability), value);
+//}
+//public bool UseImprovedStiffnessValues
+//{
+//    get => (bool)GetValue(nameof(UseImprovedStiffnessValues));
+//    set => SetValue(nameof(UseImprovedStiffnessValues), value);
+//}
 public float StiffnessModifier
 {
     get => (float)GetValue(nameof(StiffnessModifier));
@@ -13737,31 +13738,31 @@ public float DampingModifier
     get => (float)GetValue(nameof(DampingModifier));
     set => SetValue(nameof(DampingModifier), value);
 }
-public string DefaultPropertyPackDropdown
-{
-    get => (string)GetValue(nameof(DefaultPropertyPackDropdown));
-    set => SetValue(nameof(DefaultPropertyPackDropdown), value);
-}
-public string SavegamePropertyPackDropdown
-{
-    get => (string)GetValue(nameof(SavegamePropertyPackDropdown));
-    set => SetValue(nameof(SavegamePropertyPackDropdown), value);
-}
-public float SavegamePropertyPackFactor
-{
-    get => (float)GetValue(nameof(SavegamePropertyPackFactor));
-    set => SetValue(nameof(SavegamePropertyPackFactor), value);
-}
-public bool CustomSpeedLimitFactor
-{
-    get => (bool)GetValue(nameof(CustomSpeedLimitFactor));
-    set => SetValue(nameof(CustomSpeedLimitFactor), value);
-}
-public float SpeedLimitFactor
-{
-    get => (float)GetValue(nameof(SpeedLimitFactor));
-    set => SetValue(nameof(SpeedLimitFactor), value);
-}
+//public string DefaultPropertyPackDropdown
+//{
+//    get => (string)GetValue(nameof(DefaultPropertyPackDropdown));
+//    set => SetValue(nameof(DefaultPropertyPackDropdown), value);
+//}
+//public string SavegamePropertyPackDropdown
+//{
+//    get => (string)GetValue(nameof(SavegamePropertyPackDropdown));
+//    set => SetValue(nameof(SavegamePropertyPackDropdown), value);
+//}
+//public float SavegamePropertyPackFactor
+//{
+//    get => (float)GetValue(nameof(SavegamePropertyPackFactor));
+//    set => SetValue(nameof(SavegamePropertyPackFactor), value);
+//}
+//public bool CustomSpeedLimitFactor
+//{
+//    get => (bool)GetValue(nameof(CustomSpeedLimitFactor));
+//    set => SetValue(nameof(CustomSpeedLimitFactor), value);
+//}
+//public float SpeedLimitFactor
+//{
+//    get => (float)GetValue(nameof(SpeedLimitFactor));
+//    set => SetValue(nameof(SpeedLimitFactor), value);
+//}
 public bool DisableSpeedLimitUpdate
 {
     get => (bool)GetValue(nameof(DisableSpeedLimitUpdate));
@@ -13772,21 +13773,21 @@ public string PackName
     get => (string)GetValue(nameof(PackName));
     set => SetValue(nameof(PackName), value);
 }
-public int VehicleMaxSpeed
-{
-    get => (int)GetValue(nameof(VehicleMaxSpeed));
-    set => SetValue(nameof(VehicleMaxSpeed), value);
-}
-public int VehicleAcceleration
-{
-    get => (int)GetValue(nameof(VehicleAcceleration));
-    set => SetValue(nameof(VehicleAcceleration), value);
-}
-public int VehicleBraking
-{
-    get => (int)GetValue(nameof(VehicleBraking));
-    set => SetValue(nameof(VehicleBraking), value);
-}
+//public int VehicleMaxSpeed
+//{
+//    get => (int)GetValue(nameof(VehicleMaxSpeed));
+//    set => SetValue(nameof(VehicleMaxSpeed), value);
+//}
+//public int VehicleAcceleration
+//{
+//    get => (int)GetValue(nameof(VehicleAcceleration));
+//    set => SetValue(nameof(VehicleAcceleration), value);
+//}
+//public int VehicleBraking
+//{
+//    get => (int)GetValue(nameof(VehicleBraking));
+//    set => SetValue(nameof(VehicleBraking), value);
+//}
 public bool EnableChangeVehicles
 {
     get => (bool)GetValue(nameof(EnableChangeVehicles));

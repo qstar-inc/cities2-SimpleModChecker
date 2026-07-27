@@ -2,17 +2,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Colossal.IO.AssetDatabase;
 using Colossal.Json;
 using Game.Modding;
 using Game.Settings;
 using Game.UI.Widgets;
 using SimpleModCheckerPlus.Systems;
 using StarQ.Shared.Extensions;
+using StarQ.Shared.Generators;
 
 namespace SimpleModCheckerPlus
 {
-    [FileLocation("ModsSettings\\StarQ\\" + nameof(SimpleModCheckerPlus))]
+    [GenerateSettingCommonAttribute]
     [SettingsUITabOrder(
         ModListTab,
         VerifyTab,
@@ -39,25 +39,15 @@ namespace SimpleModCheckerPlus
         ModVerifyGroup,
         ModCleanupGroup,
         ModInfo,
-        SupportedMod
+        SupportedMod,
+        AboutModGroup
     )]
-    //[SettingsUITabOrder(ModListTab, ModWithIssueListTab, MainTab, ProfileNameTab, AboutTab)]
-    //[SettingsUIGroupOrder(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModUtilityGroup, ProfileNameGroup, InfoGroup, ModInfo, SupportedMod)]
-    //[SettingsUIShowGroupName(ModListGroup, ModWithIssueListGroup, OptionsGroup, BackupGroup, ModInfo, SupportedMod)]
-    public class Setting : ModSetting
+    public partial class Setting : ModSetting
     {
-        public static Setting Instance;
-
         private readonly GameSettingsBackup GameSettingsBackup = new();
         private readonly ModSettingsBackup ModSettingsBackup = new();
         private readonly KeybindsBackup KeybindsBackup = new();
         private readonly ProfileNameBackup ProfileNameBackup = new();
-
-        public Setting(IMod mod)
-            : base(mod) => SetDefaults();
-
-        public const string GeneralTab = "GeneralTab";
-        public const string GeneralGroup = "GeneralGroup";
 
         public const string BackupTab = "BackupTab";
         public const string BackupGroup = "BackupGroup";
@@ -71,25 +61,10 @@ namespace SimpleModCheckerPlus
         public const string ModVerifyGroup = "ModVerifyGroup";
         public const string ModCleanupGroup = "ModCleanupGroup";
 
-        //public const string ModWithIssueListTab = "Mods with Issues";
-        //public const string ModWithIssueListGroup = "Loaded Mods with Issues";
-
         public const string ProfileNameTab = "ProfileNameTab";
 
-        public const string AboutTab = "AboutTab";
-        public const string InfoGroup = "InfoGroup";
         public const string ModInfo = "ModInfo";
         public const string SupportedMod = "SupportedMod";
-
-        public const string LogTab = "LogTab";
-
-        //[SettingsUISlider(min = 10, max = 120)]
-        //[SettingsUISection(MainTab, OptionsGroup)]
-        //public int ErrorMuteCooldownSeconds
-        //{
-        //    get => ErrorMuteCooldownSeconds;
-        //    set => GameSettingsBackup.SetErrorMuteCooldown(value);
-        //}
 
         [Exclude]
         [SettingsUIHidden]
@@ -329,10 +304,6 @@ namespace SimpleModCheckerPlus
         [SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.PackageModsText))]
         public string PackageMods => "";
 
-        //[Exclude]
-        //[SettingsUIHidden]
-        //public int ModFolderListVersion { get; set; }
-
         [Exclude]
         [SettingsUIDropdown(typeof(Setting), nameof(GetModFolderList))]
         [SettingsUIValueVersion(typeof(Setting), nameof(ModLoadedVersion))]
@@ -381,40 +352,10 @@ namespace SimpleModCheckerPlus
             set { Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.ActivePlayset)); }
         }
 
-        //[SettingsUIButtonGroup("VerifyMod")]
-        //[SettingsUISection(VerifyTab, ModVerifyGroup)]
-        //[SettingsUIDisableByCondition(typeof(Setting), nameof(ReadyForVerify))]
-        //public bool VerifyModsCheckMetadataFormat
-        //{
-        //    set
-        //    {
-        //        Task.Run(() => ModVerifier.VerifyMods(ModVerifier.ProcessType.CheckMetadataFormat));
-        //    }
-        //}
-
         [SettingsUIMultilineText]
         [SettingsUISection(VerifyTab, ModVerifyGroup)]
         [SettingsUIDisplayName(typeof(ModVerifier), nameof(ModVerifier.VerificationResultText))]
         public string VerificationResult => "";
-
-        //[SettingsUISection(VerifyTab, ModCleanupGroup)]
-        //public bool AutoCleanUpOldVersions { get; set; } = true;
-
-        //[Exclude]
-        //[SettingsUIHidden]
-        //public bool IsCleaningUp { get; set; } = false;
-
-        //[SettingsUIDisableByCondition(typeof(Setting), nameof(IsCleaningUp))]
-        //[SettingsUISection(VerifyTab, ModCleanupGroup)]
-        //public bool CleanUpOldVersions
-        //{
-        //    set { Task.Run(() => ModCheckup.CleanUpOldVersions()); }
-        //}
-
-        //[SettingsUIMultilineText]
-        //[SettingsUISection(VerifyTab, ModCleanupGroup)]
-        //[SettingsUIDisplayName(typeof(ModCheckup), nameof(ModCheckup.CleanupResultText))]
-        //public string CleanUpResult => "";
 
         [SettingsUIHidden]
         [SettingsUISection(ProfileNameTab, "")]
@@ -604,7 +545,6 @@ namespace SimpleModCheckerPlus
             DisableContinueInGame = true;
             DeleteCorrupted = true;
             AutoRestoreSettingBackupOnStartup = true;
-            //AutoCleanUpOldVersions = true;
             EnableVerboseLogging = false;
             ProfileName1 = "Profile 1";
             ProfileName2 = "Profile 2";
@@ -618,54 +558,6 @@ namespace SimpleModCheckerPlus
             VerifyRunning = false;
             IsInGameOrEditor = false;
             ModFolderDropdown = "";
-            //ErrorMuteCooldownSecond/s = 10;
-            //LastDownloaded = (long)0;
-            //LastChecked = (long)0;
-        }
-
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public string NameText => Mod.Name;
-
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public string VersionText => VariableHelper.AddDevSuffix(Mod.Version);
-
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public string AuthorText => VariableHelper.StarQ;
-
-        [SettingsUIButton]
-        [SettingsUIButtonGroup("Social")]
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public bool BMaCLink
-        {
-            set => VariableHelper.OpenBMAC();
-        }
-
-        [SettingsUIButton]
-        [SettingsUIButtonGroup("Social")]
-        [SettingsUISection(AboutTab, InfoGroup)]
-        public bool Discord
-        {
-            set => VariableHelper.OpenDiscord("1287440491239047208");
-        }
-
-        [SettingsUIMultilineText]
-        [SettingsUIDisplayName(typeof(LogHelper), nameof(LogHelper.LogText))]
-        [SettingsUISection(LogTab, "")]
-        public string LogText => string.Empty;
-
-        [Exclude]
-        [SettingsUIHidden]
-        public bool IsLogMissing
-        {
-            get => VariableHelper.CheckLog(Mod.Id);
-        }
-
-        [SettingsUIButton]
-        [SettingsUIDisableByCondition(typeof(Setting), nameof(IsLogMissing))]
-        [SettingsUISection(LogTab, "")]
-        public bool OpenLog
-        {
-            set => VariableHelper.OpenLog(Mod.Id);
         }
     }
 }

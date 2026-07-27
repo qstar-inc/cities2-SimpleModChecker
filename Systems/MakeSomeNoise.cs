@@ -22,7 +22,7 @@ namespace SimpleModCheckerPlus.Systems
         {
             Enabled = false;
             if (
-                !GameManager.instance.modManager.isInitialized
+                !WorldHelper.ModManager.isInitialized
                 || GameManager.instance.gameMode != GameMode.MainMenu
                 || GameManager.instance.state == GameManager.State.Loading
                 || GameManager.instance.state == GameManager.State.Booting

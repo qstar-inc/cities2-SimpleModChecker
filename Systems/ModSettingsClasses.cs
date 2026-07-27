@@ -1,6 +1,5 @@
 using System.Globalization;
 using Game.Settings;
-using Unity.Mathematics;
 
 namespace SimpleModCheckerPlus.Systems
 {
@@ -1336,26 +1335,26 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(ReverseColors));
             set => SetValue(nameof(ReverseColors), value);
         }
-        public bool CountVehiclesInUse
-        {
-            get => (bool)GetValue(nameof(CountVehiclesInUse));
-            set => SetValue(nameof(CountVehiclesInUse), value);
-        }
-        public bool CountVehiclesInMaintenance
-        {
-            get => (bool)GetValue(nameof(CountVehiclesInMaintenance));
-            set => SetValue(nameof(CountVehiclesInMaintenance), value);
-        }
-        public bool EfficiencyMaxColor200Percent
-        {
-            get => (bool)GetValue(nameof(EfficiencyMaxColor200Percent));
-            set => SetValue(nameof(EfficiencyMaxColor200Percent), value);
-        }
-        public bool ProductionMaxColor200Percent
-        {
-            get => (bool)GetValue(nameof(ProductionMaxColor200Percent));
-            set => SetValue(nameof(ProductionMaxColor200Percent), value);
-        }
+        //public bool CountVehiclesInUse
+        //{
+        //    get => (bool)GetValue(nameof(CountVehiclesInUse));
+        //    set => SetValue(nameof(CountVehiclesInUse), value);
+        //}
+        //public bool CountVehiclesInMaintenance
+        //{
+        //    get => (bool)GetValue(nameof(CountVehiclesInMaintenance));
+        //    set => SetValue(nameof(CountVehiclesInMaintenance), value);
+        //}
+        //public bool EfficiencyMaxColor200Percent
+        //{
+        //    get => (bool)GetValue(nameof(EfficiencyMaxColor200Percent));
+        //    set => SetValue(nameof(EfficiencyMaxColor200Percent), value);
+        //}
+        //public bool ProductionMaxColor200Percent
+        //{
+        //    get => (bool)GetValue(nameof(ProductionMaxColor200Percent));
+        //    set => SetValue(nameof(ProductionMaxColor200Percent), value);
+        //}
     }
 
     public class CameraDragSettings : SettingsBackup
@@ -2167,21 +2166,22 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(ProductionBalanceHideActivationButton));
             set => SetValue(nameof(ProductionBalanceHideActivationButton), value);
         }
-        public bool ProductionBalancePanelVisible
-        {
-            get => (bool)GetValue(nameof(ProductionBalancePanelVisible));
-            set => SetValue(nameof(ProductionBalancePanelVisible), value);
-        }
-        public int ProductionBalancePanelPositionX
-        {
-            get => (int)GetValue(nameof(ProductionBalancePanelPositionX));
-            set => SetValue(nameof(ProductionBalancePanelPositionX), value);
-        }
-        public int ProductionBalancePanelPositionY
-        {
-            get => (int)GetValue(nameof(ProductionBalancePanelPositionY));
-            set => SetValue(nameof(ProductionBalancePanelPositionY), value);
-        }
+
+        //public bool ProductionBalancePanelVisible
+        //{
+        //    get => (bool)GetValue(nameof(ProductionBalancePanelVisible));
+        //    set => SetValue(nameof(ProductionBalancePanelVisible), value);
+        //}
+        //public int ProductionBalancePanelPositionX
+        //{
+        //    get => (int)GetValue(nameof(ProductionBalancePanelPositionX));
+        //    set => SetValue(nameof(ProductionBalancePanelPositionX), value);
+        //}
+        //public int ProductionBalancePanelPositionY
+        //{
+        //    get => (int)GetValue(nameof(ProductionBalancePanelPositionY));
+        //    set => SetValue(nameof(ProductionBalancePanelPositionY), value);
+        //}
         public bool LockAfterChange
         {
             get => (bool)GetValue(nameof(LockAfterChange));
@@ -7904,11 +7904,12 @@ namespace SimpleModCheckerPlus.Systems
         //    get => (bool)GetValue(nameof(trafficDespawnDisabled));
         //    set => SetValue(nameof(trafficDespawnDisabled), value);
         //}
-        public int despawnBehavior
-        {
-            get => (int)GetValue(nameof(despawnBehavior));
-            set => SetValue(nameof(despawnBehavior), value);
-        }
+
+        //public int despawnBehavior
+        //{
+        //    get => (int)GetValue(nameof(despawnBehavior));
+        //    set => SetValue(nameof(despawnBehavior), value);
+        //}
         public bool highlightStuckObjects
         {
             get => (bool)GetValue(nameof(highlightStuckObjects));
@@ -9319,21 +9320,23 @@ namespace SimpleModCheckerPlus.Systems
             get => (int)GetValue(nameof(hospital_inpatient_maximum_hours));
             set => SetValue(nameof(hospital_inpatient_maximum_hours), value);
         }
-        public int avg_time_prison
-        {
-            get => (int)GetValue(nameof(avg_time_prison));
-            set => SetValue(nameof(avg_time_prison), value);
-        }
+
+        //public int avg_time_prison
+        //{
+        //    get => (int)GetValue(nameof(avg_time_prison));
+        //    set => SetValue(nameof(avg_time_prison), value);
+        //}
         public bool use_school_vanilla_timeoff
         {
             get => (bool)GetValue(nameof(use_school_vanilla_timeoff));
             set => SetValue(nameof(use_school_vanilla_timeoff), value);
         }
-        public float school_vacation_per_year
-        {
-            get => (float)GetValue(nameof(school_vacation_per_year));
-            set => SetValue(nameof(school_vacation_per_year), value);
-        }
+
+        //public float school_vacation_per_year
+        //{
+        //    get => (float)GetValue(nameof(school_vacation_per_year));
+        //    set => SetValue(nameof(school_vacation_per_year), value);
+        //}
         public int school_vacation_month1
         {
             get => (int)GetValue(nameof(school_vacation_month1));
@@ -9449,11 +9452,12 @@ namespace SimpleModCheckerPlus.Systems
             get => (float)GetValue(nameof(avg_work_hours_ft_wd));
             set => SetValue(nameof(avg_work_hours_ft_wd), value);
         }
-        public float avg_work_hours_ft_we
-        {
-            get => (float)GetValue(nameof(avg_work_hours_ft_we));
-            set => SetValue(nameof(avg_work_hours_ft_we), value);
-        }
+
+        //public float avg_work_hours_ft_we
+        //{
+        //    get => (float)GetValue(nameof(avg_work_hours_ft_we));
+        //    set => SetValue(nameof(avg_work_hours_ft_we), value);
+        //}
         public int part_time_percentage
         {
             get => (int)GetValue(nameof(part_time_percentage));
@@ -9464,11 +9468,12 @@ namespace SimpleModCheckerPlus.Systems
             get => (float)GetValue(nameof(avg_work_hours_pt_wd));
             set => SetValue(nameof(avg_work_hours_pt_wd), value);
         }
-        public float avg_work_hours_pt_we
-        {
-            get => (float)GetValue(nameof(avg_work_hours_pt_we));
-            set => SetValue(nameof(avg_work_hours_pt_we), value);
-        }
+
+        //public float avg_work_hours_pt_we
+        //{
+        //    get => (float)GetValue(nameof(avg_work_hours_pt_we));
+        //    set => SetValue(nameof(avg_work_hours_pt_we), value);
+        //}
         public int dt_simulation
         {
             get => (int)GetValue(nameof(dt_simulation));
@@ -9569,11 +9574,12 @@ namespace SimpleModCheckerPlus.Systems
             get => (int)GetValue(nameof(cityServices_sun_pct));
             set => SetValue(nameof(cityServices_sun_pct), value);
         }
-        public bool better_trucks
-        {
-            get => (bool)GetValue(nameof(better_trucks));
-            set => SetValue(nameof(better_trucks), value);
-        }
+
+        //public bool better_trucks
+        //{
+        //    get => (bool)GetValue(nameof(better_trucks));
+        //    set => SetValue(nameof(better_trucks), value);
+        //}
         public bool tourism_trips
         {
             get => (bool)GetValue(nameof(tourism_trips));
@@ -10350,31 +10356,31 @@ namespace SimpleModCheckerPlus.Systems
             get => (bool)GetValue(nameof(IncludeCargoStation));
             set => SetValue(nameof(IncludeCargoStation), value);
         }
-        public int DisplayOption
-        {
-            get => (int)GetValue(nameof(DisplayOption));
-            set => SetValue(nameof(DisplayOption), value);
-        }
-        public int ColorOption
-        {
-            get => (int)GetValue(nameof(ColorOption));
-            set => SetValue(nameof(ColorOption), value);
-        }
-        public float OneColorR
-        {
-            get => (float)GetValue(nameof(OneColorR));
-            set => SetValue(nameof(OneColorR), value);
-        }
-        public float OneColorG
-        {
-            get => (float)GetValue(nameof(OneColorG));
-            set => SetValue(nameof(OneColorG), value);
-        }
-        public float OneColorB
-        {
-            get => (float)GetValue(nameof(OneColorB));
-            set => SetValue(nameof(OneColorB), value);
-        }
+        //public int DisplayOption
+        //{
+        //    get => (int)GetValue(nameof(DisplayOption));
+        //    set => SetValue(nameof(DisplayOption), value);
+        //}
+        //public int ColorOption
+        //{
+        //    get => (int)GetValue(nameof(ColorOption));
+        //    set => SetValue(nameof(ColorOption), value);
+        //}
+        //public float OneColorR
+        //{
+        //    get => (float)GetValue(nameof(OneColorR));
+        //    set => SetValue(nameof(OneColorR), value);
+        //}
+        //public float OneColorG
+        //{
+        //    get => (float)GetValue(nameof(OneColorG));
+        //    set => SetValue(nameof(OneColorG), value);
+        //}
+        //public float OneColorB
+        //{
+        //    get => (float)GetValue(nameof(OneColorB));
+        //    set => SetValue(nameof(OneColorB), value);
+        //}
     }
 
     public class RoadBuilderSettings : SettingsBackup
@@ -12942,11 +12948,12 @@ namespace SimpleModCheckerPlus.Systems
             get => (float)GetValue(nameof(IndirectDiffuseSunLighting));
             set => SetValue(nameof(IndirectDiffuseSunLighting), value);
         }
-        public float GroundDiffuseLight
-        {
-            get => (float)GetValue(nameof(GroundDiffuseLight));
-            set => SetValue(nameof(GroundDiffuseLight), value);
-        }
+
+        //public float GroundDiffuseLight
+        //{
+        //    get => (float)GetValue(nameof(GroundDiffuseLight));
+        //    set => SetValue(nameof(GroundDiffuseLight), value);
+        //}
         public int BrightenLevel
         {
             get => (int)GetValue(nameof(BrightenLevel));
@@ -14007,16 +14014,17 @@ namespace SimpleModCheckerPlus.Systems
             get => (int)GetValue(nameof(VanProbability));
             set => SetValue(nameof(VanProbability), value);
         }
-        public int TrailerProbability
-        {
-            get => (int)GetValue(nameof(TrailerProbability));
-            set => SetValue(nameof(TrailerProbability), value);
-        }
-        public bool UseImprovedStiffnessValues
-        {
-            get => (bool)GetValue(nameof(UseImprovedStiffnessValues));
-            set => SetValue(nameof(UseImprovedStiffnessValues), value);
-        }
+
+        //public int TrailerProbability
+        //{
+        //    get => (int)GetValue(nameof(TrailerProbability));
+        //    set => SetValue(nameof(TrailerProbability), value);
+        //}
+        //public bool UseImprovedStiffnessValues
+        //{
+        //    get => (bool)GetValue(nameof(UseImprovedStiffnessValues));
+        //    set => SetValue(nameof(UseImprovedStiffnessValues), value);
+        //}
         public float StiffnessModifier
         {
             get => (float)GetValue(nameof(StiffnessModifier));
@@ -14027,31 +14035,32 @@ namespace SimpleModCheckerPlus.Systems
             get => (float)GetValue(nameof(DampingModifier));
             set => SetValue(nameof(DampingModifier), value);
         }
-        public string DefaultPropertyPackDropdown
-        {
-            get => (string)GetValue(nameof(DefaultPropertyPackDropdown));
-            set => SetValue(nameof(DefaultPropertyPackDropdown), value);
-        }
-        public string SavegamePropertyPackDropdown
-        {
-            get => (string)GetValue(nameof(SavegamePropertyPackDropdown));
-            set => SetValue(nameof(SavegamePropertyPackDropdown), value);
-        }
-        public float SavegamePropertyPackFactor
-        {
-            get => (float)GetValue(nameof(SavegamePropertyPackFactor));
-            set => SetValue(nameof(SavegamePropertyPackFactor), value);
-        }
-        public bool CustomSpeedLimitFactor
-        {
-            get => (bool)GetValue(nameof(CustomSpeedLimitFactor));
-            set => SetValue(nameof(CustomSpeedLimitFactor), value);
-        }
-        public float SpeedLimitFactor
-        {
-            get => (float)GetValue(nameof(SpeedLimitFactor));
-            set => SetValue(nameof(SpeedLimitFactor), value);
-        }
+
+        //public string DefaultPropertyPackDropdown
+        //{
+        //    get => (string)GetValue(nameof(DefaultPropertyPackDropdown));
+        //    set => SetValue(nameof(DefaultPropertyPackDropdown), value);
+        //}
+        //public string SavegamePropertyPackDropdown
+        //{
+        //    get => (string)GetValue(nameof(SavegamePropertyPackDropdown));
+        //    set => SetValue(nameof(SavegamePropertyPackDropdown), value);
+        //}
+        //public float SavegamePropertyPackFactor
+        //{
+        //    get => (float)GetValue(nameof(SavegamePropertyPackFactor));
+        //    set => SetValue(nameof(SavegamePropertyPackFactor), value);
+        //}
+        //public bool CustomSpeedLimitFactor
+        //{
+        //    get => (bool)GetValue(nameof(CustomSpeedLimitFactor));
+        //    set => SetValue(nameof(CustomSpeedLimitFactor), value);
+        //}
+        //public float SpeedLimitFactor
+        //{
+        //    get => (float)GetValue(nameof(SpeedLimitFactor));
+        //    set => SetValue(nameof(SpeedLimitFactor), value);
+        //}
         public bool DisableSpeedLimitUpdate
         {
             get => (bool)GetValue(nameof(DisableSpeedLimitUpdate));
@@ -14062,21 +14071,22 @@ namespace SimpleModCheckerPlus.Systems
             get => (string)GetValue(nameof(PackName));
             set => SetValue(nameof(PackName), value);
         }
-        public int VehicleMaxSpeed
-        {
-            get => (int)GetValue(nameof(VehicleMaxSpeed));
-            set => SetValue(nameof(VehicleMaxSpeed), value);
-        }
-        public int VehicleAcceleration
-        {
-            get => (int)GetValue(nameof(VehicleAcceleration));
-            set => SetValue(nameof(VehicleAcceleration), value);
-        }
-        public int VehicleBraking
-        {
-            get => (int)GetValue(nameof(VehicleBraking));
-            set => SetValue(nameof(VehicleBraking), value);
-        }
+
+        //public int VehicleMaxSpeed
+        //{
+        //    get => (int)GetValue(nameof(VehicleMaxSpeed));
+        //    set => SetValue(nameof(VehicleMaxSpeed), value);
+        //}
+        //public int VehicleAcceleration
+        //{
+        //    get => (int)GetValue(nameof(VehicleAcceleration));
+        //    set => SetValue(nameof(VehicleAcceleration), value);
+        //}
+        //public int VehicleBraking
+        //{
+        //    get => (int)GetValue(nameof(VehicleBraking));
+        //    set => SetValue(nameof(VehicleBraking), value);
+        //}
         public bool EnableChangeVehicles
         {
             get => (bool)GetValue(nameof(EnableChangeVehicles));
