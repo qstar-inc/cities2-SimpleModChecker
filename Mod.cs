@@ -11,6 +11,7 @@ using Game.Settings;
 using SimpleModCheckerPlus.Systems;
 using StarQ.Shared.Extensions;
 using StarQ.Shared.Generators;
+using UnityEngine;
 
 namespace SimpleModCheckerPlus
 {
@@ -21,23 +22,22 @@ namespace SimpleModCheckerPlus
 
         public CocCleaner CocCleaner;
 
-        public static readonly string modDatabaseJson = Path.Combine(
-            EnvPath.kUserDataPath,
-            "ModsData",
-            "SimpleModChecker",
-            "ModDatabase.json"
-        );
-        public static string localBackupPath;
+        public static string ModDatabaseJson;
+        public static string LocalBackupPath;
         public static ModDatabaseMetadata oldMetadata;
         public static ModDatabaseMetadata newMetadata;
 
         public void OnLoad(UpdateSystem updateSystem)
         {
+            Instance = this;
             LogHelper.Init(Id, log);
             LocaleHelper.Init(Id, Name, GetReplacements, AddLocales);
+            MigrateModsData();
 
-            string modPath = ModHelper.GetModPath(this);
-            localBackupPath = $"{Directory.GetParent(modPath).FullName}\\ModDatabase.json";
+            ModDatabaseJson = Path.Combine(DataDir, "ModDatabase.json");
+            LogHelper.SendLog(ModDatabaseJson);
+            LocalBackupPath = $"{ModHelper.GetModPath(this)}\\ModDatabase.json";
+            LogHelper.SendLog(LocalBackupPath);
 
             m_Setting = new Setting(this);
             m_Setting.RegisterInOptionsUI();
@@ -51,7 +51,7 @@ namespace SimpleModCheckerPlus
 
             //Colossal.Core.MainThreadDispatcher.RegisterUpdater(TryFixUIMods);
 
-            Task.Run(() => MigrateFiles(Directory.GetParent(modDatabaseJson).FullName)).Wait();
+            Task.Run(() => MigrateFiles()).Wait();
 
             Task.Run(() => ModDatabase.GetModDatabase()).Wait();
             Task.Run(() => ModDatabase.LoadModDatabase()).Wait();
@@ -109,9 +109,7 @@ namespace SimpleModCheckerPlus
 
                 if (m_Setting.DeleteCorrupted && CocCleaner.CanDelete.Count > 0)
                     CocCleaner.DeleteFolders();
-                //m_Setting.VerifyRunning = false;
-                //m_Setting.IsInGameOrEditor = false;
-                //m_Setting.ModFolderDropdown = "";
+
                 m_Setting.UnregisterInOptionsUI();
                 m_Setting = null;
             }
@@ -192,8 +190,9 @@ namespace SimpleModCheckerPlus
             return finalLine;
         }
 
-        public static async Task MigrateFiles(string folder)
+        public static async Task MigrateFiles()
         {
+            string folder = DataDir;
             string backupFolder = Path.Combine(folder, "SettingsBackup");
 
             if (!Directory.Exists(backupFolder))
@@ -251,6 +250,31 @@ namespace SimpleModCheckerPlus
             }
             Directory.Delete(sourceDir);
             LogHelper.SendLog($"Deleted source directory: {sourceDir}");
+        }
+
+        internal static void MigrateModsData()
+        {
+            string root = $"{EnvPath.kUserDataPath}\\ModsData";
+            string oldFolder = Path.Combine(root, "SimpleModChecker");
+            string newFolder = Path.Combine(root, "SimpleModCheckerPlus");
+
+            if (!Directory.Exists(oldFolder))
+                return;
+
+            try
+            {
+                if (Directory.Exists(newFolder))
+                    FileHelper.DeleteDirectorySafe(newFolder);
+
+                FileHelper.CopyDirectory(oldFolder, newFolder);
+                FileHelper.DeleteDirectorySafe(oldFolder);
+                LogHelper.SendLog("Migration to new data folder completed, restarting...");
+                Application.Quit();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.SendLog($"Migration failed: {ex}", LogLevel.Error);
+            }
         }
     }
 }

@@ -517,7 +517,7 @@ namespace SimpleModCheckerPlus.Systems
                     LoadedModInfo lm = new()
                     {
                         Id = mod.Id,
-                        DisplayName = mod.DisplayName,
+                        DisplayName = StringHelper.RemoveLineBreakesAndTrim(mod.DisplayName),
                         Author = mod.Author,
                         Version = mod.Version,
                         LatestVersion = mod.LatestVersion,
@@ -750,15 +750,6 @@ namespace SimpleModCheckerPlus.Systems
                     return CachedModData[modId];
 
                 IContext context = ModHelper.GetContext();
-                if (
-                    LogHelper.CheckNull(
-                        context,
-                        "Context is null",
-                        "ModCheckup didn't run yet",
-                        LogLevel.Info
-                    )
-                )
-                    return null;
 
                 PDX.SDK.Contracts.Service.Mods.Results.IModDetailsResult data = context
                     .Mods.GetLocalModDetails(modId)
@@ -770,7 +761,7 @@ namespace SimpleModCheckerPlus.Systems
             }
             catch (Exception ex)
             {
-                LogHelper.SendLog(ex, LogLevel.Error);
+                LogHelper.SendLog(ex, LogLevel.Info);
             }
             return null;
         }

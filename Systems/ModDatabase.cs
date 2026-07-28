@@ -57,13 +57,13 @@ namespace SimpleModCheckerPlus.Systems
         {
             lock (databaseLock)
             {
-                if (!File.Exists(Mod.modDatabaseJson))
+                if (!File.Exists(Mod.ModDatabaseJson))
                 {
                     LogHelper.SendLog("Mod database file not found");
                     return;
                 }
 
-                string jsonData = File.ReadAllText(Mod.modDatabaseJson);
+                string jsonData = File.ReadAllText(Mod.ModDatabaseJson);
                 var jsonDataObject = JsonConvert.DeserializeObject<ModDatabaseWrapper>(jsonData);
                 if (jsonDataObject?.ModDatabaseInfo == null || jsonDataObject.Metadata == null)
                 {
@@ -98,17 +98,17 @@ namespace SimpleModCheckerPlus.Systems
         {
             try
             {
-                if (!File.Exists(Mod.modDatabaseJson))
+                if (!File.Exists(Mod.ModDatabaseJson))
                 {
                     LogHelper.SendLog("ModDatabase not found. Attempting to copy...");
                     CopyLocalBackup();
                 }
 
                 var oldJsonData = JsonConvert.DeserializeObject<ModDatabaseWrapper>(
-                    File.ReadAllText(Mod.modDatabaseJson, Encoding.UTF8)
+                    File.ReadAllText(Mod.ModDatabaseJson, Encoding.UTF8)
                 );
                 var newJsonData = JsonConvert.DeserializeObject<ModDatabaseWrapper>(
-                    File.ReadAllText(Mod.localBackupPath, Encoding.UTF8)
+                    File.ReadAllText(Mod.LocalBackupPath, Encoding.UTF8)
                 );
 
                 if (oldJsonData?.Metadata == null || newJsonData?.Metadata == null)
@@ -133,9 +133,9 @@ namespace SimpleModCheckerPlus.Systems
         {
             try
             {
-                if (File.Exists(Mod.localBackupPath))
+                if (File.Exists(Mod.LocalBackupPath))
                 {
-                    File.Copy(Mod.localBackupPath, Mod.modDatabaseJson, true);
+                    File.Copy(Mod.LocalBackupPath, Mod.ModDatabaseJson, true);
                     LogHelper.SendLog("Local backup copied to ModDatabase.json.");
                 }
                 else
@@ -157,7 +157,7 @@ namespace SimpleModCheckerPlus.Systems
                 FragmentSource = temp.FragmentSource ?? "",
                 ClassType = !string.IsNullOrEmpty(temp.ClassType)
                     ? Type.GetType(
-                        $"{nameof(SimpleModCheckerPlus)}.{nameof(Systems)}.{temp.ClassType}"
+                        $"{nameof(SimpleModCheckerPlus)}.{nameof(Systems)}.{nameof(ModSettingsClasses)}.{temp.ClassType}"
                     )
                     : null,
                 ModName = temp.ModName ?? "",

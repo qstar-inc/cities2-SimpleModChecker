@@ -24,25 +24,25 @@ namespace SimpleModCheckerPlus.Systems
         public static ModCheckup SMC = new();
         private readonly List<string> loadedMods = SMC.GetLoadedMods();
         private static readonly string backupFile0 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_prev.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_prev.json";
         private static readonly string backupFile1 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_1.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_1.json";
         private static readonly string backupFile2 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_2.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_2.json";
         private static readonly string backupFile3 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_3.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_3.json";
         private static readonly string backupFile4 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_4.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_4.json";
         private static readonly string backupFile5 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_5.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_5.json";
         private static readonly string backupFile6 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_6.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_6.json";
         private static readonly string backupFile7 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_7.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_7.json";
         private static readonly string backupFile8 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_8.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_8.json";
         private static readonly string backupFile9 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\GameSettingsBackup_9.json";
+            $"{Mod.DataDir}\\SettingsBackup\\GameSettingsBackup_9.json";
         private static int i = 0;
 
         protected override void OnCreate()

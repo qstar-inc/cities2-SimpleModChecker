@@ -514,8 +514,17 @@ namespace SimpleModCheckerPlus
                 PDX.SDK.Contracts.Service.Mods.Interfaces.IModDetails mod =
                     ModCheckup.GetLocalModData(modId);
 
-                if (LogHelper.CheckNull(mod, $"{subfolder} shows null mod data"))
+                if (LogHelper.CheckNull(mod, $"{subfolder} is null", level: LogLevel.Info))
+                {
+                    x.Add(
+                        new DropdownItem<string>
+                        {
+                            value = subfolder.Replace("\\", "/"),
+                            displayName = $"⚠️⚠️⚠️ {modFolder} - Mod May Has Issue, Verify Now",
+                        }
+                    );
                     continue;
+                }
 
                 string modName = modId;
 

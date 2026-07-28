@@ -25,7 +25,7 @@ namespace SimpleModCheckerPlus.Systems
     {
         public Mod _mod;
         private readonly string backupFile =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ProfileNameBackup.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ProfileNameBackup.json";
 
         protected override void OnCreate()
         {

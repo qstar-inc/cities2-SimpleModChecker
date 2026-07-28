@@ -1,3 +1,2 @@
-- Removed unused/volatile options being backed up from BuildingUse, ChangeCompany, NoVehicleDespawn, RealisticTrips, ResourceLocator and VehicleController.
-- Simplified localization strings.
-- Minor project code optimization related to "Asset Database Contributor".
+- Hotfix for ModDatabase not persisting, and duplicate ModsData folder.
+- The game will auto restart once to fix the ModsData folder.

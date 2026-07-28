@@ -26,25 +26,25 @@ namespace SimpleModCheckerPlus.Systems
         public static ConcurrentDictionary<string, ModInfo> ModDatabaseInfo =
             ModDatabase.ModDatabaseInfo;
         private static readonly string backupFile0 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_prev.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_prev.json";
         private static readonly string backupFile1 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_1.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_1.json";
         private static readonly string backupFile2 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_2.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_2.json";
         private static readonly string backupFile3 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_3.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_3.json";
         private static readonly string backupFile4 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_4.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_4.json";
         private static readonly string backupFile5 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_5.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_5.json";
         private static readonly string backupFile6 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_6.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_6.json";
         private static readonly string backupFile7 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_7.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_7.json";
         private static readonly string backupFile8 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_8.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_8.json";
         private static readonly string backupFile9 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\ModSettingsBackup_9.json";
+            $"{Mod.DataDir}\\SettingsBackup\\ModSettingsBackup_9.json";
         private static int i = 0;
 
         private bool AutoRestoreDone = false;
@@ -686,6 +686,31 @@ namespace SimpleModCheckerPlus.Systems
                     }
                     else
                     {
+                        LogHelper.CheckNull(
+                            assembly,
+                            $"{sectionName} assembly",
+                            level: LogLevel.Info
+                        );
+                        LogHelper.CheckNull(
+                            fragmentSource,
+                            $"{sectionName} fragmentSource",
+                            level: LogLevel.Info
+                        );
+                        LogHelper.CheckNull(
+                            jsonObject,
+                            $"{sectionName} jsonObject",
+                            level: LogLevel.Info
+                        );
+                        LogHelper.CheckNull(
+                            classType,
+                            $"{sectionName} classType",
+                            level: LogLevel.Info
+                        );
+                        LogHelper.CheckNull(
+                            classType.Name,
+                            $"{sectionName} classType.Name",
+                            level: LogLevel.Info
+                        );
                         SetSettings(assembly, fragmentSource, jsonObject, classType.Name, log);
                     }
                 }

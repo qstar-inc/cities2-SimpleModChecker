@@ -35,25 +35,25 @@ namespace SimpleModCheckerPlus.Systems
         public static ModCheckup SMC = new();
         private readonly InputManager inputManager = InputManager.instance;
         private readonly string backupFile0 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_prev.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_prev.json";
         private readonly string backupFile1 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_1.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_1.json";
         private readonly string backupFile2 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_2.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_2.json";
         private readonly string backupFile3 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_3.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_3.json";
         private readonly string backupFile4 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_4.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_4.json";
         private readonly string backupFile5 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_5.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_5.json";
         private readonly string backupFile6 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_6.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_6.json";
         private readonly string backupFile7 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_7.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_7.json";
         private readonly string backupFile8 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_8.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_8.json";
         private readonly string backupFile9 =
-            $"{EnvPath.kUserDataPath}\\ModsData\\SimpleModChecker\\SettingsBackup\\KeybindsBackup_9.json";
+            $"{Mod.DataDir}\\SettingsBackup\\KeybindsBackup_9.json";
         private static int i = 0;
 
         protected override void OnCreate()
