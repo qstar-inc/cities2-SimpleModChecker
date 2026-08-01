@@ -132,7 +132,11 @@ namespace SimpleModCheckerPlus.Systems
         protected override void OnUpdate()
         {
             if (!CustomChirpsBridge.IsAvailable)
+            {
+                Enabled = false;
                 return;
+            }
+
             if (LastAutoSaveCheck >= 0f && GameManager.instance.gameMode.IsGame())
             {
                 GeneralSettings general = SharedSettings.instance.general;

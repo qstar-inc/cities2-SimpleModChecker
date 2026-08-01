@@ -35,9 +35,7 @@ namespace SimpleModCheckerPlus
             MigrateModsData();
 
             ModDatabaseJson = Path.Combine(DataDir, "ModDatabase.json");
-            LogHelper.SendLog(ModDatabaseJson);
             LocalBackupPath = $"{ModHelper.GetModPath(this)}\\ModDatabase.json";
-            LogHelper.SendLog(LocalBackupPath);
 
             m_Setting = new Setting(this);
             m_Setting.RegisterInOptionsUI();

@@ -47,11 +47,10 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
   <Screenshot Value="Properties/Screenshot05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/starq-mods-assets-projects-megathread.1930389/" />
-  <ModVersion Value="4.1.2" />
+  <ModVersion Value="4.1.3" />
   <GameVersion Value="1.6.0*" />
   <Dependency Id="" />
-  <ChangeLog>- Hotfix for ModDatabase not persisting, and duplicate ModsData folder.
-- The game will auto restart once to fix the ModsData folder.</ChangeLog>
+  <ChangeLog>- Hotfix for mod not loading on non-Steam version. Thanks to eggybread for reporting the issue.</ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
   <ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />

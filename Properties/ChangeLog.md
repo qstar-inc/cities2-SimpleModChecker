@@ -1,2 +1,1 @@
-- Hotfix for ModDatabase not persisting, and duplicate ModsData folder.
-- The game will auto restart once to fix the ModsData folder.
+- Hotfix for mod not loading on non-Steam version. Thanks to eggybread for reporting the issue.
