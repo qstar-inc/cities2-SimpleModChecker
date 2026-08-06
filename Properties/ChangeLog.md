@@ -1,1 +1,1 @@
-- Hotfix for mod not loading on non-Steam version. Thanks to eggybread for reporting the issue.
+- Fix SMC's own settings not restoring on startup after a crash.

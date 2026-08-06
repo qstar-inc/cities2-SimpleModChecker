@@ -779,7 +779,7 @@
       "Backupable": false
     },
     "79186": {
-      "AssemblyName": "SimpleModChecker",
+      "AssemblyName": "SimpleModCheckerPlus",
       "FragmentSource": "SimpleModCheckerPlus.Setting",
       "ClassType": "SimpleModCheckerSettings",
       "ModName": "Simple Mod Checker Plus",
