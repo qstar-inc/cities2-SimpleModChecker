@@ -13,6 +13,7 @@ using Game.PSI;
 using Game.UI.Localization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using StarQ.Shared.Extensions;
 
 namespace SimpleModCheckerPlus.Systems
@@ -65,6 +66,7 @@ namespace SimpleModCheckerPlus.Systems
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             MaxDepth = 5,
             Formatting = Formatting.Indented,
+            ContractResolver = new SkipUnsetSettingsResolver(),
             Error = (sender, args) =>
             {
                 LogHelper.SendLog(
@@ -73,6 +75,28 @@ namespace SimpleModCheckerPlus.Systems
                 args.ErrorContext.Handled = true;
             },
         };
+
+        /// <summary>
+        /// Drops any mapping class property we never read a value into. A mapping class lists every
+        /// property a mod is known to have, but the live mod only gives us the ones it really has.
+        /// Without this the rest come out as explicit nulls, and a restore writes those back: null
+        /// for a string, default(T) for a value type.
+        /// </summary>
+        private sealed class SkipUnsetSettingsResolver : DefaultContractResolver
+        {
+            protected override JsonProperty CreateProperty(
+                MemberInfo member,
+                MemberSerialization memberSerialization
+            )
+            {
+                JsonProperty property = base.CreateProperty(member, memberSerialization);
+
+                property.ShouldSerialize = instance =>
+                    !(instance is ISettingsBackup settings) || settings.HasValue(member.Name);
+
+                return property;
+            }
+        }
 
         private static readonly JsonSerializer Serializer = CreateSerializer();
 
@@ -109,7 +133,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         try
                         {
-                            JObject jsonObject = JObject.Parse(jsonStringRead);
+                            JObject jsonObject = ParseBackup(jsonStringRead);
                             if (jsonObject != null)
                             {
                                 if (
@@ -220,6 +244,9 @@ namespace SimpleModCheckerPlus.Systems
                 LastUpdated = DateTime.Now.ToLongDateString(),
             };
 
+            // Sections of the old backup, kept as raw JSON in case we can't rebuild them.
+            Dictionary<string, JToken> previousSections = new();
+
             try
             {
                 if (ModDatabaseInfo == null || !ModDatabaseInfo.Any())
@@ -246,7 +273,7 @@ namespace SimpleModCheckerPlus.Systems
                     {
                         try
                         {
-                            jsonObject = JObject.Parse(jsonStringRead);
+                            jsonObject = ParseBackup(jsonStringRead);
                         }
                         catch
                         {
@@ -320,78 +347,7 @@ namespace SimpleModCheckerPlus.Systems
                         object sectionSettings; // = Activator.CreateInstance(classType);
                         sectionSettings = default;
                         //LogHelper.SendLog(loadedMods.Contains(assembly));
-                        if (!loadedMods.Contains(assembly))
-                        {
-                            //    LogHelper.SendLog($"{sectionName} is not currently loaded.", LogLevel.DEVD);
-                            if (jsonObject != null)
-                            {
-                                var settingsJson = jsonObject[classType.Name];
-                                //LogHelper.SendLog("5");
-                                if (settingsJson != null && settingsJson.Type != JTokenType.Null)
-                                {
-                                    //LogHelper.SendLog("4");
-                                    try
-                                    {
-                                        //LogHelper.SendLog("1");
-                                        ConstructorInfo constructor = classType.GetConstructor(
-                                            Type.EmptyTypes
-                                        );
-                                        if (constructor != null)
-                                        {
-                                            sectionSettings = constructor.Invoke(null);
-                                        }
-                                        else
-                                        {
-                                            LogHelper.SendLog(
-                                                $"No parameterless constructor found for {classType.Name}"
-                                            );
-                                            sectionSettings = null;
-                                        }
-                                        //LogHelper.SendLog("2");
-                                        foreach (PropertyInfo prop in classType.GetProperties())
-                                        {
-                                            //LogHelper.SendLog("3");
-                                            //LogHelper.SendLog(prop.Name);
-                                            //LogHelper.SendLog(settingsJson[prop.Name] != null);
-                                            //LogHelper.SendLog(settingsJson[prop.Name].Type != JTokenType.Null);
-                                            if (
-                                                settingsJson[prop.Name] != null
-                                                && settingsJson[prop.Name].Type != JTokenType.Null
-                                            )
-                                            {
-                                                //LogHelper.SendLog("X");
-                                                var value = settingsJson[prop.Name]
-                                                    .ToObject(prop.PropertyType, Serializer);
-                                                prop.SetValue(sectionSettings, value);
-                                                //LogHelper.SendLog(value);
-                                            }
-                                            else
-                                            {
-                                                prop.SetValue(sectionSettings, null);
-                                                //LogHelper.SendLog("setting null");
-                                            }
-                                        }
-                                        //LogHelper.SendLog($"Existing {sectionName}Settings found.");
-                                        //sectionSettings = jsonObject[entry.Value.ClassType.Name].ToObject(classType);
-                                        //if (log)
-                                        //    LogHelper.SendLog(
-                                        //        $"Keeping existing backup for {sectionName}."
-                                        //    );
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        LogHelper.SendLog("Error: " + ex);
-                                    }
-                                }
-                                //    }
-                                //    catch (Exception ex)
-                                //    {
-                                //        LogHelper.SendLog("Error: " + ex);
-                                //    }
-                                //}
-                            }
-                        }
-                        else
+                        if (loadedMods.Contains(assembly))
                         {
                             try
                             {
@@ -408,6 +364,18 @@ namespace SimpleModCheckerPlus.Systems
                                     $"ERROR getting SettingsData for {classType} => {sectionName} => {fragmentSource}\n{ex}"
                                 );
                             }
+                        }
+
+                        // Keep the old section around to fill any gap we leave below, whether the
+                        // mod isn't loaded or we just couldn't read it. Only the keys the mapping
+                        // class still declares, same as the old rebuild did, so a property dropped
+                        // from the class stops coming back.
+                        if (jsonObject?[classType.Name] is JObject previous)
+                        {
+                            previousSections[classType.Name] = OnlyDeclaredKeys(
+                                previous,
+                                classType
+                            );
                         }
 
                         //string TempForLogging = JsonConvert.SerializeObject(sectionSettings);
@@ -427,8 +395,34 @@ namespace SimpleModCheckerPlus.Systems
 
             try
             {
-                string jsonString = JsonConvert.SerializeObject(ModSettings, JsonSettings);
-                File.WriteAllText(backupFile, jsonString);
+                // FromObject, not Parse of a serialized string: re-reading our own JSON turns a
+                // date-shaped setting into a DateTime and writes it back different.
+                JObject output = JObject.FromObject(
+                    ModSettings,
+                    JsonSerializer.CreateDefault(JsonSettings)
+                );
+
+                // Fill in what we couldn't read, key by key. Whole-section replacement threw away
+                // the good half whenever one getter failed, and kept nothing when they all did.
+                foreach (var section in previousSections)
+                {
+                    if (!(output[section.Key] is JObject fresh))
+                    {
+                        output[section.Key] = section.Value;
+                        continue;
+                    }
+
+                    foreach (JProperty old in ((JObject)section.Value).Properties())
+                    {
+                        // TryGetValue, not a null check: a key we wrote as null is present and must
+                        // stay null, and fresh["X"] on a JSON null is not a C# null.
+                        if (!fresh.TryGetValue(old.Name, out _))
+                        {
+                            fresh.Add(old.Name, old.Value);
+                        }
+                    }
+                }
+                File.WriteAllText(backupFile, output.ToString(Formatting.Indented));
                 LogHelper.SendLog(
                     $"Mod Settings backup created successfully: {Path.GetFileName(backupFile)}"
                 );
@@ -437,6 +431,28 @@ namespace SimpleModCheckerPlus.Systems
             {
                 LogHelper.SendLog(ex);
             }
+        }
+
+        /// <summary>
+        /// The old backup section minus anything the mapping class no longer declares. Those
+        /// are curated: a property commented out of one is a property we stopped backing up on
+        /// purpose, and a stale copy would otherwise live in the file forever and get restored into
+        /// the mod.
+        /// </summary>
+        private static JObject OnlyDeclaredKeys(JObject section, Type classType)
+        {
+            HashSet<string> declared = new(classType.GetProperties().Select(p => p.Name));
+            JObject kept = new();
+
+            foreach (JProperty prop in section.Properties())
+            {
+                if (declared.Contains(prop.Name))
+                {
+                    kept.Add(prop.Name, prop.Value);
+                }
+            }
+
+            return kept;
         }
 
         public static object GetSettingsData(
@@ -565,6 +581,24 @@ namespace SimpleModCheckerPlus.Systems
             }
         }
 
+        // Marks a getter that threw, so we can tell it apart from one that returned null.
+        private static readonly object Unreadable = new();
+
+        /// <summary>
+        /// Reads a backup file. JObject.Parse turns a date-shaped setting into a DateTime and hands
+        /// back a different string than the mod stored, so we tell the reader to leave strings be.
+        /// </summary>
+        private static JObject ParseBackup(string json)
+        {
+            using StringReader text = new(json);
+            using JsonTextReader reader = new(text)
+            {
+                DateParseHandling = DateParseHandling.None,
+            };
+
+            return JObject.Load(reader);
+        }
+
         private static (bool, object) ProcessFragmentSource(object source, Type classType)
         {
             var props = source
@@ -592,10 +626,17 @@ namespace SimpleModCheckerPlus.Systems
                         catch (Exception ex)
                         {
                             LogHelper.SendLog($"{p.Name}: {ex.Message}", LogLevel.Error);
-                            return null;
+                            return Unreadable;
                         }
                     }
                 );
+
+            // Drop the ones that threw, so what's left is what the mod actually told us. A getter
+            // that failed and a getter that returned null are not the same thing.
+            foreach (var failed in props.Where(p => p.Value == Unreadable).ToList())
+            {
+                props.Remove(failed.Key);
+            }
             //LogHelper.SendLog($"Processing fragment source for {classType.Name}", LogLevel.DEV);
             object settingsBackup = (ISettingsBackup)Activator.CreateInstance(classType);
             //LogHelper.SendLog($"SettingsBackup found for {classType.Name}", LogLevel.DEV);
@@ -614,10 +655,36 @@ namespace SimpleModCheckerPlus.Systems
             {
                 if (property.CanWrite)
                 {
-                    if (sourceObj.TryGetValue(property.Name, out JToken valueToken))
+                    // Ask props, not sourceObj: a value that failed to serialize also lands in
+                    // sourceObj as a null, and we'd read that as "the mod cleared it". No key at
+                    // all means the mod doesn't have this property, or its getter threw. Leave it
+                    // unset, that's what keeps it out of the backup.
+                    if (!props.TryGetValue(property.Name, out object raw))
+                    {
+                        continue;
+                    }
+
+                    if (raw == null)
+                    {
+                        // The mod really holds null. Write it down, or a setting the user cleared
+                        // looks the same as one we never read, and the old value gets carried
+                        // forward over it. Reference types only: reflection would turn a null into
+                        // default(T), which is the bug this all started with.
+                        if (!property.PropertyType.IsValueType)
+                        {
+                            property.SetValue(settingsBackup, null);
+                        }
+                    }
+                    else if (sourceObj.TryGetValue(property.Name, out JToken valueToken))
                     {
                         var value = valueToken.ToObject(property.PropertyType, Serializer);
-                        property.SetValue(settingsBackup, value);
+
+                        // Null out of a non-null value means the conversion failed and the error
+                        // handler ate it. We read nothing, so record nothing.
+                        if (value != null)
+                        {
+                            property.SetValue(settingsBackup, value);
+                        }
                     }
                 }
             }
@@ -652,7 +719,7 @@ namespace SimpleModCheckerPlus.Systems
 
             LogHelper.SendLog("Restoring Mod Settings Backup");
             string jsonString = File.ReadAllText(backupFile);
-            JObject jsonObject = JObject.Parse(jsonString);
+            JObject jsonObject = ParseBackup(jsonString);
 
             try
             {
@@ -766,8 +833,10 @@ namespace SimpleModCheckerPlus.Systems
                 {
                     foreach (var fragment in settingAsset)
                     {
+                        // Skip it, don't stop: an empty fragment can sit ahead of the one we want,
+                        // and breaking here left those mods backed up but never restored.
                         if (fragment.source == null)
-                            break;
+                            continue;
                         string fragmentSourceType = fragment.source.ToString();
                         string sectionKey = ModSettingsMap.GetClassName(
                             $"{fragmentSourceType}+{name}"
@@ -778,29 +847,7 @@ namespace SimpleModCheckerPlus.Systems
                         //LogHelper.SendLog($"{sectionKey != null}");
                         if (sectionKey != null && sectionKey == className)
                         {
-                            var props = fragment
-                                .source.GetType()
-                                .GetProperties()
-                                .Where(p => p.CanRead && p.GetIndexParameters().Length == 0)
-                                .ToDictionary(
-                                    p => p.Name,
-                                    p =>
-                                    {
-                                        try
-                                        {
-                                            return p.GetValue(fragment.source);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            LogHelper.SendLog($"ERROR with {p.Name}: {ex.Message}");
-                                            return null;
-                                        }
-                                    }
-                                );
-
                             //LogHelper.SendLog("sectionKey != null && sectionKey == className");
-                            JObject sectionSource = JObject.FromObject(props, Serializer);
-
                             if (sourceObj[sectionKey] is JObject jsonSettingsSection)
                             {
                                 //LogHelper.SendLog("sourceObj[sectionKey] is JObject jsonSettingsSection)");
@@ -817,27 +864,57 @@ namespace SimpleModCheckerPlus.Systems
                                             .StartsWith("Game.Input.ProxyBinding")
                                     )
                                     {
-                                        var oldValue = propInfo.GetValue(fragment.source);
-                                        var newValue = prop.Value.ToObject(
-                                            propInfo.PropertyType,
-                                            Serializer
-                                        );
-                                        if (!Equals(oldValue, newValue))
+                                        // A mod's accessor can throw. Keep it to this one property:
+                                        // letting it out skips the rest of the mod and the save
+                                        // below, leaving it half restored.
+                                        try
+                                        {
+                                            var oldValue = propInfo.GetValue(fragment.source);
+                                            var newValue = prop.Value.ToObject(
+                                                propInfo.PropertyType,
+                                                Serializer
+                                            );
+
+                                            // Never restore a null: old backups are full of them,
+                                            // and writing one back blanks a string or turns a
+                                            // value type into default(T). Leave the mod with what
+                                            // it has, the user's value or its own default.
+                                            if (newValue == null)
+                                            {
+                                                continue;
+                                            }
+
+                                            if (!Equals(oldValue, newValue))
+                                            {
+                                                // Count and log after the write, not before: a
+                                                // setter that throws must not be reported as a
+                                                // restored option.
+                                                propInfo.SetValue(fragment.source, newValue);
+                                                LogHelper.SendLog(
+                                                    $"Restoring '{sectionKey}:{prop.Name}': {oldValue} => {newValue}."
+                                                );
+                                                if (sectionKey != "SimpleModCheckerSettings")
+                                                {
+                                                    i++;
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
                                         {
                                             LogHelper.SendLog(
-                                                $"Restoring '{sectionKey}:{prop.Name}': {oldValue} => {newValue}."
+                                                $"ERROR restoring '{sectionKey}:{prop.Name}': {ex}",
+                                                LogLevel.Error
                                             );
-                                            if (sectionKey != "SimpleModCheckerSettings")
-                                            {
-                                                i++;
-                                            }
-                                            propInfo.SetValue(fragment.source, newValue);
                                         }
                                     }
                                 }
 
                                 try
                                 {
+                                    // FIXME: this doesn't wait for anything. SettingAsset.Save is
+                                    // async void, so the task completes at its first await and we
+                                    // log a save that hasn't happened yet. The awaitable overload
+                                    // is internal.
                                     Task.Run(() => settingAsset.Save(true)).Wait();
                                     if (log)
                                         LogHelper.SendLog($"{sectionKey} setting saved.");

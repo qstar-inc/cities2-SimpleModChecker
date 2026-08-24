@@ -4,6 +4,10 @@
     <AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
     <Version>4.1.4</Version>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Tests\**" />
+    <None Remove="Tests\**" />
+  </ItemGroup>
   <Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.props" />
   <Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
   <Import Project="..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.projitems" Label="Shared" />
