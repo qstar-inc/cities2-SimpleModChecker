@@ -1,8 +1,4 @@
-<Publish>
-  <ModId Value="79186" />
-  <DisplayName Value="Simple Mod Checker Plus" />
-  <ShortDescription Value="Mod load notification, backup/restore game/mods settings/keybinds, and more tools." />
-  <LongDescription># Simple Mod Checker Plus
+# Simple Mod Checker Plus
 I'm a simple man; I see "Loaded {x} mods", I start playing.
 
 This mod adds a **persistent** notification to the Main Menu, showing how many mods have loaded in the current session.
@@ -38,22 +34,29 @@ Safe to remove anytime.
 
 Find me on **Cities: Skylines** Official Discord or **Cities: Skylines Modding** Discord.
 
-Feedback / Bug Report: https://discord.com/channels/1024242828114673724/1287440491239047208</LongDescription>
-  <Thumbnail Value="Properties/Thumbnail.png" />
-  <Screenshot Value="Properties/Screenshot01.png" />
-  <Screenshot Value="Properties/Screenshot02.png" />
-  <Screenshot Value="Properties/Screenshot03.png" />
-  <Screenshot Value="Properties/Screenshot04.png" />
-  <Screenshot Value="Properties/Screenshot05.png" />
-  <Tag Value="Code Mod" />
-  <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/starq-mods-assets-projects-megathread.1930389/" />
-  <ModVersion Value="4.1.5" />
-  <GameVersion Value="1.6.0*" />
-  <Dependency Id="" />
-  <ChangeLog>- Fix SMC's own settings not restoring on startup after a crash.</ChangeLog>
-  <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
-  <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
-  <ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />
-  <ExternalLink Type="crowdin" Url="https://crowdin.com/project/starq-cities2" />
-  <AccessLevel Value="Public" />
-</Publish>
+Feedback / Bug Report: https://discord.com/channels/1024242828114673724/1287440491239047208
+
+## License Notes
+This project is licensed under GPLv3 (see LICENSE). A quick summary of what that means in practice:
+
+- You're free to use, modify, and redistribute this code.
+- Any modified version you distribute must also be licensed under GPLv3 (copyleft). This means you can't use this code in a closed-source project.
+- Please retain attribution to the original author when redistributing or forking.
+
+### Forks and Redistribution
+This mod is distributed exclusively via Paradox Mods, and I actively maintain it there.
+
+If you'd like to contribute, please consider submitting a PR or reaching out instead of publishing a separate copy or fork.
+
+I kindly ask that you do **not**:
+- Upload this mod, or any fork of it, to Nexus Mods or any platform other than Paradox Mods, under any circumstances.
+- Publish it as a separate listing on Paradox Mods, unless the original mod is abandoned and I'm unresponsive to contact for an extended period.
+
+If you do publish a fork under those circumstances, please:
+- Clearly mark it as a fork/unofficial version (not the original),
+- Link back to this repository and credit the original work,
+- Follow GPLv3's requirements for source availability and licensing.
+
+This is a request from the maintainer, not an added legal restriction beyond what GPLv3 already requires. It does not modify or limit any rights granted under the GPLv3 license, which remains the sole binding license for this Software.
+
+Reposting an actively maintained mod under a new listing, without need, fragments the community and support for users.

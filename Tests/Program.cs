@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This code is untested and may require additional context or dependencies to run successfully.
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -299,10 +301,7 @@ namespace SimpleModCheckerPlus.Tests
                 props.All(p => p.GetIndexParameters().Length == 0)
             );
 
-            Program.Check(
-                "every property is read/write",
-                props.All(p => p.CanRead && p.CanWrite)
-            );
+            Program.Check("every property is read/write", props.All(p => p.CanRead && p.CanWrite));
 
             Program.Check(
                 "no class declares a name twice",
@@ -357,14 +356,9 @@ namespace SimpleModCheckerPlus.Tests
 
                 object one = Activator.CreateInstance(t);
 
-                first.SetValue(
-                    one,
-                    first.PropertyType == typeof(string) ? "x" : (object)true
-                );
+                first.SetValue(one, first.PropertyType == typeof(string) ? "x" : (object)true);
 
-                JObject oneJson = JObject.Parse(
-                    JsonConvert.SerializeObject(one, Program.settings)
-                );
+                JObject oneJson = JObject.Parse(JsonConvert.SerializeObject(one, Program.settings));
 
                 if (oneJson.Properties().Count() != 1 || oneJson[first.Name] == null)
                 {
@@ -596,10 +590,9 @@ namespace SimpleModCheckerPlus.Tests
 
             foreach (string sample in samples)
             {
-                string json = new JObject
-                {
-                    ["S"] = new JObject { ["V"] = sample },
-                }.ToString(Formatting.None);
+                string json = new JObject { ["S"] = new JObject { ["V"] = sample } }.ToString(
+                    Formatting.None
+                );
 
                 if (JObject.Parse(json)["S"]["V"].Type != JTokenType.String)
                 {
@@ -724,9 +717,7 @@ namespace SimpleModCheckerPlus.Tests
                     expected[p.Name] = sample;
                 }
 
-                JObject json = JObject.Parse(
-                    JsonConvert.SerializeObject(bag, Program.settings)
-                );
+                JObject json = JObject.Parse(JsonConvert.SerializeObject(bag, Program.settings));
 
                 foreach (KeyValuePair<string, object> kv in expected)
                 {
@@ -740,10 +731,7 @@ namespace SimpleModCheckerPlus.Tests
                         continue;
                     }
 
-                    object back = token.ToObject(
-                        t.GetProperty(kv.Key).PropertyType,
-                        serializer
-                    );
+                    object back = token.ToObject(t.GetProperty(kv.Key).PropertyType, serializer);
 
                     if (back is Array a && kv.Value is Array b)
                     {
@@ -983,9 +971,10 @@ namespace SimpleModCheckerPlus.Tests
             {
                 PropertyInfo p = hof.GetProperty(name);
 
-                old[name] = p == null
-                    ? JToken.FromObject("tuned")
-                    : JToken.FromObject(Program.SampleFor(p.PropertyType) ?? "tuned");
+                old[name] =
+                    p == null
+                        ? JToken.FromObject("tuned")
+                        : JToken.FromObject(Program.SampleFor(p.PropertyType) ?? "tuned");
             }
 
             string onDisk = new JObject { [hof.Name] = old }.ToString(Formatting.Indented);

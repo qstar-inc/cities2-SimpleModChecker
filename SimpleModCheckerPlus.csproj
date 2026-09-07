@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>SimpleModCheckerPlus</AssemblyName>
     <AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
-    <Version>4.1.4</Version>
+    <Version>4.1.5</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Tests\**" />
@@ -10,7 +10,7 @@
   </ItemGroup>
   <Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.props" />
   <Import Project="$([System.Environment]::GetEnvironmentVariable('CSII_TOOLPATH', 'EnvironmentVariableTarget.User'))\Mod.targets" />
-  <Import Project="..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.projitems" Label="Shared" />
-  <Import Project="..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.props" />
-  <Import Project="..\..\ModsPersonal\StarQ.Shared\StarQ.Shared.targets" />
+  <Import Project="$(CS2_STARQ_SHARED_PATH)\StarQ.Shared.projitems" Label="Shared" />
+  <Import Project="$(CS2_STARQ_SHARED_PATH)\StarQ.Shared.props" />
+  <Import Project="$(CS2_STARQ_SHARED_PATH)\StarQ.Shared.targets" />
 </Project>
