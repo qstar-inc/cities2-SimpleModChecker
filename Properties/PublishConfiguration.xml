@@ -47,10 +47,10 @@ Feedback / Bug Report: https://discord.com/channels/1024242828114673724/12874404
   <Screenshot Value="Properties/Screenshot05.png" />
   <Tag Value="Code Mod" />
   <ForumLink Value="https://forum.paradoxplaza.com/forum/threads/starq-mods-assets-projects-megathread.1930389/" />
-  <ModVersion Value="4.1.5" />
+  <ModVersion Value="4.1.6" />
   <GameVersion Value="1.6.0*" />
   <Dependency Id="" />
-  <ChangeLog>- Fix SMC's own settings not restoring on startup after a crash.</ChangeLog>
+  <ChangeLog>- Fix cases where null values on mod settings were being restored. Thanks to @toverux for the contribution.</ChangeLog>
   <ExternalLink Type="github" Url="https://github.com/qstar-inc/cities2-SimpleModChecker" />
   <ExternalLink Type="discord" Url="https://discord.gg/U2PSjUzUuF" />
   <ExternalLink Type="buymeacoffee" Url="https://buymeacoffee.com/starq" />

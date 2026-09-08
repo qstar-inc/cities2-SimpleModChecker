@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Colossal.Json;
 using Colossal.PSI.Common;
-using Colossal.PSI.Environment;
 using Game;
 using Game.PSI;
 using Game.Settings;

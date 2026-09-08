@@ -149,15 +149,9 @@ namespace SimpleModCheckerPlus.Systems
             try
             {
                 if (mode.IsGameOrEditor())
-                {
-                    Mod.m_Setting.IsInGameOrEditor = true;
                     RemoveNotification();
-                }
                 else
-                {
-                    Mod.m_Setting.IsInGameOrEditor = false;
                     SendNotification(packages.Count > 0);
-                }
             }
             catch (Exception e)
             {

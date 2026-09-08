@@ -1,1 +1,1 @@
-- Fix SMC's own settings not restoring on startup after a crash.
+- Fix cases where null values on mod settings were being restored. Thanks to @toverux for the contribution.

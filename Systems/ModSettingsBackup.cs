@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Colossal.IO.AssetDatabase;
 using Colossal.PSI.Common;
-using Colossal.PSI.Environment;
 using Game;
 using Game.PSI;
 using Game.UI.Localization;
@@ -591,10 +590,7 @@ namespace SimpleModCheckerPlus.Systems
         private static JObject ParseBackup(string json)
         {
             using StringReader text = new(json);
-            using JsonTextReader reader = new(text)
-            {
-                DateParseHandling = DateParseHandling.None,
-            };
+            using JsonTextReader reader = new(text) { DateParseHandling = DateParseHandling.None };
 
             return JObject.Load(reader);
         }

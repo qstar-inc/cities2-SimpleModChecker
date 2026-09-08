@@ -93,7 +93,7 @@ namespace SimpleModCheckerPlus
         public bool DeleteCorrupted { get; set; } = true;
 
         [SettingsUISection(GeneralTab, GeneralGroup)]
-        public bool EnableVerboseLogging { get; set; } = false; // SET TO FALSE //
+        public bool EnableVerboseLogging { get; set; } = false;
 
         [SettingsUISection(BackupTab, BackupGroup)]
         public bool AutoRestoreSettingBackupOnStartup { get; set; } = true;
@@ -181,7 +181,7 @@ namespace SimpleModCheckerPlus
         }
 
 #if DEBUG
-        //[SettingsUIAdvanced]
+        [SettingsUIDisplayName(overrideValue: "Get Settings Files")]
         [SettingsUIDeveloper]
         [SettingsUISection(BackupTab, BackupGroup)]
         public bool GetSettingsFiles
@@ -204,11 +204,7 @@ namespace SimpleModCheckerPlus
 
         [Exclude]
         [SettingsUIHidden]
-        public bool IsInGameOrEditor { get; set; } = false;
-
-        [Exclude]
-        [SettingsUIHidden]
-        public bool ReadyForVerify => !(!VerifyRunning && !IsInGameOrEditor);
+        public bool ReadyForVerify => !(!VerifyRunning && !WorldHelper.IsGameOrEditor);
 
         [Exclude]
         [SettingsUIHidden]
@@ -565,7 +561,6 @@ namespace SimpleModCheckerPlus
             ProfileName8 = "Profile 8";
             ProfileName9 = "Profile 9";
             VerifyRunning = false;
-            IsInGameOrEditor = false;
             ModFolderDropdown = "";
         }
     }
