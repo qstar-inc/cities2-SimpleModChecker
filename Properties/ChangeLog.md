@@ -1,1 +1,1 @@
-- Fix cases where null values on mod settings were being restored. Thanks to @toverux for the contribution.
+- Added/removed/updated mod settings backup (last mod ID checked 158284). Find the full list in-game or on the attached ModDatabase JSON.

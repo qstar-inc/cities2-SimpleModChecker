@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>SimpleModCheckerPlus</AssemblyName>
     <AssemblyTitle>Simple Mod Checker Plus</AssemblyTitle>
-    <Version>4.1.6</Version>
+    <Version>4.1.7</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Tests\**" />

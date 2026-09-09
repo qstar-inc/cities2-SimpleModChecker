@@ -13,10 +13,13 @@ with open(INPUT_FILE, newline="", encoding="utf-8") as f:
         if len(row) < 4:
             continue
 
-        classes[row[0]].append(
+        if row[0].strip() == "Class":
+            continue
+
+        classes[row[0].strip()].append(
             {
-                "type": row[1],
-                "prop": row[2],
+                "type": row[1].strip(),
+                "prop": row[2].strip(),
                 "disabled": row[3].strip().lower() == "true",
             }
         )

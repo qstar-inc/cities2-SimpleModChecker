@@ -2,6 +2,15 @@ import csv
 import re
 import requests
 import os
+import logging
+
+logging.basicConfig(
+    filename="error.log",
+    level=logging.ERROR,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
 
 AUTH = os.environ["AUTH_SMC"]
 HEADERS = {
@@ -32,6 +41,9 @@ def get_url_data():
 
             for row in reader:
                 if len(row) < 4:
+                    continue
+
+                if row[0].strip() == "ClassType":
                     continue
 
                 class_type = row[0].strip()
@@ -160,6 +172,12 @@ def process_tsv(input_tsv, output_tsv):
     results = []
 
     for row in rows:
+        if row[0] == "ClassType":
+            continue
+
+        if row[0] == "":
+            continue
+
         if len(row) < 4:
             continue
 
@@ -208,6 +226,7 @@ def process_tsv(input_tsv, output_tsv):
 
             except Exception as ex:
                 print(f"ERROR {class_type}: {ex}")
+                logging.exception(f"{class_type}: {ex}")
         results.sort(key=lambda x: (x[0], x[2]))
 
         with open(output_tsv, "w", newline="", encoding="utf-8") as outfile:
